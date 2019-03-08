@@ -10,7 +10,7 @@
   <platform name="android">
     <resource-file src="google-services.json" target="app/google-services.json" />
     <gap:plugin name="cordova-plugin-whitelist" source="npm"/>
-    <gap:plugin name="cordova-plugin-fcm" source="npm"/>
+    <plugin name="cordova-plugin-firebase" spec="^2.0.0" />
   </platform>
   <content src="index.html" />
   <access origin="*" />
