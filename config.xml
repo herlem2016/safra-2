@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <widget id="com.softronel.safra" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
   <name>SAFRA</name>
   <description>
@@ -8,6 +8,7 @@
     Softronel Team
   </author>
   <platform name="android">
+    <resource-file src="google-services.json" target="google-services.json" />
     <gap:plugin name="cordova-plugin-whitelist" source="npm"/>
     <gap:plugin name="cordova-plugin-fcm" source="npm"/>
   </platform>
