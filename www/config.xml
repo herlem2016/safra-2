@@ -9,7 +9,7 @@
   </author>
   <platform name="android">
     <gap:plugin name="cordova-plugin-whitelist" source="npm"/>
-    <plugin name="cordova-plugin-fcm"/>
+    <gap:plugin name="cordova-plugin-fcm"/>
   </platform>
   <content src="index.html" />
   <access origin="*" />
