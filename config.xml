@@ -10,6 +10,7 @@
   <preference name='phonegap-version' value='cli-7.0.1' />
   <preference name='pgb-builder-version' value='1' />
   <platform name="android">
+    <resource-file src="google-services.json" target="app/google-services.json" />
     <gap:plugin name="cordova-plugin-whitelist" source="npm"/>
     <gap:plugin name="cordova-plugin-fcm" source="npm"/>
   </platform>
