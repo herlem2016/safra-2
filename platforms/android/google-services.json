@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "772731269924",
+    "firebase_url": "https://safra-ebe9e.firebaseio.com",
+    "project_id": "safra-ebe9e",
+    "storage_bucket": "safra-ebe9e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:772731269924:android:8c374a12b4848b16",
+        "android_client_info": {
+          "package_name": "com.softronel.safra"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "772731269924-g8l05tdrnrk80agjpkbtro66umgnliin.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCyMzmkpVf45NxjujNIuGAXEQcay1DqaEA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
