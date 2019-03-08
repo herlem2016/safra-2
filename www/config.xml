@@ -7,10 +7,8 @@
   <author email="info@softronel.com.mx" href="softronel.com.mx">
     Softronel Team
   </author>
-  <platform name="android">
-    <gap:plugin name="cordova-plugin-whitelist" source="npm"/>
-    <gap:plugin name="phonegap-plugin-fcm"/>
-  </platform>
+  <gap:plugin name="cordova-plugin-whitelist" source="npm"/>
+  <gap:plugin name="phonegap-plugin-fcm"/>
   <content src="index.html" />
   <access origin="*" />
 </widget>
