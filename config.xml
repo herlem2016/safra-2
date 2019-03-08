@@ -8,7 +8,6 @@
     Softronel Team
   </author>
   <platform name="android">
-    <resource-file src="google-services.json" target="google-services.json" />
     <gap:plugin name="cordova-plugin-whitelist" source="npm"/>
     <gap:plugin name="cordova-plugin-fcm" source="npm"/>
   </platform>
