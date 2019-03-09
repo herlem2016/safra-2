@@ -9,10 +9,8 @@
   </author>
   <preference name='phonegap-version' value='cli-7.0.1' />
   <preference name='pgb-builder-version' value='1' />
-  <platform name="android">
-    <gap:plugin name="cordova-plugin-whitelist" source="npm"/>
-    <plugin name="cordova-plugin-fcm" spec="~2.1.2" />
-  </platform>
+  <gap:plugin name="cordova-plugin-whitelist" source="npm"/>
+  <plugin name="cordova-plugin-fcm" spec="~2.1.2" />
   <content src="index.html" />
   <access origin="*" />
 </widget>
