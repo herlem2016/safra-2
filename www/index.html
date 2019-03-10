@@ -3,7 +3,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <meta name="viewport" content="width=device-width, height=device-height" />
     <meta http-equiv="Content-Security-Policy"
           content="default-src * 'self' 'unsafe-inline' data: gap: 'unsafe-eval';
     style-src * 'self' 'unsafe-inline';
@@ -187,6 +186,7 @@
     <script src="jquery-1.11.3.min.js"></script>
     <script>
         var url = "http://192.168.0.102:82/logic/controlador.aspx";
+       // var url = "http://localhost:61157/logic/controlador.aspx";
         $.support.cors = true;
         function MostrarOpcionesHabilitadas() {
             var funcionesEnPantalla = { btns: [], claves: [] };
@@ -207,6 +207,7 @@
                         }
                     }
                 }
+                ToogleOpcionesUsuario('opciones-usuario');
                 document.getElementById("mostrar-opciones").style.display = "none";
                 document.getElementById("ocultar-opciones").style.display = "block";
             });
@@ -223,8 +224,11 @@
                 }
             }
             for (var k = 0; k < funcionesEnPantalla.btns.length; k++) {
-                document.getElementById(funcionesEnPantalla.btns[k].getAttribute("control")).style.display = "none";
+                try {
+                    document.getElementById(funcionesEnPantalla.btns[k].getAttribute("control")).style.display = "none";
+                }catch(e){}
             }
+            ToogleOpcionesUsuario('opciones-usuario');
             document.getElementById("mostrar-opciones").style.display = "block";
             document.getElementById("ocultar-opciones").style.display = "none";
         }
@@ -292,7 +296,7 @@
 
         function IniciarApp() {
             EstablecerDimensiones();
-            PantallaMostrar("pp-home", "section");
+            PantallaMostrar("home", "section",true);
             var tabInicioPro = document.getElementById("tab-inicio-pro");
             TabMostrar(tabInicioPro, tabInicioPro.parentNode, 'pro-ejecucion');
         }
@@ -346,12 +350,15 @@
             document.getElementById(id).style.display = "block";
         }
 
-        function PantallaMostrar(id,tagName){
+        function PantallaMostrar(catalogo,tagName,no_post){
             var pants = document.getElementsByTagName(tagName);
+            if (!no_post) {
+                CargarCatalogo(catalogo);
+            }
             for (var i = 0; i < pants.length; i++){
                 pants[i].style.display = "none";
             }
-            document.getElementById(id).style.display = "block";
+            document.getElementById(catalogo).style.display = "block";
         }
 
         function IniciarEditarPlanPro(id) {
@@ -382,6 +389,38 @@
             document.getElementById(id2).style.display = "none";
         }
 
+        function RegistrarEvento(catalogo) {
+            switch (catalogo) {
+                case "comunicados": CargarComunicados(); break;
+                case "directorio": CargarDirectorio(); break;
+                case "notificaciones": CargarNotificaciones(); break;
+            }
+        }
+
+        function CargarCatalogo(catalogo) {
+            $.post(url + '?op=cargar&seccion=' + catalogo, function (xmlDoc) {
+                var items = xmlDoc.getElementsByTagName("Table");
+                var lista = document.getElementById(catalogo).getElementsByTagName("ul")[0];
+                lista.innerHTML = "";
+                for (var n = 0; n < items.length; n++) {
+                    lista.appendChild(ObtenerItem(catalogo, items[n]));
+                }                
+            });
+        }
+
+        function ObtenerItem(catalogo, item) {
+            var itemli = document.createElement("li");
+            switch (catalogo){
+                case "comunicados":
+                    itemli.onclick = function () { Mostrar('lista-comunicados', 'detalle-comunicados'); }
+                    itemli.innerHTML = '<span class="t-1" >' + GetValor(item, "titulo") + '</span>' +
+                        '<span class="t-2">' + GetValor(item, "nombre") + '</span>' +
+                        '<span class="t-3">' + GetValor(item, "fecha1") + '</span>'; break;
+                case "directorio": ; break;
+            }
+            return itemli;
+        }
+
     </script>
 
 </head>
@@ -410,22 +449,22 @@
             </ul>
         </div>
         
-        <section class="pantalla home" id="pp-home">
+        <section class="pantalla home" id="home">
             <ul class="menu">
-                <li><button onclick="PantallaMostrar('pp-projectos','section');" class="no"><img src="img/proyectos.png"/>Projectos</button></li>
-                <li><button onclick="PantallaMostrar('pp-aportaciones','section');" class="ok"><img src="img/aportaciones.png"/>Aportaciones</button></li>
-                <li><button onclick="PantallaMostrar('pp-solmtto','section');" class="ok"><img src="img/solmtto.png"/>Solicitudes Mtto.</button></li>
-                <li><button onclick="PantallaMostrar('pp-erogaciones','section');" class="ok"><img src="img/erogaciones.png"/>Erogaciones</button></li>
-                <li><button onclick="PantallaMostrar('pp-reportes','section');" class="no"><img src="img/reportes.png"/>Reportes</button></li>
-                <li><button onclick="PantallaMostrar('pp-encuestas','section');" class="no"><img src="img/encuestas.png"/>Encuestas</button></li>
-                <li><button onclick="PantallaMostrar('pp-serviciosproductos','section');" class="ok"><img src="img/serviciosproductos.png"/>Productos y Servicios</button></li>
-                <li><button onclick="PantallaMostrar('pp-directorio','section');" class="ok"><img src="img/directorio.png"/>Directorio</button></li>
-                <li><button onclick="PantallaMostrar('pp-comunicados','section');" class="ok"><img src="img/comunicados.png"/>Comunicados</button></li>
-                <li><button onclick="PantallaMostrar('pp-notificaciones','section');" class="ok"><img src="img/notificaciones.png"/>Notificaciones</button></li>
+                <li><button onclick="PantallaMostrar('projectos','section');" class="no"><img src="img/proyectos.png"/>Projectos</button></li>
+                <li><button onclick="PantallaMostrar('aportaciones','section');" class="ok"><img src="img/aportaciones.png"/>Aportaciones</button></li>
+                <li><button onclick="PantallaMostrar('solmtto','section');" class="ok"><img src="img/solmtto.png"/>Solicitudes Mtto.</button></li>
+                <li><button onclick="PantallaMostrar('erogaciones','section');" class="ok"><img src="img/erogaciones.png"/>Erogaciones</button></li>
+                <li><button onclick="PantallaMostrar('reportes','section');" class="no"><img src="img/reportes.png"/>Reportes</button></li>
+                <li><button onclick="PantallaMostrar('encuestas','section');" class="no"><img src="img/encuestas.png"/>Encuestas</button></li>
+                <li><button onclick="PantallaMostrar('serviciosproductos','section');" class="ok"><img src="img/serviciosproductos.png"/>Productos y Servicios</button></li>
+                <li><button onclick="PantallaMostrar('directorio','section');" class="ok"><img src="img/directorio.png"/>Directorio</button></li>
+                <li><button onclick="PantallaMostrar('comunicados','section');" class="ok"><img src="img/comunicados.png"/>Comunicados</button></li>
+                <li><button onclick="PantallaMostrar('notificaciones','section');" class="ok"><img src="img/notificaciones.png"/>Notificaciones</button></li>
             </ul>
         </section>
 
-        <section class="pantalla directorio" id="pp-directorio">
+        <section class="pantalla directorio" id="directorio">
             <div class="lista" id="lista-directorio">
                 <div class="titulo">Directorio</div>
                 <div class="busqueda"><input placeholder="Buscar" /></div>
@@ -527,38 +566,12 @@
             </div>
         </section>
 
-        <section class="pantalla comunicados" id="pp-comunicados">
+        <section class="pantalla comunicados" id="comunicados">
             <div class="lista" id="lista-comunicados">
                 <div class="titulo">Comunicados</div>            
                 <div class="busqueda"><input placeholder="Buscar" /></div>
                 <div class="agregar" id="edicion-comunicados" style="display:none;"><button clave_funcion="5" control="edicion-comunicados" onclick="IniciarEditarComunicados(true);">Aregar comunicado</button></div>
-                <ul class="lista seleccionable pantalla-3">
-                    <li class="item" onclick="Mostrar('lista-comunicados','detalle-comunicados');">
-                        <span class="t-1">Junta general</span>                    
-                        <span class="t-2">Juan Rodolfo Jimenez Gomez Lara Vazquez(Administración)</span>                    
-                        <span class="t-3">publicado:<br /> 11-ene-2018 9:25 pm</span>                    
-                    </li>
-                    <li class="item">
-                        <span class="t-1">Junta general</span>                    
-                        <span class="t-2">Juan Rodolfo Jimenez Gomez</span>                    
-                        <span class="t-3">11-ene-2018</span>                    
-                    </li>
-                    <li class="item">
-                        <span class="t-1">Junta general</span>                    
-                        <span class="t-2">Juan Rodolfo Jimenez Gomez</span>                    
-                        <span class="t-3">11-ene-2018</span>                    
-                    </li>
-                    <li class="item">
-                        <span class="t-1">Junta general</span>                    
-                        <span class="t-2">Juan Rodolfo Jimenez Gomez</span>                    
-                        <span class="t-3">11-ene-2018</span>                    
-                    </li>
-                    <li class="item">
-                        <span class="t-1">Junta general</span>                    
-                        <span class="t-2">Juan Rodolfo Jimenez Gomez</span>                    
-                        <span class="t-3">11-ene-2018</span>                    
-                    </li>
-                </ul>
+                <ul class="lista seleccionable pantalla-3"></ul>
             </div>
             <div class="detalle" id="detalle-comunicados" style="display:none;">
                 <div class="titulo">Comunicado <button class="regresar" onclick="Mostrar('detalle-comunicados','lista-comunicados');">Regresar</button></div>  
@@ -590,7 +603,7 @@
             </div>
         </section>
 
-        <section class="pantalla notificaciones" id="pp-notificaciones">
+        <section class="pantalla notificaciones" id="notificaciones">
             
             <div class="lista" id="lista-notificaciones">
                 <div class="titulo">Notificaciones</div>            
@@ -645,7 +658,7 @@
             </div>           
         </section>
 
-        <section class="pantalla productosservicios" id="pp-serviciosproductos">
+        <section class="pantalla productosservicios" id="serviciosproductos">
             <div class="buscador" id="buscador-prodserv">
                 <div class="titulo">Productos y Servicios</div>      
                 <img class="logo-frac" src="img/Titan_Company_Logo.png" />      
@@ -720,7 +733,7 @@
             </div>
         </section>
 
-        <section class="pantalla solmtto" id="pp-solmtto">  
+        <section class="pantalla solmtto" id="solmtto">  
             <div class="lista" id="lista-solmtto">
                 <div class="titulo">Solicitudes de Mantenimiento</div>            
                 <div class="busqueda"><input placeholder="Buscar" /></div>
@@ -787,7 +800,7 @@
             </div>
         </section>
 
-        <section class="pantalla aportaciones" id="pp-aportaciones">            
+        <section class="pantalla aportaciones" id="aportaciones">            
             <div class="lista" id="lista-aportaciones">
                 <div class="titulo">Aportaciones</div>            
                 <div class="busqueda"><input placeholder="Buscar" /></div>
@@ -878,7 +891,7 @@
             </div>
         </section>
                 
-        <section class="pantalla erogaciones" id="pp-erogaciones">            
+        <section class="pantalla erogaciones" id="erogaciones">            
             <div class="lista" id="lista-erogacion">
                 <div class="titulo">Erogaciones</div>            
                 <div class="busqueda"><input placeholder="Buscar" /></div>
@@ -939,7 +952,7 @@
             </div>
         </section>
 
-        <section class="pantalla encuestas" id="pp-encuestas">
+        <section class="pantalla encuestas" id="encuestas">
             <div class="lista" id="lista-encuesta">
                 <div class="titulo">Encuestas</div>            
                 <div class="busqueda"><input placeholder="Buscar" /></div>
@@ -1021,7 +1034,7 @@
             </div>
         </section>
                 
-        <section class="pantalla proyectos" id="pp-projectos"> 
+        <section class="pantalla proyectos" id="projectos"> 
             <div id="pro-ejecucion">
                 <div class="lista graficas" id="lista-proyectos">
                     <div class="titulo">Proyectos en Ejecución</div>            
