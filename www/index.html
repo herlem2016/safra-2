@@ -14,7 +14,14 @@
     <link href="css/terceros.css" rel="stylesheet" />
 
     <style>
-        html,body{margin:0px;font-family:Verdana;background-color:#0094ff;padding:0px;height:100%;overflow:hidden;}
+        @media only screen and (min-width: 600px) {
+            html,body {
+                width: 600px;
+                margin: auto;
+            }
+        }
+        html,body{margin:0px auto 0px auto;font-family:Verdana;background-color:#0094ff;padding:0px;height:100%;overflow:hidden;position:relative;}
+        
         button{cursor:pointer;}
         .login{height:100% !important;position:absolute;background-color:#0094ff;overflow:hidden;width:100%;}
         .pantalla{border-bottom:1px solid #b6ff00;background-color:#eee;position:absolute;left:0px;top:34px;width:100%;}        
@@ -423,16 +430,16 @@
             return itemli;
         }
 
-        function onDeviceReady() {
-
-        // Retrieve image file location from specified source
-        navigator.camera.getPicture(uploadPhoto,
-                                    function(message) { alert('get picture failed'); },
-                                    { quality: 50, 
-                                    destinationType: navigator.camera.DestinationType.FILE_URI,
-                                    sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY }
-                                    );
-
+   function onDeviceReady() {
+        navigator.camera.getPicture(
+            uploadPhoto,
+            function(message) {alert('get picture failed');},
+            {
+                quality: 50, 
+                destinationType: navigator.camera.DestinationType.FILE_URI,
+                sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY
+            }
+        );
     }
 
     function uploadPhoto(imageURI) {
@@ -440,13 +447,10 @@
         options.fileKey="file";
         options.fileName=imageURI.substr(imageURI.lastIndexOf('/')+1)+'.png';
         options.mimeType="text/plain";
-
         var params = new Object();
-
         options.params = params;
-
         var ft = new FileTransfer();
-        ft.upload(imageURI, encodeURI("http://some.server.com/upload.php"), win, fail, options);
+        ft.upload(imageURI, encodeURI(url), win, fail, options);
     }
 
     function win(r) {
@@ -461,24 +465,96 @@
         console.log("upload error target " + error.target);
     }
 
+    function Guardar(idform,catalogo){
+
+    }
+
+    function uploadImage() {
+        //Using Camera
+        navigator.camera.getPicture(uploadPhoto, onFailcapturePhoto, { quality: 50, destinationType: Camera.DestinationType.FILE_URI });
+        //Using library            
+        navigator.camera.getPicture(uploadPhoto, onFailcapturePhoto, { quality: 50, destinationType: navigator.camera.DestinationType.FILE_URI, sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY });
+    }
+
+    function onFailcapturePhoto(message) {
+        console.log("Message = " + message);
+    }
+
+    function uploadPhoto(imageURI) {
+        var imagefile = imageURI;
+        $('#vImage').attr('src', imagefile);
+        /* Image Upload Start */
+        var ft = new FileTransfer();
+        var options = new FileUploadOptions();
+        options.fileKey = "vImage1";
+        options.fileName = imagefile.substr(imagefile.lastIndexOf('/') + 1);
+        options.mimeType = "image/jpeg";
+        var params = new Object();
+        params.value1 = "test";
+        params.value2 = "param";
+        options.params = params;
+        options.chunkedMode = false;
+        ft.upload(imagefile, your_service_url, win, fail, options);
+    }
+
+    function win(r) {
+        console.log("Code = " + r.responseCode);
+        console.log("Response = " + r.response);
+        //alert($.parseJSON(r.response))    
+    }
+
+    function fail(error) {
+        console.log("Response = " + error.code);
+    }
+
+    function EnviarServidor(){
+        if(event.handled !== true)
+        {
+            var ajax_call = serviceURL;
+            var str = $('#form').serialize();
+            $.ajax({
+                type: "POST",
+                url: ajax_call,
+                data: str,
+                dataType: "json",
+                success: function(response){
+                    $.each(response, function(key, value) {
+                        // after success submit data
+                        if(response){
+                            var imagefile = $('#vImage').attr('src');
+                            /* Image Upload Start */
+                            var ft = new FileTransfer();
+                            var options = new FileUploadOptions();
+                            options.fileKey="vImage1";
+                            options.fileName=imagefile.substr(imagefile.lastIndexOf('/')+1);
+                            options.mimeType="image/jpeg";
+                            options.mimeType="image/png";
+                            var params = new Object();
+                            params.value1 = "test";
+                            params.value2 = "param";
+                            options.params = params;
+                            options.chunkedMode = false;
+                            ft.upload(imagefile, your_service_url, win, fail, options);
+
+                            }
+                    });
+                }
+            });
+            event.handled = true;
+        }
+        return false;
+    };
+
     </script>
 
 </head>
 <body unselectable="on" onselectstart="return false;" onload="IniciarApp();">
     <div class="login" style="z-index:1000;" id="login">
         <fieldset>
-            <legend><img src="img/Titan_Company_Logo.png" /></legend>
+            <legend><img src="img/Titan_Company_Logo.png" id="vImage"/></legend>
             <input placeholder="Usuario" />
             <input placeholder="Contraseña" />
-            <button class="aceptar" onclick="IniciarSesion();">Iniciar</button>
-            <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
-                <input type="hidden" name="cmd" value="_s-xclick">
-                <input type="hidden" name="hosted_button_id" value="28CLY6JMXVX2U">
-                <input type="hidden" name="custom" value="<%=Session[" usuario"] %>">
-                <input type="hidden" name="notify_url" value="http://safra.softronel.com/logic/controlador.aspx?op=registrarpago&seccion=pagos">
-                <input type="image" src="https://www.paypalobjects.com/es_XC/MX/i/btn/btn_paynowCC_LG.gif" border="0" name="submit" alt="PayPal, la forma más segura y rápida de pagar en línea.">
-                <img alt="" border="0" src="https://www.paypalobjects.com/es_XC/i/scr/pixel.gif" width="1" height="1">
-            </form>
+            <button class="aceptar" onclick="IniciarSesion();">Iniciar</button>            
         </fieldset>
         <span class="copyright">Copyright &#x24B8; 2018 Softronel,Inc.</span>
     </div>
@@ -635,18 +711,22 @@
                     <button class="file">Minuta_12-ene-2018.pdf</button> 
                 </div>
              </div>
-            <div class="edicion pantalla-3" style="display:none;" id="p-edicion-comunicados">
+            <div class="edicion " style="display:none;" id="p-edicion-comunicados">
                 <div class="titulo">Edición de comunicados <button class="cancelar" id="cancelar-edit-comunicados">Cancelar</button></div>    
-                <div class="pantalla-3" >
+                <div class="pantalla-3" id="frm-edit-comunicado">
                     <label>Título</label><input />
                     <label>Descripción</label><textarea style="height:180px;"></textarea>                                
-                    <div class="btns-up" style="margin-top:15px;"><button class="adjuntar-btn" style="width:100px;" onclick="IniciarAdjuntarComunicado();"><img src="img/attach.png" /><span class="texto-discreto">Adjuntar</span></button><hr class="clearn" /></div>
-                    <ul class="lista-files">
-                        <li><button class="del-btn" ><img src="img/del.png" /></button><span>100_800.img</span></li>
-                        <li><button class="del-btn" ><img src="img/del.png" /></button><span>Minuta_12-ene-2018.pdf</span></li>
-                        <li><button class="del-btn" ><img src="img/del.png" /></button><span>Minuta_12-ene-2018.pdf</span></li>
-                    </ul>                 
-                    <button class="aceptar" >Aceptar</button>
+                    <label>Imagenes y descripción<button class="adjuntar-btn" style="width:100px;" onclick="IniciarAdjuntarEvidenciaSolmtto();"><img src="img/attach.png" /><span class="texto-discreto">Agregar</span></button><hr class="clearn" /></label>
+                    <table class="lista-files">
+
+                        <tr><td style="width:90%"><img src="img/tobog.jpg" /></td><td style="width:10%" rowspan="2" class="del"><button class="del-btn"><img src="img/del.png" /></button></td></tr>
+                        <tr><td><textarea maxlength="200"></textarea></td></tr>
+
+                        <tr><td style="width:90%"><img src="img/tobog.jpg" /></td><td style="width:10%" rowspan="2" class="del"><button class="del-btn"><img src="img/del.png" /></button></td></tr>
+                        <tr><td><textarea maxlength="200"></textarea></td></tr>
+
+                    </table>                   
+                    <button class="aceptar" style="margin-top:30px;margin-bottom:50px;" onclick="Guardar('frm-edit-comunicado','comunicado');">Aceptar</button>
                 </div>
             </div>
         </section>
