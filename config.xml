@@ -12,9 +12,8 @@
 </platform>
   <preference name='phonegap-version' value='cli-7.1.0' />
   <preference name='pgb-builder-version' value='2' />
-  <gap:plugin name="cordova-plugin-whitelist" source="npm"/>
   <plugin name="cordova-plugin-fcm" spec="~2.1.2" />
-  <gap:plugin name="cordova-plugin-camera" source="npm"/>
+  <gap:plugin name="cordova-plugin-image-picker" source="npm"/>
   <content src="index.html" />
   <access origin="*" />
 </widget>
