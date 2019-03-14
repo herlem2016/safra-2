@@ -434,11 +434,8 @@
   
         var pictureSource;   // picture source
         var destinationType; // sets the format of returned value
-
-        // Wait for device API libraries to load
-        //
+        // Wait for device API libraries to load        //
         document.addEventListener("deviceready", onDeviceReady, false);
-
         // device APIs are available
         //
         function onDeviceReady() {
@@ -452,11 +449,12 @@
         // Called when a photo is successfully retrieved
         //
         function onPhotoURISuccess(imageURI) {
-
-            // Show the selected image
-            var smallImage = document.getElementById('smallImage');
-            smallImage.style.display = 'block';
-            smallImage.src = imageURI;
+            try {
+                // Show the selected image
+                var smallImage = document.getElementById('smallImage');
+                smallImage.style.display = 'block';
+                smallImage.src = imageURI;
+            } catch (e) { alert(e.message);}
         }
 
 
@@ -467,6 +465,8 @@
             try {
                 navigator.camera.getPicture(onPhotoURISuccess, onFail, {
                     quality: 50,
+                    destinationType: destinationType.FILE_URI,
+                    mediaType: navigator.camera.MediaType.PICTURE,
                     sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY
                 });
             } catch (e) { alert(e.message); }
@@ -474,7 +474,6 @@
 
 
         function uploadPhoto() {
-
             //selected photo URI is in the src attribute (we set this on getPhoto)
             var imageURI = document.getElementById('smallImage').getAttribute("src");
             if (!imageURI) {
