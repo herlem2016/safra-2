@@ -191,7 +191,7 @@
 
 
     <style id="css-sizes"></style>
-    <script src="jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
     <script src="jquery-1.11.3.min.js"></script>
     <script>
         var url = "http://192.168.0.102:82/logic/controlador.aspx";
@@ -431,81 +431,94 @@
             return itemli;
         }
 
-   function onDeviceReady() {
-        navigator.camera.getPicture(
-            uploadPhoto,
-            function(message) {alert('get picture failed');},
-            {
-                quality: 50, 
-                destinationType: navigator.camera.DestinationType.FILE_URI,
+  
+        var pictureSource;   // picture source
+        var destinationType; // sets the format of returned value
+
+        // Wait for device API libraries to load
+        //
+        document.addEventListener("deviceready", onDeviceReady, false);
+
+        // device APIs are available
+        //
+        function onDeviceReady() {
+            pictureSource = navigator.camera.PictureSourceType;
+            destinationType = navigator.camera.DestinationType;
+        }
+
+
+        // Called when a photo is successfully retrieved
+        //
+        function onPhotoURISuccess(imageURI) {
+
+            // Show the selected image
+            var smallImage = document.getElementById('smallImage');
+            smallImage.style.display = 'block';
+            smallImage.src = imageURI;
+        }
+
+
+        // A button will call this function
+        //
+        function getPhoto() {
+            // Retrieve image file location from specified source
+            navigator.camera.getPicture(onPhotoURISuccess, onFail, {
+                quality: 50,
                 sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY
+            });
+        }
+
+
+        function uploadPhoto() {
+
+            //selected photo URI is in the src attribute (we set this on getPhoto)
+            var imageURI = document.getElementById('smallImage').getAttribute("src");
+            if (!imageURI) {
+                alert('Please select an image first.');
+                return;
             }
-        );
-    }
 
-    function uploadPhoto(imageURI) {
-        var options = new FileUploadOptions();
-        options.fileKey="file";
-        options.fileName=imageURI.substr(imageURI.lastIndexOf('/')+1)+'.png';
-        options.mimeType="text/plain";
-        var params = new Object();
-        options.params = params;
-        var ft = new FileTransfer();
-        ft.upload(imageURI, encodeURI(url), win, fail, options);
-    }
+            //set upload options
+            var options = new FileUploadOptions();
+            options.fileKey = "file";
+            options.fileName = imageURI.substr(imageURI.lastIndexOf('/') + 1);
+            options.mimeType = "image/jpeg";
+            options.chunkedMode = false;
 
-    function win(r) {
-        console.log("Code = " + r.responseCode);
-        console.log("Response = " + r.response);
-        console.log("Sent = " + r.bytesSent);
-    }
+            options.params = {
+                firstname: document.getElementById("firstname").value,
+                lastname: document.getElementById("lastname").value
+            }
 
-    function fail(error) {
-        alert("An error has occurred: Code = " + error.code);
-        console.log("upload error source " + error.source);
-        console.log("upload error target " + error.target);
-    }
 
-    function Guardar(idform,catalogo){
-        uploadImage();
-    }
+            options.headers = {
+                Connection: "close"
+            };
 
-        function uploadImage() {
-            try {                          
-                navigator.camera.getPicture(uploadPhoto, onFailcapturePhoto, { quality: 50, destinationType: navigator.camera.DestinationType.FILE_URI, sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY });
-            } catch (e) { alert(e.message); }
-    }
+            var ft = new FileTransfer();
+            ft.upload(imageURI, encodeURI("http://abc.in/savepng.php"), win, fail,
 
-    function onFailcapturePhoto(message) {
-        console.log("Message = " + message);
-    }
+                options);
+        }
 
-    function uploadPhoto(imageURI) {
-        var imagefile = imageURI;
-        $('#vImage').attr('src', imagefile);
-        /* Image Upload Start */
-        var ft = new FileTransfer();
-        var options = new FileUploadOptions();
-        options.fileKey = "vImage1";
-        options.fileName = imagefile.substr(imagefile.lastIndexOf('/') + 1);
-        options.mimeType = "image/jpeg";
-        var params = new Object();
-        params.value1 = "test";
-        params.value2 = "param";
-        options.params = params;
-        options.chunkedMode = false;
-        ft.upload(imagefile, your_service_url, win, fail, options);
-    }
+        // Called if something bad happens.
+        //
+        function onFail(message) {
+            console.log('Failed because: ' + message); alert('success');
+        }
 
-    function win(r) {
-        console.log("Code = " + r.responseCode);
-        console.log("Response = " + r.response);
-        //alert($.parseJSON(r.response))    
-    }
+        function win(r) {
+            console.log("Code = " + r.responseCode);
+            console.log("Response = " + r.response);
+            alert("Response =" + r.response);
+            console.log("Sent = " + r.bytesSent);
+        }
 
-    function fail(error) {
-        console.log("Response = " + error.code);
-    }
+        function fail(error) {
+            alert("An error has occurred: Code = " + error.code);
+            console.log("upload error source " + error.source);
+            console.log("upload error target " + error.target);
+        }
 
     function EnviarServidor(){
         if(event.handled !== true)
@@ -551,7 +564,7 @@
 <body unselectable="on" onselectstart="return false;" onload="IniciarApp();">
     <div class="login" style="z-index:1000;" id="login">
         <fieldset>
-            <legend><img src="img/Titan_Company_Logo.png" id="vImage"/></legend>
+            <legend><img src="img/Titan_Company_Logo.png" id="smallImage"/></legend>
             <input placeholder="Usuario" />
             <input placeholder="Contraseña" />
             <button class="aceptar" onclick="IniciarSesion();">Iniciar</button>            
