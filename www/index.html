@@ -442,8 +442,10 @@
         // device APIs are available
         //
         function onDeviceReady() {
-            pictureSource = navigator.camera.PictureSourceType;
-            destinationType = navigator.camera.DestinationType;
+            try {
+                pictureSource = navigator.camera.PictureSourceType;
+                destinationType = navigator.camera.DestinationType;
+            } catch (e) { alert(e.message); }
         }
 
 
@@ -462,10 +464,12 @@
         //
         function getPhoto() {
             // Retrieve image file location from specified source
-            navigator.camera.getPicture(onPhotoURISuccess, onFail, {
-                quality: 50,
-                sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY
-            });
+            try {
+                navigator.camera.getPicture(onPhotoURISuccess, onFail, {
+                    quality: 50,
+                    sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY
+                });
+            } catch (e) { alert(e.message); }
         }
 
 
