@@ -465,8 +465,9 @@
             try {
                 navigator.camera.getPicture(onPhotoURISuccess, onFail, {
                     quality: 50,
-                    destinationType: destinationType.FILE_URI,
-                    sourceType: navigator.camera.PictureSourceType.CAMERA
+                    sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
+                    allowEdit: true,
+                    destinationType: Camera.DestinationType.FILE_URI
                 });
             } catch (e) { alert(e.message); }
         }
