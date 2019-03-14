@@ -430,99 +430,23 @@
             }
             return itemli;
         }
-
-  
-        var pictureSource;   // picture source
-        var destinationType; // sets the format of returned value
-        // Wait for device API libraries to load        //
-        document.addEventListener("deviceready", onDeviceReady, false);
-        // device APIs are available
-        //
-        function onDeviceReady() {
-            try {
-                pictureSource = navigator.camera.PictureSourceType;
-                destinationType = navigator.camera.DestinationType;
-            } catch (e) { alert(e.message); }
+        
+        function getPhotos() {
+            window.imagePicker.getPictures(
+                function (results) {
+                    for (var i = 0; i < results.length; i++) {
+                        alert('Image URI: ' + results[i]);
+                    }
+                }, function (error) {
+                    alert('Error: ' + error);
+                }, {
+                    maximumImagesCount: 10,
+                    width: 800
+                }
+            );
         }
 
-
-        // Called when a photo is successfully retrieved
-        //
-        function onPhotoURISuccess(imageURI) {
-            try {
-                // Show the selected image
-                var smallImage = document.getElementById('smallImage');
-                smallImage.style.display = 'block';
-                smallImage.src = imageURI;
-            } catch (e) { alert(e.message);}
-        }
-
-
-        // A button will call this function
-        //
-        function getPhoto() {
-            // Retrieve image file location from specified source
-            try {
-                navigator.camera.getPicture(onPhotoURISuccess, onFail, {
-                    quality: 50,
-                    sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
-                    allowEdit: true,
-                    destinationType: Camera.DestinationType.FILE_URI
-                });
-            } catch (e) { alert(e.message); }
-        }
-
-
-        function uploadPhoto() {
-            //selected photo URI is in the src attribute (we set this on getPhoto)
-            var imageURI = document.getElementById('smallImage').getAttribute("src");
-            if (!imageURI) {
-                alert('Please select an image first.');
-                return;
-            }
-
-            //set upload options
-            var options = new FileUploadOptions();
-            options.fileKey = "file";
-            options.fileName = imageURI.substr(imageURI.lastIndexOf('/') + 1);
-            options.mimeType = "image/jpeg";
-            options.chunkedMode = false;
-
-            options.params = {
-                firstname: document.getElementById("firstname").value,
-                lastname: document.getElementById("lastname").value
-            }
-
-
-            options.headers = {
-                Connection: "close"
-            };
-
-            var ft = new FileTransfer();
-            ft.upload(imageURI, encodeURI("http://abc.in/savepng.php"), win, fail,
-
-                options);
-        }
-
-        // Called if something bad happens.
-        //
-        function onFail(message) {
-            console.log('Failed because: ' + message); alert('success');
-        }
-
-        function win(r) {
-            console.log("Code = " + r.responseCode);
-            console.log("Response = " + r.response);
-            alert("Response =" + r.response);
-            console.log("Sent = " + r.bytesSent);
-        }
-
-        function fail(error) {
-            alert("An error has occurred: Code = " + error.code);
-            console.log("upload error source " + error.source);
-            console.log("upload error target " + error.target);
-        }
-
+        
     function EnviarServidor(){
         if(event.handled !== true)
         {
@@ -562,7 +486,7 @@
         };
 
         function Guardar() {
-            getPhoto();
+            getPhotos();
         }
 
     </script>
