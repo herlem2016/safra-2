@@ -449,6 +449,7 @@
         // Called when a photo is successfully retrieved
         //
         function onPhotoURISuccess(imageURI) {
+            alert(imageURI);
             try {
                 // Show the selected image
                 var smallImage = document.getElementById('smallImage');
@@ -465,9 +466,7 @@
             try {
                 navigator.camera.getPicture(onPhotoURISuccess, onFail, {
                     quality: 50,
-                    destinationType: destinationType.FILE_URI,
-                    mediaType: navigator.camera.MediaType.PICTURE,
-                    sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY
+                    destinationType: destinationType.FILE_URI
                 });
             } catch (e) { alert(e.message); }
         }
