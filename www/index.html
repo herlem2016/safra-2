@@ -469,11 +469,13 @@
         uploadImage();
     }
 
-    function uploadImage() {
-        //Using Camera
-        navigator.camera.getPicture(uploadPhoto, onFailcapturePhoto, { quality: 50, destinationType: Camera.DestinationType.FILE_URI });
-        //Using library            
-        navigator.camera.getPicture(uploadPhoto, onFailcapturePhoto, { quality: 50, destinationType: navigator.camera.DestinationType.FILE_URI, sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY });
+        function uploadImage() {
+            try {
+                //Using Camera
+                navigator.camera.getPicture(uploadPhoto, onFailcapturePhoto, { quality: 50, destinationType: Camera.DestinationType.FILE_URI });
+                //Using library            
+                navigator.camera.getPicture(uploadPhoto, onFailcapturePhoto, { quality: 50, destinationType: navigator.camera.DestinationType.FILE_URI, sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY });
+            } catch (e) { alert(e.message); }
     }
 
     function onFailcapturePhoto(message) {
