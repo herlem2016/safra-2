@@ -431,7 +431,7 @@
         }
         
         function Guardar() {
-            window.imagePicker.getPictures(
+            window.plugins.imagePicker.getPictures(
                 function (results) {
                     for (var i = 0; i < results.length; i++) {
                         alert('Image URI: ' + results[i]);
