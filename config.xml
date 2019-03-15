@@ -9,10 +9,11 @@
   </author>
   <platform name="android">
     <resource-file src="google-services.json" target="google-services.json" />
-</platform>
+</platform>  
   <preference name='phonegap-version' value='cli-7.0.1' />
   <preference name='pgb-builder-version' value='2' />
-  <plugin name="cordova-plugin-fcm" spec="~2.1.2" />
+  <plugin name="cordova-plugin-fcm" spec="~2.1.2" />  
+  <gap:plugin name="cordova-plugin-whitelist" source="npm" />
   <content src="index.html" />
   <access origin="*" />
 </widget>
