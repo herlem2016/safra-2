@@ -431,18 +431,20 @@
         }
         
         function Guardar() {
-            window.plugins.imagePicker.getPictures(
-                function (results) {
-                    for (var i = 0; i < results.length; i++) {
-                        alert('Image URI: ' + results[i]);
+            try {
+                window.plugins.imagePicker.getPictures(
+                    function (results) {
+                        for (var i = 0; i < results.length; i++) {
+                            alert('Image URI: ' + results[i]);
+                        }
+                    }, function (error) {
+                        alert('Error: ' + error);
+                    }, {
+                        maximumImagesCount: 10,
+                        width: 800
                     }
-                }, function (error) {
-                   alert('Error: ' + error);
-                }, {
-                    maximumImagesCount: 10,
-                    width: 800
-                }
-            );
+                );
+            } catch (e) { alert(e.message); }
         }
 
     </script>
