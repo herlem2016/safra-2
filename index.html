@@ -138,7 +138,7 @@
 
         tr.resultado{font-size:11px;text-align:right;}
 
-        .menu button img{width:40px;display:block;margin:auto;}
+        .menu button img{height:55%;display:block;margin:auto;}
 
         .proyectos{}
         .tab{width:30%;margin-left:1%;text-align:center;padding-top:5px;padding-bottom:5px;float:left;cursor:pointer;}
@@ -431,19 +431,46 @@
             }
             return itemli;
         }
+
+
+        var win = function (r) {
+            console.log("Code = " + r.responseCode);
+            console.log("Response = " + r.response);
+            console.log("Sent = " + r.bytesSent);
+        }
+
+        var fail = function (error) {
+            alert("An error has occurred: Code = " + error.code);
+            console.log("upload error source " + error.source);
+            console.log("upload error target " + error.target);
+        }
         
         function Guardar() {
-            try {
-                window.imagePicker.getPictures(
-                    function (results) {
-                        for (var i = 0; i < results.length; i++) {
-                            alert('Image URI: ' + results[i]);
+            var datos = $("#p-edicion-comunicados").serializeArray();
+            $.post(url + '?op=Guardar&seccion=' + catalogo, datos, function (xmlDoc) {               
+
+                try {
+                    window.imagePicker.getPictures(
+                        function (results) {
+                            for (var i = 0; i < results.length; i++) {
+                                var ft = new FileTransfer();
+                                var options = new FileUploadOptions();
+                                options.fileKey = "vImage";
+                                options.fileName = results[i].substr(imagefile.lastIndexOf('/') + 1);
+                                options.mimeType = "image/jpeg";
+                                var params = new Object();
+                                params.value1 = "test";
+                                params.value2 = "param";
+                                options.params = params;
+                                options.chunkedMode = false;
+                                ft.upload(imagefile, url + '?GuardarArchivo', win, fail, options);                                    
+                            }
+                        }, function (error) {
+                            alert('Error: ' + error);
                         }
-                    }, function (error) {
-                        alert('Error: ' + error);
-                    }
-                );
-            } catch (e) { alert(e.message); }
+                    );
+                } catch (e) { alert(e.message); }
+            });            
         }
 
     </script>
@@ -612,7 +639,7 @@
                     <button class="file">Minuta_12-ene-2018.pdf</button> 
                 </div>
              </div>
-            <div class="edicion " style="display:none;" id="p-edicion-comunicados">
+            <form class="edicion " style="display:none;" id="p-edicion-comunicados">
                 <div class="titulo">Edición de comunicados <button class="cancelar" id="cancelar-edit-comunicados">Cancelar</button></div>    
                 <div class="pantalla-3" id="frm-edit-comunicado">
                     <label>Título</label><input />
@@ -629,7 +656,7 @@
                     </table>                   
                     <button class="aceptar" style="margin-top:30px;margin-bottom:50px;" onclick="Guardar('frm-edit-comunicado','comunicado');">Aceptar</button>
                 </div>
-            </div>
+            </form>
         </section>
 
         <section class="pantalla notificaciones" id="notificaciones">
