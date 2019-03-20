@@ -126,7 +126,7 @@
 
         div.home{background-color:#fff;}
         .menu{padding:0px;list-style:none;width:80%;padding-top:30px;margin-top:0px;margin-bottom:0px;margin-left:auto;margin-right:auto;}
-        .menu li{margin:0px;padding:0px;float:left;width:50%;height:75px;margin:0px;}
+        .menu li{margin:0px;padding:0px;float:left;width:50%;margin:0px;}
         .menu li button{background-color:transparent;color:#333;width:100%;height:100%;border:0px;}
         .menu li button:active{border:1px solid #979797;}
 
@@ -320,6 +320,7 @@
             styleStr += ".pantalla-4 {height:" + (heightApp - 27) + "px !important;}";
             styleStr += ".scrollable {height:" + (heightApp - 132) + "px !important;}";
             styleStr += ".scrollable-2 {height:" + (heightApp - 168) + "px !important;}";
+            styleStr += ".menu li {height:" + (heightApp - 50)/6 + "px !important;}";
 
             style.innerHTML = styleStr;
         }
