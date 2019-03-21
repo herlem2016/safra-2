@@ -249,7 +249,9 @@
             $.post(url + '?op=Guardar&seccion=' + catalogo, datos, function (xmlDoc) {   
                 alert(GetValor(xmlDoc,"mensaje"));
                 try {
-                    var imagenes = document.getElementById("c-e-" + catalogo).getElementsByTagName["table"];
+                    alert(document.getElementById("c-e-" + catalogo));
+                    var imagenes = document.getElementById("c-e-" + catalogo).getElementsByTagName["Table"];
+                    alert(imagenes.length);
                     var imagen;
                     for (var i = 0; i < imagenes.length; i++) {
                         imagen = imagenes.getElementsByTagName["img"][0];
