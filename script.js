@@ -260,7 +260,7 @@
                             var ft = new FileTransfer();
                             var options = new FileUploadOptions();
                             options.fileKey = "vImage";
-                            options.fileName = imagen.src.substr(imagen.lastIndexOf('/') + 1);
+                            options.fileName = imagen.src.substr(imagen.src.lastIndexOf('/') + 1);
                             options.mimeType = "image/jpeg";
                             var params = new Object();
                             params.value1 = "test";
@@ -268,7 +268,7 @@
                             options.params = params;
                             options.chunkedMode = false;
                             alert(options.fileName);
-                            ft.upload(imagen, url + '?GuardarArchivo', win, fail, options);
+                            ft.upload(imagen.src, url + '?GuardarArchivo', win, fail, options);
                         } else {
                             alert("No sel");
                         }
