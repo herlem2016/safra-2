@@ -268,7 +268,7 @@
                             options.params = params;
                             options.chunkedMode = false;
                             alert(options.fileName);
-                            ft.upload(imagen.src, url + '?GuardarArchivo', win, fail, options);
+                            ft.upload(imagen.src, url + '?op=GuardarArchivo&seccion=' + catalogo, win, fail, options);
                         } else {
                             alert("No sel");
                         }
