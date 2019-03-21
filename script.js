@@ -238,7 +238,7 @@
 
         var win = function (r) {
             alert("Code = " + r.responseCode);
-            alert("Response = " + GetValor(r.response,"mensaje"));
+            alert("Response = " + r.response);
             alert("Sent = " + r.bytesSent);
         }
 
