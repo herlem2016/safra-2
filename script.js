@@ -54,6 +54,11 @@
 
 
         function GetValor(domXML, tag) {
+            if (typeof domXML == "string") {
+                var domXML2 = document.createElement("xml");
+                domXML2.innerHTML = domXML;
+                domXML = domXML2;
+            }
             var valor = "";
             try { valor = domXML.getElementsByTagName(tag)[0].childNodes[0].nodeValue; } catch (e) { }
             return valor;
@@ -259,9 +264,7 @@
                             alert(options.fileName);
                             ft.upload(imagen.src, url + '?op=GuardarArchivo&seccion=' + catalogo, function (r) {
                                 alert("Code = " + r.responseCode);
-                                var resp = document.createElement("xml");
-                                resp.innerHTML = r.response;
-                                alert("Response = " + GetValor(resp, "mensaje"));
+                                alert(GetValor(r.response, "mensaje"));
                             }, function (error) {
                                 alert("An error has occurred: Code = " + error.code);
                                 alert("upload error source " + error.source);
