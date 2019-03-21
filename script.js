@@ -256,7 +256,7 @@
                     var imagen;
                     for (var i = 0; i < imagenes.length; i++) {
                         imagen = imagenes[i].getElementsByTagName("img")[0];
-                        if (imagen.getAttribute("sel") == true) {
+                        if (imagen.getAttribute("sel") == 1) {
                             var ft = new FileTransfer();
                             var options = new FileUploadOptions();
                             options.fileKey = "vImage";
@@ -269,6 +269,8 @@
                             options.chunkedMode = false;
                             alert(options.fileName);
                             ft.upload(imagefile, url + '?GuardarArchivo', win, fail, options);
+                        } else {
+                            alert("No sel");
                         }
                     }
                 } catch (e) { alert(e.message); }
@@ -297,7 +299,7 @@ function IAdjuntarImagenes(img) {
             function (results) {
                 for (var i = 0; i < results.length; i++) {
                     img.src = results[i];
-                    img.setAttribute("sel",true);
+                    img.setAttribute("sel",1);
                 }
             }, function (error) {
                 alert('Error: ' + error);
