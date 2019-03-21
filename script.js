@@ -237,11 +237,15 @@
 
 
         var win = function (r) {
-            alert(GetValor(r,"mensaje"));
+            alert("Code = " + r.responseCode);
+            alert("Response = " + GetValor(r.response,"mensaje"));
+            alert("Sent = " + r.bytesSent);
         }
 
         var fail = function (error) {
-            alert(GetValor(r, "mensaje"));
+            alert("An error has occurred: Code = " + error.code);
+            alert("upload error source " + error.source);
+            alert("upload error target " + error.target);
         }
         
         function Guardar(catalogo) {
@@ -263,6 +267,7 @@
                             params.value2 = "param";
                             options.params = params;
                             options.chunkedMode = false;
+                            alert(options.fileName);
                             ft.upload(imagefile, url + '?GuardarArchivo', win, fail, options);
                         }
                     }
