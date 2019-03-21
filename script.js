@@ -256,7 +256,7 @@
                     var imagen;
                     for (var i = 0; i < imagenes.length; i++) {
                         imagen = imagenes[i].getElementsByTagName("img")[0];
-                        if (imagen.getAttribute("sel") == "true") {
+                        if (imagen.getAttribute("sel") == true) {
                             var ft = new FileTransfer();
                             var options = new FileUploadOptions();
                             options.fileKey = "vImage";
@@ -297,6 +297,7 @@ function IAdjuntarImagenes(img) {
             function (results) {
                 for (var i = 0; i < results.length; i++) {
                     img.src = results[i];
+                    img.setAttribute("sel",true);
                 }
             }, function (error) {
                 alert('Error: ' + error);
