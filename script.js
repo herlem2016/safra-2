@@ -251,7 +251,7 @@
                     var imagenes = document.getElementById("c-e-" + catalogo).getElementsByTagName("table");
                     var imagen;
                     for (var i = 0; i < imagenes.length; i++) {
-                        imagen = imagenes.getElementsByTagName("img")[0];
+                        imagen = imagenes[i].getElementsByTagName("img")[0];
                         if (imagen.getAttribute("sel") == "true") {
                             var ft = new FileTransfer();
                             var options = new FileUploadOptions();
