@@ -235,18 +235,6 @@
             return itemli;
         }
 
-
-        var win = function (r) {
-            alert("Code = " + r.responseCode);
-            alert("Response = " + r.response);
-            alert("Sent = " + r.bytesSent);
-        }
-
-        var fail = function (error) {
-            alert("An error has occurred: Code = " + error.code);
-            alert("upload error source " + error.source);
-            alert("upload error target " + error.target);
-        }
         
         function Guardar(catalogo) {
             var datos = $("#p-edicion-"+ catalogo).serializeArray();
@@ -267,8 +255,18 @@
                             params.value2 = "param";
                             options.params = params;
                             options.chunkedMode = false;
+
                             alert(options.fileName);
-                            ft.upload(imagen.src, url + '?op=GuardarArchivo&seccion=' + catalogo, win, fail, options);
+                            ft.upload(imagen.src, url + '?op=GuardarArchivo&seccion=' + catalogo, function (r) {
+                                alert("Code = " + r.responseCode);
+                                var resp = document.createElement("xml");
+                                resp.innerHTML = r.response;
+                                alert("Response = " + GetValor(resp, "mensaje"));
+                            }, function (error) {
+                                alert("An error has occurred: Code = " + error.code);
+                                alert("upload error source " + error.source);
+                                alert("upload error target " + error.target);
+                            }, options);
                         } else {
                             alert("No sel");
                         }
