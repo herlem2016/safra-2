@@ -246,7 +246,8 @@
         
         function Guardar(catalogo) {
             var datos = $("#p-edicion-"+ catalogo).serializeArray();
-            $.post(url + '?op=Guardar&seccion=' + catalogo, datos, function (xmlDoc) {    
+            $.post(url + '?op=Guardar&seccion=' + catalogo, datos, function (xmlDoc) {   
+                alert(GetValor(xmlDoc,"mensaje"));
                 try {
                     var imagenes = document.getElementById("c-e-" + catalogo).getElementsByTagName["table"];
                     var imagen;
