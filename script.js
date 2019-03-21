@@ -256,11 +256,11 @@
                     var imagen;
                     for (var i = 0; i < imagenes.length; i++) {
                         imagen = imagenes[i].getElementsByTagName("img")[0];
-                        if (imagen.getAttribute("sel") == 1) {
+                        if (imagen.getAttribute("sel") == "true") {
                             var ft = new FileTransfer();
                             var options = new FileUploadOptions();
                             options.fileKey = "vImage";
-                            options.fileName = imagen.src.substr(imagefile.lastIndexOf('/') + 1);
+                            options.fileName = imagen.src.substr(imagen.lastIndexOf('/') + 1);
                             options.mimeType = "image/jpeg";
                             var params = new Object();
                             params.value1 = "test";
@@ -268,7 +268,7 @@
                             options.params = params;
                             options.chunkedMode = false;
                             alert(options.fileName);
-                            ft.upload(imagefile, url + '?GuardarArchivo', win, fail, options);
+                            ft.upload(imagen, url + '?GuardarArchivo', win, fail, options);
                         } else {
                             alert("No sel");
                         }
