@@ -70,6 +70,8 @@
 
         function IniciarEditarComunicados(esNuevo) {
             if (esNuevo) {
+                document.getElementById("c-e-comunicados").innerHTML = "";
+                IAgregarImagenTexto('c-e-comunicados');
                 Mostrar('lista-comunicados', 'p-edicion-comunicados');
                 document.getElementById("cancelar-edit-comunicados").onclick = function () { Mostrar('p-edicion-comunicados', 'lista-comunicados');}
             } else {
@@ -235,41 +237,35 @@
 
 
         var win = function (r) {
-            console.log("Code = " + r.responseCode);
-            console.log("Response = " + r.response);
-            console.log("Sent = " + r.bytesSent);
+            alert(GetValor(r,"mensaje"));
         }
 
         var fail = function (error) {
-            alert("An error has occurred: Code = " + error.code);
-            console.log("upload error source " + error.source);
-            console.log("upload error target " + error.target);
+            alert(GetValor(r, "mensaje"));
         }
         
         function Guardar(catalogo) {
-            var datos = $("#p-edicion-comunicados").serializeArray();
-            $.post(url + '?op=Guardar&seccion=' + catalogo, datos, function (xmlDoc) {               
-
+            var datos = $("#p-edicion-"+ catalogo).serializeArray();
+            $.post(url + '?op=Guardar&seccion=' + catalogo, datos, function (xmlDoc) {    
                 try {
-                    window.imagePicker.getPictures(
-                        function (results) {
-                            for (var i = 0; i < results.length; i++) {
-                                var ft = new FileTransfer();
-                                var options = new FileUploadOptions();
-                                options.fileKey = "vImage";
-                                options.fileName = results[i].substr(imagefile.lastIndexOf('/') + 1);
-                                options.mimeType = "image/jpeg";
-                                var params = new Object();
-                                params.value1 = "test";
-                                params.value2 = "param";
-                                options.params = params;
-                                options.chunkedMode = false;
-                                ft.upload(imagefile, url + '?GuardarArchivo', win, fail, options);                                    
-                            }
-                        }, function (error) {
-                            alert('Error: ' + error);
+                    var imagenes = document.getElementById("c-e-" + catalogo).getElementsByTagName["table"];
+                    var imagen;
+                    for (var i = 0; i < imagenes.length; i++) {
+                        imagen = imagenes.getElementsByTagName["img"][0];
+                        if (imagen.getAttribute("sel") == "true") {
+                            var ft = new FileTransfer();
+                            var options = new FileUploadOptions();
+                            options.fileKey = "vImage";
+                            options.fileName = imagen.src.substr(imagefile.lastIndexOf('/') + 1);
+                            options.mimeType = "image/jpeg";
+                            var params = new Object();
+                            params.value1 = "test";
+                            params.value2 = "param";
+                            options.params = params;
+                            options.chunkedMode = false;
+                            ft.upload(imagefile, url + '?GuardarArchivo', win, fail, options);
                         }
-                    );
+                    }
                 } catch (e) { alert(e.message); }
             });            
         }
