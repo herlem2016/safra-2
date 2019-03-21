@@ -1,0 +1,901 @@
+﻿button {
+    cursor: pointer;
+}
+
+.login {
+    height: 100% !important;
+    position: absolute;
+    background-color: #0094ff;
+    overflow: hidden;
+    width: 100%;
+}
+
+.pantalla {
+    border-bottom: 1px solid #b6ff00;
+    background-color: #eee;
+    position: absolute;
+    left: 0px;
+    top: 34px;
+    width: 100%;
+}
+
+.login fieldset {
+    width: 80%;
+    border-radius: 5%;
+    margin: auto;
+    border: 2px solid #0094ff;
+    background-color: #fff;
+    display: block;
+}
+
+    .login fieldset legend {
+        width: 30%;
+        margin: auto;
+        padding: 5px;
+        border-radius: 30%;
+        background-color: #fff;
+    }
+
+    .login fieldset img {
+        width: 100%;
+    }
+
+    .login fieldset input {
+        width: 60%;
+        margin: auto;
+        display: block;
+        padding: 10px;
+        padding-left: 50px;
+        margin-bottom: 25px;
+        margin-top: 25px;
+        background-size: 30px;
+        background-image: url(img/Titan_Company_Logo.png);
+        background-repeat: no-repeat;
+        background-position-x: 5px;
+        background-position-y: center;
+        border: 1px solid #0094ff;
+        border-radius: 4px;
+    }
+
+    .login fieldset button {
+        width: 80%;
+        margin: auto;
+        display: block;
+        padding: 10px;
+        margin-bottom: 25px;
+        margin-top: 25px;
+    }
+
+    .login fieldset .olvido {
+        float: right;
+        margin: 20px;
+        font-size: 10px;
+    }
+
+.login .copyright {
+    display: block;
+    width: 80%;
+    text-align: center;
+    ;
+    margin: auto;
+    font-size: 10px;
+    color: #bbb;
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+.datos-usuario {
+    padding: 10px;
+    font-size: 12px;
+    background-color: #000;
+    color: #ddd;
+}
+
+    .datos-usuario span {
+        text-align: right;
+        display: block;
+        margin-right: 40px;
+    }
+
+    .datos-usuario img {
+        cursor: pointer;
+        float: right;
+        width: 30px;
+        border-radius: 30px;
+        margin-top: -22px;
+    }
+
+        .datos-usuario img.home {
+            float: left;
+            margin-right: 10px;
+            margin-top: -5px;
+        }
+
+    .datos-usuario .home:active {
+        background-color: #fff;
+    }
+
+.opciones-usuario ul {
+    border: 1px solid #0094ff;
+    border-left: 0px;
+    border-right: 0px;
+    border-bottom: 5px solid #0094ff;
+    background-color: #eee;
+    margin: 0px;
+    padding: 20px;
+    padding-left: 40px;
+    font-size: 12px;
+    list-style: none;
+}
+
+    .opciones-usuario ul li {
+        margin-bottom: 15px;
+    }
+
+.busqueda {
+    margin: auto;
+    display: block;
+    padding: 5px;
+    background-color: #0094ff;
+}
+
+    .busqueda input {
+        width: 80%;
+        margin: auto;
+        display: block;
+        padding: 10px;
+        padding-left: 50px;
+        margin-bottom: 5px;
+        margin-top: 5px;
+        background-size: 30px;
+        background-image: url(img/Titan_Company_Logo.png);
+        background-repeat: no-repeat;
+        background-position-x: 5px;
+        background-position-y: center;
+        border: 1px solid #0094ff;
+        border-radius: 4px;
+    }
+
+.titulo {
+    display: block;
+    padding: 5px;
+    background-color: #eee;
+    color: #333;
+    text-align: center;
+    font-weight: bold;
+    font-size: 14px;
+    font-family: arial;
+}
+
+ul.lista {
+    padding: 0px;
+}
+
+    ul.lista .item {
+        width: 100%;
+        float: left;
+        border-bottom: 1px solid #808080;
+        padding-bottom: 5px;
+        margin: 0px;
+    }
+
+        ul.lista .item > span {
+            font-size: 13px;
+            font-weight: bold;
+            padding-left: 2%;
+        }
+
+        ul.lista .item ol {
+            list-style: none;
+            padding: 0px;
+            margin: 0px;
+        }
+
+            ul.lista .item ol li {
+                margin: 0px;
+            }
+
+                ul.lista .item ol li > span {
+                    display: block;
+                    width: 70%;
+                    font-size: 12px;
+                    padding: 3px;
+                    float: left;
+                    margin-top: 15px;
+                    padding-left: 3%;
+                }
+
+                ul.lista .item ol li > a {
+                    display: block;
+                    width: 30px;
+                    float: right;
+                    margin-right: 10px;
+                }
+
+                ul.lista .item ol li > button.edit-btn {
+                    display: block;
+                    width: 30px;
+                    float: left;
+                    margin-left: 10px;
+                    margin-top: 10px;
+                    border: 0px;
+                    background-color: transparent;
+                    padding: 0px;
+                    cursor: pointer;
+                }
+
+                ul.lista .item ol li > a img, .lista .item ol li > button img {
+                    width: 100%;
+                }
+
+        ul.lista .item .clear {
+            border: 0px;
+            clear: both;
+            width: 100%;
+        }
+
+div.agregar {
+    border-bottom: 1px solid #0094ff;
+    padding: 10px;
+}
+
+    div.agregar button {
+        width: 80%;
+        color: #fff;
+        background-color: #0094ff;
+        border-radius: 4px;
+        padding: 10px;
+        margin: auto;
+        display: block;
+        border: 0px;
+        cursor: pointer;
+        background-size: 30px;
+        background-image: url(img/Titan_Company_Logo.png);
+        background-repeat: no-repeat;
+        background-position-x: 5px;
+        background-position-y: center;
+    }
+
+        div.agregar button:active {
+            color: #0094ff;
+            background-color: #fff;
+        }
+
+.titulo .cancelar {
+    float: right;
+    color: #4800ff;
+    border: 0px;
+    background-color: transparent;
+}
+
+.titulo .regresar {
+    float: left;
+    color: #4800ff;
+    border: 0px;
+    background-color: transparent;
+}
+
+.edicion label {
+    display: block;
+    padding: 5px;
+    font-size: 11px;
+    font-weight: bold;
+    background-color: #ddd;
+    text-align: center;
+    clear: both;
+    margin-top: 10px;
+}
+
+.edicion input {
+    border: 0px;
+    display: block;
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+    margin-bottom: 12px;
+    text-align: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.edicion textarea {
+    width: 100%;
+    padding: 0px;
+    margin: 0px;
+    font-size: 14px;
+    color: #333;
+    font-family: arial;
+    overflow: auto;
+    border: 0px;
+}
+
+.edicion table {
+    width: 100%;
+}
+
+    .edicion table tr td span {
+        font-size: 11px;
+    }
+
+    .edicion table tr td {
+    }
+
+        .edicion table tr td input {
+            width: 100%;
+            margin-bottom: 0px;
+            text-align: right;
+        }
+
+.edicion .adjuntar-btn {
+    width: 20px;
+    border: 0px;
+    background-color: transparent;
+    float: right;
+    margin-right: 10px;
+}
+
+    .edicion .adjuntar-btn img {
+        width: 20px;
+    }
+
+.edicion table td.del {
+    background-color: #333;
+    border-bottom: 1px solid #0094ff;
+}
+
+.edicion table textarea {
+    margin-bottom: 20px;
+}
+
+button.aceptar {
+    width: 80%;
+    color: #fff;
+    background-color: #0094ff;
+    border-radius: 4px;
+    padding: 10px;
+    margin: auto;
+    display: block;
+    border: 0px;
+    cursor: pointer;
+}
+
+    button.aceptar:active {
+        color: #0094ff;
+        background-color: #fff;
+    }
+
+ul.lista .item span.t-1 {
+    display: block;
+    padding-top: 5px;
+}
+
+ul.lista .item span.t-2 {
+    display: block;
+    width: 65%;
+    float: left;
+    font-size: 11px;
+    font-weight: normal;
+    color: #333;
+    margin-top: 5px;
+}
+
+ul.lista .item span.t-3 {
+    display: block;
+    width: 30%;
+    float: left;
+    font-size: 11px;
+    color: #0094ff;
+    font-weight: normal;
+}
+
+ul.lista .item span.t-4 {
+    display: block;
+    width: 30%;
+    float: left;
+    font-size: 11px;
+    color: #0094ff;
+    font-weight: normal;
+}
+
+span.t-1 {
+    display: block;
+    padding-top: 5px;
+}
+
+span.t-2 {
+    display: block;
+    width: 65%;
+    float: left;
+    font-size: 11px;
+    font-weight: normal;
+    color: #333;
+    margin-top: 5px;
+}
+
+span.t-3 {
+    display: block;
+    width: 30%;
+    float: left;
+    font-size: 11px;
+    color: #0094ff;
+    font-weight: normal;
+}
+
+span.t-4 {
+    display: block;
+    float: left;
+    font-size: 13px;
+    color: #060a0d;
+    font-weight: normal;
+    padding: 20px;
+    text-align: justify;
+}
+
+span.t-41 {
+    display: block;
+    float: none;
+    font-size: 13px;
+    color: #060a0d;
+    font-weight: normal;
+    padding: 5px;
+    text-align: justify;
+}
+
+span.t-5 {
+    display: block;
+    font-size: 13px;
+    color: #ff006e;
+    font-weight: bold;
+    clear: left;
+}
+
+.detalle img {
+    display: block;
+    max-width: 95%;
+}
+
+.detalle button.file {
+    border: 0px;
+    width: 80%;
+    color: #fff;
+    background-color: #0094ff;
+    border-radius: 4px;
+    padding: 10px;
+    margin: auto;
+    display: block;
+    cursor: pointer;
+    background-size: 30px;
+    background-image: url(img/Titan_Company_Logo.png);
+    background-repeat: no-repeat;
+    background-position-x: 5px;
+    background-position-y: center;
+}
+
+    .detalle button.file:active {
+        color: #0094ff;
+        background-color: #fff;
+    }
+
+.detalle hr {
+    border: 0px;
+    border-bottom: 1px solid #0094ff;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+
+
+.btns-up {
+}
+
+    .btns-up button {
+        border: 0px;
+        background: transparent;
+        width: 30px;
+        padding: 0px;
+        float: right;
+        margin-right: 30px;
+    }
+
+        .btns-up button img {
+            width: 30px;
+        }
+
+html body hr.clearn {
+    clear: both;
+    border: 0px;
+    margin: 0px;
+}
+
+ul.seleccionable li {
+    cursor: pointer;
+}
+
+ul.lista-files {
+    list-style: none;
+    margin-top: 0px;
+}
+
+    ul.lista-files li {
+        padding: 5px;
+        font-size: 12px;
+        height: 30px;
+    }
+
+button.del-btn {
+    padding: 0px;
+    float: left;
+    border: 0px;
+    background: transparent;
+    width: 30px;
+}
+
+    button.del-btn img {
+        width: 30px;
+    }
+
+.lista-files span {
+    display: inline-block;
+    margin-top: 10px;
+}
+
+.texto-discreto {
+    color: #888;
+}
+
+.check-activacion {
+    border-top: 1px solid #0094ff;
+    border-bottom: 10px solid #dadada;
+    font-size: 13px;
+    padding: 5px;
+}
+
+    .check-activacion .etiqueta {
+        width: 75%;
+        float: left;
+        display: block;
+        margin-top: 4px;
+    }
+
+    .check-activacion .switch {
+        float: left;
+        margin-top: 7px;
+    }
+
+.buscador {
+}
+
+    .buscador .busqueda {
+        background-color: #eee;
+    }
+
+        .buscador .busqueda input {
+            border: 1px solid #0094ff !important;
+            width: 70% !important;
+        }
+
+    .buscador .logo-frac {
+        width: 30%;
+        display: block;
+        margin: auto;
+        margin-top: 40px;
+        margin-bottom: 30px;
+    }
+
+    .buscador p {
+        width: 60%;
+        display: block;
+        margin: auto;
+        margin-top: 30px;
+        font-size: 12px;
+        background-color: #dadada;
+        border-radius: 8px;
+        padding: 20px;
+        text-align: center;
+        color: #0e507a;
+    }
+
+.agregar .opcion-1 {
+    background-color: #dadada;
+    color: #0094ff;
+    padding-left: 40px;
+    background-image: url(img/date.png)
+}
+
+.seleccionado {
+    background-color: #0094ff;
+    display: block;
+    padding: 10px;
+}
+
+
+div.home {
+    background-color: #fff;
+}
+
+.menu {
+    padding: 0px;
+    list-style: none;
+    width: 80%;
+    padding-top: 30px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+    .menu li {
+        margin: 0px;
+        padding: 0px;
+        float: left;
+        width: 50%;
+        margin: 0px;
+    }
+
+        .menu li button {
+            background-color: transparent;
+            color: #333;
+            width: 100%;
+            height: 100%;
+            border: 0px;
+        }
+
+            .menu li button:active {
+                border: 1px solid #979797;
+            }
+
+    .menu .ok {
+        color: #333
+    }
+
+.edicion select {
+    width: 80%;
+    display: block;
+    border: 0px;
+    padding: 10px;
+    font-family: Verdana;
+    color: #333;
+    float: left;
+}
+
+button.sel-btn {
+    float: right;
+    border: 0px;
+    background-color: transparent;
+    width: 30px;
+    margin-right: 20px;
+    margin-top: 5px;
+}
+
+    button.sel-btn img {
+        width: 30px;
+    }
+
+tr.resultado {
+    font-size: 11px;
+    text-align: right;
+}
+
+.menu button img {
+    height: 55%;
+    display: block;
+    margin: auto;
+}
+
+.proyectos {
+}
+
+.tab {
+    width: 30%;
+    margin-left: 1%;
+    text-align: center;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    float: left;
+    cursor: pointer;
+}
+
+.tabs-down {
+    background-color: #0094ff;
+    color: #fff;
+    padding-top: 3px;
+    border: 1px solid #116f8f;
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+}
+
+.tab {
+    font-size: 12px;
+    border-radius: 4px;
+    margin-top: 2px;
+}
+
+.tab-sel {
+    background-color: #fff;
+    color: #2c5878;
+}
+
+.graficas li.item {
+    padding-bottom: 15px;
+}
+
+    .graficas li.item span.t-1 {
+        float: none;
+        padding: 10px;
+        width: unset;
+        font-weight: normal;
+    }
+
+.g-1 {
+    display: block;
+    background-color: #ddd;
+    padding: 3px;
+    position: relative;
+    height: 14px;
+}
+
+    .g-1:active {
+        background-color: #fff;
+    }
+
+    .g-1 span {
+        display: block;
+        background-color: #0094ff;
+        position: absolute;
+        height: 14px;
+    }
+
+    .g-1 b {
+        display: block;
+        width: 100%;
+        position: absolute;
+        text-align: center;
+        font-size: 11px;
+        font-weight: normal;
+        color: #002b4a
+    }
+
+table {
+    width: 100%;
+}
+
+    table td {
+        border: 0px solid #0094ff;
+    }
+
+    table th {
+        font-size: 13px;
+        color: #002b4a;
+        background-color: #eee;
+        font-weight: normal;
+        text-align: center;
+        padding: 5px;
+    }
+
+#detalle-proyectos-avance label, #detalle-proyectos-pagos label {
+    display: block;
+    padding: 5px;
+    font-size: 11px;
+    font-weight: bold;
+    background-color: #ddd;
+    text-align: center;
+}
+
+table.graficas td {
+    border: 0px;
+    background-color: #eee;
+}
+
+.graf-pie {
+    text-align: center;
+}
+
+    .graf-pie img {
+        width: 70%;
+    }
+
+table.desglose {
+    margin-top: 20px;
+}
+
+    table.desglose img {
+        width: 40px;
+    }
+
+i.subtotal {
+    float: right;
+}
+
+table.desglose th {
+    background-color: #e9e3e3;
+}
+
+.graf-barra {
+    position: relative;
+    height: 20px;
+}
+
+    .graf-barra .progreso {
+        background-color: #6da2f2;
+        display: block;
+        height: 18px;
+        position: absolute;
+    }
+
+    .graf-barra b {
+        display: block;
+        height: 20px;
+        position: absolute;
+        text-align: center;
+        font-size: 11px;
+        width: 100%;
+        margin-top: 1px;
+    }
+
+table.transparente tr {
+    background-color: transparent;
+}
+
+#pro-licitacion .agregar {
+    border: 0px;
+}
+
+.p12 {
+    font-size: 12px;
+}
+
+.btns-texto {
+    text-align: center;
+}
+
+    .btns-texto label {
+        padding: 15px;
+    }
+
+    .btns-texto table tr td {
+        border: 0px;
+    }
+
+    .btns-texto button {
+        width: 80%;
+        font-size: 20px;
+        color: #fff;
+        margin-top: 20px;
+        margin-bottom: 12px;
+        border: 1px solid #0e507a;
+        background-color: #0094ff;
+        padding: 10px;
+    }
+
+        .btns-texto button:active {
+            color: #0e507a;
+            background-color: #fff;
+        }
+
+.edicion table.lista-files {
+    text-align: center;
+}
+
+    .edicion table.lista-files img {
+        max-height: 100px;
+        max-width: 100%;
+    }
+
+    .edicion table.lista-files textarea {
+        height: 50px;
+    }
+
+.si {
+    color: #00ce0a !important;
+}
+
+.no {
+    color: #ff0027 !important;
+}
+
+.pantalla-2, .pantalla-3, .pantalla-4, .scrollable, .scrollable-2 {
+    overflow: auto;
+    clear: both;
+    margin: 0px;
+}
