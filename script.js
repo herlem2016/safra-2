@@ -256,7 +256,7 @@
                     var imagen;
                     for (var i = 0; i < imagenes.length; i++) {
                         imagen = imagenes[i].getElementsByTagName("img")[0];
-                        if (imagen.getAttribute("sel") == "true") {
+                        if (imagen.getAttribute("sel") == 1) {
                             var ft = new FileTransfer();
                             var options = new FileUploadOptions();
                             options.fileKey = "vImage";
