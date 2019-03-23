@@ -201,8 +201,8 @@
             <div class="edicion " style="display:none;" id="p-edicion-comunicados" >
                 <div class="titulo">Edición de comunicados <button class="cancelar" id="cancelar-edit-comunicados">Cancelar</button></div>    
                 <form class="pantalla-3" id="frm-edit-comunicado" onsubmit="return false;">
-                    <label>Título</label><input />
-                    <label>Descripción</label><textarea style="height:180px;"></textarea>
+                    <label>Título</label><input name="titulo"/>
+                    <label>Descripción</label><textarea style="height:180px;" name="descripcion"></textarea>
                     <label>Imagenes y descripción<hr class="clearn" /></label>
                     <div id="c-e-comunicados"></div>
                     <div><button class="adjuntar-btn" style="width:100px;" onclick="IAgregarImagenTexto('c-e-comunicados');"><img src="img/attach.png" /><span class="texto-discreto">Agregar</span></button><hr class="clearn" /></div>
