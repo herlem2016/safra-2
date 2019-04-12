@@ -243,7 +243,7 @@
 
         
         function Guardar(catalogo) {
-            var datos = $("#p-edicion-"+ catalogo).serializeArray();
+            var datos = $("#frm-edit-"+ catalogo).serializeArray();
             $.post(url + '?op=Guardar&seccion=' + catalogo, datos, function (xmlDoc) {  
                 if(GetValor(xmlDoc,"estatus")==1){
                     try {
