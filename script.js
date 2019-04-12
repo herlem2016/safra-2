@@ -123,6 +123,7 @@
             var styleStr = ".login fieldset{height:" + parseInt(0.7 * window.innerHeight, 10) + "px !important;margin-top:" + parseInt(0.10 * window.innerHeight,10) + "px;}";
             var heightApp = parseInt(window.innerHeight - 40, 10) + 5;
             styleStr += ".pantalla {height:" + heightApp + "px !important;}";
+            styleStr += ".menu button img {height:" + (heightApp-100)/7 + "px !important;}";
             styleStr += ".pantalla-2 {height:" + (heightApp - 64) + "px !important;}";
             styleStr += ".pantalla-3 {height:" + (heightApp - 27) + "px !important;}";
             styleStr += ".pantalla-4 {height:" + (heightApp - 27) + "px !important;}";
