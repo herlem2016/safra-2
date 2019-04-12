@@ -247,10 +247,12 @@
             $.post(url + '?op=Guardar&seccion=' + catalogo, datos, function (xmlDoc) {  
                 if(GetValor(xmlDoc,"estatus")==1){
                     try {
+                        var claveItem = GetValor(xmlDoc, "clave");
                         var imagenes = document.getElementById("c-e-" + catalogo).getElementsByTagName("table");
-                        var imagen;
+                        var imagen,descripcion;
                         for (var i = 0; i < imagenes.length; i++) {
                             imagen = imagenes[i].getElementsByTagName("img")[0];
+                            descripcion = imagenes[i].getElementsByTagName("textarea")[0].value;
                             if (imagen.getAttribute("sel") == 1) {
                                 var ft = new FileTransfer();
                                 var options = new FileUploadOptions();
@@ -258,14 +260,14 @@
                                 options.fileName = imagen.src.substr(imagen.src.lastIndexOf('/') + 1);
                                 options.mimeType = "image/jpeg";
                                 var params = new Object();
-                                params.value1 = "test";
-                                params.value2 = "param";
+                                params.catalogo = catalogo;
+                                params.claveItem = claveItem;
+                                params.descripcion = descripcion;
                                 options.params = params;
                                 options.chunkedMode = false;
-
                                 alert(options.fileName);
-                                ft.upload(imagen.src, url + '?op=GuardarArchivo&seccion=' + catalogo, function (r) {
-                                    alert("Code = " + r.responseCode);
+                                ft.upload(imagen.src, url + '?op=GuardarArchivo&seccion=Generico', function (r) {
+                                    imagen.setAttribute("clave", GetValor(r.response, "clave"));
                                     alert(GetValor(r.response, "mensaje"));
                                 }, function (error) {
                                     alert("An error has occurred: Code = " + error.code);
