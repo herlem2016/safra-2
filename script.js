@@ -244,37 +244,41 @@
         function Guardar(catalogo) {
             var datos = $("#p-edicion-"+ catalogo).serializeArray();
             $.post(url + '?op=Guardar&seccion=' + catalogo, datos, function (xmlDoc) {  
-                try {
-                    var imagenes = document.getElementById("c-e-" + catalogo).getElementsByTagName("table");
-                    var imagen;
-                    for (var i = 0; i < imagenes.length; i++) {
-                        imagen = imagenes[i].getElementsByTagName("img")[0];
-                        if (imagen.getAttribute("sel") == 1) {
-                            var ft = new FileTransfer();
-                            var options = new FileUploadOptions();
-                            options.fileKey = "vImage";
-                            options.fileName = imagen.src.substr(imagen.src.lastIndexOf('/') + 1);
-                            options.mimeType = "image/jpeg";
-                            var params = new Object();
-                            params.value1 = "test";
-                            params.value2 = "param";
-                            options.params = params;
-                            options.chunkedMode = false;
+                if(GetValor(xmlDoc,"estatus")==1){
+                    try {
+                        var imagenes = document.getElementById("c-e-" + catalogo).getElementsByTagName("table");
+                        var imagen;
+                        for (var i = 0; i < imagenes.length; i++) {
+                            imagen = imagenes[i].getElementsByTagName("img")[0];
+                            if (imagen.getAttribute("sel") == 1) {
+                                var ft = new FileTransfer();
+                                var options = new FileUploadOptions();
+                                options.fileKey = "vImage";
+                                options.fileName = imagen.src.substr(imagen.src.lastIndexOf('/') + 1);
+                                options.mimeType = "image/jpeg";
+                                var params = new Object();
+                                params.value1 = "test";
+                                params.value2 = "param";
+                                options.params = params;
+                                options.chunkedMode = false;
 
-                            alert(options.fileName);
-                            ft.upload(imagen.src, url + '?op=GuardarArchivo&seccion=' + catalogo, function (r) {
-                                alert("Code = " + r.responseCode);
-                                alert(GetValor(r.response, "mensaje"));
-                            }, function (error) {
-                                alert("An error has occurred: Code = " + error.code);
-                                alert("upload error source " + error.source);
-                                alert("upload error target " + error.target);
-                            }, options);
-                        } else {
-                            alert("No sel");
-                        }
-                    }
-                } catch (e) { alert(e.message); }
+                                alert(options.fileName);
+                                ft.upload(imagen.src, url + '?op=GuardarArchivo&seccion=' + catalogo, function (r) {
+                                    alert("Code = " + r.responseCode);
+                                    alert(GetValor(r.response, "mensaje"));
+                                }, function (error) {
+                                    alert("An error has occurred: Code = " + error.code);
+                                    alert("upload error source " + error.source);
+                                    alert("upload error target " + error.target);
+                                }, options);
+                            } else {
+                                alert("No sel");
+                            }
+                        }                   
+                    } catch (e) { alert(e.message); }
+                } else {
+                        alert(GetValor(xmlDoc, "mensaje"));
+                }
             });            
         }
 
