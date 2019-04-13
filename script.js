@@ -265,14 +265,11 @@
                                 params.descripcion = descripcion;
                                 options.params = params;
                                 options.chunkedMode = false;
-                                alert(options.fileName);
                                 ft.upload(imagen.src, url + '?op=GuardarArchivo&seccion=Generico', function (r) {
-                                    imagen.setAttribute("clave", GetValor(r.response, "clave"));
+                                    //imagen.setAttribute("clave", GetValor(r.response, "clave"));
                                     alert(GetValor(r.response, "mensaje"));
                                 }, function (error) {
                                     alert("An error has occurred: Code = " + error.code);
-                                    alert("upload error source " + error.source);
-                                    alert("upload error target " + error.target);
                                 }, options);
                             } else {
                                 alert("No sel");
