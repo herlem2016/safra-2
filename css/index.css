@@ -899,4 +899,5 @@ table.transparente tr {
     margin: 0px;
 }
 
-.espera {background-image:url(img/espera.gif);background-position:right;width:20px;}
+.espera {background-color:#fff !important;color:#fff !important;}
+.espera img{margin:-12px auto 0px auto;height:100px;position:relative;}

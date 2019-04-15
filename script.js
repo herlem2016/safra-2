@@ -251,31 +251,47 @@
             var datos = $("#frm-edit-" + catalogo).serializeArray();
             PonerEspera(boton,catalogo);
             $.post(url + '?op=Guardar&seccion=' + catalogo, datos, function (xmlDoc) {  
-                if(GetValor(xmlDoc,"estatus")==1){
+                if (GetValor(xmlDoc, "estatus") == 1) {
                     try {
                         var claveItem = GetValor(xmlDoc, "clave");
                         var imagenes = document.getElementById("c-e-" + catalogo).getElementsByTagName("table");
-                        if(imagenes.length>0) {
-                            GuardarUnaImagenTexto(imagenes, 0,callback);  
-                        }                   
+                        if (imagenes.length > 0) {
+                            GuardarUnaImagenTexto(imagenes, 0, callback);
+                        } else {
+                            QuitarEspera();
+                        }                  
                     } catch (e) {
-                        QuitarEspera(boton,catalogo);
+                        QuitarEspera();
                         alert(e.message);
                     }
                 } else {
-                        alert(GetValor(xmlDoc, "mensaje"));
+                    QuitarEspera();
+                    alert(GetValor(xmlDoc, "mensaje"));
                 }
             });            
         }
 
         function PonerEspera(elemento,catalogo) {
-            document.getElementById('frm-edit-' + catalogo).disabled = true;
+            var fs = document.getElementById('frm-edit-' + catalogo);
+            var img = document.createElement("img");
+            img.src = "img/espera.gif";
+            elemento.appendChild(img);
+            fs.getElementsByTagName("fieldset")[0].setAttribute("disabled", "disabled");
             $(elemento).addClass("espera");
+            window.boton = elemento;
+            window.catalogo = catalogo;
         }
 
-        function QuitarEspera(catalogo) {
-            document.getElementById('frm-edit-' + catalogo).disabled = false;
-            $(elemento).removeClass("espera");
+        function QuitarEspera() {
+            var imgs = window.boton.getElementsByTagName("img");
+            for (var j = 0; j < imgs.length; j++) {
+                if (imgs[j].src = "img/espera.gif") {
+                    window.boton.removeChild(imgs[j]);
+                }
+            }
+            var fs = document.getElementById('frm-edit-' + window.catalogo);
+            fs.getElementsByTagName("fieldset")[0].removeAttribute("disabled");
+            $(window.boton).removeClass("espera");
         }
 
         function GuardarUnaImagenTexto(imagenes,i, callback) {
@@ -304,8 +320,12 @@
                         callback();
                     }
                 }, function (error) {
+                    QuitarEspera();
                     alert("Verifique guardado.");
                 }, options);
+            } else {
+                QuitarEspera();
+                callback();
             }
         }
 
