@@ -312,7 +312,6 @@
                 ft.upload(imagen.src, url + '?op=GuardarArchivo&seccion=Generico', function (r) {
                     i++;
                     imagen.setAttribute("clave", GetValor(r.response, "clave"));
-                    alert(GetValor(r.response, "mensaje"));
                     if (i < imagenes.length) {
                         GuardarUnaImagenTexto(imagenes, i++,callback,claveItem,catalogo);
                     } else {
