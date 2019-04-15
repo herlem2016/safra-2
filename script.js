@@ -241,7 +241,8 @@
             return itemli;
         }
 
-        
+
+        var intentos = 0;
         function Guardar(catalogo) {
             var datos = $("#frm-edit-"+ catalogo).serializeArray();
             $.post(url + '?op=Guardar&seccion=' + catalogo, datos, function (xmlDoc) {  
@@ -268,12 +269,15 @@
                                 ft.upload(imagen.src, url + '?op=GuardarArchivo&seccion=Generico', function (r) {
                                     //imagen.setAttribute("clave", GetValor(r.response, "clave"));
                                     alert(GetValor(r.response, "mensaje"));
+                                    intentos++;
                                 }, function (error) {
-                                    alert("An error has occurred: Code = " + error.code);
+                                    if (intentos < 3) {
+                                        Guardar(catalogo);
+                                    } else {
+                                        alert("No se logró guardar, intente mas tarde..");
+                                    }
                                 }, options);
-                            } else {
-                                alert("No sel");
-                            }
+                            } 
                         }                   
                     } catch (e) { alert(e.message); }
                 } else {
@@ -296,7 +300,7 @@
 function QuitarEIT(obj) {
     var objP = obj.parentNode.parentNode.parentNode.parentNode;
     objP.parentNode.removeChild(objP);
-        }
+}
 
 function IAdjuntarImagenes(img) {
     try {
