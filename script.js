@@ -294,7 +294,7 @@
         }
 
 function QuitarEIT(obj) {
-    var objP = obj.parentNode.parentNode.parentNode;
+    var objP = obj.parentNode.parentNode.parentNode.parentNode;
     objP.parentNode.removeChild(objP);
         }
 
