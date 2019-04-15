@@ -332,7 +332,9 @@
         function IAgregarImagenTexto(id) {
             var contenedor = document.getElementById(id);
             var imagenes = document.getElementById(id).getElementsByTagName("table");
-            alert(imagenes[imagenes.length - 1].getAttribute("sel"));
+            if (imagenes.length > 0) {
+                alert(imagenes[imagenes.length - 1].getAttribute("sel"));
+            }
             if (imagenes.length == 0 || (imagenes.length > 0 && imagenes[imagenes.length - 1].getAttribute("sel") == "1")) {
                 var item = document.createElement("table");
                 item.className = "lista-files";
