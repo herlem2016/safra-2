@@ -241,60 +241,86 @@
             return itemli;
         }
 
+        function LimpiarForm(catalogo) {
+            document.getElementById('frm-edit-' + catalogo).reset();
+            document.getElementById('c-e-' + catalogo).innerHTML = "";
+        }
 
         var intentos = 0;
-        function Guardar(catalogo) {
-            var datos = $("#frm-edit-"+ catalogo).serializeArray();
+        function Guardar(boton,catalogo,callback) {
+            var datos = $("#frm-edit-" + catalogo).serializeArray();
+            PonerEspera(boton,catalogo);
             $.post(url + '?op=Guardar&seccion=' + catalogo, datos, function (xmlDoc) {  
                 if(GetValor(xmlDoc,"estatus")==1){
                     try {
                         var claveItem = GetValor(xmlDoc, "clave");
                         var imagenes = document.getElementById("c-e-" + catalogo).getElementsByTagName("table");
-                        var imagen,descripcion;
-                        for (var i = 0; i < imagenes.length; i++) {
-                            imagen = imagenes[i].getElementsByTagName("img")[0];
-                            descripcion = imagenes[i].getElementsByTagName("textarea")[0].value;
-                            if (imagen.getAttribute("sel") == 1) {
-                                var ft = new FileTransfer();
-                                var options = new FileUploadOptions();
-                                options.fileKey = "vImage";
-                                options.fileName = imagen.src.substr(imagen.src.lastIndexOf('/') + 1);
-                                options.mimeType = "image/jpeg";
-                                var params = new Object();
-                                params.catalogo = catalogo;
-                                params.claveItem = claveItem;
-                                params.descripcion = descripcion;
-                                options.params = params;
-                                options.chunkedMode = false;
-                                ft.upload(imagen.src, url + '?op=GuardarArchivo&seccion=Generico', function (r) {
-                                    //imagen.setAttribute("clave", GetValor(r.response, "clave"));
-                                    alert(GetValor(r.response, "mensaje"));
-                                    intentos++;
-                                }, function (error) {
-                                    if (intentos < 3) {
-                                        Guardar(catalogo);
-                                    } else {
-                                        alert("No se logró guardar, intente mas tarde..");
-                                    }
-                                }, options);
-                            } 
+                        if(imagenes.length>0) {
+                            GuardarUnaImagenTexto(imagenes, 0,callback);  
                         }                   
-                    } catch (e) { alert(e.message); }
+                    } catch (e) {
+                        QuitarEspera(boton,catalogo);
+                        alert(e.message);
+                    }
                 } else {
                         alert(GetValor(xmlDoc, "mensaje"));
                 }
             });            
         }
 
+        function PonerEspera(elemento,catalogo) {
+            document.getElementById('frm-edit-' + catalogo).disabled = true;
+            $(elemento).addClass("espera");
+        }
+
+        function QuitarEspera(catalogo) {
+            document.getElementById('frm-edit-' + catalogo).disabled = false;
+            $(elemento).removeClass("espera");
+        }
+
+        function GuardarUnaImagenTexto(imagenes,i, callback) {
+            var imagen = imagenes[i].getElementsByTagName("img")[0];
+            var  descripcion = imagenes[i].getElementsByTagName("textarea")[0].value;
+            if (imagen.getAttribute("sel") == 1) {
+                var ft = new FileTransfer();
+                var options = new FileUploadOptions();
+                options.fileKey = "vImage";
+                options.fileName = imagen.src.substr(imagen.src.lastIndexOf('/') + 1);
+                options.mimeType = "image/jpeg";
+                var params = new Object();
+                params.catalogo = catalogo;
+                params.claveItem = claveItem;
+                params.descripcion = descripcion;
+                options.params = params;
+                options.chunkedMode = false;
+                ft.upload(imagen.src, url + '?op=GuardarArchivo&seccion=Generico', function (r) {
+                    i++;
+                    imagen.setAttribute("clave", GetValor(r.response, "clave"));
+                    alert(GetValor(r.response, "mensaje"));
+                    if (i < imagenes.length) {
+                        GuardarUnaImagenTexto(imagenes, i++);
+                    } else {
+                        QuitarEspera();
+                        callback();
+                    }
+                }, function (error) {
+                    alert("Verifique guardado.");
+                }, options);
+            }
+        }
+
         function IAgregarImagenTexto(id) {
             var contenedor = document.getElementById(id);
-            var item = document.createElement("table");
-            item.className = "lista-files";
-            item.innerHTML = '<table class="lista-files">'+
-                '<tr> <td style="width:90%"><img src="img/upload.png" onclick="IAdjuntarImagenes(this);" /></td> <td style="width:10%" rowspan="2" class="del"><button onclick="QuitarEIT(this);" class="del-btn"><img src="img/del.png" /></button></td></tr >'+
-                    '<tr><td><textarea maxlength="200"></textarea></td></tr>'+
-                '</table >';
-            contenedor.appendChild(item);
+            var imagenes = document.getElementById(id).getElementsByTagName("table");
+            if (imagenes.length == 0 || (imagenes.length > 0 && imagenes[imagenes.length - 1].getAttribute("sel") == 1)) {
+                var item = document.createElement("table");
+                item.className = "lista-files";
+                item.innerHTML = '<table class="lista-files">' +
+                    '<tr> <td style="width:90%"><img src="img/upload.png" onclick="IAdjuntarImagenes(this);" /></td> <td style="width:10%" rowspan="2" class="del"><button onclick="QuitarEIT(this);" class="del-btn"><img src="img/del.png" /></button></td></tr >' +
+                    '<tr><td><textarea maxlength="200"></textarea></td></tr>' +
+                    '</table >';
+                contenedor.appendChild(item);
+            }
         }
 
 function QuitarEIT(obj) {

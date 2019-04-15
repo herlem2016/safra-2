@@ -206,7 +206,7 @@
                     <label>Imagenes y descripción<hr class="clearn" /></label>
                     <div id="c-e-comunicados"></div>
                     <div><button class="adjuntar-btn" style="width:100px;" onclick="IAgregarImagenTexto('c-e-comunicados');"><img src="img/attach.png" /><span class="texto-discreto">Agregar</span></button><hr class="clearn" /></div>
-                    <button class="aceptar" style="margin-top:30px;margin-bottom:50px;" onclick="Guardar('comunicados');">Aceptar</button>
+                    <button class="aceptar" style="margin-top:30px;margin-bottom:50px;" onclick="Guardar(this,'comunicados', function () { LimpiarForm('comunicados');PantallaMostrar('comunicados','section');});">Aceptar</button>
                 </form>
             </div>
         </section>
