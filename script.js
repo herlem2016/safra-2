@@ -316,6 +316,7 @@
                         GuardarUnaImagenTexto(imagenes, i++,callback,claveItem,catalogo);
                     } else {
                         QuitarEspera();
+                        alert("Guardado correctamente");
                         callback();
                     }
                 }, function (error) {
@@ -324,6 +325,7 @@
                 }, options);
             } else {
                 QuitarEspera();
+                alert("Guardado correctamente");
                 callback();
             }
         }
