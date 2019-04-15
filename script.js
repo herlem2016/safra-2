@@ -256,7 +256,7 @@
                         var claveItem = GetValor(xmlDoc, "clave");
                         var imagenes = document.getElementById("c-e-" + catalogo).getElementsByTagName("table");
                         if (imagenes.length > 0) {
-                            GuardarUnaImagenTexto(imagenes, 0, callback);
+                            GuardarUnaImagenTexto(imagenes, 0, callback,claveItem,catalogo);
                         } else {
                             QuitarEspera();
                         }                  
@@ -294,7 +294,7 @@
             $(window.boton).removeClass("espera");
         }
 
-        function GuardarUnaImagenTexto(imagenes,i, callback) {
+        function GuardarUnaImagenTexto(imagenes,i, callback,claveItem,catalogo) {
             var imagen = imagenes[i].getElementsByTagName("img")[0];
             var  descripcion = imagenes[i].getElementsByTagName("textarea")[0].value;
             if (imagen.getAttribute("sel") == 1) {
@@ -314,7 +314,7 @@
                     imagen.setAttribute("clave", GetValor(r.response, "clave"));
                     alert(GetValor(r.response, "mensaje"));
                     if (i < imagenes.length) {
-                        GuardarUnaImagenTexto(imagenes, i++);
+                        GuardarUnaImagenTexto(imagenes, i++,callback,claveItem,catalogo);
                     } else {
                         QuitarEspera();
                         callback();
@@ -332,6 +332,7 @@
         function IAgregarImagenTexto(id) {
             var contenedor = document.getElementById(id);
             var imagenes = document.getElementById(id).getElementsByTagName("table");
+            alert(imagenes.length);
             if (imagenes.length == 0 || (imagenes.length > 0 && imagenes[imagenes.length - 1].getAttribute("sel") == 1)) {
                 var item = document.createElement("table");
                 item.className = "lista-files";
