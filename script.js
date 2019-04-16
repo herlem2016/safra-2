@@ -84,7 +84,7 @@
                     cont =
                         '<div class="titulo">' + catalogo.toUpperCase() + ' <button class="regresar" onclick="Mostrar(\'detalle-' + catalogo + '\', \'lista-' + catalogo + '\'); ">Regresar</button></div>' +
                         '<div class="pantalla-3">' +
-                    '<div class="btns-up"><button class="edit-btn" clave_funcion="3" style="display:none;" control="edit-' + catalogo.substring(0, 3) + '-3" id="edit-' + catalogo.substring(0, 3) + '-3" onclick="IniciarEditar' + catalogo + '();"><img src="img/edit.png" /></button><button style="display:none;" onclick="IniciarEliminar(this);" catalogo="' + catalogo + '" clave_funcion="4" control="del-' + catalogo.substring(0, 3) + '-4" id="del-com-4" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>' +
+                    '<div class="btns-up"><button class="edit-btn" clave_funcion="3" style="display:none;" control="edit-' + catalogo.substring(0, 3) + '-3" id="edit-' + catalogo.substring(0, 3) + '-3" onclick="IniciarEditar' + catalogo + '();"><img src="img/edit.png" /></button><button style="display:none;" onclick="IniciarEliminar(this);" clave="'+ clave +'" catalogo="' + catalogo + '" clave_funcion="4" control="del-' + catalogo.substring(0, 3) + '-4" id="del-com-4" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>' +
                         '<span class="t-1">' + GetValor(xmlDoc, "titulo") + '</span>' +
                         '<span class="t-2">' + GetValor(xmlDoc, "nombre") + ' (' + GetValor(xmlDoc, "cargo") + ')</span>' +
                         '<span class="t-3">' + GetValor(xmlDoc, "fecha") + '</span>' +
@@ -104,9 +104,15 @@
         }
 
         function IniciarEliminar(objeto) {
-            confirm("Confirme que desea eliminar", function () {
-
-            }, "SAFRA");
+            if(confirm("Confirme que desea eliminar")){
+                var catalogo =objeto.getAttribute("catalogo");
+                var clave = objeto.getAttribute("clave");
+                $.post(url + 'logic/controlador.aspx' + '?op=EliminarItem&seccion=' + catalogo + '&claveItem=' + clave, function (xmlDoc) {
+                    CargarCatalogo(catalogo, function () {
+                        Mostrar('detalle-' + catalogo, 'lista-' + catalogo);
+                    });                        
+                });
+            }
         }
 
         function IniciarEditarDirectorio(esNuevo) {
@@ -256,14 +262,16 @@
             }
         }
 
-        function CargarCatalogo(catalogo) {
+        function CargarCatalogo(catalogo,callback) {
             $.post(url + 'logic/controlador.aspx' + '?op=cargar&seccion=' + catalogo, function (xmlDoc) {
                 var items = xmlDoc.getElementsByTagName("Table");
                 var lista = document.getElementById(catalogo).getElementsByTagName("ul")[0];
                 lista.innerHTML = "";
                 for (var n = 0; n < items.length; n++) {
                     lista.appendChild(ObtenerItem(catalogo, items[n]));
-                }                
+                }  
+                if(callback)
+                    callback();
             });
         }
 
