@@ -8,7 +8,7 @@
                     funcionesEnPantalla.btns[j++] = botones[i];
                 }
             }
-            $.post(url + '?op=ObtenerFuncionesHabilitadas&seccion=seguridad&funciones=' + funcionesEnPantalla.claves.join(","), function (xmlDoc) {
+            $.post(url + 'logic/controlador.aspx' + '?op=ObtenerFuncionesHabilitadas&seccion=seguridad&funciones=' + funcionesEnPantalla.claves.join(","), function (xmlDoc) {
                 var funcionesRecibidas = xmlDoc.getElementsByTagName("Table");
                 for (var n = 0; n<funcionesRecibidas.length;n++){
                     for (var k = 0; k < funcionesEnPantalla.btns.length; k++){
@@ -69,7 +69,7 @@
             document.getElementById(p2).style.display = "block";
             if (catalogo) {
                 //PonerEspera(boton, catalogo);
-                $.post(url + '?op=ObtenerItem&seccion=' + catalogo + '&claveItem=' + clave, function (xmlDoc) {
+                $.post(url + 'logic/controlador.aspx' + '?op=ObtenerItem&seccion=' + catalogo + '&claveItem=' + clave, function (xmlDoc) {
                     //QuitarEspera();
                     PintarItem(catalogo, clave, xmlDoc);
                 });
@@ -91,7 +91,7 @@
                         '<span class="t-4">' + GetValor(xmlDoc, "mensaje") + '</span>';
                     imgsTexto = xmlDoc0.getElementsByTagName("Table1");
                     for (var j = 0; j < imgsTexto.length; j++) {
-                        cont += '<img class="file" src="' + url + GetValor(imgsTexto[j], "path") + '" />' +
+                        cont += '<img class="file" src="' + url + '/' + GetValor(imgsTexto[j], "path") + '" />' +
                             '<p>' + GetValor(imgsTexto[j], "descripcion") + '</p>'+
                             '<hr />';
                     }                       
@@ -257,7 +257,7 @@
         }
 
         function CargarCatalogo(catalogo) {
-            $.post(url + '?op=cargar&seccion=' + catalogo, function (xmlDoc) {
+            $.post(url + 'logic/controlador.aspx' + '?op=cargar&seccion=' + catalogo, function (xmlDoc) {
                 var items = xmlDoc.getElementsByTagName("Table");
                 var lista = document.getElementById(catalogo).getElementsByTagName("ul")[0];
                 lista.innerHTML = "";
@@ -289,7 +289,7 @@
         function Guardar(boton,catalogo,callback) {
             var datos = $("#frm-edit-" + catalogo).serializeArray();
             PonerEspera(boton,catalogo);
-            $.post(url + '?op=Guardar&seccion=' + catalogo, datos, function (xmlDoc) {  
+            $.post(url + 'logic/controlador.aspx' + '?op=Guardar&seccion=' + catalogo, datos, function (xmlDoc) {  
                 if (GetValor(xmlDoc, "estatus") == 1) {
                     try {
                         var claveItem = GetValor(xmlDoc, "clave");
@@ -348,7 +348,7 @@
                 params.descripcion = descripcion;
                 options.params = params;
                 options.chunkedMode = false;
-                ft.upload(imagen.src, url + '?op=GuardarArchivo&seccion=Generico', function (r) {
+                ft.upload(imagen.src, url + 'logic/controlador.aspx' + '?op=GuardarArchivo&seccion=Generico', function (r) {
                     i++;
                     imagen.setAttribute("clave", GetValor(r.response, "clave"));
                     if (i < imagenes.length) {
