@@ -399,7 +399,8 @@ ul.lista .item span.t-4 {
 
 span.t-1 {
     display: block;
-    padding-top: 5px;
+    clear: both;
+    padding: 5px;
 }
 
 span.t-2 {
@@ -410,6 +411,7 @@ span.t-2 {
     font-weight: normal;
     color: #333;
     margin-top: 5px;
+    padding:5px;
 }
 
 span.t-3 {
@@ -423,6 +425,7 @@ span.t-3 {
 
 span.t-4 {
     display: block;
+    clear: both;
     float: left;
     font-size: 13px;
     color: #060a0d;
@@ -433,6 +436,7 @@ span.t-4 {
 
 span.t-41 {
     display: block;
+    clear: both;
     float: none;
     font-size: 13px;
     color: #060a0d;
@@ -452,6 +456,8 @@ span.t-5 {
 .detalle img {
     display: block;
     max-width: 95%;
+    margin:auto;
+    clear:both;
 }
 
 .detalle button.file {
@@ -901,3 +907,4 @@ table.transparente tr {
 
 .espera {background-color:#fff !important;color:#fff !important;}
 .espera img{margin:-12px auto 0px auto;height:100px;position:relative;}
+p {padding:5px;}

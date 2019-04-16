@@ -184,20 +184,9 @@
                 <div class="agregar" id="edicion-comunicados" style="display:none;"><button clave_funcion="5" control="edicion-comunicados" onclick="IniciarEditarComunicados(true);">Aregar comunicado</button></div>
                 <ul class="lista seleccionable pantalla-3"></ul>
             </div>
-            <div class="detalle" id="detalle-comunicados" style="display:none;">
-                <div class="titulo">Comunicado <button class="regresar" onclick="Mostrar('detalle-comunicados','lista-comunicados');">Regresar</button></div>  
-                <div class="pantalla-3">
-                    <div class="btns-up"><button class="edit-btn" clave_funcion="3" style="display:none;" control="edit-com-3" id="edit-com-3" onclick="IniciarEditarComunicados();"><img src="img/edit.png" /></button><button style="display:none;" onclick="IniciarEliminarComunicado();" clave_funcion="4" control="del-com-4" id="del-com-4" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>
-                    <span class="t-1">Junta general</span>                    
-                    <span class="t-2">Juan Rodolfo Jimenez Gomez(Administracion-Presidente)</span>                    
-                    <span class="t-3">11-ene-2018</span>                    
-                    <span class="t-4">Se le informa a los vecinos, que la próxima reunión general se llevara a cabo el 28 de febrero del 2019, en el salon de usos múltiples, a la 9 pm. Se les recuerda que deberan llegar 10 min. antes para el pase de lista.</span>                    
-                    <img class="file" src="img/Titan_Company_Logo.png" />                    
-                    <img class="file" src="img/call.png"/>   
-                    <hr />
-                    <button class="file">Minuta_12-ene-2018.pdf</button> 
-                </div>
-             </div>
+            
+            <div class="detalle" id="detalle-comunicados" style="display:none;"></div>
+
             <div class="edicion " style="display:none;" id="p-edicion-comunicados" >
                 <div class="titulo">Edición de comunicados <button class="cancelar" id="cancelar-edit-comunicados">Cancelar</button></div>    
                 <form class="pantalla-3" id="frm-edit-comunicados" onsubmit="return false;">
