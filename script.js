@@ -91,7 +91,7 @@
                         '<span class="t-4">' + GetValor(xmlDoc, "mensaje") + '</span>';
                     imgsTexto = xmlDoc0.getElementsByTagName("Table1");
                     for (var j = 0; j < imgsTexto.length; j++) {
-                        cont += '<img class="file" src="../../../' + GetValor(imgsTexto[j], "path") + '" />' +
+                        cont += '<img class="file" src="' + url + GetValor(imgsTexto[j], "path") + '" />' +
                             '<p>' + GetValor(imgsTexto[j], "descripcion") + '</p>'+
                             '<hr />';
                     }                       
@@ -104,9 +104,9 @@
         }
 
         function IniciarEliminar(objeto) {
-            if (confirm("Confirme que desea eliminar")){
+            confirm("Confirme que desea eliminar", function () {
 
-            }
+            }, "SAFRA");
         }
 
         function IniciarEditarDirectorio(esNuevo) {
