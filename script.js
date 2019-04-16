@@ -67,11 +67,13 @@
         function Mostrar(p1,p2,catalogo,clave) {
             document.getElementById(p1).style.display = "none";
             document.getElementById(p2).style.display = "block";
-            //PonerEspera(boton, catalogo);
-            $.post(url + '?op=ObtenerItem&seccion=' + catalogo + '&claveItem=' + clave, function (xmlDoc) {
-                 //QuitarEspera();
-                 PintarItem(catalogo,clave,xmlDoc);
-            });             
+            if (catalogo) {
+                //PonerEspera(boton, catalogo);
+                $.post(url + '?op=ObtenerItem&seccion=' + catalogo + '&claveItem=' + clave, function (xmlDoc) {
+                    //QuitarEspera();
+                    PintarItem(catalogo, clave, xmlDoc);
+                });
+            }
         }
 
         function PintarItem(catalogo, clave, xmlDoc0){
@@ -80,9 +82,9 @@
             switch (catalogo) {
                 case "comunicados":
                     cont =
-                        '<div class="titulo">' + catalogo.toUpperCase() + ' <button class="regresar" onclick="Mostrar(\'detalle-' + catalogo + '\', \'lista-' + catalogo + '); ">Regresar</button></div>' +
+                        '<div class="titulo">' + catalogo.toUpperCase() + ' <button class="regresar" onclick="Mostrar(\'detalle-' + catalogo + '\', \'lista-' + catalogo + '\'); ">Regresar</button></div>' +
                         '<div class="pantalla-3">' +
-                        '<div class="btns-up"><button class="edit-btn" clave_funcion="3" style="display:none;" control="edit-' + catalogo.substring(0, 3) + '-3" id="edit-' + catalogo.substring(0, 3) + '-3" onclick="IniciarEditar' + catalogo + '();"><img src="img/edit.png" /></button><button style="display:none;" onclick="IniciarEliminar' + catalogo + '();" clave_funcion="4" control="del-' + catalogo.substring(0, 3) + '-4" id="del-com-4" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>' +
+                    '<div class="btns-up"><button class="edit-btn" clave_funcion="3" style="display:none;" control="edit-' + catalogo.substring(0, 3) + '-3" id="edit-' + catalogo.substring(0, 3) + '-3" onclick="IniciarEditar' + catalogo + '();"><img src="img/edit.png" /></button><button style="display:none;" onclick="IniciarEliminar(this);" catalogo="' + catalogo + '" clave_funcion="4" control="del-' + catalogo.substring(0, 3) + '-4" id="del-com-4" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>' +
                         '<span class="t-1">' + GetValor(xmlDoc, "titulo") + '</span>' +
                         '<span class="t-2">' + GetValor(xmlDoc, "nombre") + ' (' + GetValor(xmlDoc, "cargo") + ')</span>' +
                         '<span class="t-3">' + GetValor(xmlDoc, "fecha") + '</span>' +
@@ -98,6 +100,12 @@
                     ; break;
                 case "directorio": ; break;
                 case "notificaciones": ; break;
+            }
+        }
+
+        function IniciarEliminar(objeto) {
+            if (confirm("Confirme que desea eliminar")){
+
             }
         }
 
