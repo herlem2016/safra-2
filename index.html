@@ -181,7 +181,7 @@
             <div class="lista" id="lista-comunicados">
                 <div class="titulo">Comunicados</div>            
                 <div class="busqueda"><input placeholder="Buscar" /></div>
-                <div class="agregar" id="edicion-comunicados" style="display:none;"><button clave_funcion="5" control="edicion-comunicados" onclick="IniciarEditarComunicados(true);">Aregar comunicado</button></div>
+                <div class="agregar" id="edicion-comunicados" style="display:none;"><button clave_funcion="5" control="edicion-comunicados" onclick="IniciarEditar(true,'comunicados');">Aregar comunicado</button></div>
                 <ul class="lista seleccionable pantalla-3"></ul>
             </div>
             
@@ -192,6 +192,7 @@
                 <form class="pantalla-3" id="frm-edit-comunicados" onsubmit="return false;">
                     <fieldset style="border:0px;">
                         <label>Título</label><input name="titulo" />
+                        <input name="esNuevo" type="hidden" />
                         <label>Descripción</label><textarea style="height:180px;" name="descripcion"></textarea>
                         <label>Imagenes y descripción<hr class="clearn" /></label>
                         <div id="c-e-comunicados"></div>

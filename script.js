@@ -84,7 +84,7 @@
                     cont =
                         '<div class="titulo">' + catalogo.toUpperCase() + ' <button class="regresar" onclick="Mostrar(\'detalle-' + catalogo + '\', \'lista-' + catalogo + '\'); ">Regresar</button></div>' +
                         '<div class="pantalla-3">' +
-                    '<div class="btns-up"><button class="edit-btn" clave_funcion="3" style="display:none;" control="edit-' + catalogo.substring(0, 3) + '-3" id="edit-' + catalogo.substring(0, 3) + '-3" onclick="IniciarEditar' + catalogo + '();"><img src="img/edit.png" /></button><button style="display:none;" onclick="IniciarEliminar(this);" clave="'+ clave +'" catalogo="' + catalogo + '" clave_funcion="4" control="del-' + catalogo.substring(0, 3) + '-4" id="del-com-4" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>' +
+                    '<div class="btns-up"><button class="edit-btn" clave_funcion="3" style="display:none;" control="edit-' + catalogo.substring(0, 3) + '-3" id="edit-' + catalogo.substring(0, 3) + '-3" onclick="IniciarEditar(false,null,this);"  clave="' + clave + '" catalogo="' + catalogo + '" ><img src="img/edit.png" /></button><button style="display:none;" onclick="IniciarEliminar(this);" clave="'+ clave +'" catalogo="' + catalogo + '" clave_funcion="4" control="del-' + catalogo.substring(0, 3) + '-4" id="del-com-4" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>' +
                         '<span class="t-1">' + GetValor(xmlDoc, "titulo") + '</span>' +
                         '<span class="t-2">' + GetValor(xmlDoc, "nombre") + ' (' + GetValor(xmlDoc, "cargo") + ')</span>' +
                         '<span class="t-3">' + GetValor(xmlDoc, "fecha") + '</span>' +
@@ -103,6 +103,53 @@
             }
         }
 
+        function PintarItemEditar(catalogo, clave, xmlDoc0) {
+            var cont = "", imgsTexto;
+            var xmlDoc = xmlDoc0.getElementsByTagName("Table")[0];
+            switch (catalogo) {
+                case "comunicados":
+                    var frm = document.getElementById("frm-edit-" + catalogo);
+                    frm.getElementsByTagName("input")[0].value = GetValor(xmlDoc, "titulo");
+                    frm.getElementsByTagName("textarea")[0].value = GetValor(xmlDoc, "mensaje");                   
+                    imgsTexto = xmlDoc0.getElementsByTagName("Table1");
+                    var imagenesTextos = document.getElementById("c-e-" + catalogo);
+                    imagenesTextos.innerHTML = "";
+                    var unImagentexto;
+                    for (var j = 0; j < imgsTexto.length; j++) {
+                        unImagentexto = IAgregarImagenTexto(imagenesTextos);
+                        unImagentexto.imagen.setAttribute("sel",1);
+                        unImagentexto.imagen.src = url + '/' + GetValor(imgsTexto[j], "path");
+                        unImagentexto.texto.value=src = GetValor(imgsTexto[j], "descripcion");                       
+                    }
+                    ; break;
+                case "directorio": ; break;
+                case "notificaciones": ; break;
+            }
+        }
+
+
+        function IniciarEditar(esNuevo, catalogo, objeto) {
+            if (esNuevo) {
+                document.getElementById('p-edicion-' + catalogo).setAttribute("nuevo", "true");
+                document.getElementById("c-e-" + catalogo).innerHTML = "";
+                IAgregarImagenTexto('c-e-' + catalogo);
+                Mostrar('lista-' + catalogo, 'p-edicion-' + catalogo);
+                document.getElementById("cancelar-edit-" + catalogo).onclick = function () { Mostrar('p-edicion-' + catalogo, 'lista-' + catalogo); }
+            } else {
+                document.getElementById('p-edicion-' + catalogo).setAttribute("nuevo", "false");
+                var catalogo = objeto.getAttribute("catalogo");
+                var clave = objeto.getAttribute("clave");
+                Mostrar('detalle-' + catalogo, 'p-edicion-' + catalogo);
+                document.getElementById("cancelar-edit-" + catalogo).onclick = function () { Mostrar('p-edicion-' + catalogo, 'detalle-'+ catalogo); }
+                $.post(url + 'logic/controlador.aspx' + '?op=ObtenerItem&seccion=' + catalogo + '&claveItem=' + clave, function (xmlDoc) {
+                    //QuitarEspera();
+                    PintarItemEditar(catalogo, clave, xmlDoc);
+                });
+            }
+            
+        }
+
+
         function IniciarEliminar(objeto) {
             if(confirm("Confirme que desea eliminar")){
                 var catalogo =objeto.getAttribute("catalogo");
@@ -119,18 +166,7 @@
             Mostrar('lista-directorio', 'p-edicion-directorio');
         }
 
-        function IniciarEditarComunicados(esNuevo) {
-            if (esNuevo) {
-                document.getElementById("c-e-comunicados").innerHTML = "";
-                IAgregarImagenTexto('c-e-comunicados');
-                Mostrar('lista-comunicados', 'p-edicion-comunicados');
-                document.getElementById("cancelar-edit-comunicados").onclick = function () { Mostrar('p-edicion-comunicados', 'lista-comunicados');}
-            } else {
-                Mostrar('detalle-comunicados', 'p-edicion-comunicados');
-                document.getElementById("cancelar-edit-comunicados").onclick = function () { Mostrar('p-edicion-comunicados', 'detalle-comunicados'); }
-            }
-        }
-
+        
         function IniciarConfigurarNotificaciones() {
             Mostrar('detalle-notificaciones', 'p-edicion-notificaciones');
         }
@@ -378,8 +414,9 @@
         }
 
         function IAgregarImagenTexto(id) {
-            var contenedor = document.getElementById(id);
-            var imagenes = document.getElementById(id).getElementsByTagName("table");
+            var r = {};
+            var contenedor = (typeof id =="object"? id:document.getElementById(id));
+            var imagenes = contenedor.getElementsByTagName("table");
             if (imagenes.length == 0 || (imagenes.length > 0 && imagenes[imagenes.length - 1].getElementsByTagName("img")[0].getAttribute("sel") == 1)) {
                 var item = document.createElement("table");
                 item.className = "lista-files";
@@ -387,8 +424,12 @@
                     '<tr> <td style="width:90%"><img src="img/upload.png" onclick="IAdjuntarImagenes(this);" /></td> <td style="width:10%" rowspan="2" class="del"><button onclick="QuitarEIT(this);" class="del-btn"><img src="img/del.png" /></button></td></tr >' +
                     '<tr><td><textarea maxlength="200"></textarea></td></tr>' +
                     '</table >';
-                contenedor.appendChild(item);
+                
+                r.imagen=item.getElementsByTagName("img")[0];
+                r.texto = item.getElementsByTagName("textarea")[0];
+                contenedor.appendChild(item);                
             }
+            return r;
         }
 
 function QuitarEIT(obj) {
