@@ -119,6 +119,8 @@
                     for (var j = 0; j < imgsTexto.length; j++) {
                         unImagentexto = IAgregarImagenTexto(imagenesTextos);
                         unImagentexto.setAttribute("indice", GetValor(imgsTexto[j], "indice"));
+                        unImagentexto.setAttribute("catalogo", catalogo);
+                        unImagentexto.setAttribute("claveItem", clave);
                         unImagentexto.imagen.setAttribute("sel",1);
                         unImagentexto.imagen.src = url + '/' + GetValor(imgsTexto[j], "path") + "?v=" + Math.random();
                         unImagentexto.texto.value=src = GetValor(imgsTexto[j], "descripcion");                       
@@ -480,7 +482,20 @@
 
 function QuitarEIT(obj) {
     var objP = obj.parentNode.parentNode.parentNode.parentNode;
-    objP.parentNode.removeChild(objP);
+    var indice = objP.getAttribute("indice");
+    var catalogo = objP.getAttribute("catalogo");
+    var claveItem = objP.getAttribute("claveItem");
+    if (indice) {
+        $.post(url + 'logic/controlador.aspx' + '?op=EliminarImgTexto&seccion=Generico&indice=' + indice + "&catalogo=" + catalogo + "&claveItem=" + claveItem, function (xmlDoc) {
+            if (Getvalor(xmlDoc, "estatus") == "1") {
+                objP.parentNode.removeChild(objP);
+            } else {
+                alert(Getvalor(xmlDoc, "mensaje"));
+            }
+        }); 
+    } else {
+        objP.parentNode.removeChild(objP);
+    }    
 }
 
 function IAdjuntarImagenes(img) {
