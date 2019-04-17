@@ -344,13 +344,13 @@
                         var textosCambio = [];
                         for (var i = 0; i < imagenes.length; i++) {
                             if (imagenes[i].getAttribute("cambioImagen") == "true") {
-                                alert(i);
                                 imagenesCambio.push(imagenes[i]);
                             } else if (imagenes[i].getAttribute("cambioTexto") == "true") {
                                 textosCambio.push(imagenes[i]);
                             }
                         }
                         if (imagenesCambio.length > 0) {
+                            alert(imagenesCambio.length);
                             GuardarUnaImagenTexto(imagenesCambio, textosCambio, 0, callback,claveItem,catalogo);
                         } else if(textosCambio.length>0){
                             GuardarUnTexto(textosCambio, 0, callback, claveItem, catalogo);
