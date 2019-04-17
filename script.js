@@ -120,7 +120,7 @@
                         unImagentexto = IAgregarImagenTexto(imagenesTextos);
                         unImagentexto.setAttribute("indice", GetValor(imgsTexto[j], "indice"));
                         unImagentexto.imagen.setAttribute("sel",1);
-                        unImagentexto.imagen.src = url + '/' + GetValor(imgsTexto[j], "path");
+                        unImagentexto.imagen.src = url + '/' + GetValor(imgsTexto[j], "path") + "?v=" + Math.random();
                         unImagentexto.texto.value=src = GetValor(imgsTexto[j], "descripcion");                       
                     }
                     ; break;
