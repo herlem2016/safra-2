@@ -403,11 +403,10 @@
                 params.descripcion = descripcion;
                 options.params = params;
                 options.chunkedMode = false;
-                alert(imagen.src);
                 ft.upload(imagen.src, url + 'logic/controlador.aspx' + '?op=GuardarArchivo&seccion=Generico', function (r) {
-                    alert(20);
                     i++;
                     imagen.setAttribute("clave", GetValor(r.response, "clave"));
+                    alert(GetValor(r.response, "mensaje"));
                     if (i < imagenes.length) {
                         try {
                             GuardarUnaImagenTexto(imagenes, textosCambio, i++, callback, claveItem, catalogo);
