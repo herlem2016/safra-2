@@ -91,7 +91,7 @@
                         '<span class="t-4">' + GetValor(xmlDoc, "mensaje") + '</span>';
                     imgsTexto = xmlDoc0.getElementsByTagName("Table1");
                     for (var j = 0; j < imgsTexto.length; j++) {
-                        cont += '<img class="file" src="' + url + '/' + GetValor(imgsTexto[j], "path") + "?v=" + Math.random()'" />' +
+                        cont += '<img class="file" src="' + url + '/' + GetValor(imgsTexto[j], "path") + "?v=" + Math.random() + '" />' +
                             '<p>' + GetValor(imgsTexto[j], "descripcion") + '</p>'+
                             '<hr />';
                     }                       
