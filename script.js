@@ -442,7 +442,7 @@
         }
 
         function GuardarUnTexto(textosCambio, i, callback, clave, catalogo) {
-            var datos = { descripcion: textosCambio[i].getElementsByTagName('textarea')[0].value, indice: textosCambio[i].getAttribute("clave") };
+            var datos = { descripcion: textosCambio[i].getElementsByTagName('textarea')[0].value, indice: textosCambio[i].getAttribute("indice") };
             $.post(url + 'logic/controlador.aspx' + '?op=ActualizarDescripcion&seccion=' + catalogo,datos, function (xmlDoc) {
                 i++;
                 if (i < textosCambio.length) {
