@@ -343,7 +343,8 @@
                         var imagenesCambio = [];
                         var textosCambio = [];
                         for (var i = 0; i < imagenes.length; i++) {
-                            if (imagenes[i].getAttribute("cambioImagen")=="true") {
+                            if (imagenes[i].getAttribute("cambioImagen") == "true") {
+                                alert(i);
                                 imagenesCambio.push(imagenes[i]);
                             } else if (imagenes[i].getAttribute("cambioTexto") == "true") {
                                 textosCambio.push(imagenes[i]);
