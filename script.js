@@ -350,7 +350,6 @@
                             }
                         }
                         if (imagenesCambio.length > 0) {
-                            alert(imagenesCambio.length);
                             GuardarUnaImagenTexto(imagenesCambio, textosCambio, 0, callback,claveItem,catalogo);
                         } else if(textosCambio.length>0){
                             GuardarUnTexto(textosCambio, 0, callback, claveItem, catalogo);
@@ -404,7 +403,9 @@
                 params.descripcion = descripcion;
                 options.params = params;
                 options.chunkedMode = false;
+                alert(10);
                 ft.upload(imagen.src, url + 'logic/controlador.aspx' + '?op=GuardarArchivo&seccion=Generico', function (r) {
+                    alert(20);
                     i++;
                     imagen.setAttribute("clave", GetValor(r.response, "clave"));
                     if (i < imagenes.length) {
@@ -490,9 +491,7 @@ function IAdjuntarImagenes(img) {
                 for (var i = 0; i < results.length; i++) {
                     img.src = results[i];
                     img.setAttribute("sel", 1);
-                    alert(i);
                     img.parentNode.parentNode.parentNode.parentNode.setAttribute('cambioImagen', 'true');
-                    alert(img.parentNode.parentNode.parentNode.parentNode.tagName);
                 }
             }, function (error) {
                 alert('Error: ' + error);
