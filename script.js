@@ -487,7 +487,7 @@ function QuitarEIT(obj) {
     var claveItem = objP.getAttribute("claveItem");
     if (indice) {
         $.post(url + 'logic/controlador.aspx' + '?op=EliminarImgTexto&seccion=Generico&indice=' + indice + "&catalogo=" + catalogo + "&claveItem=" + claveItem, function (xmlDoc) {
-            if (Getvalor(xmlDoc, "estatus") == "1") {
+            if (GetValor(xmlDoc, "estatus") == "1") {
                 objP.parentNode.removeChild(objP);
             } else {
                 alert(Getvalor(xmlDoc, "mensaje"));
