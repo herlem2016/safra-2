@@ -352,10 +352,13 @@
                             }
                         }
                         if (imagenesCambio.length > 0) {
-                            GuardarUnaImagenTexto(imagenesCambio, textosCambio, 0, callback,claveItem,catalogo);
-                        } else if(textosCambio.length>0){
+                            GuardarUnaImagenTexto(imagenesCambio, textosCambio, 0, callback, claveItem, catalogo);
+                        } else if (textosCambio.length > 0) {
                             GuardarUnTexto(textosCambio, 0, callback, claveItem, catalogo);
-                        }                  
+                        } else {
+                            QuitarEspera();
+                            if(callback) callback();
+                        }                
                     } catch (e) {
                         QuitarEspera();
                         alert(e.message);
@@ -415,7 +418,7 @@
                         } catch (e) {
                             QuitarEspera();
                             alert("Verifique guardado");
-                            callback();
+                            if (callback) callback();
                         }
                     } else {
                         if (textosCambio.length > 0) {
@@ -424,12 +427,12 @@
                             } catch (e){
                                 QuitarEspera();
                                 alert(e.message);
-                                callback();
+                                if (callback) callback();
                             }
                         } else {
                             QuitarEspera();
                             alert("Guardado correctamente");
-                            callback();
+                            if (callback) callback();
                         }
                     }
                 }, function (error) {
@@ -439,7 +442,7 @@
             } else {
                 QuitarEspera();
                 alert("Guardado correctamente");
-                callback();
+                if (callback) callback();
             }
         }
 
@@ -453,12 +456,12 @@
                     } catch (e) {
                         QuitarEspera();
                         alert(e.message);
-                        callback();
+                        if (callback) callback();
                    }
                 } else {
                     QuitarEspera();
                     alert("Guardado correctamente");
-                    callback();
+                    if (callback) callback();
                 }
             });    
         }
