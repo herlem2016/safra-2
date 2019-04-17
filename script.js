@@ -403,7 +403,7 @@
                 params.descripcion = descripcion;
                 options.params = params;
                 options.chunkedMode = false;
-                alert(10);
+                alert(imagen.src);
                 ft.upload(imagen.src, url + 'logic/controlador.aspx' + '?op=GuardarArchivo&seccion=Generico', function (r) {
                     alert(20);
                     i++;
