@@ -489,8 +489,10 @@ function IAdjuntarImagenes(img) {
             function (results) {
                 for (var i = 0; i < results.length; i++) {
                     img.src = results[i];
-                    img.setAttribute("sel",1);
-                    img.parentNode.parentNode.parentNode.parentNode.setAttribute('cambioImagen','true');
+                    img.setAttribute("sel", 1);
+                    alert(i);
+                    img.parentNode.parentNode.parentNode.parentNode.setAttribute('cambioImagen', 'true');
+                    alert(img.parentNode.parentNode.parentNode.parentNode.tagName);
                 }
             }, function (error) {
                 alert('Error: ' + error);
