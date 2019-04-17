@@ -118,7 +118,7 @@
                     var unImagentexto;
                     for (var j = 0; j < imgsTexto.length; j++) {
                         unImagentexto = IAgregarImagenTexto(imagenesTextos);
-                        unImagentexto.setAttribute("clave", GetValor(imgsTexto[j], "indice"));
+                        unImagentexto.setAttribute("indice", GetValor(imgsTexto[j], "indice"));
                         unImagentexto.imagen.setAttribute("sel",1);
                         unImagentexto.imagen.src = url + '/' + GetValor(imgsTexto[j], "path");
                         unImagentexto.texto.value=src = GetValor(imgsTexto[j], "descripcion");                       
@@ -403,7 +403,7 @@
                 params.descripcion = descripcion;
                 options.params = params;
                 options.chunkedMode = false;
-                ft.upload(imagen.src, url + 'logic/controlador.aspx' + '?op=GuardarArchivo&seccion=Generico', function (r) {
+                ft.upload(imagen.src, url + 'logic/controlador.aspx' + '?op=GuardarArchivo&seccion=Generico' + (imagenes[i].getAttribute("indice") ? "&indice=" + imagenes[i].getAttribute("indice"):""), function (r) {
                     i++;
                     imagen.setAttribute("clave", GetValor(r.response, "clave"));
                     alert(GetValor(r.response, "mensaje"));
