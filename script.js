@@ -81,8 +81,9 @@
             var xmlDoc = xmlDoc0.getElementsByTagName("Table")[0];
             switch (catalogo) {
                 case "comunicados":
-                    cont =
-                    '<div class="btns-up"><button class="edit-btn" clave_funcion="3" style="display:none;" control="edit-' + catalogo.substring(0, 3) + '-3" id="edit-' + catalogo.substring(0, 3) + '-3" onclick="IniciarEditar(false,\'' + catalogo + '\',this);"  clave="' + clave + '" catalogo="' + catalogo + '" ><img src="img/edit.png" /></button><button style="display:none;" onclick="IniciarEliminar(this);" clave="'+ clave +'" catalogo="' + catalogo + '" clave_funcion="4" control="del-' + catalogo.substring(0, 3) + '-4" id="del-com-4" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>' +
+                    var pantalla = document.getElementById("detalle-" + catalogo);
+                    pantalla.setAttribute("clave",clave);
+                    cont =                    
                         '<span class="t-1">' + GetValor(xmlDoc, "titulo") + '</span>' +
                         '<span class="t-2">' + GetValor(xmlDoc, "nombre") + ' (' + GetValor(xmlDoc, "cargo") + ')</span>' +
                         '<span class="t-3">' + GetValor(xmlDoc, "fecha") + '</span>' +
@@ -129,7 +130,7 @@
         }
 
 
-        function IniciarEditar(esNuevo, catalogo, objeto) {
+        function IniciarEditar(esNuevo, catalogo) {
             if (esNuevo) {
                 document.getElementById('op-' + catalogo).value="true";
                 document.getElementById("c-e-" + catalogo).innerHTML = "";
@@ -137,9 +138,8 @@
                 Mostrar('lista-' + catalogo, 'p-edicion-' + catalogo);
                 document.getElementById("cancelar-edit-" + catalogo).onclick = function () { Mostrar('p-edicion-' + catalogo, 'lista-' + catalogo); }
             } else {
-                document.getElementById('op-' + catalogo).value="false";
-                var catalogo = objeto.getAttribute("catalogo");
-                var clave = objeto.getAttribute("clave");
+                document.getElementById('op-' + catalogo).value = "false";                
+                var clave = document.getElementById("detalle-" + catalogo).getAttribute("clave");
                 Mostrar('detalle-' + catalogo, 'p-edicion-' + catalogo);
                 document.getElementById("cancelar-edit-" + catalogo).onclick = function () { Mostrar('p-edicion-' + catalogo, 'detalle-'+ catalogo); }
                 $.post(url + 'logic/controlador.aspx' + '?op=ObtenerItem&seccion=' + catalogo + '&claveItem=' + clave, function (xmlDoc) {
@@ -151,10 +151,9 @@
         }
 
 
-        function IniciarEliminar(objeto) {
+        function IniciarEliminar(objeto,catalogo) {
             if(confirm("Confirme que desea eliminar")){
-                var catalogo =objeto.getAttribute("catalogo");
-                var clave = objeto.getAttribute("clave");
+                var clave = document.getElementById("detalle-" + catalogo).getAttribute("clave");
                 $.post(url + 'logic/controlador.aspx' + '?op=EliminarItem&seccion=' + catalogo + '&claveItem=' + clave, function (xmlDoc) {
                     CargarCatalogo(catalogo, function () {
                         Mostrar('detalle-' + catalogo, 'lista-' + catalogo);
