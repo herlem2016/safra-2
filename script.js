@@ -82,8 +82,6 @@
             switch (catalogo) {
                 case "comunicados":
                     cont =
-                        '<div class="titulo">' + catalogo.toUpperCase() + ' <button class="regresar" onclick="Mostrar(\'detalle-' + catalogo + '\', \'lista-' + catalogo + '\'); ">Regresar</button></div>' +
-                        '<div class="pantalla-3">' +
                     '<div class="btns-up"><button class="edit-btn" clave_funcion="3" style="display:none;" control="edit-' + catalogo.substring(0, 3) + '-3" id="edit-' + catalogo.substring(0, 3) + '-3" onclick="IniciarEditar(false,\'' + catalogo + '\',this);"  clave="' + clave + '" catalogo="' + catalogo + '" ><img src="img/edit.png" /></button><button style="display:none;" onclick="IniciarEliminar(this);" clave="'+ clave +'" catalogo="' + catalogo + '" clave_funcion="4" control="del-' + catalogo.substring(0, 3) + '-4" id="del-com-4" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>' +
                         '<span class="t-1">' + GetValor(xmlDoc, "titulo") + '</span>' +
                         '<span class="t-2">' + GetValor(xmlDoc, "nombre") + ' (' + GetValor(xmlDoc, "cargo") + ')</span>' +
@@ -94,9 +92,8 @@
                         cont += '<img class="file" src="' + url + '/' + GetValor(imgsTexto[j], "path") + "?v=" + Math.random() + '" />' +
                             '<p>' + GetValor(imgsTexto[j], "descripcion") + '</p>'+
                             '<hr />';
-                    }                       
-                    cont += '</div>';
-                    document.getElementById("detalle-" + catalogo).innerHTML = cont;
+                    }                 
+                    document.getElementById("wrap-detalle-" + catalogo).innerHTML = cont;
                     ; break;
                 case "directorio": ; break;
                 case "notificaciones": ; break;
@@ -411,7 +408,6 @@
                 ft.upload(imagen.src, url + 'logic/controlador.aspx' + '?op=GuardarArchivo&seccion=Generico' + (imagenes[i].getAttribute("indice") ? "&indice=" + imagenes[i].getAttribute("indice"):""), function (r) {
                     i++;
                     imagen.setAttribute("clave", GetValor(r.response, "clave"));
-                    alert(GetValor(r.response, "mensaje"));
                     if (i < imagenes.length) {
                         try {
                             GuardarUnaImagenTexto(imagenes, textosCambio, i++, callback, claveItem, catalogo);
