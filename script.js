@@ -84,7 +84,7 @@
                     cont =
                         '<div class="titulo">' + catalogo.toUpperCase() + ' <button class="regresar" onclick="Mostrar(\'detalle-' + catalogo + '\', \'lista-' + catalogo + '\'); ">Regresar</button></div>' +
                         '<div class="pantalla-3">' +
-                    '<div class="btns-up"><button class="edit-btn" clave_funcion="3" style="display:none;" control="edit-' + catalogo.substring(0, 3) + '-3" id="edit-' + catalogo.substring(0, 3) + '-3" onclick="IniciarEditar(false,null,this);"  clave="' + clave + '" catalogo="' + catalogo + '" ><img src="img/edit.png" /></button><button style="display:none;" onclick="IniciarEliminar(this);" clave="'+ clave +'" catalogo="' + catalogo + '" clave_funcion="4" control="del-' + catalogo.substring(0, 3) + '-4" id="del-com-4" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>' +
+                    '<div class="btns-up"><button class="edit-btn" clave_funcion="3" style="display:none;" control="edit-' + catalogo.substring(0, 3) + '-3" id="edit-' + catalogo.substring(0, 3) + '-3" onclick="IniciarEditar(false,\'' + catalogo + '\',this);"  clave="' + clave + '" catalogo="' + catalogo + '" ><img src="img/edit.png" /></button><button style="display:none;" onclick="IniciarEliminar(this);" clave="'+ clave +'" catalogo="' + catalogo + '" clave_funcion="4" control="del-' + catalogo.substring(0, 3) + '-4" id="del-com-4" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>' +
                         '<span class="t-1">' + GetValor(xmlDoc, "titulo") + '</span>' +
                         '<span class="t-2">' + GetValor(xmlDoc, "nombre") + ' (' + GetValor(xmlDoc, "cargo") + ')</span>' +
                         '<span class="t-3">' + GetValor(xmlDoc, "fecha") + '</span>' +
@@ -110,6 +110,7 @@
                 case "comunicados":
                     var frm = document.getElementById("frm-edit-" + catalogo);
                     frm.getElementsByTagName("input")[0].value = GetValor(xmlDoc, "titulo");
+                    document.getElementById("clave-" + catalogo).value = clave;
                     frm.getElementsByTagName("textarea")[0].value = GetValor(xmlDoc, "mensaje");                   
                     imgsTexto = xmlDoc0.getElementsByTagName("Table1");
                     var imagenesTextos = document.getElementById("c-e-" + catalogo);
@@ -117,6 +118,7 @@
                     var unImagentexto;
                     for (var j = 0; j < imgsTexto.length; j++) {
                         unImagentexto = IAgregarImagenTexto(imagenesTextos);
+                        unImagentexto.setAttribute("clave", GetValor(imgsTexto[j], "indice"));
                         unImagentexto.imagen.setAttribute("sel",1);
                         unImagentexto.imagen.src = url + '/' + GetValor(imgsTexto[j], "path");
                         unImagentexto.texto.value=src = GetValor(imgsTexto[j], "descripcion");                       
@@ -130,13 +132,13 @@
 
         function IniciarEditar(esNuevo, catalogo, objeto) {
             if (esNuevo) {
-                document.getElementById('p-edicion-' + catalogo).setAttribute("nuevo", "true");
+                document.getElementById('op-' + catalogo).value="true";
                 document.getElementById("c-e-" + catalogo).innerHTML = "";
                 IAgregarImagenTexto('c-e-' + catalogo);
                 Mostrar('lista-' + catalogo, 'p-edicion-' + catalogo);
                 document.getElementById("cancelar-edit-" + catalogo).onclick = function () { Mostrar('p-edicion-' + catalogo, 'lista-' + catalogo); }
             } else {
-                document.getElementById('p-edicion-' + catalogo).setAttribute("nuevo", "false");
+                document.getElementById('op-' + catalogo).value="false";
                 var catalogo = objeto.getAttribute("catalogo");
                 var clave = objeto.getAttribute("clave");
                 Mostrar('detalle-' + catalogo, 'p-edicion-' + catalogo);
@@ -338,10 +340,19 @@
                     try {
                         var claveItem = GetValor(xmlDoc, "clave");
                         var imagenes = document.getElementById("c-e-" + catalogo).getElementsByTagName("table");
-                        if (imagenes.length > 0) {
-                            GuardarUnaImagenTexto(imagenes, 0, callback,claveItem,catalogo);
-                        } else {
-                            QuitarEspera();
+                        var imagenesCambio = [];
+                        var textosCambio = [];
+                        for (var i = 0; i < imagenes.length; i++) {
+                            if (imagenes[i].getAttribute("cambioImagen")=="true") {
+                                imagenesCambio.push(imagenes[i]);
+                            } else if (imagenes[i].getAttribute("cambioTexto") == "true") {
+                                textosCambio.push(imagenes[i]);
+                            }
+                        }
+                        if (imagenesCambio.length > 0) {
+                            GuardarUnaImagenTexto(imagenesCambio, textosCambio, 0, callback,claveItem,catalogo);
+                        } else if(textosCambio.length>0){
+                            GuardarUnTexto(textosCambio, 0, callback, claveItem, catalogo);
                         }                  
                     } catch (e) {
                         QuitarEspera();
@@ -377,7 +388,7 @@
             $(window.boton).removeClass("espera");
         }
 
-        function GuardarUnaImagenTexto(imagenes,i, callback,claveItem,catalogo) {
+        function GuardarUnaImagenTexto(imagenes,textosCambio,i, callback,claveItem,catalogo) {
             var imagen = imagenes[i].getElementsByTagName("img")[0];
             var  descripcion = imagenes[i].getElementsByTagName("textarea")[0].value;
             if (imagen.getAttribute("sel") == 1) {
@@ -396,11 +407,27 @@
                     i++;
                     imagen.setAttribute("clave", GetValor(r.response, "clave"));
                     if (i < imagenes.length) {
-                        GuardarUnaImagenTexto(imagenes, i++,callback,claveItem,catalogo);
+                        try {
+                            GuardarUnaImagenTexto(imagenes, textosCambio, i++, callback, claveItem, catalogo);
+                        } catch (e) {
+                            QuitarEspera();
+                            alert("Verifique guardado");
+                            callback();
+                        }
                     } else {
-                        QuitarEspera();
-                        alert("Guardado correctamente");
-                        callback();
+                        if (textosCambio.length > 0) {
+                            try {
+                                GuardarUnTexto(textosCambio, 0, callback, claveItem, catalogo);
+                            } catch (e){
+                                QuitarEspera();
+                                alert(e.message);
+                                callback();
+                            }
+                        } else {
+                            QuitarEspera();
+                            alert("Guardado correctamente");
+                            callback();
+                        }
                     }
                 }, function (error) {
                     QuitarEspera();
@@ -413,23 +440,41 @@
             }
         }
 
+        function GuardarUnTexto(textosCambio, i, callback, clave, catalogo) {
+            var datos = { descripcion: textosCambio[i].getElementsByTagName('textarea')[0].value, indice: textosCambio[i].getAttribute("clave") };
+            $.post(url + 'logic/controlador.aspx' + '?op=ActualizarDescripcion&seccion=' + catalogo,datos, function (xmlDoc) {
+                i++;
+                if (i < textosCambio.length) {
+                    try {
+                        GuardarUnTexto(textosCambio, i++, callback, clave, catalogo);
+                    } catch (e) {
+                        QuitarEspera();
+                        alert(e.message);
+                        callback();
+                   }
+                } else {
+                    QuitarEspera();
+                    alert("Guardado correctamente");
+                    callback();
+                }
+            });    
+        }
+
         function IAgregarImagenTexto(id) {
-            var r = {};
             var contenedor = (typeof id =="object"? id:document.getElementById(id));
             var imagenes = contenedor.getElementsByTagName("table");
             if (imagenes.length == 0 || (imagenes.length > 0 && imagenes[imagenes.length - 1].getElementsByTagName("img")[0].getAttribute("sel") == 1)) {
                 var item = document.createElement("table");
                 item.className = "lista-files";
-                item.innerHTML = '<table class="lista-files">' +
+                item.innerHTML = '<tbody>' +
                     '<tr> <td style="width:90%"><img src="img/upload.png" onclick="IAdjuntarImagenes(this);" /></td> <td style="width:10%" rowspan="2" class="del"><button onclick="QuitarEIT(this);" class="del-btn"><img src="img/del.png" /></button></td></tr >' +
-                    '<tr><td><textarea maxlength="200"></textarea></td></tr>' +
-                    '</table >';
-                
-                r.imagen=item.getElementsByTagName("img")[0];
-                r.texto = item.getElementsByTagName("textarea")[0];
+                    '<tr><td><textarea maxlength="200" onchange="this.parentNode.parentNode.parentNode.parentNode.setAttribute(\'cambioTexto\',\'true\');"></textarea></td></tr>' +
+                    '</tbody>';
+                item.imagen=item.getElementsByTagName("img")[0];
+                item.texto = item.getElementsByTagName("textarea")[0];
                 contenedor.appendChild(item);                
             }
-            return r;
+            return item;
         }
 
 function QuitarEIT(obj) {
@@ -444,6 +489,7 @@ function IAdjuntarImagenes(img) {
                 for (var i = 0; i < results.length; i++) {
                     img.src = results[i];
                     img.setAttribute("sel",1);
+                    img.parentNode.parentNode.parentNode.parentNode.setAttribute('cambioImagen','true');
                 }
             }, function (error) {
                 alert('Error: ' + error);
