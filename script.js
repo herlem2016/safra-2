@@ -124,7 +124,13 @@
                         unImagentexto.texto.value=src = GetValor(imgsTexto[j], "descripcion");                       
                     }
                     ; break;
-                case "directorio": ; break;
+                case "directorio":
+                    var frm = document.getElementById("frm-edit-" + catalogo);
+                    frm.getElementsByTagName("input")[2].value = GetValor(xmlDoc, "nombre");
+                    frm.getElementsByTagName("input")[3].value = GetValor(xmlDoc, "telefono1");
+                    frm.getElementsByTagName("input")[4].value = GetValor(xmlDoc, "telefono2");
+                    frm.getElementsByTagName("input")[5].value = GetValor(xmlDoc, "telefono3");                    
+                    ; break;
                 case "notificaciones": ; break;
             }
         }
@@ -146,8 +152,22 @@
                     //QuitarEspera();
                     PintarItemEditar(catalogo, clave, xmlDoc);
                 });
-            }
-            
+            }            
+        }
+
+        function GuardarDirectorio(boton) {
+            var datos = $("#frm-edit-directorio").serializeArray();
+            PonerEspera(boton, 'directorio');
+            $.post(url + 'logic/controlador.aspx' + '?op=Guardar&seccion=' + catalogo, datos, function (xmlDoc) {
+                QuitarEspera();
+                if (GetValor(xmlDoc, "estatus") == 1) { 
+                    CargarCatalogo(catalogo, function () {
+                        Mostrar('p-edicion-directorio', 'lista-directorio');                      
+                    });                    
+                } else {
+                    alert(GetValor(xmlDoc, "mensaje"));
+                }
+            });  
         }
 
 
@@ -155,15 +175,25 @@
             if(confirm("Confirme que desea eliminar")){
                 var clave = document.getElementById("detalle-" + catalogo).getAttribute("clave");
                 $.post(url + 'logic/controlador.aspx' + '?op=EliminarItem&seccion=' + catalogo + '&claveItem=' + clave, function (xmlDoc) {
-                    CargarCatalogo(catalogo, function () {
-                        Mostrar('detalle-' + catalogo, 'lista-' + catalogo);
-                    });                        
+                    Mostrar('detalle-' + catalogo, 'lista-' + catalogo);
+                    CargarCatalogo(catalogo, function () {});                        
                 });
             }
         }
 
-        function IniciarEditarDirectorio(esNuevo) {
+        function IniciarEditarDirectorio(esNuevo, indice) {
+            document.getElementById("frm-edit-directorio").reset();
             Mostrar('lista-directorio', 'p-edicion-directorio');
+            if (esNuevo) {
+                document.getElementById('op-directorio').value = "true";
+            } else {
+                document.getElementById('op-directorio').value = "false";
+                document.getElementById('indice-directorio').value = indice;
+                $.post(url + 'logic/controlador.aspx' + '?op=ObtenerItem&seccion=directorio&indice=' + indice, function (xmlDoc) {
+                    //QuitarEspera();
+                    PintarItemEditar('directorio', indice, xmlDoc);
+                });
+            }
         }
 
         
@@ -314,15 +344,42 @@
         function ObtenerItem(catalogo, item) {
             var itemli = document.createElement("li");
             itemli.className = "item";
+            var html = "";
             switch (catalogo){
                 case "comunicados":
-                    itemli.onclick = function () { Mostrar('lista-'+  catalogo, 'detalle-' + catalogo, catalogo, GetValor(item, "clave")); }
+                    itemli.onclick = function () { Mostrar('lista-' + catalogo, 'detalle-' + catalogo, catalogo, GetValor(item, "clave")); }
                     itemli.innerHTML = '<span class="t-1" >' + GetValor(item, "titulo") + '</span>' +
                         '<span class="t-2">' + GetValor(item, "nombre") + '</span>' +
                         '<span class="t-3">' + GetValor(item, "fecha1") + '</span>'; break;
-                case "directorio": ; break;
+                case "directorio":
+                    itemli.setAttribute("nombre",GetValor(item, "nombre"));
+                    html = '<span>' + GetValor(item, "nombre") + '</span>' +
+                        '<button class="edit-btn" clave_funcion="2" control="ed-2-' + GetValor(item, "indice") + '" id="ed-2-' + GetValor(item, "indice") + '" style="display:none;"  onclick="IniciarEditarDirectorio(false,' + GetValor(item, "indice") + ');" ><img  src="img/edit.png" /></button>' +
+                        '<button class="edit-btn" clave_funcion="2" control="del-2-' + GetValor(item, "indice") + '" id="del-2-' + GetValor(item, "indice") + '" style="display:none;"  onclick="IniciarEliminarDirectorio(' + GetValor(item, "indice") + ',this);" ><img  src="img/del.png" /></button>'+
+                        '<ol>';
+                     for (var k = 1; k < 4; k++) {
+                         if (GetValor(item, "telefono" + k)) {
+                             html += '<li>' +                                 
+                                 '<span>' + GetValor(item, "telefono" + k) + '</span>' +
+                                 '<a class="call-btn" href="tel://' + GetValor(item, "telefono" + k) + '"><img src="img/call.png" /></a>' +
+                                 '<hr class="clear" />' +
+                                 '</li>';
+                         }
+                    }
+                    itemli.innerHTML += html + '</ol>';
+                    ; break;
             }
             return itemli;
+        }
+
+        function IniciarEliminarDirectorio(indice, boton) {
+
+            if (confirm("Confirme que desea eliminar " + boton.parentNode.getAttribute("nombre") )){
+                $.post(url + 'logic/controlador.aspx' + '?op=Eliminar&seccion=directorio&indice=' + indice, function (xmlDoc) {
+                    Mostrar('p-edicion-directorio', 'lista-directorio');
+                    CargarCatalogo('directorio', function () { });
+                });
+            }
         }
 
         function LimpiarForm(catalogo) {

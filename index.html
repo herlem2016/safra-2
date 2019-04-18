@@ -80,106 +80,27 @@
                 <div class="titulo">Directorio</div>
                 <div class="busqueda"><input placeholder="Buscar" /></div>
                 <div class="agregar" id="edicion-directorio" style="display:none;"><button clave_funcion="1" control="edicion-directorio" onclick="IniciarEditarDirectorio(true);">Aregar contácto</button></div>
-                <ul class="lista">
-                    <li class="item">
-                        <span>Juan Rodolfo Jimenez Gomez</span>
-                        <ol>
-                            <li>    
-                                <button class="edit-btn" clave_funcion="2" control="ed-2-1"  id="ed-2-1"  style="display:none;"  onclick="IniciarEditarDirectorio();" ><img src="img/edit.png"/></button>
-                                <span>55 85 68 13 29</span>
-                                <a class="call-btn" href="tel://55 85 68 13 29"><img src="img/call.png" /></a>                                        
-                                <hr class="clear" />
-                            </li>
-                        </ol>
-                    </li>
-
-                    <li class="item">
-                        <span>Juan Rodolfo Jimenez Gomez</span>
-                        <ol>
-                            <li>
-                                <button class="edit-btn" clave_funcion="2" control="ed-2-2" id="ed-2-2"  style="display:none;"  ><img src="img/edit.png"/></button>
-                                <span>55 85 68 13 29</span>
-                                <a class="call-btn" href="tel://55 85 68 13 29"><img src="img/call.png" /></a>                        
-                                <hr class="clear" />
-                            </li>
-                            <li>
-                                <button class="edit-btn" clave_funcion="2" control="ed-2-3"  id="ed-2-3" style="display:none;" ><img src="img/edit.png" /></button> 
-                                <span>55 85 68 13 29</span>
-                                <a class="call-btn" href="tel://55 85 68 13 29"><img src="img/call.png" /></a>                         
-                                <hr class="clear" />
-                            </li>
-                        </ol>
-                    </li>
-
-                    <li class="item">
-                        <span>Juan Rodolfo Jimenez Gomez</span>
-                        <ol>
-                            <li>
-                                <button class="edit-btn" clave_funcion="2" control="ed-2-3"  id="ed-2-3"  style="display:none;"  ><img src="img/edit.png"/></button> 
-                                <span>55 85 68 13 29</span>
-                                <a class="call-btn" href="tel://55 85 68 13 29"><img src="img/call.png" /></a>                       
-                                <hr class="clear" />
-                            </li>
-                            <li>
-                                <button class="edit-btn" clave_funcion="2" control="ed-2-4"  id="ed-2-4"  style="display:none;"  ><img src="img/edit.png"/></button> 
-                                <span>55 85 68 13 29</span>
-                                <a class="call-btn" href="tel://55 85 68 13 29"><img src="img/call.png" /></a>                         
-                                <hr class="clear" />
-                            </li>
-                        </ol>
-                    </li>
-
-                    <li class="item">
-                        <span>Juan Rodolfo Jimenez Gomez</span>
-                        <ol>
-                            <li>
-                                <button class="edit-btn" clave_funcion="2" control="ed-2-5"  id="ed-2-5"  style="display:none;"  ><img src="img/edit.png"/></button>
-                                <span>55 85 68 13 29</span>
-                                <a class="call-btn" href="tel://55 85 68 13 29"><img src="img/call.png" /></a>                        
-                                <hr class="clear" />
-                            </li>
-                            <li>
-                                <button class="edit-btn" clave_funcion="2" control="ed-2-6"  id="ed-2-6"  style="display:none;"  ><img src="img/edit.png"/></button> 
-                                <span>55 85 68 13 29</span>
-                                <a class="call-btn" href="tel://55 85 68 13 29"><img src="img/call.png" /></a>                         
-                                <hr class="clear" />
-                            </li>
-                        </ol>
-                    </li>
-
-                    <li class="item">
-                        <span>Juan Rodolfo Jimenez Gomez</span>
-                        <ol>
-                            <li>
-                                <button class="edit-btn" clave_funcion="2" control="ed-2-7"  id="ed-2-7"  style="display:none;"  ><img src="img/edit.png"/></button>   
-                                <span>55 85 68 13 29</span>
-                                <a class="call-btn" href="tel://55 85 68 13 29"><img src="img/call.png" /></a>                     
-                                <hr class="clear" />
-                            </li>
-                            <li>
-                                <button class="edit-btn" clave_funcion="2" control="ed-2-8"  id="ed-2-8"   style="display:none;"  ><img src="img/edit.png"/></button>
-                                <span>55 85 68 13 29</span>
-                                <a class="call-btn" href="tel://55 85 68 13 29"><img src="img/call.png" /></a>                          
-                                <hr class="clear" />
-                            </li>
-                        </ol>
-                    </li>
-
-                </ul>
+                <ul class="lista seleccionable pantalla-3"></ul>
             </div>
             <div class="edicion pantalla-3" style="display:none;" id="p-edicion-directorio">
                 <div class="titulo">Edición de contácto <button class="cancelar" onclick="Mostrar('p-edicion-directorio','lista-directorio');">Cancelar</button></div>
-                <label>Nombre</label><input />
-                <label>Teléfono</label><input />
-                <label>Teléfono 2</label><input />
-                <label>Teléfono 3</label><input />
-                <button class="aceptar">Aceptar</button>
+                <form onsubmit="return false;" id="frm-edit-directorio">
+                <fieldset>
+                    <input type="hidden" id="op-directorio" name="esNuevo" />
+                    <input type="hidden" id="indice-directorio" name="indice" />
+                    <label>Nombre</label><input name="nombre" maxlength="99"/>
+                    <label>Teléfono</label><input name="telefono1"  maxlength="20"/>
+                    <label>Teléfono 2</label><input name="telefono2"  maxlength="20"/>
+                    <label>Teléfono 3</label><input name="telefono3"  maxlength="20"/>
+                    <button class="aceptar" onclick="GuardarDirectorio(this);">Aceptar</button>
+                </fieldset>
+                </form>
             </div>
         </section>
 
         <section class="pantalla comunicados" id="comunicados">
             <div class="lista" id="lista-comunicados">
-                <div class="titulo">Comunicados</div>            
+                <div class="titulo">Comunicados</div>          
                 <div class="busqueda"><input placeholder="Buscar" /></div>
                 <div class="agregar" id="edicion-comunicados" style="display:none;"><button clave_funcion="5" control="edicion-comunicados" onclick="IniciarEditar(true,'comunicados');">Aregar comunicado</button></div>
                 <ul class="lista seleccionable pantalla-3"></ul>

@@ -201,6 +201,7 @@ ul.lista {
                     font-size: 12px;
                     padding: 3px;
                     float: left;
+                    clear:left;
                     margin-top: 15px;
                     padding-left: 3%;
                 }
@@ -212,7 +213,7 @@ ul.lista {
                     margin-right: 10px;
                 }
 
-                ul.lista .item ol li > button.edit-btn {
+                ul.lista .item button.edit-btn {
                     display: block;
                     width: 30px;
                     float: left;
@@ -224,9 +225,9 @@ ul.lista {
                     cursor: pointer;
                 }
 
-                ul.lista .item ol li > a img, .lista .item ol li > button img {
-                    width: 100%;
-                }
+        ul.lista .item ol li > a img, .lista .item ol li > button img, ul.lista .item button img {
+            width: 100%;
+        }
 
         ul.lista .item .clear {
             border: 0px;
