@@ -819,24 +819,23 @@ table.desglose th {
 
 .graf-barra {
     position: relative;
-    height: 20px;
+    padding:7px;
 }
-
+.votado{background-image:url(../img/ok.png);background-position:right 20px center;background-repeat:no-repeat;background-size:25px;}
+.graf-barra label{
+    position: relative;
+    padding:5px;
+}
     .graf-barra .progreso {
         background-color: #6da2f2;
         display: block;
-        height: 18px;
+        height: 100%;
         position: absolute;
+        left:0px;top:0px;
     }
 
     .graf-barra b {
-        display: block;
-        height: 20px;
-        position: absolute;
-        text-align: center;
-        font-size: 11px;
-        width: 100%;
-        margin-top: 1px;
+        margin-right:7px;
     }
 
 table.transparente tr {
@@ -909,3 +908,7 @@ table.transparente tr {
 .espera {background-color:#fff !important;color:#fff !important;}
 .espera img{margin:-12px auto 0px auto;height:100px;position:relative;}
 p {padding:5px;}
+
+button.centrado30{margin:auto;width:30%;padding:3px;display:block;clear:both;margin-top:10px;}
+.separado10{margin-top:10px;margin-bottom:10px}
+div.item-enc td label{display:block;cursor:pointer;}

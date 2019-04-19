@@ -201,6 +201,7 @@
             <div class="detalle" id="detalle-prodserv" style="display:none;">
                 <div class="titulo">Productos y Servicios <button class="regresar" onclick="Mostrar('detalle-prodserv','lista-prodserv');">Regresar</button></div>
                 <div class="btns-up"><button class="edit-btn" clave_funcion="3" style="display:none;" control="edit-prodserv-3" id="edit-prodserv-3" onclick="IniciarEditar(false,'prodserv');" ><img src="img/edit.png" /></button><button style="display:none;" onclick="IniciarEliminar(this,'prodserv');" clave_funcion="4" control="del-prodserv-4" id="del-prodserv-4" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>
+                <div class="check-activacion"><label class="etiqueta">Publicar</label><label class="switch"><input type="checkbox" id="activar-negocio" onchange="ActivarNegocio(this);" /><span class="slider round"></span></label><hr class="clearn" /></div>
                 <div class="pantalla-3" id="wrap-detalle-prodserv"></div>
              </div>
             
@@ -444,49 +445,11 @@
         </section>
 
         <section class="pantalla encuestas" id="encuestas">
-            <div class="lista" id="lista-encuesta">
+            <div class="lista" id="lista-encuestas">
                 <div class="titulo">Encuestas</div>            
                 <div class="busqueda"><input placeholder="Buscar" /></div>
-                <div class="agregar" id="edicion-erogacion" ><button clave_funcion="8" control="pagar-erogacion" onclick="Mostrar('lista-encuesta','p-edicion-encuesta');;" >Agregar encuesta</button></div>      
-                <ul class="lista seleccionable pantalla-3" style="width:100%;">
-                    <li class="item" onclick="Mostrar('lista-erogacion','detalle-erogacion');"> 
-                        <span class="t-1">Compra e instalación de juegos toboganes, para niños de hasta 12 años.</span> 
-                        <span class="t-2">18-Enero-2019 7:00 pm</span>
-                        <table class="transparente">
-                            <tr><td style="width:70%;"><div class="graf-barra" onclick="Mostrar('lista-encuesta','encuesta-votantes');"><span class="progreso" style="width:25%"></span><b>25%</b></div></td><td style="width:15%;"><input type="radio" /></td></tr>
-                            <tr><td><div class="graf-barra"><span class="progreso" style="width:30%"></span><b>30%</b></div></td><td><input type="radio" /></td></tr>
-                            <tr><td><div class="graf-barra"><span class="progreso" style="width:65%"></span><b>65%</b></div></td><td><input type="radio" /></td></tr>
-                        </table>
-                    </li>
-                    <li class="item" onclick="Mostrar('lista-erogacion','detalle-erogacion');"> 
-                        <span class="t-1">Compra e instalación de juegos toboganes, para niños de hasta 12 años.</span> 
-                        <span class="t-2">18-Enero-2019 7:00 pm</span>
-                        <table class="transparente">
-                            <tr><td style="width:70%;"><div class="graf-barra" onclick="Mostrar('lista-encuesta','encuesta-votantes');"><span class="progreso" style="width:25%"></span><b>25%</b></div></td><td style="width:15%;"><input type="radio" /></td></tr>
-                            <tr><td><div class="graf-barra"><span class="progreso" style="width:30%"></span><b>30%</b></div></td><td><input type="radio" /></td></tr>
-                            <tr><td><div class="graf-barra"><span class="progreso" style="width:65%"></span><b>65%</b></div></td><td><input type="radio" /></td></tr>
-                        </table>
-                    </li>
-                    <li class="item" onclick="Mostrar('lista-erogacion','detalle-erogacion');"> 
-                        <span class="t-1">Compra e instalación de juegos toboganes, para niños de hasta 12 años.</span> 
-                        <span class="t-2">18-Enero-2019 7:00 pm</span>
-                        <table class="transparente">
-                            <tr><td style="width:70%;"><div class="graf-barra" onclick="Mostrar('lista-encuesta','encuesta-votantes');"><span class="progreso" style="width:25%"></span><b>25%</b></div></td><td style="width:15%;"><input type="radio" /></td></tr>
-                            <tr><td><div class="graf-barra"><span class="progreso" style="width:30%"></span><b>30%</b></div></td><td><input type="radio" /></td></tr>
-                            <tr><td><div class="graf-barra"><span class="progreso" style="width:65%"></span><b>65%</b></div></td><td><input type="radio" /></td></tr>
-                        </table>
-                    </li>
-                    <li class="item" onclick="Mostrar('lista-erogacion','detalle-erogacion');"> 
-                        <span class="t-1">Compra e instalación de juegos toboganes, para niños de hasta 12 años.</span> 
-                        <span class="t-2">18-Enero-2019 7:00 pm</span>
-                        <table class="transparente">
-                            <tr><td style="width:70%;"><div class="graf-barra" onclick="Mostrar('lista-encuesta','encuesta-votantes');"><span class="progreso" style="width:25%"></span><b>25%</b></div></td><td style="width:15%;"><input type="radio" /></td></tr>
-                            <tr><td><div class="graf-barra" onclick="Mostrar('lista-encuesta','encuesta-votantes');"><span class="progreso" style="width:30%"></span><b>30%</b></div></td><td><input type="radio" /></td></tr>
-                            <tr><td><div class="graf-barra" onclick="Mostrar('lista-encuesta','encuesta-votantes');"><span class="progreso" style="width:65%"></span><b>65%</b></div></td><td><input type="radio" /></td></tr>
-                        </table>
-                    </li>
-                        
-                </ul>
+                <div class="agregar" id="edicion-erogacion" ><button clave_funcion="8" control="pagar-erogacion" onclick="Mostrar('lista-encuestas','p-edicion-encuestas');" >Agregar encuesta</button></div>      
+                <ul class="lista seleccionable pantalla-3" style="width:100%;"></ul>
             </div>
             <div class="detalle" id="encuesta-votantes" style="display:none;">
                 <div class="titulo">Votantes de propuesta<button class="regresar" onclick="Mostrar('detalle-licitacion','lista-licitacion');">Regresar</button></div>  
@@ -510,7 +473,7 @@
                     </ul>
                 </div>
                 </div>                
-            <div class="edicion" style="display:none;" id="p-edicion-encuesta">
+            <div class="edicion" style="display:none;" id="p-edicion-encuestas">
                 <div class="titulo">Editar encuesta <button class="cancelar" id="cancelar-edit-erogacion"  onclick="Mostrar('p-edicion-erogacion','lista-erogacion');">Cancelar</button></div>    
                 <div class="pantalla-3" >
                     <label>Descripción</label><textarea style="height:100px;"></textarea>       

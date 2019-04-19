@@ -90,14 +90,15 @@
                         '<span class="t-4">' + GetValor(xmlDoc, "mensaje") + '</span>';                    
                     ; break;
                 case "prodserv":
-                    cont =
-                        '<div class="btns-up"><button class="edit-btn" clave_funcion="10" style="display:none;" control="edit-prodserv-3" id="edit-prodserv-3" onclick="IniciarEditarProdserv();"><img src="img/edit.png" /></button><button style="display:none;" onclick="IniciarEliminarProdserv();" clave_funcion="11" control="del-prodserv-11" id="del-prodserv-11" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>' +
-                        '<div class="check-activacion"><label class="etiqueta">Publicar</label><label class="switch"><input type="checkbox" /><span class="slider round"></span></label><hr class="clearn" /></div>' +
+                    var btn = document.getElementById("activar-negocio");
+                    btn.checked = (GetValor(xmlDoc, "activo")=="true");
+                    btn.value = clave;
+                    cont =                        
                         '<span class="t-1">' + GetValor(xmlDoc, "NombreNegocio") + '</span>' +
                         '<span class="t-2">Teléfono(s)' + GetValor(xmlDoc, "telefonos") + '</span>' +
                         '<span class="t-3">Horario: ' + GetValor(xmlDoc, "horario") + '</span>' +
                         '<span class="t-4">' + GetValor(xmlDoc, "mensaje") + '</span>';
-                    ; break;
+                    ; break;                
                 case "notificaciones": ; break;
             }
             cont += PintarImagenesTexto(xmlDoc0);
@@ -113,6 +114,13 @@
                     '<hr />';
             }
             return cont;
+        }
+
+        function ActivarNegocio(objeto) {
+            $.post(url + 'logic/controlador.aspx' + '?op=Activar&seccion=prodserv' + '&claveItem=' + objeto.value + "&activar=" + objeto.checked, function (xmlDoc) {
+                var btn = document.getElementById("activar-negocio");
+                btn.checked = (GetValor(xmlDoc, "activo") == "true");
+            });
         }
 
         function PintarItemEditar(catalogo, clave, xmlDoc0) {
@@ -361,7 +369,7 @@
 
         function CargarCatalogo(catalogo,callback,parametros) {
             $.post(url + 'logic/controlador.aspx' + '?op=cargar&seccion=' + catalogo,parametros, function (xmlDoc) {
-                var items = xmlDoc.getElementsByTagName("Table");
+                var items = xmlDoc.getElementsByTagName(catalogo == "encuestas" ? "Encuesta" : "Table");
                 var lista = document.getElementById("lista-" + catalogo).getElementsByTagName("ul")[0];
                 lista.innerHTML = "";
                 for (var n = 0; n < items.length; n++) {
@@ -397,7 +405,7 @@
                                  '</li>';
                          }
                     }
-                    itemli.innerHTML += html + '</ol>';
+                    itemli.innerHTML = html + '</ol>';
                     ; break;
                 case "prodserv":
                     itemli.onclick = function () { Mostrar('lista-' + catalogo, 'detalle-' + catalogo, catalogo, GetValor(item, "clave")); }
@@ -406,13 +414,39 @@
                     '<span class="t-2">Teléfono(s): ' + GetValor(item, "telefonos") +  '</span>' +
                     '<span class="t-3">Horario: ' + GetValor(item, "horario") + '</span>';                                  
                     break;
+                case "encuestas":
+                    html =
+                        ' <span class="t-1">' + GetValor(item, "pregunta") + '</span>' +
+                        '<span class="t-2">' + GetValor(item, "fecha") + '</span>';                        
+                    var respuestas = item.getElementsByTagName("Respuesta");
+                    if (GetValor(item, "yaVoto") == "true") {
+                        html += '<table class="transparente">';
+                        for (var i = 0; i < respuestas.length; i++) {
+                            html += '<tr><td><div class="graf-barra" onclick="Mostrar(\'lista-encuesta\',\'encuesta-votantes\');"><span class="progreso" style="width:' + GetValor(item, "porc") + '%"></span><label><b>' + GetValor(item, "porc") + '%</b>Si estoy de acuerdo</label></div></td></tr>';
+                        }
+                        html += '</table>';
+                    } else {
+                        html +=
+                            '<div class="separado10 item-enc">' +
+                            '<table>';
+                        for (var i = 0; i < respuestas.length; i++) {
+                            html +=
+                                '<tr><td style="width:75%;"><label for="resp-' + GetValor(respuestas[i], "clave") + '">' + GetValor(respuestas[i], "respuesta") + '</label></td><td style="width:25%;"><input type="radio" id="resp-' + GetValor(respuestas[i], "clave") + '" name="enc-' + GetValor(respuestas[i], "encuesta") + '" /></td></tr>';
+                        }
+                        html +=
+                            '</table>' +
+                            '<button class="centrado30">Votar</button>' +
+                            '</div>';                        
+                    }
+                    itemli.innerHTML = html;
+                    ; break;
             }
             return itemli;
         }
 
         function IniciarEliminarDirectorio(indice, boton) {
 
-            if (confirm("Confirme que desea eliminar " + boton.parentNode.getAttribute("nombre") )){
+            if (confirm("Confirme que desea eliminar " + boton.parentNode.getAttribute("nombre"))){
                 $.post(url + 'logic/controlador.aspx' + '?op=Eliminar&seccion=directorio&indice=' + indice, function (xmlDoc) {
                     Mostrar('p-edicion-directorio', 'lista-directorio');
                     CargarCatalogo('directorio', function () { });
