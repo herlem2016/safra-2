@@ -79,26 +79,40 @@
         function PintarItem(catalogo, clave, xmlDoc0){
             var cont = "", imgsTexto;
             var xmlDoc = xmlDoc0.getElementsByTagName("Table")[0];
+            var pantalla = document.getElementById("detalle-" + catalogo);
+            pantalla.setAttribute("clave",clave);
             switch (catalogo) {
                 case "comunicados":
-                    var pantalla = document.getElementById("detalle-" + catalogo);
-                    pantalla.setAttribute("clave",clave);
                     cont =                    
                         '<span class="t-1">' + GetValor(xmlDoc, "titulo") + '</span>' +
                         '<span class="t-2">' + GetValor(xmlDoc, "nombre") + ' (' + GetValor(xmlDoc, "cargo") + ')</span>' +
                         '<span class="t-3">' + GetValor(xmlDoc, "fecha") + '</span>' +
-                        '<span class="t-4">' + GetValor(xmlDoc, "mensaje") + '</span>';
-                    imgsTexto = xmlDoc0.getElementsByTagName("Table1");
-                    for (var j = 0; j < imgsTexto.length; j++) {
-                        cont += '<img class="file" src="' + url + '/' + GetValor(imgsTexto[j], "path") + "?v=" + Math.random() + '" />' +
-                            '<p>' + GetValor(imgsTexto[j], "descripcion") + '</p>'+
-                            '<hr />';
-                    }                 
-                    document.getElementById("wrap-detalle-" + catalogo).innerHTML = cont;
+                        '<span class="t-4">' + GetValor(xmlDoc, "mensaje") + '</span>';                    
                     ; break;
-                case "directorio": ; break;
+                case "prodserv":
+                    cont =
+                        '<div class="btns-up"><button class="edit-btn" clave_funcion="10" style="display:none;" control="edit-prodserv-3" id="edit-prodserv-3" onclick="IniciarEditarProdserv();"><img src="img/edit.png" /></button><button style="display:none;" onclick="IniciarEliminarProdserv();" clave_funcion="11" control="del-prodserv-11" id="del-prodserv-11" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>' +
+                        '<div class="check-activacion"><label class="etiqueta">Publicar</label><label class="switch"><input type="checkbox" /><span class="slider round"></span></label><hr class="clearn" /></div>' +
+                        '<span class="t-1">' + GetValor(xmlDoc, "NombreNegocio") + '</span>' +
+                        '<span class="t-2">Teléfono(s)' + GetValor(xmlDoc, "telefonos") + '</span>' +
+                        '<span class="t-3">Horario: ' + GetValor(xmlDoc, "horario") + '</span>' +
+                        '<span class="t-4">' + GetValor(xmlDoc, "mensaje") + '</span>';
+                    ; break;
                 case "notificaciones": ; break;
             }
+            cont += PintarImagenesTexto(xmlDoc0);
+            document.getElementById("wrap-detalle-" + catalogo).innerHTML = cont;
+        }
+
+        function PintarImagenesTexto(xmlDoc0) {
+            imgsTexto = xmlDoc0.getElementsByTagName("Table1");
+            var cont = "";
+            for (var j = 0; j < imgsTexto.length; j++) {
+                cont += '<img class="file" src="' + url + '/' + GetValor(imgsTexto[j], "path") + "?v=" + Math.random() + '" />' +
+                    '<p>' + GetValor(imgsTexto[j], "descripcion") + '</p>' +
+                    '<hr />';
+            }
+            return cont;
         }
 
         function PintarItemEditar(catalogo, clave, xmlDoc0) {
@@ -106,10 +120,18 @@
             var xmlDoc = xmlDoc0.getElementsByTagName("Table")[0];
             switch (catalogo) {
                 case "comunicados":
+                case "prodserv":
                     var frm = document.getElementById("frm-edit-" + catalogo);
-                    frm.getElementsByTagName("input")[0].value = GetValor(xmlDoc, "titulo");
                     document.getElementById("clave-" + catalogo).value = clave;
-                    frm.getElementsByTagName("textarea")[0].value = GetValor(xmlDoc, "mensaje");                   
+                    frm.getElementsByTagName("textarea")[0].value = GetValor(xmlDoc, "descripcion");  
+                    if (catalogo == "prodserv") {
+                        frm.getElementsByTagName("input")[0].value = GetValor(xmlDoc, "NombreNegocio");
+                        document.getElementById("prodserv-telefonos").value = GetValor(xmlDoc, "telefonos");
+                        document.getElementById("prodserv-horario").value = GetValor(xmlDoc, "horario");
+                        document.getElementById("prodserv-palabrasclave").value = GetValor(xmlDoc, "palabrasclave");
+                    } else if (catalogo == "prodserv"){
+                        frm.getElementsByTagName("input")[0].value = GetValor(xmlDoc, "titulo");
+                    }
                     imgsTexto = xmlDoc0.getElementsByTagName("Table1");
                     var imagenesTextos = document.getElementById("c-e-" + catalogo);
                     imagenesTextos.innerHTML = "";
@@ -215,8 +237,12 @@
             }
         }
 
-        function BuscarProdServ() {
-            Mostrar('buscador-prodserv', 'lista-prodserv');
+        function BuscarProdServ(inp) {
+            CargarCatalogo("prodserv", function () { Mostrar('buscador-prodserv', 'lista-prodserv'); }, {buscar:inp.value});
+        }
+
+        function ValidarEnter(ev) {
+            return (ev.which == 13 || ev.keyCode == 13);
         }
 
         window.onresize = function () {
@@ -224,6 +250,11 @@
         }
 
         function IniciarApp() {
+            document.getElementById("btn-buscar-ps").onkeypress = function (ev) {
+                if (ValidarEnter(ev)) {
+                    BuscarProdServ(ev.target);
+                }
+            }
             EstablecerDimensiones();
             PantallaMostrar("home", "section",true);
             var tabInicioPro = document.getElementById("tab-inicio-pro");
@@ -328,10 +359,10 @@
             }
         }
 
-        function CargarCatalogo(catalogo,callback) {
-            $.post(url + 'logic/controlador.aspx' + '?op=cargar&seccion=' + catalogo, function (xmlDoc) {
+        function CargarCatalogo(catalogo,callback,parametros) {
+            $.post(url + 'logic/controlador.aspx' + '?op=cargar&seccion=' + catalogo,parametros, function (xmlDoc) {
                 var items = xmlDoc.getElementsByTagName("Table");
-                var lista = document.getElementById(catalogo).getElementsByTagName("ul")[0];
+                var lista = document.getElementById("lista-" + catalogo).getElementsByTagName("ul")[0];
                 lista.innerHTML = "";
                 for (var n = 0; n < items.length; n++) {
                     lista.appendChild(ObtenerItem(catalogo, items[n]));
@@ -368,6 +399,13 @@
                     }
                     itemli.innerHTML += html + '</ol>';
                     ; break;
+                case "prodserv":
+                    itemli.onclick = function () { Mostrar('lista-' + catalogo, 'detalle-' + catalogo, catalogo, GetValor(item, "clave")); }
+                    itemli.innerHTML =
+                        '<span class="t-1">' + GetValor(item,"NombreNegocio") + '</span>' +
+                    '<span class="t-2">Teléfono(s): ' + GetValor(item, "telefonos") +  '</span>' +
+                    '<span class="t-3">Horario: ' + GetValor(item, "horario") + '</span>';                                  
+                    break;
             }
             return itemli;
         }
@@ -500,7 +538,7 @@
 
         function GuardarUnTexto(textosCambio, i, callback, clave, catalogo) {
             var datos = { descripcion: textosCambio[i].getElementsByTagName('textarea')[0].value, indice: textosCambio[i].getAttribute("indice") };
-            $.post(url + 'logic/controlador.aspx' + '?op=ActualizarDescripcion&seccion=' + catalogo,datos, function (xmlDoc) {
+            $.post(url + 'logic/controlador.aspx' + '?op=ActualizarDescripcion&seccion=Generico',datos, function (xmlDoc) {
                 i++;
                 if (i < textosCambio.length) {
                     try {

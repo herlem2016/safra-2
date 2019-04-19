@@ -68,7 +68,7 @@
                 <li><button onclick="PantallaMostrar('erogaciones','section');" class="ok"><img src="img/erogaciones.png"/>Erogaciones</button></li>
                 <li><button onclick="PantallaMostrar('reportes','section');" class="no"><img src="img/reportes.png"/>Reportes</button></li>
                 <li><button onclick="PantallaMostrar('encuestas','section');" class="no"><img src="img/encuestas.png"/>Encuestas</button></li>
-                <li><button onclick="PantallaMostrar('serviciosproductos','section');" class="ok"><img src="img/serviciosproductos.png"/>Productos y Servicios</button></li>
+                <li><button onclick="PantallaMostrar('serviciosproductos','section',true);" class="ok"><img src="img/serviciosproductos.png"/>Productos y Servicios</button></li>
                 <li><button onclick="PantallaMostrar('directorio','section');" class="ok"><img src="img/directorio.png"/>Directorio</button></li>
                 <li><button onclick="PantallaMostrar('comunicados','section');" class="ok"><img src="img/comunicados.png"/>Comunicados</button></li>
                 <li><button onclick="PantallaMostrar('notificaciones','section');" class="ok"><img src="img/notificaciones.png"/>Notificaciones</button></li>
@@ -185,78 +185,43 @@
         </section>
 
         <section class="pantalla productosservicios" id="serviciosproductos">
+
             <div class="buscador" id="buscador-prodserv">
                 <div class="titulo">Productos y Servicios</div>      
                 <img class="logo-frac" src="img/Titan_Company_Logo.png" />      
-                <div class="busqueda"><input placeholder="Buscar" onclick="BuscarProdServ();" /></div> 
+                <div class="busqueda"><input placeholder="Buscar" id="btn-buscar-ps"/></div> 
                 <p>Encuentra servicios y productos que ofrecen dentro del fracciomaniento</p>
             </div>
+
             <div class="lista" id="lista-prodserv" style="display:none;">
-                <div class="titulo"><button class="regresar" onclick="Mostrar('lista-prodserv','buscador-prodserv');">Regresar</button>Productos y Servicios</div>            
-                <div class="agregar" id="edicion-prodserv" style="display:none;"><button clave_funcion="10" control="edicion-prodserv" onclick="IniciarEditarProdserv(true);">Aregar comunicado</button></div>
-                <ul class="lista seleccionable pantalla-3">
-                    <li class="item" onclick="Mostrar('lista-prodserv','detalle-prodserv');">
-                        <span class="t-1">Psicologo Familiar, especialista en aprendizaje en niños.</span>                       
-                        <span class="t-2">Teléfono(s) 5585681329, 55123698, 58986312</span>                    
-                        <span class="t-3">Horario: Todos los días de 8pm a 10pm</span>              
-                    </li>
-                    <li class="item" onclick="Mostrar('lista-prodserv','detalle-prodserv');">
-                        <span class="t-1">Tacos y Burritos "El Oaxaqueño"</span>                       
-                        <span class="t-2">Teléfono(s) 5585681329,55123698,58986312</span>                    
-                        <span class="t-3">Horario: Todos los días de 8pm a 10pm</span>              
-                    </li>
-                    <li class="item" onclick="Mostrar('lista-prodserv','detalle-prodserv');">
-                        <span class="t-1">Tacos y Burritos "El Oaxaqueño"</span>                       
-                        <span class="t-2">Teléfono(s) 5585681329,55123698,58986312</span>                    
-                        <span class="t-3">Horario: Todos los días de 8pm a 10pm</span>              
-                    </li>
-                   <li class="item" onclick="Mostrar('lista-prodserv','detalle-prodserv');">
-                        <span class="t-1">Tacos y Burritos "El Oaxaqueño"</span>                       
-                        <span class="t-2">Teléfono(s) 5585681329,55123698,58986312</span>                    
-                        <span class="t-3">Horario: Todos los días de 8pm a 10pm</span>              
-                    </li>
-                    <li class="item" onclick="Mostrar('lista-prodserv','detalle-prodserv');">
-                        <span class="t-1">Tacos y Burritos "El Oaxaqueño"</span>                       
-                        <span class="t-2">Teléfono(s) 5585681329,55123698,58986312</span>                    
-                        <span class="t-3">Horario: Todos los días de 8pm a 10pm</span>              
-                    </li>
-                </ul>
+                <div class="titulo"><button class="regresar" onclick="Mostrar('lista-prodserv','buscador-prodserv');">Regresar</button>Productos y Servicios</div>   
+                <div class="agregar" id="edicion-prodserv" style="display:none;"><button clave_funcion="5" control="edicion-prodserv" onclick="IniciarEditar(true,'prodserv');">Aregar Negocio</button></div>
+                <ul class="lista seleccionable pantalla-3"></ul>
             </div>
             <div class="detalle" id="detalle-prodserv" style="display:none;">
-                <div class="titulo">Productos y Servicios <button class="regresar" onclick="Mostrar('detalle-prodserv','lista-prodserv');">Regresar</button></div>  
-                <div class="pantalla-3">
-                    <div class="btns-up"><button class="edit-btn" clave_funcion="10" style="display:none;" control="edit-prodserv-3" id="edit-prodserv-3" onclick="IniciarEditarProdserv();"><img src="img/edit.png" /></button><button style="display:none;" onclick="IniciarEliminarProdserv();" clave_funcion="11" control="del-prodserv-11" id="del-prodserv-11" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>
-                    <div class="check-activacion"><label class="etiqueta">Publicar</label><label class="switch"><input type="checkbox"/><span class="slider round"></span></label><hr class="clearn" /></div>
-                    <span class="t-1">Tacos y Burritos "El Oaxaqueño"</span>                       
-                    <span class="t-2">Teléfono(s) 5585681329,55123698,58986312</span>                    
-                    <span class="t-3">Horario: Todos los días de 8pm a 10pm</span>                    
-                    <span class="t-4">Con gusto les ofrecemos tacos y burritos. <br />
-                        Burritos:2 * $50.00 <br />
-                        Tacos:  3 * $25.00 <br />
-                        Tacos de Birria:2 * $50.00 <br />
-                    </span>                    
-                    <img class="file" src="img/Tacos-al-Pastor-Jalisco.jpg" />
-                    <img class="file" src="img/1490969045_123184_1490969549_noticia_normal.jpg" />
-                    <hr />
-                </div>
+                <div class="titulo">Productos y Servicios <button class="regresar" onclick="Mostrar('detalle-prodserv','lista-prodserv');">Regresar</button></div>
+                <div class="btns-up"><button class="edit-btn" clave_funcion="3" style="display:none;" control="edit-prodserv-3" id="edit-prodserv-3" onclick="IniciarEditar(false,'prodserv');" ><img src="img/edit.png" /></button><button style="display:none;" onclick="IniciarEliminar(this,'prodserv');" clave_funcion="4" control="del-prodserv-4" id="del-prodserv-4" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>
+                <div class="pantalla-3" id="wrap-detalle-prodserv"></div>
              </div>
+            
             <div class="edicion" style="display:none;" id="p-edicion-prodserv">
-                <div class="titulo">Edición de comunicados <button class="cancelar" id="cancelar-edit-prodserv">Cancelar</button></div>    
-                <div class="pantalla-3" >
-                    <label>Título</label><input />
-                    <label>Palabras clave</label><input />
-                    <label>Teléfono </label><input />
-                    <label>Teléfono 2</label><input />
-                    <label>Teléfono 3</label><input />
-                    <label>Horario</label><input />                    
-                    <label>Descripción</label><textarea style="height:180px;"></textarea>                                
-                    <div class="btns-up" style="margin-top:15px;"><button class="adjuntar-btn" style="width:100px;" onclick="IniciarAdjuntarPublicidad();"><img src="img/attach.png" /><span class="texto-discreto">Adjuntar</span></button><hr class="clearn" /></div>
-                    <ul class="lista-files">
-                        <li><button class="del-btn" ><img src="img/del.png" /></button><span>100_800.img</span></li>
-                    </ul>                 
-                    <button class="aceptar" >Aceptar</button>
-                </div>
+                <div class="titulo">Edite los datos de su negocio <button class="cancelar" id="cancelar-edit-prodserv">Cancelar</button></div>
+                <form class="pantalla-3" id="frm-edit-prodserv" onsubmit="return false;">
+                    <fieldset style="border:0px;">
+                        <label>Nombre de su negocio</label><input name="titulo" />
+                        <input name="esNuevo" type="hidden" id="op-prodserv" />
+                        <input name="clave" type="hidden" id="clave-prodserv" />
+                        <label>Descripción</label><textarea style="height:180px;" name="descripcion"></textarea>
+                        <label>Palabras clave</label><input name="palabrasclave" id="prodserv-palabrasclave"/>
+                        <label>Teléfonos </label><input name="telefonos"  id="prodserv-telefonos"/>
+                        <label>Horario</label><input name="horario" id="prodserv-horario"/>
+                        <div id="c-e-prodserv"></div>
+                        <div><button class="adjuntar-btn" style="width:100px;" onclick="IAgregarImagenTexto('c-e-prodserv');"><img src="img/attach.png" /><span class="texto-discreto">Agregar</span></button><hr class="clearn" /></div>
+                        <button class="aceptar" style="margin-top:30px;margin-bottom:50px;" onclick="Guardar(this,'prodserv', function () { LimpiarForm('prodserv');CargarCatalogo(catalogo);Mostrar('p-edicion-prodserv','lista-prodserv');});">Aceptar</button>
+                    </fieldset>
+                </form>
             </div>
+
         </section>
 
         <section class="pantalla solmtto" id="solmtto">  
