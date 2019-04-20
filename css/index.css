@@ -821,10 +821,14 @@ table.desglose th {
     position: relative;
     padding:7px;
 }
-.votado{background-image:url(../img/ok.png);background-position:right 20px center;background-repeat:no-repeat;background-size:25px;}
+table.transparente tr.votado {
+    background-image: url(../img/ok.png);
+    background-position: right 20px center;
+    background-repeat: no-repeat;
+    background-size: 25px;
+}
 .graf-barra label{
     position: relative;
-    padding:5px;
 }
     .graf-barra .progreso {
         background-color: #6da2f2;

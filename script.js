@@ -419,29 +419,58 @@
                         ' <span class="t-1">' + GetValor(item, "pregunta") + '</span>' +
                         '<span class="t-2">' + GetValor(item, "fecha") + '</span>';                        
                     var respuestas = item.getElementsByTagName("Respuesta");
-                    if (GetValor(item, "yaVoto") == "true") {
+                    if (GetValor(item, "yaVoto") == 1) {
                         html += '<table class="transparente">';
                         for (var i = 0; i < respuestas.length; i++) {
-                            html += '<tr><td><div class="graf-barra" onclick="Mostrar(\'lista-encuesta\',\'encuesta-votantes\');"><span class="progreso" style="width:' + GetValor(item, "porc") + '%"></span><label><b>' + GetValor(item, "porc") + '%</b>Si estoy de acuerdo</label></div></td></tr>';
+                            html += '<tr ' + (GetValor(respuestas[i], "respondio")==1 ? 'class="votado"' : "") + '><td><div class="graf-barra" onclick="Mostrar(\'lista-encuesta\',\'encuesta-votantes\');"><span class="progreso" style="width:' + GetValor(respuestas[i], "porc") + '%"></span><label><b>' + GetValor(respuestas[i], "porc") + '%</b>' + GetValor(respuestas[i], "respuesta") + '</label></div></td></tr>';
                         }
                         html += '</table>';
                     } else {
+                        var encuesta = GetValor(item, "clave");
                         html +=
-                            '<div class="separado10 item-enc">' +
+                            '<div class="separado10 item-enc"  id="tab-resp-' + encuesta +'">' +
                             '<table>';
                         for (var i = 0; i < respuestas.length; i++) {
                             html +=
-                                '<tr><td style="width:75%;"><label for="resp-' + GetValor(respuestas[i], "clave") + '">' + GetValor(respuestas[i], "respuesta") + '</label></td><td style="width:25%;"><input type="radio" id="resp-' + GetValor(respuestas[i], "clave") + '" name="enc-' + GetValor(respuestas[i], "encuesta") + '" /></td></tr>';
+                                '<tr><td style="width:75%;"><label for="resp-' + GetValor(respuestas[i], "clave") + '">' + GetValor(respuestas[i], "respuesta") + '</label></td><td style="width:25%;"><input type="radio" id="resp-' + GetValor(respuestas[i], "clave") + '" name="enc-' + encuesta + '" onchange="MarcarVoto(this,' + encuesta + ',' + GetValor(respuestas[i], "clave") + ');"/></td></tr>';
                         }
                         html +=
                             '</table>' +
-                            '<button class="centrado30">Votar</button>' +
+                        '<button class="centrado30" id="btn-votar-enc-' + encuesta + '" onclick="RegistrarVoto(this,' + encuesta  + ')">Votar</button>' +
                             '</div>';                        
                     }
                     itemli.innerHTML = html;
                     ; break;
             }
             return itemli;
+        }
+
+        function MarcarVoto(objeto, encuesta, respuesta) {
+            document.getElementById("btn-votar-enc-" + encuesta).setAttribute("respuesta",respuesta);
+        }
+
+        function RegistrarVoto(objeto,encuesta) {
+            $.post(url + 'logic/controlador.aspx' + '?op=RegistrarVoto&seccion=encuestas&encuesta=' + encuesta + "&respuesta=" + objeto.getAttribute("respuesta") , function (xmlDoc) {
+                if (GetValor(xmlDoc, "estatus") == 1) {
+                    MostrarConteoEncuesta(encuesta);
+                } else {
+                    alert(GetValor(xmlDoc, "mensaje"));
+                    MostrarConteoEncuesta(encuesta);
+                }
+            });
+        }
+
+        function MostrarConteoEncuesta(encuesta) {
+            $.post(url + 'logic/controlador.aspx' + '?op=ObtenerConteo&seccion=encuestas&encuesta=' + encuesta, function (xmlDoc) {
+                var respuestas = xmlDoc.getElementsByTagName("Table");
+                var html = '<table class="transparente">';
+                for (var i = 0; i < respuestas.length; i++) {
+                    html += '<tr ' + (GetValor(respuestas[i], "respondio")==1?'class="votado"':"") + '><td><div class="graf-barra" onclick="Mostrar(\'lista-encuesta\',\'encuesta-votantes\');"><span class="progreso" style="width:' + GetValor(respuestas[i], "porc") + '%"></span><label><b>' + GetValor(respuestas[i], "porc") + '%</b>' + GetValor(respuestas[i], "respuesta") + '</label></div></td></tr>';
+                }
+                html += '</table>';
+                var tabla=document.getElementById("tab-resp-" + encuesta);    
+                tabla.innerHTML = html;                
+            });
         }
 
         function IniciarEliminarDirectorio(indice, boton) {
