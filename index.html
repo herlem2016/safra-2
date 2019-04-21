@@ -225,70 +225,34 @@
 
         </section>
 
-        <section class="pantalla solmtto" id="solmtto">  
+        <section class="pantalla solmtto" id="solmtto">
             <div class="lista" id="lista-solmtto">
-                <div class="titulo">Solicitudes de Mantenimiento</div>            
+                <div class="titulo">solmtto</div>
                 <div class="busqueda"><input placeholder="Buscar" /></div>
-                <div class="agregar" id="edicion-solmtto" style="display:none;"><button clave_funcion="8" control="edicion-solmtto" onclick="IniciarEditarComunicados(true);">Aregar comunicado</button></div>
-                <ul class="lista seleccionable pantalla-3">
-                    <li class="item" onclick="Mostrar('lista-solmtto','detalle-solmtto');">       
-                        <span class="t-1">Lamparas descompuestas</span>                    
-                        <span class="t-1"><span style="color:#ff006e;">Enviado/Visto/Atendido</span></span>                    
-                        <span class="t-2">Lucely Yanet Rodriguez Almaguer</span>                    
-                        <span class="t-3">Folio: 00254<br /> 11-ene-2018 9:25 pm</span>                    
-                    </li>
-                    <li class="item" onclick="Mostrar('lista-solmtto','detalle-solmtto');">       
-                        <span class="t-1">Lamparas descompuestas</span>                    
-                        <span class="t-1"><span style="color:#ff006e;">Enviado/Visto/Atendido</span></span>                    
-                        <span class="t-2">Lucely Yanet Rodriguez Almaguer</span>                    
-                        <span class="t-3">Folio: 00254<br /> 11-ene-2018 9:25 pm</span>                    
-                    </li>
-                    <li class="item" onclick="Mostrar('lista-solmtto','detalle-solmtto');">       
-                        <span class="t-1">Lamparas descompuestas</span>                    
-                        <span class="t-1"><span style="color:#ff006e;">Enviado/Visto/Atendido</span></span>                    
-                        <span class="t-2">Lucely Yanet Rodriguez Almaguer</span>                    
-                        <span class="t-3">Folio: 00254<br /> 11-ene-2018 9:25 pm</span>                    
-                    </li>
-                    <li class="item" onclick="Mostrar('lista-solmtto','detalle-solmtto');">       
-                        <span class="t-1">Lamparas descompuestas</span>                    
-                        <span class="t-1"><span style="color:#ff006e;">Enviado/Visto/Atendido</span></span>                    
-                        <span class="t-2">Lucely Yanet Rodriguez Almaguer</span>                    
-                        <span class="t-3">Folio: 00254<br /> 11-ene-2018 9:25 pm</span>                    
-                    </li>
-                    <li class="item" onclick="Mostrar('lista-solmtto','detalle-solmtto');">       
-                        <span class="t-1">Lamparas descompuestas</span>                    
-                        <span class="t-1"><span style="color:#ff006e;">Enviado/Visto/Atendido</span></span>                    
-                        <span class="t-2">Lucely Yanet Rodriguez Almaguer</span>                    
-                        <span class="t-3">Folio: 00254<br /> 11-ene-2018 9:25 pm</span>                    
-                    </li>
-                </ul>
+                <div class="agregar" id="edicion-solmtto" style="display:none;"><button clave_funcion="5" control="edicion-solmtto" onclick="IniciarEditar(true,'solmtto');">Aregar Solicitud de Mantenimiento</button></div>
+                <ul class="lista seleccionable pantalla-3"></ul>
             </div>
+
             <div class="detalle" id="detalle-solmtto" style="display:none;">
-                <div class="titulo">Solicitud de Mantenimiento<button class="regresar" onclick="Mostrar('detalle-solmtto','lista-solmtto');">Regresar</button></div>  
-                <div class="pantalla-3">
-                    <div class="btns-up"><button class="edit-btn" clave_funcion="3" style="display:none;" control="edit-solmtto-8" id="edit-solmtto-8" onclick="IniciarEditarSolmtto();"><img src="img/edit.png" /></button><hr class="clearn" /></div>
-                    <span class="t-1">Lamparas descompuestas</span>                    
-                    <span class="t-2">Lucely Janet Rodriguez Almaguer</span>                    
-                    <span class="t-3">11-ene-2018</span>                    
-                    <span class="t-4">Buenas tardes, diculpen, solo para avisarles que dos lamparas de la calle sofia no prenden. vean: </span>                    
-                    <img class="file" src="img/Titan_Company_Logo.png" />                    
-                    <img class="file" src="img/call.png"/>   
-                    <hr />
-                </div>
-             </div>
-            <div class="edicion" style="display:none;" id="p-edicion-solmtto">
-                <div class="titulo">Edición de Solcitud de Mtto. <button class="cancelar" id="cancelar-edit-solmtto">Cancelar</button></div>    
-                <div class="pantalla-3" >
-                    <label>Título</label><input />
-                    <label>Descripción</label><textarea style="height:180px;"></textarea>                                
-                    <div class="btns-up" style="margin-top:15px;"><button class="adjuntar-btn" style="width:100px;" onclick="IniciarAdjuntarEvidenciaSolmtto();"><img src="img/attach.png" /><span class="texto-discreto">Adjuntar</span></button><hr class="clearn" /></div>
-                    <ul class="lista-files">
-                        <li><button class="del-btn" ><img src="img/del.png" /></button><span>100_800.img</span></li>
-                        <li><button class="del-btn" ><img src="img/del.png" /></button><span>Minuta_12-ene-2018.pdf</span></li>
-                        <li><button class="del-btn" ><img src="img/del.png" /></button><span>Minuta_12-ene-2018.pdf</span></li>
-                    </ul>                 
-                    <button class="aceptar" >Aceptar</button>
-                </div>
+                <div class="titulo">Solicitudes de Mantenimiento<button class="regresar" onclick="Mostrar('detalle-solmtto', 'lista-solmtto'); ">Regresar</button></div>
+                <div class="btns-up"><button class="edit-btn" clave_funcion="3" style="display:none;" control="edit-solmtto-3" id="edit-solmtto-3" onclick="IniciarEditar(false,'solmtto');"><img src="img/edit.png" /></button><button style="display:none;" onclick="IniciarEliminar(this,'solmtto');" clave_funcion="4" control="del-solmtto-4" id="del-solmtto-4" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>
+                <div class="pantalla-3" id="wrap-detalle-solmtto"></div>
+            </div>
+
+            <div class="edicion " style="display:none;" id="p-edicion-solmtto">
+                <div class="titulo">Edición de Solicitud de Mtto. <button class="cancelar" id="cancelar-edit-solmtto">Cancelar</button></div>
+                <form class="pantalla-3" id="frm-edit-solmtto" onsubmit="return false;">
+                    <fieldset style="border:0px;">
+                        <label>Título</label><input name="titulo" />
+                        <input name="esNuevo" type="hidden" id="op-solmtto" />
+                        <input name="clave" type="hidden" id="clave-solmtto" />
+                        <label>Descripción</label><textarea style="height:180px;" name="descripcion"></textarea>
+                        <label>Imagenes y descripción<hr class="clearn" /></label>
+                        <div id="c-e-solmtto"></div>
+                        <div><button class="adjuntar-btn" style="width:100px;" onclick="IAgregarImagenTexto('c-e-solmtto');"><img src="img/attach.png" /><span class="texto-discreto">Agregar</span></button><hr class="clearn" /></div>
+                        <button class="aceptar" style="margin-top:30px;margin-bottom:50px;" onclick="Guardar(this,'solmtto', function () { LimpiarForm('solmtto');CargarCatalogo(catalogo);Mostrar('p-edicion-solmtto','lista-solmtto');});">Aceptar</button>
+                    </fieldset>
+                </form>
             </div>
         </section>
 
@@ -448,43 +412,22 @@
             <div class="lista" id="lista-encuestas">
                 <div class="titulo">Encuestas</div>            
                 <div class="busqueda"><input placeholder="Buscar" /></div>
-                <div class="agregar" id="edicion-erogacion" ><button clave_funcion="8" control="pagar-erogacion" onclick="Mostrar('lista-encuestas','p-edicion-encuestas');" >Agregar encuesta</button></div>      
+                <div class="agregar" id="edicion-encuestas"  style="display:none;" ><button clave_funcion="2" control="edicion-encuestas"  onclick="IniciarEditar(true, 'encuestas', 1, { a: 'lista-encuestas', b: 'p-edicion-encuestas' });" >Agregar encuesta</button></div>      
                 <ul class="lista seleccionable pantalla-3" style="width:100%;"></ul>
             </div>
-            <div class="detalle" id="encuesta-votantes" style="display:none;">
-                <div class="titulo">Votantes de propuesta<button class="regresar" onclick="Mostrar('detalle-licitacion','lista-licitacion');">Regresar</button></div>  
-                <div class="pantalla-3">
-                    <ul class="lista seleccionable pantalla-3">
-                        <li class="item">
-                            <span class="t-2">Sofía 106-B</span>              
-                        </li>
-                        <li class="item">                 
-                            <span class="t-2">Sofía 106-B</span>
-                        </li>
-                        <li class="item">             
-                            <span class="t-2">Sofía 106-B</span>
-                        </li>
-                        <li class="item">                  
-                            <span class="t-2">Sofía 106-B</span>
-                        </li>
-                        <li class="item">                 
-                            <span class="t-2">Sofía 106-B</span>
-                        </li>
-                    </ul>
-                </div>
-                </div>                
+                         
             <div class="edicion" style="display:none;" id="p-edicion-encuestas">
-                <div class="titulo">Editar encuesta <button class="cancelar" id="cancelar-edit-erogacion"  onclick="Mostrar('p-edicion-erogacion','lista-erogacion');">Cancelar</button></div>    
-                <div class="pantalla-3" >
-                    <label>Descripción</label><textarea style="height:100px;"></textarea>       
-                    <label>Opciones de encuesta<button class="adjuntar-btn" style="width:100px;" onclick="IniciarAdjuntarEvidenciaSolmtto();"><img src="img/add.png" /><span class="texto-discreto">Agregar</span></button><hr class="clearn" /></label>
-                    <table class="lista-files">
-                        <tr><td style="width:10%"><button class="del-btn" ><img src="img/del.png" /></button></td><td><input /></td></tr>                            
-                        <tr><td ><button class="del-btn" ><img src="img/del.png" /></button></td><td><input /></td></tr>                            
-                        <tr><td ><button class="del-btn" ><img src="img/del.png" /></button></td><td><input /></td></tr>                            
-                    </table>                     
-                    <button class="aceptar" style="margin-top:10px;" >Aceptar</button>
-                </div>
+                <div class="titulo">Editar encuesta <button class="cancelar" id="cancelar-edit-encuestas">Regresar</button></div>
+                <form class="pantalla-3" id="frm-edit-encuestas" onsubmit="return false;">
+                    <fieldset style="border:0px;">
+                        <input name="esNuevo" type="hidden" id="op-encuestas" />
+                        <input name="clave" type="hidden" id="enc-clave" />
+                        <label>Descripción</label><textarea style="height:100px;" id="enc-pregunta" name="pregunta"></textarea>
+                        <label>Opciones de encuesta<button class="adjuntar-btn" style="width:100px;"  onclick="IAgregarImagenTexto('c-e-encuestas',1);"><img src="img/add.png" /><span class="texto-discreto">Agregar</span></button><hr class="clearn" /></label>
+                        <div id="c-e-encuestas"></div>
+                        <button class="aceptar" style="margin-top:10px;" onclick="Guardar(this,'encuestas', function () { LimpiarForm(catalogo);CargarCatalogo(catalogo);Mostrar('p-edicion-' + catalogo,'lista-' + catalogo);},true);">Aceptar</button>
+                    </fieldset>
+                </form>
             </div>
         </section>
                 

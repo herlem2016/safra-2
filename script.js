@@ -1,4 +1,4 @@
-﻿function MostrarOpcionesHabilitadas(){
+﻿function MostrarOpcionesHabilitadas(evitarToggle){
             var funcionesEnPantalla = { btns: [], claves: [] };
             var botones = document.getElementsByTagName("button");
             var j = 0;
@@ -17,7 +17,9 @@
                         }
                     }
                 }
-                ToogleOpcionesUsuario('opciones-usuario');
+                if (!evitarToggle) {
+                    ToogleOpcionesUsuario('opciones-usuario');
+                }
                 document.getElementById("mostrar-opciones").style.display = "none";
                 document.getElementById("ocultar-opciones").style.display = "block";
             });
@@ -83,11 +85,18 @@
             pantalla.setAttribute("clave",clave);
             switch (catalogo) {
                 case "comunicados":
+                    cont =
+                        '<span class="t-1">' + GetValor(xmlDoc, "titulo") + '</span>' +
+                        '<span class="t-2">' + GetValor(xmlDoc, "nombre") + ' (' + GetValor(xmlDoc, "cargo") + ')</span>' +
+                        '<span class="t-3">' + GetValor(xmlDoc, "fecha") + '</span>' +
+                        '<span class="t-4">' + GetValor(xmlDoc, "mensaje") + '</span>';
+                    ; break;
+                case "solmtto":
                     cont =                    
                         '<span class="t-1">' + GetValor(xmlDoc, "titulo") + '</span>' +
                         '<span class="t-2">' + GetValor(xmlDoc, "nombre") + ' (' + GetValor(xmlDoc, "cargo") + ')</span>' +
                         '<span class="t-3">' + GetValor(xmlDoc, "fecha") + '</span>' +
-                        '<span class="t-4">' + GetValor(xmlDoc, "mensaje") + '</span>';                    
+                        '<span class="t-4">' + GetValor(xmlDoc, "descripcion") + '</span>';                    
                     ; break;
                 case "prodserv":
                     var btn = document.getElementById("activar-negocio");
@@ -126,10 +135,11 @@
         function PintarItemEditar(catalogo, clave, xmlDoc0) {
             var cont = "", imgsTexto;
             var xmlDoc = xmlDoc0.getElementsByTagName("Table")[0];
+            var frm = document.getElementById("frm-edit-" + catalogo);
             switch (catalogo) {
                 case "comunicados":
+                case "solmtto":
                 case "prodserv":
-                    var frm = document.getElementById("frm-edit-" + catalogo);
                     document.getElementById("clave-" + catalogo).value = clave;
                     frm.getElementsByTagName("textarea")[0].value = GetValor(xmlDoc, "descripcion");  
                     if (catalogo == "prodserv") {
@@ -137,7 +147,7 @@
                         document.getElementById("prodserv-telefonos").value = GetValor(xmlDoc, "telefonos");
                         document.getElementById("prodserv-horario").value = GetValor(xmlDoc, "horario");
                         document.getElementById("prodserv-palabrasclave").value = GetValor(xmlDoc, "palabrasclave");
-                    } else if (catalogo == "prodserv"){
+                    } else if (catalogo == "comunicados" || catalogo == "solmtto"){
                         frm.getElementsByTagName("input")[0].value = GetValor(xmlDoc, "titulo");
                     }
                     imgsTexto = xmlDoc0.getElementsByTagName("Table1");
@@ -155,29 +165,138 @@
                     }
                     ; break;
                 case "directorio":
-                    var frm = document.getElementById("frm-edit-" + catalogo);
                     frm.getElementsByTagName("input")[2].value = GetValor(xmlDoc, "nombre");
                     frm.getElementsByTagName("input")[3].value = GetValor(xmlDoc, "telefono1");
                     frm.getElementsByTagName("input")[4].value = GetValor(xmlDoc, "telefono2");
                     frm.getElementsByTagName("input")[5].value = GetValor(xmlDoc, "telefono3");                    
+                    ; break;
+                case "encuestas":
+                    CargarDatosFrmPref(xmlDoc, ['clave', 'pregunta'], 'enc-');
+                    textos = xmlDoc0.getElementsByTagName("Table1");
+                    var domtextos = document.getElementById("c-e-" + catalogo);
+                    domtextos.innerHTML = "";
+                    var unTexto;
+                    for (var j = 0; j < textos.length; j++) {
+                        unTexto = IAgregarImagenTexto(domtextos, 1);
+                        unTexto.setAttribute("cambioTexto","true");
+                        unTexto.setAttribute("indice", GetValor(textos[j], "clave"));
+                        unTexto.setAttribute("catalogo", catalogo);
+                        unTexto.setAttribute("claveItem", clave);
+                        unTexto.texto.value = src = GetValor(textos[j], "respuesta");
+                    }
                     ; break;
                 case "notificaciones": ; break;
             }
         }
 
 
-        function IniciarEditar(esNuevo, catalogo) {
+        function CargarDatosFrmMap(xmlDoc, tags) {    //Los tag name del xml se buscan en el formulario por id, si coinciden se carga el dato.
+            for (var tag in tags) {
+                try { SetValor(xmlDoc, tag, tags[tag]); } catch (e) { }
+            }
+        }
+
+        function CargarDatosFrmPref(xmlDoc, tags,pref) {    //Los tag name del xml se buscan en el formulario por id, si coinciden se carga el dato.
+            for (var i = 0; i < tags.length; i++){
+                try { SetValor(xmlDoc, tags[i], pref + tags[i]); } catch (e) {}
+            }
+        }
+
+        function CargarDatosFrm(item, reemplazos, permitidos, pref) {    //Los tag name del xml se buscan en el formulario por id, si coinciden se carga el dato.
+            var campos = $(item).children();
+            for (var i = 0; i < campos.length; i++) {
+                if (permitidos && $.inArray(campos[i].tagName, permitidos) || !permitidos) {
+                    if (reemplazos && reemplazos[campos[i].tagName]) {
+                        try { SetValor(item, campos[i].tagName, pref + reemplazos[campos[i].tagName]); } catch (e) { }
+                    } else {
+                        try { SetValor(item, campos[i].tagName, pref + campos[i].tagName); } catch (e) { }
+                    }
+                }
+            }
+        }
+
+
+        function SetValorDx(domElemento, valor) {
+            if (typeof domElemento == "string") {
+                domElemento = document.getElementById(domElemento);
+            }
+            SetValor(undefined, undefined, undefined, undefined, undefined, domElemento, valor);
+        }
+
+        function SetValor(domXML, tag, idDomElemento, tipo, alias, _domElemento, _valor, callback) {
+            _valor = $.trim(_valor);
+            //Se obtiene el valor
+            var valor = "";
+            var domElemento = idDomElemento ? document.getElementById(idDomElemento) : _domElemento;
+
+            if (domXML) {
+                try { valor = domXML.getElementsByTagName(tag)[0].childNodes[0].nodeValue; } catch (e) { }
+            } else {
+                valor = _valor;
+            }
+            if (tipo == "bool") {
+                valor = valor.toString();
+            }
+            else if (tipo === "date") {
+                var meses = [
+                    "Ene", "Feb", "Mar",
+                    "Abr", "May", "Jun", "Jul",
+                    "Ago", "Sep", "Oct",
+                    "Nov", "Dic"
+                ];
+
+                var data = valor.split("/");
+                var fechas = new Date(data[2], data[1], data[0]);
+                valor = fechas.getDate() + '/' + meses[fechas.getMonth() - 1] + '/' + fechas.getFullYear();
+            }
+            if (alias) {
+                valor = valor == "true" ? alias.split(":")[0] : alias.split(":")[1];
+            }
+            //Se asigna el valor
+            if (domElemento.tagName == "INPUT" || domElemento.tagName == "TEXTAREA") {
+                if (domElemento.getAttribute("type") && domElemento.getAttribute("type").toLowerCase() == "checkbox") {
+                    domElemento.checked = ((valor == "1") || (valor.toString() == "true"));
+                } else {
+                    domElemento.value = valor;
+                }
+            } else if (domElemento.tagName == "SELECT") {
+                var opciones = domElemento.options;
+                for (var i = 0; i < opciones.length; i++) {
+                    if (opciones[i].value.toString() == valor.toString()) {
+                        domElemento.selectedIndex = i;
+                        if (callback) {
+                            callback(opciones[i]);
+                        }
+                    }
+                }
+            } else {
+                domElemento.innerHTML = valor;
+            }
+            return valor;
+        }
+
+        function IniciarEditar(esNuevo, catalogo,solotexto,intercambio,clave) {
             if (esNuevo) {
                 document.getElementById('op-' + catalogo).value="true";
                 document.getElementById("c-e-" + catalogo).innerHTML = "";
-                IAgregarImagenTexto('c-e-' + catalogo);
-                Mostrar('lista-' + catalogo, 'p-edicion-' + catalogo);
-                document.getElementById("cancelar-edit-" + catalogo).onclick = function () { Mostrar('p-edicion-' + catalogo, 'lista-' + catalogo); }
+                IAgregarImagenTexto('c-e-' + catalogo, solotexto);
+                if (intercambio) {
+                    Mostrar(intercambio.a, intercambio.b);
+                    document.getElementById("cancelar-edit-" + catalogo).onclick = function () { Mostrar(intercambio.b, intercambio.a); }
+                }else{
+                    Mostrar('lista-' + catalogo, 'p-edicion-' + catalogo);
+                    document.getElementById("cancelar-edit-" + catalogo).onclick = function () { Mostrar('p-edicion-' + catalogo, 'lista-' + catalogo); }
+                }
             } else {
                 document.getElementById('op-' + catalogo).value = "false";                
-                var clave = document.getElementById("detalle-" + catalogo).getAttribute("clave");
-                Mostrar('detalle-' + catalogo, 'p-edicion-' + catalogo);
-                document.getElementById("cancelar-edit-" + catalogo).onclick = function () { Mostrar('p-edicion-' + catalogo, 'detalle-'+ catalogo); }
+                if (intercambio) {
+                    Mostrar(intercambio.a, intercambio.b);
+                    document.getElementById("cancelar-edit-" + catalogo).onclick = function () { Mostrar(intercambio.b, intercambio.a); }
+                } else {
+                    clave = document.getElementById("detalle-" + catalogo).getAttribute("clave");
+                    Mostrar('detalle-' + catalogo, 'p-edicion-' + catalogo);
+                    document.getElementById("cancelar-edit-" + catalogo).onclick = function () { Mostrar('p-edicion-' + catalogo, 'detalle-' + catalogo); }
+                }
                 $.post(url + 'logic/controlador.aspx' + '?op=ObtenerItem&seccion=' + catalogo + '&claveItem=' + clave, function (xmlDoc) {
                     //QuitarEspera();
                     PintarItemEditar(catalogo, clave, xmlDoc);
@@ -201,12 +320,24 @@
         }
 
 
-        function IniciarEliminar(objeto,catalogo) {
+        function IniciarEliminar(objeto,catalogo,clave,intercambio) {
             if(confirm("Confirme que desea eliminar")){
-                var clave = document.getElementById("detalle-" + catalogo).getAttribute("clave");
+                if (!clave) {
+                    clave = document.getElementById("detalle-" + catalogo).getAttribute("clave");
+                }
                 $.post(url + 'logic/controlador.aspx' + '?op=EliminarItem&seccion=' + catalogo + '&claveItem=' + clave, function (xmlDoc) {
-                    Mostrar('detalle-' + catalogo, 'lista-' + catalogo);
-                    CargarCatalogo(catalogo, function () {});                        
+                    if (GetValor(xmlDoc, "estatus") == 1) {
+                        if (intercambio) {
+                            Mostrar(intercambio.a, intercambio.b);
+                        } else {
+                            Mostrar('detalle-' + catalogo, 'lista-' + catalogo);
+                        }                        
+                        CargarCatalogo(catalogo, function () {
+                            MostrarOpcionesHabilitadas(true);
+                        });
+                    } else {
+                        alert(GetValor(xmlDoc,"mensaje"));
+                    }
                 });
             }
         }
@@ -276,7 +407,7 @@
             styleStr += ".pantalla {height:" + heightApp + "px !important;}";
             styleStr += ".menu button img {height:" + (heightApp-100)/7 + "px !important;}";
             styleStr += ".pantalla-2 {height:" + (heightApp - 64) + "px !important;}";
-            styleStr += ".pantalla-3 {height:" + (heightApp - 27) + "px !important;}";
+            styleStr += ".pantalla-3 {height:" + (heightApp - 132) + "px !important;}";
             styleStr += ".pantalla-4 {height:" + (heightApp - 27) + "px !important;}";
             styleStr += ".scrollable {height:" + (heightApp - 132) + "px !important;}";
             styleStr += ".scrollable-2 {height:" + (heightApp - 168) + "px !important;}";
@@ -359,14 +490,6 @@
             document.getElementById(id2).style.display = "none";
         }
 
-        function RegistrarEvento(catalogo) {
-            switch (catalogo) {
-                case "comunicados": CargarComunicados(); break;
-                case "directorio": CargarDirectorio(); break;
-                case "notificaciones": CargarNotificaciones(); break;
-            }
-        }
-
         function CargarCatalogo(catalogo,callback,parametros) {
             $.post(url + 'logic/controlador.aspx' + '?op=cargar&seccion=' + catalogo,parametros, function (xmlDoc) {
                 var items = xmlDoc.getElementsByTagName(catalogo == "encuestas" ? "Encuesta" : "Table");
@@ -386,6 +509,7 @@
             var html = "";
             switch (catalogo){
                 case "comunicados":
+                case "solmtto":
                     itemli.onclick = function () { Mostrar('lista-' + catalogo, 'detalle-' + catalogo, catalogo, GetValor(item, "clave")); }
                     itemli.innerHTML = '<span class="t-1" >' + GetValor(item, "titulo") + '</span>' +
                         '<span class="t-2">' + GetValor(item, "nombre") + '</span>' +
@@ -417,6 +541,8 @@
                 case "encuestas":
                     html =
                         ' <span class="t-1">' + GetValor(item, "pregunta") + '</span>' +
+                    '<button class="edit-btn" clave_funcion="2" control="ed-2-' + GetValor(item, "clave") + '" id="ed-2-' + GetValor(item, "clave") + '" style="display:none;"  onclick="IniciarEditar(false, \'encuestas\', 1, { a: \'lista-encuestas\', b: \'p-edicion-encuestas\' },' + GetValor(item, "clave") +');" ><img  src="img/edit.png" /></button>' +
+                    '<button class="edit-btn" clave_funcion="2" control="del-2-' + GetValor(item, "clave") + '" id="del-2-' + GetValor(item, "clave") + '" style="display:none;"  onclick="IniciarEliminar(this,\'encuestas\',' + GetValor(item, "clave") + ',{ b: \'lista-encuestas\', a: \'p-edicion-encuestas\' });" ><img  src="img/del.png" /></button>' +
                         '<span class="t-2">' + GetValor(item, "fecha") + '</span>';                        
                     var respuestas = item.getElementsByTagName("Respuesta");
                     if (GetValor(item, "yaVoto") == 1) {
@@ -449,15 +575,18 @@
             document.getElementById("btn-votar-enc-" + encuesta).setAttribute("respuesta",respuesta);
         }
 
-        function RegistrarVoto(objeto,encuesta) {
-            $.post(url + 'logic/controlador.aspx' + '?op=RegistrarVoto&seccion=encuestas&encuesta=' + encuesta + "&respuesta=" + objeto.getAttribute("respuesta") , function (xmlDoc) {
-                if (GetValor(xmlDoc, "estatus") == 1) {
-                    MostrarConteoEncuesta(encuesta);
-                } else {
-                    alert(GetValor(xmlDoc, "mensaje"));
-                    MostrarConteoEncuesta(encuesta);
-                }
-            });
+        function RegistrarVoto(objeto, encuesta) {
+            if (objeto.getAttribute("respuesta")) {
+                $.post(url + 'logic/controlador.aspx' + '?op=RegistrarVoto&seccion=encuestas&encuesta=' + encuesta + "&respuesta=" + objeto.getAttribute("respuesta"), function (xmlDoc) {
+                    if (GetValor(xmlDoc, "estatus") == 1) {
+                        MostrarConteoEncuesta(encuesta);
+                    } else {
+                        alert(GetValor(xmlDoc, "mensaje"));
+                    }
+                });
+            } else {
+                alert("Seleccione una opción");
+            }
         }
 
         function MostrarConteoEncuesta(encuesta) {
@@ -488,7 +617,7 @@
             document.getElementById('c-e-' + catalogo).innerHTML = "";
         }
 
-        function Guardar(boton,catalogo,callback) {
+        function Guardar(boton,catalogo,callback,subitemCatalogo) {
             var datos = $("#frm-edit-" + catalogo).serializeArray();
             PonerEspera(boton,catalogo);
             $.post(url + 'logic/controlador.aspx' + '?op=Guardar&seccion=' + catalogo, datos, function (xmlDoc) {  
@@ -498,7 +627,7 @@
                         var imagenes = document.getElementById("c-e-" + catalogo).getElementsByTagName("table");
                         var imagenesCambio = [];
                         var textosCambio = [];
-                        for (var i = 0; i < imagenes.length; i++) {
+                        for (var i = 0; i < imagenes.length; i++){
                             if (imagenes[i].getAttribute("cambioImagen") == "true") {
                                 imagenesCambio.push(imagenes[i]);
                             } else if (imagenes[i].getAttribute("cambioTexto") == "true") {
@@ -508,7 +637,7 @@
                         if (imagenesCambio.length > 0) {
                             GuardarUnaImagenTexto(imagenesCambio, textosCambio, 0, callback, claveItem, catalogo);
                         } else if (textosCambio.length > 0) {
-                            GuardarUnTexto(textosCambio, 0, callback, claveItem, catalogo);
+                            GuardarUnTexto(textosCambio, 0, callback, claveItem, catalogo, subitemCatalogo);
                         } else {
                             QuitarEspera();
                             if(callback) callback();
@@ -599,13 +728,13 @@
             }
         }
 
-        function GuardarUnTexto(textosCambio, i, callback, clave, catalogo) {
-            var datos = { descripcion: textosCambio[i].getElementsByTagName('textarea')[0].value, indice: textosCambio[i].getAttribute("indice") };
-            $.post(url + 'logic/controlador.aspx' + '?op=ActualizarDescripcion&seccion=Generico',datos, function (xmlDoc) {
+        function GuardarUnTexto(textosCambio, i, callback, clave, catalogo, subitemCatalogo) {
+            var datos = { descripcion: textosCambio[i].getElementsByTagName('textarea')[0].value, indice: textosCambio[i].getAttribute("indice"),clave:clave };
+            $.post(url + 'logic/controlador.aspx' + '?op=ActualizarDescripcion&seccion=' + (subitemCatalogo?catalogo:"Generico"),datos, function (xmlDoc) {
                 i++;
                 if (i < textosCambio.length) {
                     try {
-                        GuardarUnTexto(textosCambio, i++, callback, clave, catalogo);
+                        GuardarUnTexto(textosCambio, i++, callback, clave, catalogo, subitemCatalogo);
                     } catch (e) {
                         QuitarEspera();
                         alert(e.message);
@@ -619,15 +748,15 @@
             });    
         }
 
-        function IAgregarImagenTexto(id) {
+        function IAgregarImagenTexto(id, solotexto) {
             var contenedor = (typeof id =="object"? id:document.getElementById(id));
             var imagenes = contenedor.getElementsByTagName("table");
-            if (imagenes.length == 0 || (imagenes.length > 0 && imagenes[imagenes.length - 1].getElementsByTagName("img")[0].getAttribute("sel") == 1)) {
+            if (imagenes.length == 0 || (imagenes.length > 0 && imagenes[imagenes.length - 1].getElementsByTagName("img")[0].getAttribute("sel") == 1) || (imagenes[imagenes.length - 1].getAttribute("cambioTexto")=="true")) {
                 var item = document.createElement("table");
                 item.className = "lista-files";
                 item.innerHTML = '<tbody>' +
-                    '<tr> <td style="width:90%"><img src="img/upload.png" onclick="IAdjuntarImagenes(this);" /></td> <td style="width:10%" rowspan="2" class="del"><button onclick="QuitarEIT(this);" class="del-btn"><img src="img/del.png" /></button></td></tr >' +
-                    '<tr><td><textarea maxlength="200" onchange="this.parentNode.parentNode.parentNode.parentNode.setAttribute(\'cambioTexto\',\'true\');"></textarea></td></tr>' +
+                    '<tr> <td style="width:90%">' + (solotexto ? '':'<img src="img/upload.png" onclick="IAdjuntarImagenes(this);" />') + '</td> <td style="width:10%" rowspan="2" class="del"><button onclick="QuitarEIT(this' + (solotexto?",1":'') + ');" class="del-btn"><img src="img/del.png" /></button></td></tr >' +
+                    '<tr><td ' + (solotexto ? 'rowspan="2"' : '') + ' ><textarea maxlength="200" onchange="this.parentNode.parentNode.parentNode.parentNode.setAttribute(\'cambioTexto\',\'true\');"></textarea></td></tr>' +
                     '</tbody>';
                 item.imagen=item.getElementsByTagName("img")[0];
                 item.texto = item.getElementsByTagName("textarea")[0];
@@ -636,17 +765,17 @@
             return item;
         }
 
-function QuitarEIT(obj) {
+function QuitarEIT(obj,solotexto) {
     var objP = obj.parentNode.parentNode.parentNode.parentNode;
     var indice = objP.getAttribute("indice");
     var catalogo = objP.getAttribute("catalogo");
     var claveItem = objP.getAttribute("claveItem");
     if (indice) {
-        $.post(url + 'logic/controlador.aspx' + '?op=EliminarImgTexto&seccion=Generico&indice=' + indice + "&catalogo=" + catalogo + "&claveItem=" + claveItem, function (xmlDoc) {
-            if (GetValor(xmlDoc, "estatus") == "1") {
+        $.post(url + 'logic/controlador.aspx' + '?op=EliminarImgTexto&seccion='+ (solotexto?catalogo:"Generico") + '&indice=' + indice + "&catalogo=" + catalogo + "&claveItem=" + claveItem, function (xmlDoc) {
+            if (GetValor(xmlDoc, "estatus") == 1) {
                 objP.parentNode.removeChild(objP);
             } else {
-                alert(Getvalor(xmlDoc, "mensaje"));
+                alert(GetValor(xmlDoc, "mensaje"));
             }
         }); 
     } else {
