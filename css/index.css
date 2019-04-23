@@ -1,4 +1,5 @@
-﻿button {
+﻿
+button {
     cursor: pointer;
 }
 
@@ -402,6 +403,7 @@ span.t-1 {
     display: block;
     clear: both;
     padding: 5px;
+    width:90%;word-wrap:break-word;
 }
 
 span.t-2 {
@@ -412,7 +414,8 @@ span.t-2 {
     font-weight: normal;
     color: #333;
     margin-top: 5px;
-    padding:5px;
+    padding: 5px;
+    width:90%;word-wrap:break-word;
 }
 
 span.t-3 {
@@ -422,6 +425,7 @@ span.t-3 {
     font-size: 11px;
     color: #0094ff;
     font-weight: normal;
+    width:90%;word-wrap:break-word;
 }
 
 span.t-4 {
@@ -433,6 +437,7 @@ span.t-4 {
     font-weight: normal;
     padding: 20px;
     text-align: justify;
+    width:90%;word-wrap:break-word;
 }
 
 span.t-41 {
@@ -731,6 +736,7 @@ tr.resultado {
         padding: 10px;
         width: unset;
         font-weight: normal;
+
     }
 
 .g-1 {
@@ -913,10 +919,20 @@ table.lista-files {
 
 .espera {background-color:#fff !important;color:#fff !important;}
 .espera img{margin:-12px auto 0px auto;height:100px;position:relative;}
-p {padding:5px;}
+.pantalla-3 p {padding:5px;width:90%;word-wrap:break-word; font-size:13px;color:#333;clear:both;display:block;}
 
 button.centrado30{margin:auto;width:30%;padding:3px;display:block;clear:both;margin-top:10px;}
 .separado10{margin-top:10px;margin-bottom:10px}
 div.item-enc td label{display:block;cursor:pointer;}
 
 .alarma{}
+
+div.firma-hist{color:#666;font-size:11px;text-align:right;font-family:verdana;font-size:12px;}
+.aux-1 {
+    color: #779b64;
+    float: right;
+    display: inline;
+    width: auto;
+    margin-right: 25px;
+    margin-top: 10px;
+}

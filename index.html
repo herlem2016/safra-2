@@ -230,13 +230,12 @@
             <div class="lista" id="lista-solicitudes">
                 <div class="titulo">Atención a residentes</div>
                 <div class="busqueda"><input placeholder="Buscar" /></div>
-                <div class="agregar" id="edicion-solicitudes" style="display:none;"><button clave_funcion="5" control="edicion-solicitudes" onclick="IniciarEditar(true,'solicitudes');">Levantar </button></div>
+                <div class="agregar"><button onclick="IniciarEditar(true,'solicitudes');">Reportar, Duda O Sugerencia  </button></div>
                 <ul class="lista seleccionable pantalla-3"></ul>
             </div>
 
             <div class="detalle" id="detalle-solicitudes" style="display:none;">
-                <div class="titulo">Levantar Reporte<button class="regresar" onclick="Mostrar('detalle-solicitudes', 'lista-solicitudes'); ">Regresar</button></div>
-                <div class="btns-up"><button class="edit-btn" clave_funcion="3" style="display:none;" control="edit-solicitudes-3" id="edit-solicitudes-3" onclick="IniciarEditar(false,'solicitudes');"><img src="img/edit.png" /></button><button style="display:none;" onclick="IniciarEliminar(this,'solicitudes');" clave_funcion="4" control="del-solicitudes-4" id="del-solicitudes-4" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>
+                <div class="titulo">Detalle de asunto<button class="regresar" onclick="Mostrar('detalle-solicitudes', 'lista-solicitudes'); ">Regresar</button></div>                
                 <div class="pantalla-3" id="wrap-detalle-solicitudes"></div>                
             </div>
 
@@ -244,11 +243,12 @@
                 <div class="titulo">Edición de Reporte <button class="cancelar" id="cancelar-edit-solicitudes">Cancelar</button></div>
                 <form class="pantalla-3" id="frm-edit-solicitudes" onsubmit="return false;">
                     <fieldset style="border:0px;">
-                        <label>Título</label><input name="titulo" />
+                        <label>Tipo de asunto</label><select name="tipo_asunto" style="width:100%;margin:auto;display:block;" id="s-tipossolicitudatencion"></select>
+                        <label>Asunto</label><input name="titulo" />
                         <input name="esNuevo" type="hidden" id="op-solicitudes" />
                         <input name="clave" type="hidden" id="clave-solicitudes" />
-                        <label>Descripción</label><textarea style="height:180px;" name="descripcion"></textarea>
-                        <label>Imagenes y descripción<hr class="clearn" /></label>
+                        <label>Detalle</label><textarea style="height:180px;" name="descripcion"></textarea>
+                        <label><hr class="clearn" /></label>
                         <div id="c-e-solicitudes"></div>
                         <div><button class="adjuntar-btn" style="width:100px;" onclick="IAgregarImagenTexto('c-e-solicitudes');"><img src="img/attach.png" /><span class="texto-discreto">Agregar</span></button><hr class="clearn" /></div>
                         <button class="aceptar" style="margin-top:30px;margin-bottom:50px;" onclick="Guardar(this,'solicitudes', function () { LimpiarForm('solicitudes');CargarCatalogo(catalogo);Mostrar('p-edicion-solicitudes','lista-solicitudes');});">Aceptar</button>

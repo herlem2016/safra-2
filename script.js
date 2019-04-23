@@ -143,18 +143,60 @@
             for (var j = 0; j < imgsTexto.length; j++) {
                 if (crearApartados) {
                     persona_ii = GetValor(imgsTexto[j], "persona");
-                    if (persona_i == persona_ii) {
-                        cont += "<hr style='border:5px solid;clear:both;width:60%;'/>";
+                    if (persona_i != persona_ii ) {
+                        cont += "<div class='firma-hist'><span>" + GetValor(xmlDoc0, "nombre") + ", </span><span>" + GetValor(imgsTexto[j], "fecha") + "</span></div>";
+                        cont += "<hr style='border:5px solid #ccc;clear:both;width:60%;'/>";
                     }
                 }
                 cont += (GetValor(imgsTexto[j], "path")?'<img class="file" src="' + url + '/' + GetValor(imgsTexto[j], "path") + "?v=" + Math.random() + '" />':"") +
-                    '<p>' + GetValor(imgsTexto[j], "descripcion") + '</p>' +
-                    '<hr />';
+                    '<p>' + GetValor(imgsTexto[j], "descripcion") + '</p>';                
                 if (crearApartados) {
+                    if (j == imgsTexto.length - 1) {
+                        cont += "<div class='firma-hist'><span>" + GetValor(imgsTexto[j], "nombre") + ", </span><span>" + GetValor(imgsTexto[j], "fecha") + "</span></div>";
+                        cont += "<hr style='border:5px solid #ccc;clear:both;width:60%;'/>";
+                    }
                     persona_ii = persona_i;
                 }
             }
             return cont;
+        }
+
+
+        function LlenarSelect(url, idSelect, leyenda, clave, descripcion, callback, parametros, defaults) {
+            var selectUI;
+            if (idSelect) {
+                selectUI = document.getElementById(idSelect);
+            } else {
+                selectUI = document.createElement("select");
+            }
+            selectUI.innerHTML = "";
+            var optionitem;
+            if (leyenda != null) {
+                optionitem = document.createElement("option");
+                optionitem.innerHTML = leyenda;
+                optionitem.value = (defaults ? defaults : "");
+                optionitem.setAttribute("value", (defaults ? defaults : ""));
+                selectUI.appendChild(optionitem);
+            }
+            $.post(url).done(function (xmlDoc) {
+                var dbItem = xmlDoc.getElementsByTagName("Table");
+                for (var i = 0; i < dbItem.length; i++) {
+                    optionitem = document.createElement("option");
+                    optionitem.innerHTML = GetValor(dbItem[i], descripcion);
+                    optionitem.title = GetValor(dbItem[i], descripcion);
+                    optionitem.value = GetValor(dbItem[i], clave);
+                    optionitem.nodoXML = dbItem[i];
+                    if (parametros) {
+                        for (var j = 0; j < parametros.length; j++) {
+                            optionitem[parametros[j]] = GetValor(dbItem[i], parametros[j]);
+                        }
+                    }
+                    selectUI.appendChild(optionitem);
+                }
+                if (callback != undefined) {
+                    callback(selectUI);
+                }
+            });
         }
 
         function ActivarNegocio(objeto) {
@@ -179,8 +221,11 @@
                         document.getElementById("prodserv-telefonos").value = GetValor(xmlDoc, "telefonos");
                         document.getElementById("prodserv-horario").value = GetValor(xmlDoc, "horario");
                         document.getElementById("prodserv-palabrasclave").value = GetValor(xmlDoc, "palabrasclave");
-                    } else if (catalogo == "comunicados" || catalogo == "solicitudes"){
+                    } else if (catalogo == "comunicados"){
                         frm.getElementsByTagName("input")[0].value = GetValor(xmlDoc, "titulo");
+                    }else if (catalogo == "solicitudes") {
+                        frm.getElementsByTagName("input")[0].value = GetValor(xmlDoc, "titulo");
+                        SetValor(xmlDoc, "tipoSolicitud",'s-tipossolicitudatencion');
                     }
                     imgsTexto = xmlDoc0.getElementsByTagName("Table1");
                     var imagenesTextos = document.getElementById("c-e-" + catalogo);
@@ -430,6 +475,7 @@
             PantallaMostrar("home", "section",true);
             var tabInicioPro = document.getElementById("tab-inicio-pro");
             TabMostrar(tabInicioPro, tabInicioPro.parentNode, 'pro-ejecucion');
+            LlenarSelect(url + 'logic/controlador.aspx?op=ObtenerClasificacion&seccion=Generico&clave=6' , 's-tipossolicitudatencion', undefined, 'indice', 'descripcion');
         }
 
         function EstablecerDimensiones() {
@@ -545,7 +591,9 @@
                     itemli.onclick = function () { Mostrar('lista-' + catalogo, 'detalle-' + catalogo, catalogo, GetValor(item, "clave")); }
                     itemli.innerHTML = '<span class="t-1" >' + GetValor(item, "titulo") + '</span>' +
                         '<span class="t-2">' + GetValor(item, "nombre") + '</span>' +
-                        '<span class="t-3">' + GetValor(item, "fecha1") + '</span>'; break;
+                        '<span class="t-3">' + GetValor(item, "fecha1") + '</span>'+
+                        '<span class="aux-1">' + GetValor(item, "alias") + '</span>';
+                    break;
                 case "directorio":
                     itemli.setAttribute("nombre",GetValor(item, "nombre"));
                     html = '<span>' + GetValor(item, "nombre") + '</span>' +
