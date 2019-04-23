@@ -90,13 +90,32 @@
                         '<span class="t-2">' + GetValor(xmlDoc, "nombre") + ' (' + GetValor(xmlDoc, "cargo") + ')</span>' +
                         '<span class="t-3">' + GetValor(xmlDoc, "fecha") + '</span>' +
                         '<span class="t-4">' + GetValor(xmlDoc, "mensaje") + '</span>';
+                    cont += PintarImagenesTexto(xmlDoc0);
+                    document.getElementById("wrap-detalle-" + catalogo).innerHTML = cont;
                     ; break;
-                case "solmtto":
+                case "solicitudes":
                     cont =                    
                         '<span class="t-1">' + GetValor(xmlDoc, "titulo") + '</span>' +
                         '<span class="t-2">' + GetValor(xmlDoc, "nombre") + ' (' + GetValor(xmlDoc, "cargo") + ')</span>' +
                         '<span class="t-3">' + GetValor(xmlDoc, "fecha") + '</span>' +
-                        '<span class="t-4">' + GetValor(xmlDoc, "descripcion") + '</span>';                    
+                        '<span class="t-4">' + GetValor(xmlDoc, "descripcion") + '</span>';
+                    cont += PintarImagenesTexto(xmlDoc0, true);
+                    document.getElementById("wrap-detalle-" + catalogo).innerHTML = cont;
+                    var contenedor = document.getElementById("wrap-detalle-solicitudes");
+                    var control=IAgregarImagenTexto(contenedor, 1, true,true);
+                    var btn = document.createElement("div");                    
+                    btn.className = "agregar";
+                    btn.innerHTML = "<button>Responder</button>";
+                    contenedor.appendChild(btn);
+                    btn.clave = clave;
+                    btn.onclick = function () {
+                        var clave = this.clave;
+                        var contenedor = document.getElementById("wrap-detalle-solicitudes");
+                        PonerEspera(this, 'solicitudes');
+                        GuardarUnTexto(contenedor.getElementsByTagName("table"), 0, function () {
+                            Mostrar('detalle-solicitudes', 'detalle-solicitudes', 'solicitudes', clave);
+                        }, clave, 'solicitudes');
+                    }
                     ; break;
                 case "prodserv":
                     var btn = document.getElementById("activar-negocio");
@@ -107,20 +126,33 @@
                         '<span class="t-2">Teléfono(s)' + GetValor(xmlDoc, "telefonos") + '</span>' +
                         '<span class="t-3">Horario: ' + GetValor(xmlDoc, "horario") + '</span>' +
                         '<span class="t-4">' + GetValor(xmlDoc, "mensaje") + '</span>';
+                    cont += PintarImagenesTexto(xmlDoc0);
+                    document.getElementById("wrap-detalle-" + catalogo).innerHTML = cont;
                     ; break;                
                 case "notificaciones": ; break;
             }
-            cont += PintarImagenesTexto(xmlDoc0);
-            document.getElementById("wrap-detalle-" + catalogo).innerHTML = cont;
         }
 
-        function PintarImagenesTexto(xmlDoc0) {
+        function PintarImagenesTexto(xmlDoc0, crearApartados) {
+            var persona_i, persona_ii;
+            if (crearApartados) {
+                persona_i = GetValor(xmlDoc0, "persona");
+            }
             imgsTexto = xmlDoc0.getElementsByTagName("Table1");
             var cont = "";
             for (var j = 0; j < imgsTexto.length; j++) {
-                cont += '<img class="file" src="' + url + '/' + GetValor(imgsTexto[j], "path") + "?v=" + Math.random() + '" />' +
+                if (crearApartados) {
+                    persona_ii = GetValor(imgsTexto[j], "persona");
+                    if (persona_i == persona_ii) {
+                        cont += "<hr style='border:5px solid;clear:both;width:60%;'/>";
+                    }
+                }
+                cont += (GetValor(imgsTexto[j], "path")?'<img class="file" src="' + url + '/' + GetValor(imgsTexto[j], "path") + "?v=" + Math.random() + '" />':"") +
                     '<p>' + GetValor(imgsTexto[j], "descripcion") + '</p>' +
                     '<hr />';
+                if (crearApartados) {
+                    persona_ii = persona_i;
+                }
             }
             return cont;
         }
@@ -138,7 +170,7 @@
             var frm = document.getElementById("frm-edit-" + catalogo);
             switch (catalogo) {
                 case "comunicados":
-                case "solmtto":
+                case "solicitudes":
                 case "prodserv":
                     document.getElementById("clave-" + catalogo).value = clave;
                     frm.getElementsByTagName("textarea")[0].value = GetValor(xmlDoc, "descripcion");  
@@ -147,7 +179,7 @@
                         document.getElementById("prodserv-telefonos").value = GetValor(xmlDoc, "telefonos");
                         document.getElementById("prodserv-horario").value = GetValor(xmlDoc, "horario");
                         document.getElementById("prodserv-palabrasclave").value = GetValor(xmlDoc, "palabrasclave");
-                    } else if (catalogo == "comunicados" || catalogo == "solmtto"){
+                    } else if (catalogo == "comunicados" || catalogo == "solicitudes"){
                         frm.getElementsByTagName("input")[0].value = GetValor(xmlDoc, "titulo");
                     }
                     imgsTexto = xmlDoc0.getElementsByTagName("Table1");
@@ -362,8 +394,8 @@
             Mostrar('detalle-notificaciones', 'p-edicion-notificaciones');
         }
 
-        function IniciarEditarSolmtto() {
-            Mostrar('detalle-solmtto', 'p-edicion-solmtto');
+        function IniciarEditarsolicitudes() {
+            Mostrar('detalle-solicitudes', 'p-edicion-solicitudes');
         }
 
         function IniciarEditarProdserv() {
@@ -509,7 +541,7 @@
             var html = "";
             switch (catalogo){
                 case "comunicados":
-                case "solmtto":
+                case "solicitudes":
                     itemli.onclick = function () { Mostrar('lista-' + catalogo, 'detalle-' + catalogo, catalogo, GetValor(item, "clave")); }
                     itemli.innerHTML = '<span class="t-1" >' + GetValor(item, "titulo") + '</span>' +
                         '<span class="t-2">' + GetValor(item, "nombre") + '</span>' +
@@ -729,7 +761,7 @@
         }
 
         function GuardarUnTexto(textosCambio, i, callback, clave, catalogo, subitemCatalogo) {
-            var datos = { descripcion: textosCambio[i].getElementsByTagName('textarea')[0].value, indice: textosCambio[i].getAttribute("indice"),clave:clave };
+            var datos = { descripcion: textosCambio[i].getElementsByTagName('textarea')[0].value, indice: textosCambio[i].getAttribute("indice"),clave:clave,catalogo:catalogo };
             $.post(url + 'logic/controlador.aspx' + '?op=ActualizarDescripcion&seccion=' + (subitemCatalogo?catalogo:"Generico"),datos, function (xmlDoc) {
                 i++;
                 if (i < textosCambio.length) {
@@ -748,14 +780,14 @@
             });    
         }
 
-        function IAgregarImagenTexto(id, solotexto) {
+        function IAgregarImagenTexto(id, solotexto, mas,ocultarBtnElim) {
             var contenedor = (typeof id =="object"? id:document.getElementById(id));
             var imagenes = contenedor.getElementsByTagName("table");
-            if (imagenes.length == 0 || (imagenes.length > 0 && imagenes[imagenes.length - 1].getElementsByTagName("img")[0].getAttribute("sel") == 1) || (imagenes[imagenes.length - 1].getAttribute("cambioTexto")=="true")) {
+            if (imagenes.length == 0 || (imagenes.length > 0 && imagenes[imagenes.length - 1].getElementsByTagName("img")[0].getAttribute("sel") == 1) || (imagenes[imagenes.length - 1].getAttribute("cambioTexto")=="true")||mas) {                
                 var item = document.createElement("table");
                 item.className = "lista-files";
                 item.innerHTML = '<tbody>' +
-                    '<tr> <td style="width:90%">' + (solotexto ? '':'<img src="img/upload.png" onclick="IAdjuntarImagenes(this);" />') + '</td> <td style="width:10%" rowspan="2" class="del"><button onclick="QuitarEIT(this' + (solotexto?",1":'') + ');" class="del-btn"><img src="img/del.png" /></button></td></tr >' +
+                    '<tr> <td style="width:90%">' + (solotexto ? '':'<img src="img/upload.png" onclick="IAdjuntarImagenes(this);" />') + '</td> ' + (ocultarBtnElim?'': '<td style="width:10%" rowspan="2" class="del"><button onclick="QuitarEIT(this' + (solotexto?",1":'') + ');" class="del-btn"><img src="img/del.png" /></button>' ) + '</td></tr >' +
                     '<tr><td ' + (solotexto ? 'rowspan="2"' : '') + ' ><textarea maxlength="200" onchange="this.parentNode.parentNode.parentNode.parentNode.setAttribute(\'cambioTexto\',\'true\');"></textarea></td></tr>' +
                     '</tbody>';
                 item.imagen=item.getElementsByTagName("img")[0];

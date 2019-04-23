@@ -882,17 +882,19 @@ table.transparente tr {
             background-color: #fff;
         }
 
-.edicion table.lista-files {
+table.lista-files {
     text-align: center;
 }
 
-    .edicion table.lista-files img {
+    table.lista-files img {
         max-height: 100px;
         max-width: 100%;
     }
 
-    .edicion table.lista-files textarea {
+    table.lista-files textarea {
         height: 50px;
+        width:100%;
+        border:0px;
     }
 
 .si {
@@ -916,3 +918,5 @@ p {padding:5px;}
 button.centrado30{margin:auto;width:30%;padding:3px;display:block;clear:both;margin-top:10px;}
 .separado10{margin-top:10px;margin-bottom:10px}
 div.item-enc td label{display:block;cursor:pointer;}
+
+.alarma{}

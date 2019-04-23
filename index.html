@@ -62,11 +62,12 @@
         
         <section class="pantalla home" id="home">
             <ul class="menu">
+                <!--<li class="alarma">Alarma Vecinal</li>-->
                 <li><button onclick="PantallaMostrar('projectos','section');" class="no"><img src="img/proyectos.png"/>Projectos</button></li>
                 <li><button onclick="PantallaMostrar('aportaciones','section');" class="ok"><img src="img/aportaciones.png"/>Aportaciones</button></li>
-                <li><button onclick="PantallaMostrar('solmtto','section');" class="ok"><img src="img/solmtto.png"/>Solicitudes Mtto.</button></li>
+                <li><button onclick="PantallaMostrar('solicitudes','section');" class="ok"><img src="img/solmtto.png"/>Atención a Residentes</button></li>
                 <li><button onclick="PantallaMostrar('erogaciones','section');" class="ok"><img src="img/erogaciones.png"/>Erogaciones</button></li>
-                <li><button onclick="PantallaMostrar('reportes','section');" class="no"><img src="img/reportes.png"/>Reportes</button></li>
+                <li><button onclick="PantallaMostrar('reportes','section');" class="no"><img src="img/reportes.png"/>Transparencia</button></li>
                 <li><button onclick="PantallaMostrar('encuestas','section');" class="no"><img src="img/encuestas.png"/>Encuestas</button></li>
                 <li><button onclick="PantallaMostrar('serviciosproductos','section',true);" class="ok"><img src="img/serviciosproductos.png"/>Productos y Servicios</button></li>
                 <li><button onclick="PantallaMostrar('directorio','section');" class="ok"><img src="img/directorio.png"/>Directorio</button></li>
@@ -225,32 +226,32 @@
 
         </section>
 
-        <section class="pantalla solmtto" id="solmtto">
-            <div class="lista" id="lista-solmtto">
-                <div class="titulo">solmtto</div>
+        <section class="pantalla solicitudes" id="solicitudes">
+            <div class="lista" id="lista-solicitudes">
+                <div class="titulo">Atención a residentes</div>
                 <div class="busqueda"><input placeholder="Buscar" /></div>
-                <div class="agregar" id="edicion-solmtto" style="display:none;"><button clave_funcion="5" control="edicion-solmtto" onclick="IniciarEditar(true,'solmtto');">Aregar Solicitud de Mantenimiento</button></div>
+                <div class="agregar" id="edicion-solicitudes" style="display:none;"><button clave_funcion="5" control="edicion-solicitudes" onclick="IniciarEditar(true,'solicitudes');">Levantar </button></div>
                 <ul class="lista seleccionable pantalla-3"></ul>
             </div>
 
-            <div class="detalle" id="detalle-solmtto" style="display:none;">
-                <div class="titulo">Solicitudes de Mantenimiento<button class="regresar" onclick="Mostrar('detalle-solmtto', 'lista-solmtto'); ">Regresar</button></div>
-                <div class="btns-up"><button class="edit-btn" clave_funcion="3" style="display:none;" control="edit-solmtto-3" id="edit-solmtto-3" onclick="IniciarEditar(false,'solmtto');"><img src="img/edit.png" /></button><button style="display:none;" onclick="IniciarEliminar(this,'solmtto');" clave_funcion="4" control="del-solmtto-4" id="del-solmtto-4" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>
-                <div class="pantalla-3" id="wrap-detalle-solmtto"></div>
+            <div class="detalle" id="detalle-solicitudes" style="display:none;">
+                <div class="titulo">Levantar Reporte<button class="regresar" onclick="Mostrar('detalle-solicitudes', 'lista-solicitudes'); ">Regresar</button></div>
+                <div class="btns-up"><button class="edit-btn" clave_funcion="3" style="display:none;" control="edit-solicitudes-3" id="edit-solicitudes-3" onclick="IniciarEditar(false,'solicitudes');"><img src="img/edit.png" /></button><button style="display:none;" onclick="IniciarEliminar(this,'solicitudes');" clave_funcion="4" control="del-solicitudes-4" id="del-solicitudes-4" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>
+                <div class="pantalla-3" id="wrap-detalle-solicitudes"></div>                
             </div>
 
-            <div class="edicion " style="display:none;" id="p-edicion-solmtto">
-                <div class="titulo">Edición de Solicitud de Mtto. <button class="cancelar" id="cancelar-edit-solmtto">Cancelar</button></div>
-                <form class="pantalla-3" id="frm-edit-solmtto" onsubmit="return false;">
+            <div class="edicion " style="display:none;" id="p-edicion-solicitudes">
+                <div class="titulo">Edición de Reporte <button class="cancelar" id="cancelar-edit-solicitudes">Cancelar</button></div>
+                <form class="pantalla-3" id="frm-edit-solicitudes" onsubmit="return false;">
                     <fieldset style="border:0px;">
                         <label>Título</label><input name="titulo" />
-                        <input name="esNuevo" type="hidden" id="op-solmtto" />
-                        <input name="clave" type="hidden" id="clave-solmtto" />
+                        <input name="esNuevo" type="hidden" id="op-solicitudes" />
+                        <input name="clave" type="hidden" id="clave-solicitudes" />
                         <label>Descripción</label><textarea style="height:180px;" name="descripcion"></textarea>
                         <label>Imagenes y descripción<hr class="clearn" /></label>
-                        <div id="c-e-solmtto"></div>
-                        <div><button class="adjuntar-btn" style="width:100px;" onclick="IAgregarImagenTexto('c-e-solmtto');"><img src="img/attach.png" /><span class="texto-discreto">Agregar</span></button><hr class="clearn" /></div>
-                        <button class="aceptar" style="margin-top:30px;margin-bottom:50px;" onclick="Guardar(this,'solmtto', function () { LimpiarForm('solmtto');CargarCatalogo(catalogo);Mostrar('p-edicion-solmtto','lista-solmtto');});">Aceptar</button>
+                        <div id="c-e-solicitudes"></div>
+                        <div><button class="adjuntar-btn" style="width:100px;" onclick="IAgregarImagenTexto('c-e-solicitudes');"><img src="img/attach.png" /><span class="texto-discreto">Agregar</span></button><hr class="clearn" /></div>
+                        <button class="aceptar" style="margin-top:30px;margin-bottom:50px;" onclick="Guardar(this,'solicitudes', function () { LimpiarForm('solicitudes');CargarCatalogo(catalogo);Mostrar('p-edicion-solicitudes','lista-solicitudes');});">Aceptar</button>
                     </fieldset>
                 </form>
             </div>
