@@ -63,10 +63,10 @@
         <section class="pantalla home" id="home">
             <ul class="menu">
                 <!--<li class="alarma">Alarma Vecinal</li>-->
-                <li><button onclick="PantallaMostrar('projectos','section');" class="no"><img src="img/proyectos.png"/>Projectos</button></li>
+                <li><button onclick="PantallaMostrar('projectos','section');" class="no"><img src="img/proyectos.png"/>Propuestas de proyectos</button></li>
                 <li><button onclick="PantallaMostrar('aportaciones','section');" class="ok"><img src="img/aportaciones.png"/>Aportaciones</button></li>
                 <li><button onclick="PantallaMostrar('solicitudes','section');" class="ok"><img src="img/solmtto.png"/>Atención a Residentes</button></li>
-                <li><button onclick="PantallaMostrar('erogaciones','section');" class="ok"><img src="img/erogaciones.png"/>Erogaciones</button></li>
+                <li><button onclick="PantallaMostrar('erogaciones','section');" class="ok"><img src="img/erogaciones.png"/>Registro de egresos</button></li>
                 <li><button onclick="PantallaMostrar('reportes','section');" class="no"><img src="img/reportes.png"/>Transparencia</button></li>
                 <li><button onclick="PantallaMostrar('encuestas','section');" class="no"><img src="img/encuestas.png"/>Encuestas</button></li>
                 <li><button onclick="PantallaMostrar('serviciosproductos','section',true);" class="ok"><img src="img/serviciosproductos.png"/>Productos y Servicios</button></li>
@@ -261,7 +261,7 @@
             <div class="lista" id="lista-aportaciones">
                 <div class="titulo">Aportaciones</div>            
                 <div class="busqueda"><input placeholder="Buscar" /></div>
-                <div class="agregar" id="edicion-aportaciones" ><button class="opcion-1" style="float:left;width:30%;">Actual</button><button clave_funcion="8" control="pagar-concepto" onclick="IniciarPagarAportaciones(true);" style="width:60%;float:right;">Aportar <span id="aportacion">$0.00</span></button><hr class="clearn" /></div>
+                <div class="agregar" id="pagar-concepto" ><button class="opcion-1" style="float:left;width:30%;">Actual</button><button clave_funcion="8" control="pagar-concepto" onclick="IniciarPagarAportaciones(true);" style="width:60%;float:right;">Aportar <span id="aportacion">$0.00</span></button><hr class="clearn" /></div>
                 <ul class="lista seleccionable pantalla-3" style="width:100%;" id="lista-conceptos">
                     <div style="display:none;">
                         <li class="item" onclick="Mostrar('lista-aportaciones','detalle-aportaciones');">       
@@ -348,62 +348,95 @@
             </div>
         </section>
                 
-        <section class="pantalla erogaciones" id="erogaciones">            
-            <div class="lista" id="lista-erogacion">
-                <div class="titulo">Erogaciones</div>            
-                <div class="busqueda"><input placeholder="Buscar" /></div>
-                <div class="agregar" id="edicion-erogacion" ><button clave_funcion="8" control="pagar-erogacion" onclick="IniciarRegistrarErogacion(true);" >Registrar pago</button></div>
-                <ul class="lista seleccionable pantalla-3" style="width:100%;">
-                    <li class="item" onclick="Mostrar('lista-erogacion','detalle-erogacion');">       
-                        <span class="t-1">Jardinería>>Sueldos</span>                                            
-                        <span class="t-2">$ 4,200.00</span>                                            
-                        <span class="t-3">18-Enero-2019 <br /> 7:00 pm</span>                                            
-                    </li>
-                    <li class="item" onclick="Mostrar('lista-erogacion','detalle-erogacion');">       
-                        <span class="t-1">Jardinería>>Sueldos</span>                                            
-                        <span class="t-2">$ 4,200.00</span>                                            
-                        <span class="t-3">18-Enero-2019 <br />7:00 pm</span>                                            
-                    </li>
-                    <li class="item" onclick="Mostrar('lista-erogacion','detalle-erogacion');">       
-                        <span class="t-1">Jardinería>>Sueldos</span>                                            
-                        <span class="t-2">$ 4,200.00</span>                                            
-                        <span class="t-3">18-Enero-2019<br /> 7:30 pm</span>                                            
-                    </li>
-                    <li class="item" onclick="Mostrar('lista-erogacion','detalle-erogacion');">       
-                        <span class="t-1">Jardinería>>Sueldos</span>                                            
-                        <span class="t-2">$ 4,200.00</span>                                            
-                        <span class="t-3">18-Enero-2019<br />7:50 pm</span>                                            
-                    </li>
-                </ul>
+        <section class="pantalla erogaciones" id="erogaciones"> 
+            <div id="tab-pcorriente">
+                <div class="lista" id="lista-erogacion">
+                    <div class="titulo">Registro de gastos</div>
+                    <div class="busqueda"><input placeholder="Buscar" /></div>
+                    <div class="agregar" id="edicion-erogacion" style="display:none;"><button clave_funcion="2" control="edicion-erogacion" onclick="document.getElementById('frm-er-nuevo-tipo').reset(); IntercambioVisual('e-edicion-tipo','lista-erogacion');">Agregar tipo de gasto</button></div>
+                    <ul class="lista seleccionable pantalla-3" style="width:100%;">
+                        <li class="item" onclick="Mostrar('lista-erogacion','detalle-erogacion');">
+                            <span class="t-1">Jardinería>>Sueldos</span>
+                        </li>
+                        <li class="item" onclick="Mostrar('lista-erogacion','detalle-erogacion');">
+                            <span class="t-1">Jardinería>>Sueldos</span>
+                        </li>
+                        <li class="item" onclick="Mostrar('lista-erogacion','detalle-erogacion');">
+                            <span class="t-1">Jardinería>>Sueldos</span>
+                        </li>
+                        <li class="item" onclick="mostrar('lista-erogacion','detalle-erogacion');">
+                            <span class="t-1">jardinería>>sueldos</span>
+                        </li>
+                    </ul>
+                </div>   
+                <div class="edicion" style="display:none;" id="e-edicion-tipo">
+                    <form onsubmit="return false;" id="frm-er-nuevo-tipo">
+                        <div class="titulo">Agregar tipo de gasto<button class="cancelar" id="cancelar-edit-erogacion" onclick="Mostrar('e-edicion-tipo','lista-erogacion');">Cancelar</button></div>
+                        <div class="pantalla-3">
+                            <input name="clave" type="hidden"/>
+                            <label>Tipo de gasto</label><input value="Jardinería" />
+                            <label>Describa a que se refiere el tipo</label><textarea maxlength="300" style="height:100px;"></textarea>
+                            <button class="aceptar" style="margin-top:20px;">Guardar</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="edicion" style="display:none;" id="p-edicion-erogacion">
+                    <div class="titulo">Edición de Solcitud de Mtto. <button class="cancelar" id="cancelar-edit-erogacion" onclick="Mostrar('p-edicion-erogacion','lista-erogacion');">Cancelar</button></div>
+                    <div class="pantalla-3">
+                        <label>Clasificación</label><input disabled="disabled" value="Jardinería" />
+                        <label>Registro de pagos<button class="adjuntar-btn" style="width:100px;" onclick="IniciarAdjuntarEvidenciaSolmtto();"><img src="img/attach.png" /><span class="texto-discreto">Agregar</span></button><hr class="clearn" /></label>
+                        <table class="lista-files">
+                            <tr><td><button class="del-btn"><img src="img/del.png" /></button></td><td style="width:70%"><input /></td><td style="width:30%"><input /></td><td><button class="con-btn"><img src="img/touch.png" /></button></td><td><button class="con-btn"><img src="img/payok.png" style="width:100%;" /></button></td></tr>
+                            <tr class="resultado"><td></td><td><b>Total</b></td><td><b>$ 4,200.00</b></td><td></td><td></td></tr>
+                        </table>
+                    </div>
+                </div>
             </div>
-            <div class="detalle" id="detalle-erogacion" style="display:none;">
-                <div class="titulo">Detalle de pago<button class="regresar" onclick="Mostrar('detalle-erogacion','lista-erogacion');">Regresar</button></div>  
-                <div class="pantalla-3">
-                    <div class="btns-up"><button class="edit-btn" clave_funcion="3" style="display:none;" control="edit-solmtto-8" id="edit-solmtto-8" onclick="IniciarEditarSolmtto();"><img src="img/edit.png" /></button><hr class="clearn" /></div>
-                    <span class="t-1">Jardinería >> Sueldos</span>                              
-                    <span class="t-2">Total <b>$ 4,200.00</b></span>                              
-                    <span class="t-3">11-ene-2018</span>                    
-                    <span class="t-4">Pago de sueldos correspondiente a la 1er quincena de enero del 2019, se realizan al sr. Juan Suarez y Fernando José Ramirez </span>                    
-                    <span class="t-5">$ 2,200.00</span>
-                    <img class="file" src="img/Titan_Company_Logo.png" />                    
-                    <span class="t-5">$ 2,000.00</span>
-                    <img class="file" src="img/call.png"/>   
-                    <hr />
+
+            <div id="tab-pproyectos">
+                <div class="lista" id="lista-erogacion-p">
+                    <div class="titulo">Registro de egresos por proyectos</div>
+                    <div class="busqueda"><input placeholder="Buscar" /></div>
+                    <div class="agregar" id="edicion-erogacion-1" style="display:none;"><button clave_funcion="2" control="edicion-erogacion-1"  onclick="document.getElementById('frm-er-nuevo-tipo').reset(); IntercambioVisual('e-edicion-proy','lista-erogacion-p');">Dar de alta proyecto</button></div>
+                    <ul class="lista seleccionable pantalla-3" style="width:100%;">
+                        <li class="item" onclick="Mostrar('lista-erogacion','detalle-erogacion');">
+                            <span class="t-1">Jardinería>>Sueldos</span>
+                        </li>
+                        <li class="item" onclick="Mostrar('lista-erogacion','detalle-erogacion');">
+                            <span class="t-1">Jardinería>>Sueldos</span>
+                        </li>
+                        <li class="item" onclick="Mostrar('lista-erogacion','detalle-erogacion');">
+                            <span class="t-1">Jardinería>>Sueldos</span>
+                        </li>
+                        <li class="item" onclick="mostrar('lista-erogacion','detalle-erogacion');">
+                            <span class="t-1">jardinería>>sueldos</span>
+                        </li>
+                    </ul>
                 </div>
-             </div>
-            <div class="edicion" style="display:none;" id="p-edicion-erogacion">
-                <div class="titulo">Edición de Solcitud de Mtto. <button class="cancelar" id="cancelar-edit-erogacion"  onclick="Mostrar('p-edicion-erogacion','lista-erogacion');">Cancelar</button></div>    
-                <div class="pantalla-3" >
-                    <label>Rubro</label><select><option>Jardinería</option></select><button class="sel-btn"><img src="img/add.png"/></button>
-                    <label>Concepto</label><select><option>Sueldos</option></select><button class="sel-btn"><img src="img/add.png"/></button>
-                    <label>Descripción</label><textarea style="height:100px;"></textarea>                                                    
-                    <label>Comprobantes<button class="adjuntar-btn" style="width:100px;" onclick="IniciarAdjuntarEvidenciaSolmtto();"><img src="img/attach.png" /><span class="texto-discreto">Agregar</span></button><hr class="clearn" /></label>
-                    <table class="lista-files">
-                        <tr><td><button class="del-btn"><img src="img/del.png" /></button></td><td style="width:70%"><input /></td><td style="width:30%"><input /></td><td><button><img src="img/payok.png" /></button></td></tr>
-                        <tr class="resultado"><td></td><td><b>Total</b></td><td><b>$ 4,200.00</b></td><td></td></tr>
-                    </table>                  
-                    <button class="aceptar" style="margin-top:10px;" >Estoy de acuerdo</button>
+                <div class="edicion" style="display:none;" id="e-edicion-proy">
+                    <div class="titulo">Dar de alta proyecto<button class="cancelar" id="cancelar-edit-erogacion" onclick="Mostrar('e-edicion-proy','lista-erogacion-p');">Cancelar</button></div>
+                    <div class="pantalla-3">
+                        <input name="clave" type="hidden" />
+                        <label>Seleccione el proyecto</label><select style="width:100%;"><option>Seleccione</option></select>
+                        <label>Título de proyecto</label><textarea maxlength="300" style="height:100px;"></textarea>
+                        <button class="aceptar" style="margin-top:20px;">Guardar</button>
+                    </div>
                 </div>
+                <div class="edicion" style="display:none;" id="p-edicion-erogacion-p">
+                    <div class="titulo">Edición de Solcitud de Mtto. <button class="cancelar" id="cancelar-edit-erogacion" onclick="Mostrar('p-edicion-erogacion-p','lista-erogacion-p');">Cancelar</button></div>
+                    <div class="pantalla-3">
+                        <label>Clasificación</label><input disabled="disabled" value="Jardinería"/>
+                        <label>Registro de pagos<button class="adjuntar-btn" style="width:100px;" onclick="IniciarAdjuntarEvidenciaSolmtto();"><img src="img/attach.png" /><span class="texto-discreto">Agregar</span></button><hr class="clearn" /></label>
+                        <table class="lista-files">
+                            <tr><td><button class="del-btn"><img src="img/del.png" /></button></td><td style="width:70%"><input /></td><td style="width:30%"><input /></td><td><button class="con-btn"><img src="img/touch.png" /></button></td><td><button class="con-btn"><img src="img/payok.png" style="width:100%;" /></button></td></tr>
+                            <tr class="resultado"><td></td><td><b>Total</b></td><td><b>$ 4,200.00</b></td><td></td><td></td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div style="height:32px;" tabs="tab-pcorriente,tab-pproyectos" class="tabs-down">
+                <div class="tab" id="tab-inicio-pagos" onclick="TabMostrar(this,this.parentNode,'tab-pcorriente');">Gasto corriente</div>
+                <div class="tab" onclick="TabMostrar(this,this.parentNode,'tab-pproyectos');">Por proyectos</div>
             </div>
         </section>
 
@@ -435,35 +468,17 @@
                 <div class="lista graficas" id="lista-proyectos">
                     <div class="titulo">Proyectos en Ejecución</div>            
                     <div class="busqueda"><input placeholder="Buscar" /></div>                    
-                    <ul class="lista seleccionable scrollable" style="width:100%;">
-                        <li class="item">
-                            <span class="t-1">Compra e instalación de jegos toboganes para niños de hasta 12 años</span>   
-                            <table class="graficas">
-                                <tr><th>Pagado</th><th>Realizado</th></tr>
-                                <tr><td style="width:50%;"><div class="graf-pie"onclick="Mostrar('lista-proyectos','detalle-proyectos-pagos');"><img src="img/pie2.png" /></div></td><td style="width:50%;"><div class="graf-pie"onclick="Mostrar('lista-proyectos','detalle-proyectos-avance');"><img src="img/pie.png" /></div></td></tr>
+                    <ul class="lista seleccionable scrollable edicion" style="width:100%;">
+                        <li class="item">                               
+                            <table>
+                                <tr><th style="width:70%;"><span class="t-1">Proyecto</span></th><th style="width:30%;">Avance</th></tr>
+                                <tr><td style="width:70%;"><span class="t-1">Compra e instalación de jegos toboganes para niños de hasta 12 años</span></td><td><div class="graf-pie" onclick="Mostrar('lista-proyectos','detalle-proyectos-avance');"><img src="img/pie.png" /></div></td></tr>
+                                <tr><td style="width:70%;"><span class="t-1">Compra e instalación de jegos toboganes para niños de hasta 12 años</span></td><td><div class="graf-pie" onclick="Mostrar('lista-proyectos','detalle-proyectos-avance');"><img src="img/pie.png" /></div></td></tr>
+                                <tr><td style="width:70%;"><span class="t-1">Compra e instalación de jegos toboganes para niños de hasta 12 años</span></td><td><div class="graf-pie" onclick="Mostrar('lista-proyectos','detalle-proyectos-avance');"><img src="img/pie.png" /></div></td></tr>
+
                             </table>                                           
                         </li>
-                        <li class="item" onclick="Mostrar('lista-erogacion','detalle-erogacion');">      
-                            <span class="t-1">Compra e instalación de jegos toboganes para niños de hasta 12 años</span>
-                            <table class="graficas">
-                                <tr><th>Pagado</th><th>Realizado</th></tr>
-                                <tr><td style="width:50%;"><div class="graf-pie"><img src="img/pie2.png" /></div></td><td style="width:50%;"><div class="graf-pie"><img src="img/pie.png" /></div></td></tr>
-                            </table>
-                        </li>
-                        <li class="item" onclick="Mostrar('lista-erogacion','detalle-erogacion');">       
-                            <span class="t-1">Compra e instalación de jegos toboganes para niños de hasta 12 años</span> 
-                            <table class="graficas">
-                                <tr><th>Pagado</th><th>Realizado</th></tr>
-                                <tr><td style="width:50%;"><div class="graf-pie"><img src="img/pie2.png" /></div></td><td style="width:50%;"><div class="graf-pie"><img src="img/pie.png" /></div></td></tr>
-                            </table>
-                        </li>
-                        <li class="item" onclick="Mostrar('lista-erogacion','detalle-erogacion');">       
-                            <span class="t-1">Compra e instalación de jegos toboganes para niños de hasta 12 años</span>
-                            <table class="graficas">
-                                <tr><th>Pagado</th><th>Realizado</th></tr>
-                                <tr><td style="width:50%;"><div class="graf-pie"><img src="img/pie2.png" /></div></td><td style="width:50%;"><div class="graf-pie"><img src="img/pie.png" /></div></td></tr>
-                            </table>
-                        </li>
+                        
                     </ul>
                 </div>
                 <div class="detalle" id="detalle-proyectos-pagos" style="display:none;">
@@ -564,116 +579,6 @@
                     </div>
                     </div>
                 </div>
-            <div id="pro-licitacion" style="display:none;">
-                <div class="lista" id="lista-licitacion">
-                    <div class="titulo">Licitaciones</div>            
-                    <div class="busqueda"><input placeholder="Buscar" /></div>
-                    <ul class="lista seleccionable scrollable" style="width:100%;">
-                        <li class="item" onclick="Mostrar('lista-erogacion','detalle-erogacion');"> 
-                            <div class="agregar" id="edicion-erogacion" ><button clave_funcion="8" control="pagar-erogacion" onclick="Mostrar('lista-licitacion','p-edicion-licitacion');;" >Agregar participante</button></div>                                  
-                            <span class="t-1">Compra e instalación de juegos toboganes, para niños de hasta 12 años.</span> 
-                            <span class="t-2">18-Enero-2019 7:00 pm</span>
-                            <table class="transparente">
-                                <tr><td style="width:15%;"><button class="cancelar" onclick="Mostrar('lista-licitacion','detalle-licitacion');">Ver</button></td><td style="width:70%;"><div class="graf-barra" onclick="Mostrar('lista-licitacion','licitacion-votantes');"><span class="progreso" style="width:25%"></span><b>25%</b></div></td><td style="width:15%;"><input type="radio" /></td></tr>
-                                <tr><td><button class="cancelar">Ver</button></td><td><div class="graf-barra"><span class="progreso" style="width:30%"></span><b>30%</b></div></td><td><input type="radio" /></td></tr>
-                                <tr><td><button class="cancelar">ver</button></td><td><div class="graf-barra"><span class="progreso" style="width:65%"></span><b>65%</b></div></td><td><input type="radio" /></td></tr>
-                            </table>
-                        </li> 
-                        <li class="item" onclick="Mostrar('lista-erogacion','detalle-erogacion');"> 
-                            <div class="agregar" id="edicion-erogacion" ><button clave_funcion="8" control="pagar-erogacion" onclick="IniciarRegistrarErogacion(true);" >Agregar participante</button></div>      
-                            <span class="t-1">Compra e instalación de juegos toboganes, para niños de hasta 12 años.</span> 
-                            <span class="t-2">18-Enero-2019 7:00 pm</span>
-                            <table class="transparente">
-                                <tr><td style="width:15%;"><button class="cancelar">Ver</button></td><td style="width:70%;"><div class="graf-barra"><span class="progreso" style="width:25%"></span><b>25%</b></div></td><td style="width:15%;"><input type="radio" /></td></tr>
-                                <tr><td><button class="cancelar">Ver</button></td><td><div class="graf-barra"><span class="progreso" style="width:30%"></span><b>30%</b></div></td><td><input type="radio" /></td></tr>
-                                <tr><td><button class="cancelar">ver</button></td><td><div class="graf-barra"><span class="progreso" style="width:65%"></span><b>65%</b></div></td><td><input type="radio" /></td></tr>
-                            </table>
-                        </li> 
-                        <li class="item" onclick="Mostrar('lista-erogacion','detalle-erogacion');"> 
-                            <div class="agregar" id="edicion-erogacion" ><button clave_funcion="8" control="pagar-erogacion" onclick="IniciarRegistrarErogacion(true);" >Agregar participante</button></div>      
-                            <span class="t-1">Compra e instalación de juegos toboganes, para niños de hasta 12 años.</span> 
-                            <span class="t-2">18-Enero-2019 7:00 pm</span>
-                            <table class="transparente">
-                                <tr><td style="width:15%;"><button class="cancelar">Ver</button></td><td style="width:70%;"><div class="graf-barra"><span class="progreso" style="width:25%"></span><b>25%</b></div></td><td style="width:15%;"><input type="radio" /></td></tr>
-                                <tr><td><button class="cancelar">Ver</button></td><td><div class="graf-barra"><span class="progreso" style="width:30%"></span><b>30%</b></div></td><td><input type="radio" /></td></tr>
-                                <tr><td><button class="cancelar">ver</button></td><td><div class="graf-barra"><span class="progreso" style="width:65%"></span><b>65%</b></div></td><td><input type="radio" /></td></tr>
-                            </table>
-                        </li> 
-                        <li class="item" onclick="Mostrar('lista-erogacion','detalle-erogacion');"> 
-                            <div class="agregar" id="edicion-erogacion" ><button clave_funcion="8" control="pagar-erogacion" onclick="IniciarRegistrarErogacion(true);" >Agregar participante</button></div>      
-                            <span class="t-1">Compra e instalación de juegos toboganes, para niños de hasta 12 años.</span> 
-                            <span class="t-2">18-Enero-2019 7:00 pm</span>
-                            <table class="transparente">
-                                <tr><td style="width:15%;"><button class="cancelar">Ver</button></td><td style="width:70%;"><div class="graf-barra"><span class="progreso" style="width:25%"></span><b>25%</b></div></td><td style="width:15%;"><input type="radio" /></td></tr>
-                                <tr><td><button class="cancelar">Ver</button></td><td><div class="graf-barra"><span class="progreso" style="width:30%"></span><b>30%</b></div></td><td><input type="radio" /></td></tr>
-                                <tr><td><button class="cancelar">ver</button></td><td><div class="graf-barra"><span class="progreso" style="width:65%"></span><b>65%</b></div></td><td><input type="radio" /></td></tr>
-                            </table>
-                        </li> 
-                    </ul>
-                </div>
-                <div class="detalle" id="licitacion-votantes" style="display:none;">
-                    <div class="titulo">Votantes de propuesta<button class="regresar" onclick="Mostrar('detalle-licitacion','lista-licitacion');">Regresar</button></div>  
-                    <div class="scrollable">
-                        <ul class="lista seleccionable scrollable">
-                            <li class="item">
-                                <span class="t-2">Sofía 106-B</span>              
-                            </li>
-                            <li class="item">                 
-                                <span class="t-2">Sofía 106-B</span>
-                            </li>
-                            <li class="item">             
-                                <span class="t-2">Sofía 106-B</span>
-                            </li>
-                            <li class="item">                  
-                                <span class="t-2">Sofía 106-B</span>
-                            </li>
-                            <li class="item">                 
-                                <span class="t-2">Sofía 106-B</span>
-                            </li>
-                        </ul>
-                    </div>
-                 </div>
-                <div class="detalle" id="detalle-licitacion" style="display:none;">
-                    <div class="titulo">Detalle de licitante<button class="regresar" onclick="Mostrar('detalle-licitacion','lista-licitacion');">Regresar</button></div>  
-                    <div class="scrollable">
-                        <div class="btns-up"><button class="edit-btn" clave_funcion="3" style="display:none;" control="edit-solmtto-8" id="edit-solmtto-8" onclick="Mostrar('detalle-licitacion','p-edicion-licitacion');"><img src="img/edit.png" /></button><hr class="clearn" /></div>
-                        <span class="t-1">Proveedor >> Ferretería y asociados</span>                              
-                        <span class="t-2">Total <b>$ 4,200.00</b></span>                              
-                        <span class="t-3">11-ene-2018</span>                    
-                        <span class="t-4">Se propone un juego tipo Gardeen 70-B, se describe a continuación:</span>  
-                        <img class="file" src="img/Titan_Company_Logo.png" />  
-                        <img class="file" src="img/call.png"/>   
-                        <div class="edicion">
-                            <label>Cotización</label>
-                            <table class="lista-files">
-                                <tr><td style="width:70%"><button class="del-btn" ><img src="img/verf.png" /><span>servicios.pdf</span></button></td><td  style="width:30%"><span class="t-5">$200.00</span></td></tr>
-                                <tr><td><button class="del-btn" ><img src="img/verf.png" /><span>Material.pdf</span></button></td><td><span class="t-5">$200.00</span></td></tr>                                                
-                                <tr class="resultado"><td><b>Total</b></td><td><b>$ 4,200.00</b></td></tr>
-                            </table>
-                        </div>
-                        <hr />
-                    </div>
-                 </div>
-                <div class="edicion" style="display:none;" id="p-edicion-licitacion">
-                <div class="titulo">Editar participante <button class="cancelar" id="cancelar-edit-erogacion"  onclick="Mostrar('p-edicion-erogacion','lista-erogacion');">Cancelar</button></div>    
-                <div class="scrollable" >
-                    <label>Proveedor</label><select><option>Proveedor</option></select><button class="sel-btn"><img src="img/add.png"/></button>
-                    <label>Descripción</label><textarea style="height:100px;"></textarea>                                                    
-                    <label>Imagenes<button class="adjuntar-btn" style="width:100px;" onclick="IniciarAdjuntarEvidenciaSolmtto();"><img src="img/attach.png" /><span class="texto-discreto">Agregar</span></button><hr class="clearn" /></label>
-                    <table class="lista-files">
-                        <tr><td style="width:70%"><button class="del-btn" ><img src="img/del.png" /></button><span>vista1.jpg</span></td></tr>
-                        <tr><td><button class="del-btn" ><img src="img/del.png" /></button><span>vista2.png</span></td></tr> 
-                    </table> 
-                    <label>Cotización<button class="adjuntar-btn" style="width:100px;" onclick="IniciarAdjuntarEvidenciaSolmtto();"><img src="img/attach.png" /><span class="texto-discreto">Agregar</span></button><hr class="clearn" /></label>
-                    <table class="lista-files">
-                        <tr><td style="width:70%"><button class="del-btn" ><img src="img/del.png" /></button><span>servicios.pdf</span></td><td  style="width:30%"><input /></td></tr>
-                        <tr><td><button class="del-btn" ><img src="img/del.png" /></button><span>Material.pdf</span></td><td><input /></td></tr>                                                
-                        <tr class="resultado"><td><b>Total</b></td><td><b>$ 4,200.00</b></td></tr>
-                    </table> 
-                    <button class="aceptar" style="margin-top:10px;" >Aceptar</button>
-                </div>
-            </div>
-            </div>
             <div id="pro-propuestas" style="display:none;">
                 <div class="lista" id="lista-pro">
                     <div class="titulo">Propuestas de proyectos</div>            
@@ -774,9 +679,8 @@
                  </div>
 
             </div>
-            <div style="height:32px;" tabs="pro-ejecucion,pro-licitacion,pro-propuestas" class="tabs-down">
+            <div style="height:32px;" tabs="pro-ejecucion,pro-propuestas" class="tabs-down">
                 <div class="tab" id="tab-inicio-pro" onclick="TabMostrar(this,this.parentNode,'pro-ejecucion');">Ejecución</div>
-                <div class="tab" onclick="TabMostrar(this,this.parentNode,'pro-licitacion');">Licitación</div>
                 <div class="tab" onclick="TabMostrar(this,this.parentNode,'pro-propuestas');">Propuestas</div>
             </div>
         </section>

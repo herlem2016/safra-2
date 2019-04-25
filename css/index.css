@@ -697,7 +697,7 @@ tr.resultado {
 }
 
 .tab {
-    width: 30%;
+    width: 45%;
     margin-left: 1%;
     text-align: center;
     padding-top: 5px;
@@ -935,4 +935,12 @@ div.firma-hist{color:#666;font-size:11px;text-align:right;font-family:verdana;fo
     width: auto;
     margin-right: 25px;
     margin-top: 10px;
+}
+button.con-btn{
+    cursor: pointer;
+    display: block;
+    width: 30px;
+    padding: 0px;
+    padding-top: 0px;
+    padding-top: 5px;
 }

@@ -475,6 +475,8 @@
             PantallaMostrar("home", "section",true);
             var tabInicioPro = document.getElementById("tab-inicio-pro");
             TabMostrar(tabInicioPro, tabInicioPro.parentNode, 'pro-ejecucion');
+            var tabInicioPag = document.getElementById("tab-inicio-pagos");
+            TabMostrar(tabInicioPag, tabInicioPag.parentNode, 'tab-pcorriente');
             LlenarSelect(url + 'logic/controlador.aspx?op=ObtenerClasificacion&seccion=Generico&clave=6' , 's-tipossolicitudatencion', undefined, 'indice', 'descripcion');
         }
 
