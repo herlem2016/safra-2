@@ -626,8 +626,10 @@ div.home {
 }
 
 body .ui-datepicker {
-    width:95%;
-    margin:auto;
+    width: 95%;
+    margin: auto;
+    padding-top: 1em;
+    padding-bottom: 1em;
 }
 
 .menu {
