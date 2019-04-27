@@ -856,6 +856,7 @@
                         try {
                             GuardarUnaImagenTexto(imagenes, textosCambio, i++, callback, claveItem, catalogo,es_comprobante);
                         } catch (e) {
+                            alert(e.message);
                             QuitarEspera();
                             alert("Verifique guardado");
                             if (callback) callback();
@@ -876,6 +877,7 @@
                         }
                     }
                 }, function (error) {
+                    alert(error.message);
                     QuitarEspera();
                     alert("Verifique guardado.");
                 }, options);
