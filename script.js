@@ -105,6 +105,11 @@ function MostrarOpcionesHabilitadas(evitarToggle) {
             var cont = "", imgsTexto;
             var xmlDoc = xmlDoc0.getElementsByTagName("Table")[0];
             switch (catalogo) {
+                case "inmuebles":
+                    $("#calendario-ev-inm").datepicker();
+                    document.getElementById("tgrupo-regen_" + catalogo).value = GetValor(xmlDoc, "titulo");
+                    document.getElementById("in-regen_" + catalogo).value = GetValor(xmlDoc, "indice");
+                    break;
                 case "tiposgastos":
                 case "egrepro":
                     var control = IAgregarComprobante('c-e-regen_' + catalogo);
@@ -246,9 +251,12 @@ function MostrarOpcionesHabilitadas(evitarToggle) {
             var frm = document.getElementById("frm-edit-" + catalogo);
             switch (catalogo) {
                 case "egrepro":
+                    document.getElementById("clave-" + catalogo).value = clave;
                     CargarDatosFrmMap(xmlDoc, { indice: 'clave-egrepro', titulo: 'egrepro-titulo', proyecto: 's-egre-propro' });
                     break;
+                case "inmuebles":
                 case "tiposgastos":
+                    document.getElementById("clave-" + catalogo).value = clave;
                     CargarDatosFrmMap(xmlDoc, { indice: 'clave-tiposgastos', titulo:'tg-titulo',descripcion:'tg-descripcion'});
                     break;
                 case "comunicados":
@@ -631,6 +639,7 @@ function MostrarOpcionesHabilitadas(evitarToggle) {
             itemli.className = "item";
             var html = "";
             switch (catalogo) {
+                case "inmuebles":
                 case "tiposgastos":
                 case "egrepro":
                     var indice = GetValor(item, "indice");

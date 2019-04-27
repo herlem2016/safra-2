@@ -34,6 +34,8 @@
         //var url = "http://localhost:61157/";
         $.support.cors = true;        
     </script>
+    <link href="jqueryui/jquery-ui.min.css" rel="stylesheet" />
+    <script src="jqueryui/jquery-ui.min.js"></script>
     <script src="script.js"></script>
 </head>
 <body unselectable="on" onselectstart="return false;" onload="IniciarApp();">
@@ -73,7 +75,7 @@
                 <li><button onclick="PantallaMostrar('serviciosproductos','section',true);" class="ok"><img src="img/serviciosproductos.png"/>Productos y Servicios</button></li>
                 <li><button onclick="PantallaMostrar('directorio','section');" class="ok"><img src="img/directorio.png"/>Directorio</button></li>
                 <li><button onclick="PantallaMostrar('comunicados','section');" class="ok"><img src="img/comunicados.png" />Comunicados</button></li>
-                <li><button onclick="PantallaMostrar('comunicados','section');" class="ok"><img src="img/reservation.png"/>Reservaciones</button></li>
+                <li><button onclick="PantallaMostrar('inmuebles','section');" class="ok"><img src="img/reservation.png"/>Reservaciones</button></li>
                 <li><button onclick="PantallaMostrar('notificaciones','section');" class="ok"><img src="img/notificaciones.png" />Notificaciones</button></li>
                 <li class="alertav"><button onclick="ActivarAlarma()"  class="ok"><img src="img/alertav.png"/>Activar</button></li>
             </ul>
@@ -84,6 +86,61 @@
             <audio id="alarma-s" loop></audio>
             <button class="aceptar" onclick="DesactivarAlarma();" style="margin-top:20px;">Enterado</button>
         </div>
+
+        <section class="pantalla directorio" id="inmuebles">
+            <div class="lista" id="lista-inmuebles">
+                <div class="titulo">Inmuebles</div>
+                <div class="busqueda"><input placeholder="Buscar" /></div>
+                <div class="agregar" id="edicion-erogacion" style="display:none;"><button clave_funcion="2" control="edicion-erogacion" onclick="IniciarEditar(true,'inmuebles',2);">Agregar inmueble</button></div>
+                <ul class="lista seleccionable pantalla-3" style="width:100%;"></ul>
+            </div>
+            <div class="edicion" style="display:none;" id="p-edicion-inmuebles">
+                <form onsubmit="return false;" id="frm-edit-inmuebles">
+                    <fieldset>
+                        <div class="titulo">Agregar inmueble<button class="cancelar" id="cancelar-edit-inmuebles" onclick="Mostrar('p-edicion-inmuebles','lista-inmuebles');">Cancelar</button></div>
+                        <div class="pantalla-3">
+                            <input name="esNuevo" type="hidden" id="op-inmuebles" />
+                            <input name="clave" type="hidden" id="clave-inmuebles" />
+                            <label>Inmueble</label><input name="titulo" id="tg-titulo" />
+                            <label>Describa los usos que tendrá el inmueble</label><textarea maxlength="300" style="height:100px;" name="descripcion" id="tg-descripcion"></textarea>
+                            <button class="aceptar" style="margin-top:20px;" onclick="Guardar(this,'inmuebles', function () { LimpiarForm('inmuebles');CargarCatalogo(catalogo);Mostrar('p-edicion-inmuebles','lista-inmuebles');});">Guardar</button>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+            <div class="edicion" style="display:none;" id="p-regen_inmuebles">
+                <div class="titulo">Calendario de reservaciones<button class="cancelar" id="cancelar-edit-erogacion" onclick="Mostrar('p-regen_inmuebles','lista-inmuebles');">Cancelar</button></div>
+                <div class="pantalla-3">
+                    <div class="leyenda" style="margin-bottom:30px;margin-top:50px;">
+                        <p>
+                            En el calendario aparecen marcadas las fechas donde hay horarios reservados.<br/><br />
+                            Seleccione la fecha de su interés para reservar un horario disponible.
+                        </p>
+                    </div>
+                    <div id="calendario-ev-inm"></div>
+                </div>
+            </div>
+            <div class="lista" id="lista-eventos"  style="display:none;" >
+                <div class="titulo">Registro de gastos</div>
+                <div class="busqueda"><input placeholder="Buscar" /></div>
+                <div class="agregar" id="edicion-erogacion" style="display:none;"><button clave_funcion="2" control="edicion-erogacion" onclick="IniciarEditar(true,'eventos',2);">Agregar tipo de gasto</button></div>
+                <ul class="lista seleccionable pantalla-3" style="width:100%;"></ul>
+            </div>
+            <div class="edicion" style="display:none;" id="p-edicion-eventos">
+                <form onsubmit="return false;" id="frm-edit-eventos">
+                    <fieldset>
+                        <div class="titulo">Agregar tipo de gasto<button class="cancelar" id="cancelar-edit-eventos" onclick="Mostrar('p-edicion-eventos','lista-eventos');">Cancelar</button></div>
+                        <div class="pantalla-3">
+                            <input name="esNuevo" type="hidden" id="op-eventos" />
+                            <input name="clave" type="hidden" id="clave-eventos" />
+                            <label>Tipo de gasto</label><input name="titulo" id="tg-titulo" />
+                            <label>Describa a que se refiere el tipo</label><textarea maxlength="300" style="height:100px;" name="descripcion" id="tg-descripcion"></textarea>
+                            <button class="aceptar" style="margin-top:20px;" onclick="Guardar(this,'eventos', function () { LimpiarForm('eventos');CargarCatalogo(catalogo);Mostrar('p-edicion-eventos','lista-eventos');});">Guardar</button>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </section>
 
         <section class="pantalla directorio" id="directorio">
             <div class="lista" id="lista-directorio">

@@ -594,7 +594,7 @@ button.del-btn {
         margin-bottom: 30px;
     }
 
-    .buscador p {
+    .buscador p,div.leyenda p{
         width: 60%;
         display: block;
         margin: auto;
@@ -623,6 +623,11 @@ button.del-btn {
 
 div.home {
     background-color: #fff;
+}
+
+body .ui-datepicker {
+    width:95%;
+    margin:auto;
 }
 
 .menu {
