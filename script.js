@@ -84,9 +84,9 @@
             switch (catalogo) {
                 case "tiposgastos":
                 case "egrepro":
-                    var control = IAgregarComprobante('c-e-regen-' + catalogo);
-                    document.getElementById("tgrupo-regen-" + catalogo).value = GetValor(xmlDoc,"titulo");
-                    document.getElementById("in-regen-" + catalogo).value = GetValor(xmlDoc, "indice");
+                    var control = IAgregarComprobante('c-e-regen_' + catalogo);
+                    document.getElementById("tgrupo-regen_" + catalogo).value = GetValor(xmlDoc,"titulo");
+                    document.getElementById("in-regen_" + catalogo).value = GetValor(xmlDoc, "indice");
                     //ObtenerPagosClasificacion
                     break;
                 case "comunicados":
@@ -612,7 +612,7 @@
                 case "egrepro":
                     var indice = GetValor(item, "indice");
                     itemli.onclick = function () {
-                        Mostrar('lista-' + catalogo, 'p-regen-' + catalogo, catalogo, indice);
+                        Mostrar('lista-' + catalogo, 'p-regen_' + catalogo, catalogo, indice);
                     }
                     itemli.innerHTML =
                         '<span class="t-1" >' + GetValor(item, "titulo") + '</span>' +

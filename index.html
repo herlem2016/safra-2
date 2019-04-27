@@ -370,15 +370,15 @@
                         </fieldset>
                     </form>
                 </div>
-                <div class="edicion" style="display:none;" id="p-regen-tiposgastos">
-                    <div class="titulo">Edición de Solcitud de Mtto. <button class="cancelar" id="cancelar-edit-erogacion" onclick="Mostrar('p-regen-tiposgastos','lista-tiposgastos');">Cancelar</button></div>
+                <div class="edicion" style="display:none;" id="p-regen_tiposgastos">
+                    <div class="titulo">Edición de Solcitud de Mtto. <button class="cancelar" id="cancelar-edit-erogacion" onclick="Mostrar('p-regen_tiposgastos','lista-tiposgastos');">Cancelar</button></div>
                     <div class="pantalla-3">
-                        <form onsubmit="return false;" id="frm-edit-regen-tiposgastos">
+                        <form onsubmit="return false;" id="frm-edit-regen_tiposgastos">
                             <fieldset>
-                                <label>Registrar en:</label><input readonly="readonly" id="tgrupo-regen-tiposgastos" /><input type="hidden" id="in-regen-tiposgastos" name="tipogasto" />
-                                <div><button class="adjuntar-btn" style="width:100px;" onclick="IAgregarComprobante('c-e-regen-tiposgastos');"><img src="img/attach.png" /><span class="texto-discreto">Agregar</span></button><hr class="clearn" /></div>
-                                <div id="c-e-regen-tiposgastos" style="margin-bottom:20px;"></div>
-                                <button class="aceptar" onclick="GuardarComprobante(this, 'regen-tiposgastos', function () { },'regen-tiposgastos');">Guardar</button>
+                                <label>Registrar en:</label><input readonly="readonly" id="tgrupo-regen_tiposgastos" /><input type="hidden" id="in-regen_tiposgastos" name="tipogasto" />
+                                <div><button class="adjuntar-btn" style="width:100px;" onclick="IAgregarComprobante('c-e-regen_tiposgastos');"><img src="img/attach.png" /><span class="texto-discreto">Agregar</span></button><hr class="clearn" /></div>
+                                <div id="c-e-regen_tiposgastos" style="margin-bottom:20px;"></div>
+                                <button class="aceptar" onclick="GuardarComprobante(this, 'regen_tiposgastos', function () { },'regen_tiposgastos');">Guardar</button>
                             </fieldset>
                         </form>
                     </div>
@@ -409,7 +409,7 @@
                 <div class="edicion" style="display:none;" id="p-regen-grepro">
                     <div class="titulo">Edición de Solcitud de Mtto. <button class="cancelar" id="cancelar-edit-erogacion" onclick="Mostrar('p-edicion-erogacion-p','lista-erogacion-p');">Cancelar</button></div>
                     <div class="pantalla-3">
-                        <label>Proyecto</label><input readonly="readonly" id="tgrupo-regen-tiposgastos" /><input type="hidden" id="tgrupo-regen-tiposgastos" name="tipogasto" />
+                        <label>Proyecto</label><input readonly="readonly" id="tgrupo-regen_tiposgastos" /><input type="hidden" id="tgrupo-regen_tiposgastos" name="tipogasto" />
                         <label>Registro de pagos<button class="adjuntar-btn" style="width:100px;" onclick="IniciarAdjuntarEvidenciaSolmtto();"><img src="img/attach.png" /><span class="texto-discreto">Agregar</span></button><hr class="clearn" /></label>
                         <table class="lista-files">
                             <tr><td><button class="del-btn"><img src="img/del.png" /></button></td><td style="width:70%"><input /></td><td style="width:30%"><input /></td><td><button class="con-btn"><img src="img/touch.png" /></button></td><td><button class="con-btn"><img src="img/payok.png" style="width:100%;" /></button></td></tr>
