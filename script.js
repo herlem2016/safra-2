@@ -922,7 +922,7 @@
                 var item = document.createElement("table");
                 item.className = "lista-files";
                 item.innerHTML = '<tbody>' +
-                    '<tr><td><button onclick="QuitarEIT(this);" class="del-btn"><img src="img/del.png" /></button></td><td style="width:70%"><input maxlength="200" onchange="this.parentNode.parentNode.parentNode.parentNode.setAttribute(\'cambioTexto\',\'true\');"/></td><td style="width:30%"><input onkeypress="return SoloNumeros(window.event,\'.\');" maxlength="200" onchange="this.parentNode.parentNode.parentNode.parentNode.setAttribute(\'cambioTexto\',\'true\');"/></td><td><button class="con-btn" onclick="IAdjuntarImagenes(this);"><img src="img/touch.png" /></button></td><td><button class="con-btn"><img src="img/ok.png" style="width:100%;" /></button></td></tr>' +
+                    '<tr><td><button onclick="QuitarEIT(this);" class="del-btn"><img src="img/del.png" /></button></td><td style="width:70%"><input maxlength="200" onchange="this.parentNode.parentNode.parentNode.parentNode.setAttribute(\'cambioTexto\',\'true\');"/></td><td style="width:30%"><input onkeypress="return SoloNumeros(window.event,\'.\');" maxlength="200" onchange="this.parentNode.parentNode.parentNode.parentNode.setAttribute(\'cambioTexto\',\'true\');"/></td><td><button class="con-btn" onclick="IAdjuntarImagenes(this.getElementsByTagName(\'img\')[0]);"><img src="img/touch.png" /></button></td><td><button class="con-btn"><img src="img/ok.png" style="width:100%;" /></button></td></tr>' +
 //                    '<tr class="resultado"><td></td><td><b>Total</b></td><td><b>$ 4,200.00</b></td><td></td><td></td></tr>' +
                     '</tbody>';
                 item.imagen = item.getElementsByTagName("img")[1];
