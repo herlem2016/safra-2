@@ -1,4 +1,20 @@
-﻿function MostrarOpcionesHabilitadas(evitarToggle){
+﻿function ActivarAlarma() {
+    var alarmaVoz = document.getElementById("alarma-v");
+    var alarma = document.getElementById("alarma-s");
+    alarmaVoz.setAttribute("src", urlNotas);
+    alarma.setAttribute("src", "audios/alerta3.mp3");
+    alarmaVoz.play();
+    alarma.play();
+    alarma.volume = 0.5;
+    document.getElementById("alarma").style.display = "block";
+}
+
+function DesactivarAlarma() {
+    document.getElementById("alarma").style.display = "none";
+    document.getElementById("alarma-v").pause();
+}
+
+function MostrarOpcionesHabilitadas(evitarToggle) {
             var funcionesEnPantalla = { btns: [], claves: [] };
             var botones = document.getElementsByTagName("button");
             var j = 0;
@@ -506,13 +522,13 @@
             var styleStr = ".login fieldset{height:" + parseInt(0.7 * window.innerHeight, 10) + "px !important;margin-top:" + parseInt(0.10 * window.innerHeight,10) + "px;}";
             var heightApp = parseInt(window.innerHeight - 40, 10) + 5;
             styleStr += ".pantalla {height:" + heightApp + "px !important;}";
-            styleStr += ".menu button img {height:" + (heightApp-100)/7 + "px !important;}";
+            styleStr += ".menu button img {height:" + (heightApp-100)/8 + "px !important;}";
             styleStr += ".pantalla-2 {height:" + (heightApp - 64) + "px !important;}";
             styleStr += ".pantalla-3 {height:" + (heightApp - 132) + "px !important;}";
             styleStr += ".pantalla-4 {height:" + (heightApp - 27) + "px !important;}";
             styleStr += ".scrollable {height:" + (heightApp - 132) + "px !important;}";
             styleStr += ".scrollable-2 {height:" + (heightApp - 168) + "px !important;}";
-            styleStr += ".menu li {height:" + (heightApp - 50)/5 + "px !important;}";
+            styleStr += ".menu li {height:" + (heightApp - 50)/4 + "px !important;}";
 
             style.innerHTML = styleStr;
         }

@@ -636,11 +636,29 @@ div.home {
     margin-right: auto;
 }
 
+    .menu li.alertav {
+        position: absolute;
+        bottom: 0px;
+        right: 0px;
+        border: 10px solid #bcb56d;
+        border-right-color: currentcolor;
+        border-right-style: solid;
+        border-right-width: 10px;
+        border-bottom-color: currentcolor;
+        border-bottom-style: solid;
+        border-bottom-width: 10px;
+        border-right: 0px;
+        border-bottom: 0px;
+        border-radius: 53%;
+        background-color: #e1dfb3;
+        width:20%;
+    }
+
     .menu li {
         margin: 0px;
         padding: 0px;
         float: left;
-        width: 50%;
+        width: 33%;
         margin: 0px;
     }
 

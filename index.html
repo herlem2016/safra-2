@@ -30,6 +30,7 @@
     <script src="jquery-1.11.3.min.js"></script>    
     <script>
         var url = "http://192.168.0.101:82/";
+        var urlNotas = "http://207.249.77.114/intranet/Modulos/Capacitacion/CursosNegocio/notavoz.mp3?op=ObtenerNotaVozSlide&nota=Alerta%20vecinal%2C%20alerta%20vecinal%2Ccalle%20sof%C3%ADa%20106%2Ccalle%20sof%C3%ADa%20106";
         //var url = "http://localhost:61157/";
         $.support.cors = true;        
     </script>
@@ -71,10 +72,18 @@
                 <li><button onclick="PantallaMostrar('encuestas','section');" class="no"><img src="img/encuestas.png"/>Encuestas</button></li>
                 <li><button onclick="PantallaMostrar('serviciosproductos','section',true);" class="ok"><img src="img/serviciosproductos.png"/>Productos y Servicios</button></li>
                 <li><button onclick="PantallaMostrar('directorio','section');" class="ok"><img src="img/directorio.png"/>Directorio</button></li>
-                <li><button onclick="PantallaMostrar('comunicados','section');" class="ok"><img src="img/comunicados.png"/>Comunicados</button></li>
-                <li><button onclick="PantallaMostrar('notificaciones','section');" class="ok"><img src="img/notificaciones.png"/>Notificaciones</button></li>
+                <li><button onclick="PantallaMostrar('comunicados','section');" class="ok"><img src="img/comunicados.png" />Comunicados</button></li>
+                <li><button onclick="PantallaMostrar('comunicados','section');" class="ok"><img src="img/reservation.png"/>Reservaciones</button></li>
+                <li><button onclick="PantallaMostrar('notificaciones','section');" class="ok"><img src="img/notificaciones.png" />Notificaciones</button></li>
+                <li class="alertav"><button onclick="ActivarAlarma()"  class="ok"><img src="img/alertav.png"/>Activar</button></li>
             </ul>
         </section>
+
+        <div id="alarma" style="position:absolute;display:none;z-index:9999;width:80%;padding:10%;margin-top:35%;background-color:#ff0000;text-align:center;">            
+            <audio id="alarma-v" loop controls onplay="document.getElementById('alarma-s').play();" onpause="document.getElementById('alarma-s').pause();"></audio>
+            <audio id="alarma-s" loop></audio>
+            <button class="aceptar" onclick="DesactivarAlarma();" style="margin-top:20px;">Enterado</button>
+        </div>
 
         <section class="pantalla directorio" id="directorio">
             <div class="lista" id="lista-directorio">
