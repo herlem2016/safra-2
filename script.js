@@ -845,7 +845,7 @@
                     var inputs = imagenes[i].getElementsByTagName('input');
                     datos = { concepto: inputs[0].value, importe: inputs[1].value, claveItem: claveItem, catalogo:catalogo };
                 } else {
-                    datos = { descripcion: imagenes[i].getElementsByTagName('textarea')[0].value, claveItem: clave, catalogo: catalogo };
+                    datos = { descripcion: imagenes[i].getElementsByTagName('textarea')[0].value, claveItem: claveItem, catalogo: catalogo };
                 }
                 options.params = datos;
                 options.chunkedMode = false;
