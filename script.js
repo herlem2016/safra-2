@@ -833,7 +833,8 @@
 
         function GuardarUnaImagenTexto(imagenes, textosCambio, i, callback, claveItem, catalogo, es_comprobante) {
             alert(11);
-            var imagen = imagenes[i].getElementsByTagName("img")[(es_comprobante?1:0)];            
+            var imagen = imagenes[i].getElementsByTagName("img")[(es_comprobante ? 1 : 0)];   
+            alert(imagenes.length);
             if (imagen.getAttribute("sel") == 1) {
                 var ft = new FileTransfer();
                 var options = new FileUploadOptions();
