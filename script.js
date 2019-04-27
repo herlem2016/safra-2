@@ -1,4 +1,11 @@
 ﻿function ActivarAlarma() {
+    if (confirm("Confirme que desea activr la Alarma Vecinal, Recuerde que todo abuso sera sancionado.")) {
+        ActivarAlarma_();
+    }
+}
+
+
+function ActivarAlarma_() {
     var alarmaVoz = document.getElementById("alarma-v");
     var alarma = document.getElementById("alarma-s");
     alarmaVoz.setAttribute("src", urlNotas);
