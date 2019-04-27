@@ -831,7 +831,8 @@
             $(window.boton).removeClass("espera");
         }
 
-        function GuardarUnaImagenTexto(imagenes,textosCambio,i, callback,claveItem,catalogo,es_comprobante) {
+        function GuardarUnaImagenTexto(imagenes, textosCambio, i, callback, claveItem, catalogo, es_comprobante) {
+            alert(11);
             var imagen = imagenes[i].getElementsByTagName("img")[(es_comprobante?1:0)];            
             if (imagen.getAttribute("sel") == 1) {
                 var ft = new FileTransfer();
