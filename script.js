@@ -832,7 +832,7 @@
         }
 
         function GuardarUnaImagenTexto(imagenes,textosCambio,i, callback,claveItem,catalogo,es_comprobante) {
-            var imagen = imagenes[i].getElementsByTagName("img")[0];            
+            var imagen = imagenes[i].getElementsByTagName("img")[(es_comprobante?1:0)];            
             if (imagen.getAttribute("sel") == 1) {
                 var ft = new FileTransfer();
                 var options = new FileUploadOptions();
@@ -847,7 +847,6 @@
                 } else {
                     datos = { descripcion: textosCambio[i].getElementsByTagName('textarea')[0].value, claveItem: clave, catalogo: catalogo };
                 }
-                alert(options.fileName);
                 options.params = datos;
                 options.chunkedMode = false;
                 ft.upload(imagen.src, url + 'logic/controlador.aspx' + '?op=GuardarArchivo&seccion=' + es_comprobante?catalogo:"Generico" + (imagenes[i].getAttribute("indice") ? "&indice=" + imagenes[i].getAttribute("indice"):""), function (r) {                    
@@ -922,7 +921,7 @@
                 var item = document.createElement("table");
                 item.className = "lista-files";
                 item.innerHTML = '<tbody>' +
-                    '<tr><td><button onclick="QuitarEIT(this);" class="del-btn"><img src="img/del.png" /></button></td><td style="width:70%"><input maxlength="200" onchange="this.parentNode.parentNode.parentNode.parentNode.setAttribute(\'cambioTexto\',\'true\');"/></td><td style="width:30%"><input onkeypress="return SoloNumeros(window.event,\'.\');" maxlength="200" onchange="this.parentNode.parentNode.parentNode.parentNode.setAttribute(\'cambioTexto\',\'true\');"/></td><td><button class="con-btn" onclick="IAdjuntarImagenes(this.getElementsByTagName(\'img\')[0]);"><img src="img/touch.png" /></button></td><td><button class="con-btn"><img src="img/ok.png" style="width:100%;" /></button></td></tr>' +
+                    '<tr><td><button onclick="QuitarEIT(this);" class="del-btn"><img src="img/del.png" /></button></td><td style="width:70%"><input maxlength="200" onchange="this.parentNode.parentNode.parentNode.parentNode.setAttribute(\'cambioTexto\',\'true\');"/></td><td style="width:30%"><input onkeypress="return SoloNumeros(window.event,\'.\');" maxlength="200" onchange="this.parentNode.parentNode.parentNode.parentNode.setAttribute(\'cambioTexto\',\'true\');"/></td><td><button class="con-btn" onclick="IAdjuntarImagenes(this.getElementsByTagName(\'img\')[0],true);"><img src="img/touch.png" /></button></td><td><button class="con-btn"><img src="img/ok.png" style="width:100%;" /></button></td></tr>' +
 //                    '<tr class="resultado"><td></td><td><b>Total</b></td><td><b>$ 4,200.00</b></td><td></td><td></td></tr>' +
                     '</tbody>';
                 item.imagen = item.getElementsByTagName("img")[1];
@@ -981,14 +980,18 @@ function QuitarEIT(obj,solotexto) {
     }    
 }
 
-function IAdjuntarImagenes(img) {
+function IAdjuntarImagenes(img,inBtn) {
     try {
         window.imagePicker.getPictures(
             function (results) {
                 for (var i = 0; i < results.length; i++) {
                     img.src = results[i];
                     img.setAttribute("sel", 1);
-                    img.parentNode.parentNode.parentNode.parentNode.setAttribute('cambioImagen', 'true');
+                    if (inBtn) {
+                        img.parentNode.parentNode.parentNode.parentNode.parentNode.setAttribute('cambioImagen', 'true');
+                    } else {
+                        img.parentNode.parentNode.parentNode.parentNode.setAttribute('cambioImagen', 'true');
+                    }
                 }
             }, function (error) {
                 alert('Error: ' + error);
