@@ -873,9 +873,13 @@
                                 if (callback) callback();
                             }
                         } else {
-                            QuitarEspera();
-                            alert("Guardado correctamente");
-                            if (callback) callback();
+                            if (GetValor(r.response, "estatus") == 1) {
+                                alert(GetValor(r.response, "mensaje"));
+                            } else {
+                                QuitarEspera();
+                                alert("Guardado correctamente");
+                                if (callback) callback();
+                            }                            
                         }
                     }
                 }, function (error) {
