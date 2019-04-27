@@ -874,10 +874,10 @@
                             }
                         } else {
                             if (GetValor(r.response, "estatus") == 1) {
-                                alert(GetValor(r.response, "mensaje"));
+                                alert("Guardado correctamente");
                             } else {
                                 QuitarEspera();
-                                alert("Guardado correctamente");
+                                alert(GetValor(r.response, "mensaje"));
                                 if (callback) callback();
                             }                            
                         }
