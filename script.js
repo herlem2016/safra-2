@@ -847,7 +847,7 @@
                 } else {
                     datos = { descripcion: textosCambio[i].getElementsByTagName('textarea')[0].value, claveItem: clave, catalogo: catalogo };
                 }
-                
+                alert(options.fileName);
                 options.params = datos;
                 options.chunkedMode = false;
                 ft.upload(imagen.src, url + 'logic/controlador.aspx' + '?op=GuardarArchivo&seccion=' + es_comprobante?catalogo:"Generico" + (imagenes[i].getAttribute("indice") ? "&indice=" + imagenes[i].getAttribute("indice"):""), function (r) {                    
