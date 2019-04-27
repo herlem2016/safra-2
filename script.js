@@ -877,7 +877,7 @@
                         }
                     }
                 }, function (error) {
-                    alert(error.message);
+                    alert(error);
                     QuitarEspera();
                     alert("Verifique guardado.");
                 }, options);
