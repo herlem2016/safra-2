@@ -849,7 +849,9 @@
                 }
                 options.params = datos;
                 options.chunkedMode = false;
-                ft.upload(imagen.src, url + 'logic/controlador.aspx' + '?op=GuardarArchivo&seccion=' + es_comprobante?catalogo:"Generico" + (imagenes[i].getAttribute("indice") ? "&indice=" + imagenes[i].getAttribute("indice"):""), function (r) {                    
+                var ruta = url + 'logic/controlador.aspx?op=GuardarArchivo&seccion=' + (es_comprobante ? catalogo : 'Generico') + '&' + (imagenes[i].getAttribute("indice") ? "&indice=" + imagenes[i].getAttribute("indice") : "");
+                alert(ruta);
+                ft.upload(imagen.src, ruta, function (r) {                    
                     imagenes[i].setAttribute("indice", GetValor(r.response, "clave"));
                     i++;
                     if (i < imagenes.length) {
