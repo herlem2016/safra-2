@@ -832,9 +832,7 @@
         }
 
         function GuardarUnaImagenTexto(imagenes, textosCambio, i, callback, claveItem, catalogo, es_comprobante) {
-            alert(11);
-            var imagen = imagenes[i].getElementsByTagName("img")[(es_comprobante ? 1 : 0)];   
-            alert(imagenes.length);
+            var imagen = imagenes[i].getElementsByTagName("img")[(es_comprobante ? 1 : 0)];  
             if (imagen.getAttribute("sel") == 1) {
                 var ft = new FileTransfer();
                 var options = new FileUploadOptions();
@@ -844,10 +842,10 @@
 
                 var datos;
                 if (es_comprobante) {
-                    var inputs = textosCambio[i].getElementsByTagName('input');
+                    var inputs = imagenes[i].getElementsByTagName('input');
                     datos = { concepto: inputs[0].value, importe: inputs[1].value, claveItem: claveItem, catalogo:catalogo };
                 } else {
-                    datos = { descripcion: textosCambio[i].getElementsByTagName('textarea')[0].value, claveItem: clave, catalogo: catalogo };
+                    datos = { descripcion: imagenes[i].getElementsByTagName('textarea')[0].value, claveItem: clave, catalogo: catalogo };
                 }
                 options.params = datos;
                 options.chunkedMode = false;
