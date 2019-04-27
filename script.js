@@ -66,7 +66,7 @@
             return valor;
         }
 
-        function Mostrar(p1,p2,catalogo,clave) {
+        function Mostrar(p1, p2, catalogo, clave) {
             document.getElementById(p1).style.display = "none";
             document.getElementById(p2).style.display = "block";
             if (catalogo) {
@@ -81,10 +81,17 @@
         function PintarItem(catalogo, clave, xmlDoc0){
             var cont = "", imgsTexto;
             var xmlDoc = xmlDoc0.getElementsByTagName("Table")[0];
-            var pantalla = document.getElementById("detalle-" + catalogo);
-            pantalla.setAttribute("clave",clave);
             switch (catalogo) {
+                case "tiposgastos":
+                case "egrepro":
+                    var control = IAgregarComprobante('c-e-regen-' + catalogo);
+                    document.getElementById("tgrupo-regen-" + catalogo).value = GetValor(xmlDoc,"titulo");
+                    document.getElementById("in-regen-" + catalogo).value = GetValor(xmlDoc, "indice");
+                    //ObtenerPagosClasificacion
+                    break;
                 case "comunicados":
+                    var pantalla = document.getElementById("detalle-" + catalogo);
+                    pantalla.setAttribute("clave", clave);
                     cont =
                         '<span class="t-1">' + GetValor(xmlDoc, "titulo") + '</span>' +
                         '<span class="t-2">' + GetValor(xmlDoc, "nombre") + ' (' + GetValor(xmlDoc, "cargo") + ')</span>' +
@@ -94,6 +101,8 @@
                     document.getElementById("wrap-detalle-" + catalogo).innerHTML = cont;
                     ; break;
                 case "solicitudes":
+                    var pantalla = document.getElementById("detalle-" + catalogo);
+                    pantalla.setAttribute("clave", clave);
                     cont =                    
                         '<span class="t-1">' + GetValor(xmlDoc, "titulo") + '</span>' +
                         '<span class="t-2">' + GetValor(xmlDoc, "nombre") + ' (' + GetValor(xmlDoc, "cargo") + ')</span>' +
@@ -118,6 +127,8 @@
                     }
                     ; break;
                 case "prodserv":
+                    var pantalla = document.getElementById("detalle-" + catalogo);
+                    pantalla.setAttribute("clave", clave);
                     var btn = document.getElementById("activar-negocio");
                     btn.checked = (GetValor(xmlDoc, "activo")=="true");
                     btn.value = clave;
@@ -211,6 +222,12 @@
             var xmlDoc = xmlDoc0.getElementsByTagName("Table")[0];
             var frm = document.getElementById("frm-edit-" + catalogo);
             switch (catalogo) {
+                case "egrepro":
+                    CargarDatosFrmMap(xmlDoc, { indice: 'clave-egrepro', titulo: 'egrepro-titulo', proyecto: 's-egre-propro' });
+                    break;
+                case "tiposgastos":
+                    CargarDatosFrmMap(xmlDoc, { indice: 'clave-tiposgastos', titulo:'tg-titulo',descripcion:'tg-descripcion'});
+                    break;
                 case "comunicados":
                 case "solicitudes":
                 case "prodserv":
@@ -352,11 +369,14 @@
             return valor;
         }
 
-        function IniciarEditar(esNuevo, catalogo,solotexto,intercambio,clave) {
+        function IniciarEditar(esNuevo, catalogo, solotexto, intercambio, clave) {
+            window.event.stopPropagation();
             if (esNuevo) {
                 document.getElementById('op-' + catalogo).value="true";
-                document.getElementById("c-e-" + catalogo).innerHTML = "";
-                IAgregarImagenTexto('c-e-' + catalogo, solotexto);
+                if (solotexto != 2 || solotexto==undefined || solotexto==null) {
+                    document.getElementById("c-e-" + catalogo).innerHTML = "";
+                    IAgregarImagenTexto('c-e-' + catalogo, solotexto);
+                }                
                 if (intercambio) {
                     Mostrar(intercambio.a, intercambio.b);
                     document.getElementById("cancelar-edit-" + catalogo).onclick = function () { Mostrar(intercambio.b, intercambio.a); }
@@ -397,12 +417,12 @@
         }
 
 
-        function IniciarEliminar(objeto,catalogo,clave,intercambio) {
+        function IniciarEliminar(objeto,catalogo,clave,intercambio,noImgTxt) {
             if(confirm("Confirme que desea eliminar")){
                 if (!clave) {
                     clave = document.getElementById("detalle-" + catalogo).getAttribute("clave");
                 }
-                $.post(url + 'logic/controlador.aspx' + '?op=EliminarItem&seccion=' + catalogo + '&claveItem=' + clave, function (xmlDoc) {
+                $.post(url + 'logic/controlador.aspx?op=' + (noImgTxt?'Eliminar':'EliminarItem') + '&seccion=' + catalogo + '&claveItem=' + clave, function (xmlDoc) {
                     if (GetValor(xmlDoc, "estatus") == 1) {
                         if (intercambio) {
                             Mostrar(intercambio.a, intercambio.b);
@@ -476,8 +496,9 @@
             var tabInicioPro = document.getElementById("tab-inicio-pro");
             TabMostrar(tabInicioPro, tabInicioPro.parentNode, 'pro-ejecucion');
             var tabInicioPag = document.getElementById("tab-inicio-pagos");
-            TabMostrar(tabInicioPag, tabInicioPag.parentNode, 'tab-pcorriente');
+            TabMostrar(tabInicioPag, tabInicioPag.parentNode, 'tab-pcorriente','tiposgastos');
             LlenarSelect(url + 'logic/controlador.aspx?op=ObtenerClasificacion&seccion=Generico&clave=6' , 's-tipossolicitudatencion', undefined, 'indice', 'descripcion');
+            LlenarSelect(url + 'logic/controlador.aspx?op=ObtenerPropuestasProy&seccion=egrepro&', 's-egre-propro', 'Seleccione proyecto', 'clave', 'titulo');
         }
 
         function EstablecerDimensiones() {
@@ -516,11 +537,7 @@
             document.getElementById("aportacion").innerHTML = "$ " + cuenta;
         }
 
-        function IniciarRegistrarErogacion() {
-            Mostrar('lista-erogacion', 'p-edicion-erogacion');
-        }
-
-        function TabMostrar(tab, raiz, id) {
+        function TabMostrar(tab, raiz, id,catalogo) {
             try { raiz.seleccionado.className="tab"; } catch (e) { }
             raiz.seleccionado = tab;
             raiz.seleccionado.className = "tab tab-sel";
@@ -529,6 +546,9 @@
                 document.getElementById(tabs[i]).style.display = "none";
             }
             document.getElementById(id).style.display = "block";
+            if (catalogo){
+                CargarCatalogo(catalogo);
+            }            
         }
 
         function PantallaMostrar(catalogo,tagName,no_post){
@@ -587,7 +607,18 @@
             var itemli = document.createElement("li");
             itemli.className = "item";
             var html = "";
-            switch (catalogo){
+            switch (catalogo) {
+                case "tiposgastos":
+                case "egrepro":
+                    var indice = GetValor(item, "indice");
+                    itemli.onclick = function () {
+                        Mostrar('lista-' + catalogo, 'p-regen-' + catalogo, catalogo, indice);
+                    }
+                    itemli.innerHTML =
+                        '<span class="t-1" >' + GetValor(item, "titulo") + '</span>' +
+                    '<button class="edit-btn" clave_funcion="2" control="ed-tg-' + indice + '" id="ed-tg-' + indice + '" style="display:none;"  onclick="IniciarEditar(false, \'' + catalogo + '\', 2, { a: \'lista-' + catalogo + '\', b: \'p-edicion-' + catalogo + '\' },' + indice + ');" ><img  src="img/edit.png" /></button>' +
+                    '<button class="edit-btn" clave_funcion="2" control="del-tg-' + indice + '" id="del-tg-' + indice + '" style="display:none;"  onclick="IniciarEliminar(this,\'' + catalogo + '\',' + indice + ',{ b: \'lista-' + catalogo + '\', a: \'p-edicion-' + catalogo + '\' },true);" ><img  src="img/del.png" /></button>';
+                    break;
                 case "comunicados":
                 case "solicitudes":
                     itemli.onclick = function () { Mostrar('lista-' + catalogo, 'detalle-' + catalogo, catalogo, GetValor(item, "clave")); }
@@ -696,7 +727,10 @@
 
         function LimpiarForm(catalogo) {
             document.getElementById('frm-edit-' + catalogo).reset();
-            document.getElementById('c-e-' + catalogo).innerHTML = "";
+            var wrap = document.getElementById('c-e-' + catalogo);
+            if (wrap) {
+                wrap.innerHTML = "";
+            }
         }
 
         function Guardar(boton,catalogo,callback,subitemCatalogo) {
@@ -704,6 +738,7 @@
             PonerEspera(boton,catalogo);
             $.post(url + 'logic/controlador.aspx' + '?op=Guardar&seccion=' + catalogo, datos, function (xmlDoc) {  
                 if (GetValor(xmlDoc, "estatus") == 1) {
+                    if (document.getElementById("c-e-" + catalogo)){
                     try {
                         var claveItem = GetValor(xmlDoc, "clave");
                         var imagenes = document.getElementById("c-e-" + catalogo).getElementsByTagName("table");
@@ -727,12 +762,50 @@
                     } catch (e) {
                         QuitarEspera();
                         alert(e.message);
+                        }
+                    } else {
+                        QuitarEspera();
+                        if (callback) callback();
                     }
                 } else {
                     QuitarEspera();
                     alert(GetValor(xmlDoc, "mensaje"));
                 }
             });            
+        }
+
+        function GuardarComprobante(boton, catalogo, callback, subitemCatalogo) {
+            var datos = $("#frm-edit-" + catalogo).serializeArray();
+            PonerEspera(boton, catalogo);
+            if (document.getElementById("c-e-" + catalogo)) {
+                try {
+                    var claveItem = document.getElementById("in-" + catalogo).value;
+                    var imagenes = document.getElementById("c-e-" + catalogo).getElementsByTagName("table");
+                    var imagenesCambio = [];
+                    var textosCambio = [];
+                    for (var i = 0; i < imagenes.length; i++) {
+                        if (imagenes[i].getAttribute("cambioImagen") == "true"){
+                            imagenesCambio.push(imagenes[i]);
+                        } else if (imagenes[i].getAttribute("cambioTexto") == "true") {
+                            textosCambio.push(imagenes[i]);
+                        }
+                    }
+                    if (imagenesCambio.length > 0) {
+                        GuardarUnaImagenTexto(imagenesCambio, textosCambio, 0, callback, claveItem, catalogo,true);
+                    } else if (textosCambio.length > 0) {
+                        GuardarUnTexto(textosCambio, 0, callback, claveItem, catalogo, subitemCatalogo,true);
+                    } else {
+                        QuitarEspera();
+                        if (callback) callback();
+                    }
+                } catch (e) {
+                    QuitarEspera();
+                    alert(e.message);
+                }
+            } else {
+                QuitarEspera();
+                if (callback) callback();
+            }
         }
 
         function PonerEspera(elemento,catalogo) {
@@ -758,27 +831,31 @@
             $(window.boton).removeClass("espera");
         }
 
-        function GuardarUnaImagenTexto(imagenes,textosCambio,i, callback,claveItem,catalogo) {
-            var imagen = imagenes[i].getElementsByTagName("img")[0];
-            var  descripcion = imagenes[i].getElementsByTagName("textarea")[0].value;
+        function GuardarUnaImagenTexto(imagenes,textosCambio,i, callback,claveItem,catalogo,es_comprobante) {
+            var imagen = imagenes[i].getElementsByTagName("img")[0];            
             if (imagen.getAttribute("sel") == 1) {
                 var ft = new FileTransfer();
                 var options = new FileUploadOptions();
                 options.fileKey = "vImage";
                 options.fileName = imagen.src.substr(imagen.src.lastIndexOf('/') + 1);
                 options.mimeType = "image/jpeg";
-                var params = new Object();
-                params.catalogo = catalogo;
-                params.claveItem = claveItem;
-                params.descripcion = descripcion;
-                options.params = params;
+
+                var datos;
+                if (es_comprobante) {
+                    var inputs = textosCambio[i].getElementsByTagName('input');
+                    datos = { concepto: inputs[0].value, importe: inputs[1].value, claveItem: claveItem, catalogo:catalogo };
+                } else {
+                    datos = { descripcion: textosCambio[i].getElementsByTagName('textarea')[0].value, claveItem: clave, catalogo: catalogo };
+                }
+                
+                options.params = datos;
                 options.chunkedMode = false;
-                ft.upload(imagen.src, url + 'logic/controlador.aspx' + '?op=GuardarArchivo&seccion=Generico' + (imagenes[i].getAttribute("indice") ? "&indice=" + imagenes[i].getAttribute("indice"):""), function (r) {
+                ft.upload(imagen.src, url + 'logic/controlador.aspx' + '?op=GuardarArchivo&seccion=' + es_comprobante?catalogo:"Generico" + (imagenes[i].getAttribute("indice") ? "&indice=" + imagenes[i].getAttribute("indice"):""), function (r) {                    
+                    imagenes[i].setAttribute("indice", GetValor(r.response, "clave"));
                     i++;
-                    imagen.setAttribute("clave", GetValor(r.response, "clave"));
                     if (i < imagenes.length) {
                         try {
-                            GuardarUnaImagenTexto(imagenes, textosCambio, i++, callback, claveItem, catalogo);
+                            GuardarUnaImagenTexto(imagenes, textosCambio, i++, callback, claveItem, catalogo,es_comprobante);
                         } catch (e) {
                             QuitarEspera();
                             alert("Verifique guardado");
@@ -787,7 +864,7 @@
                     } else {
                         if (textosCambio.length > 0) {
                             try {
-                                GuardarUnTexto(textosCambio, 0, callback, claveItem, catalogo);
+                                GuardarUnTexto(textosCambio, 0, callback, claveItem, catalogo,es_comprobante);
                             } catch (e){
                                 QuitarEspera();
                                 alert(e.message);
@@ -810,13 +887,20 @@
             }
         }
 
-        function GuardarUnTexto(textosCambio, i, callback, clave, catalogo, subitemCatalogo) {
-            var datos = { descripcion: textosCambio[i].getElementsByTagName('textarea')[0].value, indice: textosCambio[i].getAttribute("indice"),clave:clave,catalogo:catalogo };
-            $.post(url + 'logic/controlador.aspx' + '?op=ActualizarDescripcion&seccion=' + (subitemCatalogo?catalogo:"Generico"),datos, function (xmlDoc) {
+        function GuardarUnTexto(textosCambio, i, callback, clave, catalogo, subitemCatalogo,es_comprobante) {
+            var datos;
+            if (es_comprobante) {
+                var inputs = textosCambio[i].getElementsByTagName('input');
+                datos={ concepto: inputs[0].value, importe:inputs[1].value, indice: textosCambio[i].getAttribute("indice"), clave:clave, catalogo:catalogo };
+            } else {
+                datos = { descripcion: textosCambio[i].getElementsByTagName('textarea')[0].value, indice: textosCambio[i].getAttribute("indice"), clave: clave, catalogo: catalogo };
+            }
+            $.post(url + 'logic/controlador.aspx' + '?op=ActualizarDescripcion&seccion=' + (subitemCatalogo ? catalogo : "Generico"), datos, function (xmlDoc) {
+                textosCambio[i].setAttribute("indice", GetValor(xmlDoc, "clave"));
                 i++;
                 if (i < textosCambio.length) {
                     try {
-                        GuardarUnTexto(textosCambio, i++, callback, clave, catalogo, subitemCatalogo);
+                        GuardarUnTexto(textosCambio, i++, callback, clave, catalogo, subitemCatalogo,es_comprobante);
                     } catch (e) {
                         QuitarEspera();
                         alert(e.message);
@@ -830,18 +914,50 @@
             });    
         }
 
+
+        function IAgregarComprobante(id) {
+            var contenedor = (typeof id == "object" ? id : document.getElementById(id));
+            var imagenes = contenedor.getElementsByTagName("table");
+            if (imagenes.length == 0 || (imagenes.length > 0 && imagenes[imagenes.length - 1].getElementsByTagName("img")[1].getAttribute("sel") == 1) || (imagenes[imagenes.length - 1].getAttribute("cambioTexto") == "true")) {
+                var item = document.createElement("table");
+                item.className = "lista-files";
+                item.innerHTML = '<tbody>' +
+                    '<tr><td><button onclick="QuitarEIT(this);" class="del-btn"><img src="img/del.png" /></button></td><td style="width:70%"><input maxlength="200" onchange="this.parentNode.parentNode.parentNode.parentNode.setAttribute(\'cambioTexto\',\'true\');"/></td><td style="width:30%"><input onkeypress="return SoloNumeros(window.event,\'.\');" maxlength="200" onchange="this.parentNode.parentNode.parentNode.parentNode.setAttribute(\'cambioTexto\',\'true\');"/></td><td><button class="con-btn" onclick="IAdjuntarImagenes(this);"><img src="img/touch.png" /></button></td><td><button class="con-btn"><img src="img/ok.png" style="width:100%;" /></button></td></tr>' +
+//                    '<tr class="resultado"><td></td><td><b>Total</b></td><td><b>$ 4,200.00</b></td><td></td><td></td></tr>' +
+                    '</tbody>';
+                item.imagen = item.getElementsByTagName("img")[1];
+                item.texto = item.getElementsByTagName("input")[0];
+                item.texto2 = item.getElementsByTagName("input")[1];                
+                contenedor.appendChild(item);
+            }
+            return item;
+        }
+
+
+        function SoloNumeros(e, ecepciones) {
+            var key = window.Event ? e.which : e.keyCode;
+            var resultado = ((key >= 48 && key <= 57) || key == 8 || key == 127 || key == 0);
+            if (ecepciones) {
+                for (var i = 0; i < ecepciones.length; i++) {
+                    resultado = (resultado || key === ecepciones[i].charCodeAt(0));
+                }
+            }
+            return resultado;
+        }
+
         function IAgregarImagenTexto(id, solotexto, mas,ocultarBtnElim) {
             var contenedor = (typeof id =="object"? id:document.getElementById(id));
             var imagenes = contenedor.getElementsByTagName("table");
             if (imagenes.length == 0 || (imagenes.length > 0 && imagenes[imagenes.length - 1].getElementsByTagName("img")[0].getAttribute("sel") == 1) || (imagenes[imagenes.length - 1].getAttribute("cambioTexto")=="true")||mas) {                
                 var item = document.createElement("table");
-                item.className = "lista-files";
+                item.className = "lista-files";               
                 item.innerHTML = '<tbody>' +
-                    '<tr> <td style="width:90%">' + (solotexto ? '':'<img src="img/upload.png" onclick="IAdjuntarImagenes(this);" />') + '</td> ' + (ocultarBtnElim?'': '<td style="width:10%" rowspan="2" class="del"><button onclick="QuitarEIT(this' + (solotexto?",1":'') + ');" class="del-btn"><img src="img/del.png" /></button>' ) + '</td></tr >' +
+                    '<tr> <td style="width:90%">' + (solotexto ? '' : '<img src="img/upload.png" onclick="IAdjuntarImagenes(this);" />') + '</td> ' + (ocultarBtnElim ? '' : '<td style="width:10%" rowspan="2" class="del"><button onclick="QuitarEIT(this' + (solotexto ? ",1" : '') + ');" class="del-btn"><img src="img/del.png" /></button>') + '</td></tr >' +
                     '<tr><td ' + (solotexto ? 'rowspan="2"' : '') + ' ><textarea maxlength="200" onchange="this.parentNode.parentNode.parentNode.parentNode.setAttribute(\'cambioTexto\',\'true\');"></textarea></td></tr>' +
                     '</tbody>';
                 item.imagen=item.getElementsByTagName("img")[0];
                 item.texto = item.getElementsByTagName("textarea")[0];
+               
                 contenedor.appendChild(item);                
             }
             return item;

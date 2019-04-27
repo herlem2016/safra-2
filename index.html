@@ -66,7 +66,7 @@
                 <li><button onclick="PantallaMostrar('projectos','section');" class="no"><img src="img/proyectos.png"/>Propuestas de proyectos</button></li>
                 <li><button onclick="PantallaMostrar('aportaciones','section');" class="ok"><img src="img/aportaciones.png"/>Aportaciones</button></li>
                 <li><button onclick="PantallaMostrar('solicitudes','section');" class="ok"><img src="img/solmtto.png"/>Atención a Residentes</button></li>
-                <li><button onclick="PantallaMostrar('erogaciones','section');" class="ok"><img src="img/erogaciones.png"/>Registro de egresos</button></li>
+                <li><button onclick="PantallaMostrar('erogaciones','section',true);" class="ok"><img src="img/erogaciones.png"/>Registro de egresos</button></li>
                 <li><button onclick="PantallaMostrar('reportes','section');" class="no"><img src="img/reportes.png"/>Transparencia</button></li>
                 <li><button onclick="PantallaMostrar('encuestas','section');" class="no"><img src="img/encuestas.png"/>Encuestas</button></li>
                 <li><button onclick="PantallaMostrar('serviciosproductos','section',true);" class="ok"><img src="img/serviciosproductos.png"/>Productos y Servicios</button></li>
@@ -350,82 +350,66 @@
                 
         <section class="pantalla erogaciones" id="erogaciones"> 
             <div id="tab-pcorriente">
-                <div class="lista" id="lista-erogacion">
+                <div class="lista" id="lista-tiposgastos">
                     <div class="titulo">Registro de gastos</div>
                     <div class="busqueda"><input placeholder="Buscar" /></div>
-                    <div class="agregar" id="edicion-erogacion" style="display:none;"><button clave_funcion="2" control="edicion-erogacion" onclick="document.getElementById('frm-er-nuevo-tipo').reset(); IntercambioVisual('e-edicion-tipo','lista-erogacion');">Agregar tipo de gasto</button></div>
-                    <ul class="lista seleccionable pantalla-3" style="width:100%;">
-                        <li class="item" onclick="Mostrar('lista-erogacion','detalle-erogacion');">
-                            <span class="t-1">Jardinería>>Sueldos</span>
-                        </li>
-                        <li class="item" onclick="Mostrar('lista-erogacion','detalle-erogacion');">
-                            <span class="t-1">Jardinería>>Sueldos</span>
-                        </li>
-                        <li class="item" onclick="Mostrar('lista-erogacion','detalle-erogacion');">
-                            <span class="t-1">Jardinería>>Sueldos</span>
-                        </li>
-                        <li class="item" onclick="mostrar('lista-erogacion','detalle-erogacion');">
-                            <span class="t-1">jardinería>>sueldos</span>
-                        </li>
-                    </ul>
+                    <div class="agregar" id="edicion-erogacion" style="display:none;"><button clave_funcion="2" control="edicion-erogacion" onclick="IniciarEditar(true,'tiposgastos',2);">Agregar tipo de gasto</button></div>
+                    <ul class="lista seleccionable pantalla-3" style="width:100%;"></ul>
                 </div>   
-                <div class="edicion" style="display:none;" id="e-edicion-tipo">
-                    <form onsubmit="return false;" id="frm-er-nuevo-tipo">
-                        <div class="titulo">Agregar tipo de gasto<button class="cancelar" id="cancelar-edit-erogacion" onclick="Mostrar('e-edicion-tipo','lista-erogacion');">Cancelar</button></div>
-                        <div class="pantalla-3">
-                            <input name="clave" type="hidden"/>
-                            <label>Tipo de gasto</label><input value="Jardinería" />
-                            <label>Describa a que se refiere el tipo</label><textarea maxlength="300" style="height:100px;"></textarea>
-                            <button class="aceptar" style="margin-top:20px;">Guardar</button>
-                        </div>
+                <div class="edicion" style="display:none;" id="p-edicion-tiposgastos">
+                    <form onsubmit="return false;" id="frm-edit-tiposgastos">
+                        <fieldset>
+                            <div class="titulo">Agregar tipo de gasto<button class="cancelar" id="cancelar-edit-tiposgastos" onclick="Mostrar('p-edicion-tiposgastos','lista-tiposgastos');">Cancelar</button></div>
+                            <div class="pantalla-3">
+                                <input name="esNuevo" type="hidden" id="op-tiposgastos" />
+                                <input name="clave" type="hidden" id="clave-tiposgastos" />
+                                <label>Tipo de gasto</label><input name="titulo" id="tg-titulo"/>
+                                <label>Describa a que se refiere el tipo</label><textarea maxlength="300" style="height:100px;" name="descripcion" id="tg-descripcion"></textarea>
+                                <button class="aceptar" style="margin-top:20px;" onclick="Guardar(this,'tiposgastos', function () { LimpiarForm('tiposgastos');CargarCatalogo(catalogo);Mostrar('p-edicion-tiposgastos','lista-tiposgastos');});">Guardar</button>
+                            </div>
+                        </fieldset>
                     </form>
                 </div>
-                <div class="edicion" style="display:none;" id="p-edicion-erogacion">
-                    <div class="titulo">Edición de Solcitud de Mtto. <button class="cancelar" id="cancelar-edit-erogacion" onclick="Mostrar('p-edicion-erogacion','lista-erogacion');">Cancelar</button></div>
+                <div class="edicion" style="display:none;" id="p-regen-tiposgastos">
+                    <div class="titulo">Edición de Solcitud de Mtto. <button class="cancelar" id="cancelar-edit-erogacion" onclick="Mostrar('p-regen-tiposgastos','lista-tiposgastos');">Cancelar</button></div>
                     <div class="pantalla-3">
-                        <label>Clasificación</label><input disabled="disabled" value="Jardinería" />
-                        <label>Registro de pagos<button class="adjuntar-btn" style="width:100px;" onclick="IniciarAdjuntarEvidenciaSolmtto();"><img src="img/attach.png" /><span class="texto-discreto">Agregar</span></button><hr class="clearn" /></label>
-                        <table class="lista-files">
-                            <tr><td><button class="del-btn"><img src="img/del.png" /></button></td><td style="width:70%"><input /></td><td style="width:30%"><input /></td><td><button class="con-btn"><img src="img/touch.png" /></button></td><td><button class="con-btn"><img src="img/payok.png" style="width:100%;" /></button></td></tr>
-                            <tr class="resultado"><td></td><td><b>Total</b></td><td><b>$ 4,200.00</b></td><td></td><td></td></tr>
-                        </table>
+                        <form onsubmit="return false;" id="frm-edit-regen-tiposgastos">
+                            <fieldset>
+                                <label>Registrar en:</label><input readonly="readonly" id="tgrupo-regen-tiposgastos" /><input type="hidden" id="in-regen-tiposgastos" name="tipogasto" />
+                                <div><button class="adjuntar-btn" style="width:100px;" onclick="IAgregarComprobante('c-e-regen-tiposgastos');"><img src="img/attach.png" /><span class="texto-discreto">Agregar</span></button><hr class="clearn" /></div>
+                                <div id="c-e-regen-tiposgastos" style="margin-bottom:20px;"></div>
+                                <button class="aceptar" onclick="GuardarComprobante(this, 'regen-tiposgastos', function () { },'regen-tiposgastos');">Guardar</button>
+                            </fieldset>
+                        </form>
                     </div>
                 </div>
             </div>
 
             <div id="tab-pproyectos">
-                <div class="lista" id="lista-erogacion-p">
+                <div class="lista" id="lista-egrepro">
                     <div class="titulo">Registro de egresos por proyectos</div>
                     <div class="busqueda"><input placeholder="Buscar" /></div>
-                    <div class="agregar" id="edicion-erogacion-1" style="display:none;"><button clave_funcion="2" control="edicion-erogacion-1"  onclick="document.getElementById('frm-er-nuevo-tipo').reset(); IntercambioVisual('e-edicion-proy','lista-erogacion-p');">Dar de alta proyecto</button></div>
-                    <ul class="lista seleccionable pantalla-3" style="width:100%;">
-                        <li class="item" onclick="Mostrar('lista-erogacion','detalle-erogacion');">
-                            <span class="t-1">Jardinería>>Sueldos</span>
-                        </li>
-                        <li class="item" onclick="Mostrar('lista-erogacion','detalle-erogacion');">
-                            <span class="t-1">Jardinería>>Sueldos</span>
-                        </li>
-                        <li class="item" onclick="Mostrar('lista-erogacion','detalle-erogacion');">
-                            <span class="t-1">Jardinería>>Sueldos</span>
-                        </li>
-                        <li class="item" onclick="mostrar('lista-erogacion','detalle-erogacion');">
-                            <span class="t-1">jardinería>>sueldos</span>
-                        </li>
-                    </ul>
+                    <div class="agregar" id="edicion-erogacion-1" style="display:none;"><button clave_funcion="2" control="edicion-erogacion-1"  onclick="IniciarEditar(true,'egrepro',2);">Dar de alta proyecto</button></div>
+                    <ul class="lista seleccionable pantalla-3" style="width:100%;"></ul>
                 </div>
-                <div class="edicion" style="display:none;" id="e-edicion-proy">
-                    <div class="titulo">Dar de alta proyecto<button class="cancelar" id="cancelar-edit-erogacion" onclick="Mostrar('e-edicion-proy','lista-erogacion-p');">Cancelar</button></div>
+                <div class="edicion" style="display:none;" id="p-edicion-egrepro">
+                    <div class="titulo">Dar de alta proyecto<button class="cancelar" id="cancelar-edit-egrepro" onclick="Mostrar('p-edicion-egrepro','lista-egrepro');">Cancelar</button></div>
                     <div class="pantalla-3">
-                        <input name="clave" type="hidden" />
-                        <label>Seleccione el proyecto</label><select style="width:100%;"><option>Seleccione</option></select>
-                        <label>Título de proyecto</label><textarea maxlength="300" style="height:100px;"></textarea>
-                        <button class="aceptar" style="margin-top:20px;">Guardar</button>
+                        <form onsubmit="return false;" id="frm-edit-egrepro">
+                            <fieldset>
+                                <input name="esNuevo" type="hidden" id="op-egrepro" />
+                                <input name="clave" type="hidden" id="clave-egrepro" />
+                                <label>Seleccione el proyecto</label><select style="width:100%;" name="proyecto" id="s-egre-propro"></select>
+                                <label>Título de proyecto</label><textarea maxlength="300" style="height:100px;" name="titulo" id="egrepro-titulo"></textarea>
+                                <button class="aceptar" style="margin-top:20px;" onclick="Guardar(this,'egrepro', function () { LimpiarForm('egrepro');CargarCatalogo(catalogo);Mostrar('p-edicion-egrepro','lista-egrepro');});">Guardar</button>
+                            </fieldset>
+                        </form>
                     </div>
                 </div>
-                <div class="edicion" style="display:none;" id="p-edicion-erogacion-p">
+                <div class="edicion" style="display:none;" id="p-regen-grepro">
                     <div class="titulo">Edición de Solcitud de Mtto. <button class="cancelar" id="cancelar-edit-erogacion" onclick="Mostrar('p-edicion-erogacion-p','lista-erogacion-p');">Cancelar</button></div>
                     <div class="pantalla-3">
-                        <label>Clasificación</label><input disabled="disabled" value="Jardinería"/>
+                        <label>Proyecto</label><input readonly="readonly" id="tgrupo-regen-tiposgastos" /><input type="hidden" id="tgrupo-regen-tiposgastos" name="tipogasto" />
                         <label>Registro de pagos<button class="adjuntar-btn" style="width:100px;" onclick="IniciarAdjuntarEvidenciaSolmtto();"><img src="img/attach.png" /><span class="texto-discreto">Agregar</span></button><hr class="clearn" /></label>
                         <table class="lista-files">
                             <tr><td><button class="del-btn"><img src="img/del.png" /></button></td><td style="width:70%"><input /></td><td style="width:30%"><input /></td><td><button class="con-btn"><img src="img/touch.png" /></button></td><td><button class="con-btn"><img src="img/payok.png" style="width:100%;" /></button></td></tr>
@@ -435,8 +419,8 @@
                 </div>
             </div>
             <div style="height:32px;" tabs="tab-pcorriente,tab-pproyectos" class="tabs-down">
-                <div class="tab" id="tab-inicio-pagos" onclick="TabMostrar(this,this.parentNode,'tab-pcorriente');">Gasto corriente</div>
-                <div class="tab" onclick="TabMostrar(this,this.parentNode,'tab-pproyectos');">Por proyectos</div>
+                <div class="tab" id="tab-inicio-pagos" onclick="TabMostrar(this, this.parentNode, 'tab-pcorriente', 'tiposgastos');">Gasto corriente</div>
+                <div class="tab" onclick="TabMostrar(this,this.parentNode,'tab-pproyectos','egrepro');">Por proyectos</div>
             </div>
         </section>
 
