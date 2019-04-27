@@ -628,9 +628,8 @@ div.home {
 body .ui-datepicker {
     width: 95%;
     margin: auto;
-    padding-top: 1em;
-    padding-bottom: 1em;
 }
+body .ui-datepicker td span, body .ui-datepicker td a{padding-top:1em;padding-bottom:1em;}
 
 .menu {
     padding: 0px;
