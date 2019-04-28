@@ -102,7 +102,7 @@ function MostrarOpcionesHabilitadas(evitarToggle) {
         }
 
 function ContinuarPagando() {
-    cordova.InAppBrowser.open(url + 'logic/controlador.aspx?op=PresentarPagador', "_blank","location=yes");
+    window.open(url + 'logic/controlador.aspx?op=PresentarPagador', "_blank","location=yes");
 }
 
         function PintarItem(catalogo, clave, xmlDoc0){
