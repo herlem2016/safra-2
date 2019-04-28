@@ -102,9 +102,7 @@ function MostrarOpcionesHabilitadas(evitarToggle) {
         }
 
 function ContinuarPagando() {
-    var frm = document.getElementById("frm-payu").innerHTML;
-    var ref = cordova.InAppBrowser.open(frm,'_blank', 'location=yes');
-    ref.document.getElementById("frm").submit();
+    window.open(url + 'logic/controlador.aspx?op=PresentarPagador', "_system", "location=yes");
 }
 
         function PintarItem(catalogo, clave, xmlDoc0){
@@ -549,7 +547,7 @@ function ContinuarPagando() {
             styleStr += ".pantalla-4 {height:" + (heightApp - 27) + "px !important;}";
             styleStr += ".scrollable {height:" + (heightApp - 132) + "px !important;}";
             styleStr += ".scrollable-2 {height:" + (heightApp - 168) + "px !important;}";
-            styleStr += ".menu li {height:" + (heightApp - 50)/4 + "px !important;}";
+            styleStr += ".menu li {height:" + (heightApp - 50)/5 + "px !important;}";
 
             style.innerHTML = styleStr;
         }
