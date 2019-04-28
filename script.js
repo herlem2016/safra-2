@@ -102,7 +102,7 @@ function MostrarOpcionesHabilitadas(evitarToggle) {
         }
 
 function ContinuarPagando() {
-    window.cordova.InAppBrowser.open(url + 'logic/controlador.aspx?op=PresentarPagador', "_blank");
+    window.location.href = url + 'logic/controlador.aspx?op=PresentarPagador';
 }
 
         function PintarItem(catalogo, clave, xmlDoc0){
