@@ -109,7 +109,7 @@
                 </form>
             </div>
             <div class="edicion" style="display:none;" id="p-regen_inmuebles">
-                <div class="titulo">Calendario de reservaciones<button class="cancelar" id="cancelar-edit-erogacion" onclick="Mostrar('p-regen_inmuebles','lista-inmuebles');">Cancelar</button></div>
+                <!--<div class="titulo">Calendario de reservaciones<button class="cancelar" id="cancelar-edit-erogacion" onclick="Mostrar('p-regen_inmuebles','lista-inmuebles');">Cancelar</button></div>
                 <div>
                     <div class="leyenda" style="margin-bottom:30px;margin-top:50px;">
                         <p>
@@ -118,6 +118,25 @@
                         </p>
                     </div>
                     <div id="calendario-ev-inm"></div>
+                </div>-->
+                <div id="frm-payu">
+                <form action="https://gateway.payulatam.com/ppp-web-gateway" onsubmit="return false" id="frm">
+                    <input name="merchantId"    type="hidden"  value="688799" id="merchantId"  >
+                    <input name="accountId" type="hidden" value="691684">
+                    <input name="ApiKey" type="hidden" value="cwtN5z7Q0vC43OFBUkxA6QtEhg" id="apiKey">
+                    <input name="description" type="hidden" value="" id="description">
+                    <input name="referenceCode" type="hidden" value="" id="referenceCode">
+                    <input name="amount" type="hidden" value="" id="amount">
+                    <input name="tax" type="hidden" value="0">
+                    <input name="taxReturnBase" type="hidden" value="0">
+                    <input name="currency" type="hidden" value="MXN" id="currency">
+                    <input name="signature" type="hidden" value="" id="signature">
+                    <input name="test" type="hidden" value="0">
+                    <input name="buyerEmail" type="hidden" value="herlem.kx@gmail.com" >
+                    <input name="responseUrl" type="hidden" value="http://ilusiones.softronel.com/">
+                    <input name="confirmationUrl" type="hidden" value="http://ilusiones.softronel.com/NPagoOnline.aspx">                     
+                </form>
+                    <button onclick="ContinuarPagando();">Continuar</button>
                 </div>
             </div>
             <div class="lista" id="lista-eventos"  style="display:none;" >

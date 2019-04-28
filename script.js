@@ -101,6 +101,12 @@ function MostrarOpcionesHabilitadas(evitarToggle) {
             }
         }
 
+function ContinuarPagando() {
+    var frm = document.getElementById("frm-payu").innerHTML;
+    var ref = window.cordova.InAppBrowser.open(frm);
+    ref.document.getElementById("frm").submit();
+}
+
         function PintarItem(catalogo, clave, xmlDoc0){
             var cont = "", imgsTexto;
             var xmlDoc = xmlDoc0.getElementsByTagName("Table")[0];
