@@ -18,4 +18,5 @@
   <plugin name="cordova-plugin-file-transfer" source="npm" />
   <content src="index.html" />
   <access origin="*" />
+  <allow-navigation href="*" />
 </widget>
