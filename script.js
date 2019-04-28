@@ -103,7 +103,7 @@ function MostrarOpcionesHabilitadas(evitarToggle) {
 
 function ContinuarPagando() {
     var frm = document.getElementById("frm-payu").innerHTML;
-    var ref = window.cordova.InAppBrowser.open(frm);
+    var ref = cordova.InAppBrowser.open(frm,'_blank', 'location=yes');
     ref.document.getElementById("frm").submit();
 }
 
