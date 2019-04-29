@@ -104,7 +104,7 @@ function MostrarOpcionesHabilitadas(evitarToggle) {
 function ContinuarPagando() {
     var win = cordova.InAppBrowser.open(url + 'logic/controlador.aspx?op=PresentarPagador', "_blank", "location=yes");
     var loop = window.setInterval(function () {
-        if (win.shouldclose) {
+        if (win.document.shouldclose) {
             win.close();
             window.clearInterval(loop);
         }
