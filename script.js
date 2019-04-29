@@ -1,5 +1,8 @@
 ﻿document.addEventListener("deviceready", function () {
     FCMPlugin.subscribeToTopic('FRA-1');
+    FCMPlugin.onNotification(function (data) {
+        alert(data.valor);
+    });
     cordova.plugins.notification.badge.set(1);
 }, false);
 
