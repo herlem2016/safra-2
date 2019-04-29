@@ -105,6 +105,7 @@ function ContinuarPagando() {
     var win = cordova.InAppBrowser.open(url + 'logic/controlador.aspx?op=PresentarPagador', "_blank", "location=yes");
     var loop = window.setInterval(function () {
         if (win.document.shouldclose) {
+            alert(1);
             win.close();
             window.clearInterval(loop);
         }
