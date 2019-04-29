@@ -103,7 +103,11 @@ function MostrarOpcionesHabilitadas(evitarToggle) {
 
 function ContinuarPagando() {
     var win = window.open(url + 'logic/controlador.aspx?op=PresentarPagador', "_blank", "location=yes");
-    win.addEventListener('loadstart', function (event) { alert('start: ' + event.url); });
+    win.addEventListener('loadstart', function (event) {
+        if (event.url == url + 'logic/controlador.aspx?op=Finalizar') {
+            win.close();
+        }
+    });
 }
 
         function PintarItem(catalogo, clave, xmlDoc0){
