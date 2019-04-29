@@ -1,4 +1,9 @@
-﻿function ActivarAlarma() {
+﻿document.addEventListener("deviceready", function () {
+    FCMPlugin.subscribeToTopic('FRA-1');
+    cordova.plugins.notification.badge.set(1);
+}, false);
+
+function ActivarAlarma() {
     if (confirm("Confirme que desea activr la Alarma Vecinal, Recuerde que todo abuso sera sancionado.")) {
         ActivarAlarma_();
     }
@@ -527,7 +532,6 @@ function CerrarPago(event,ventana) {
         }
 
         function IniciarApp() {
-            cordova.plugins.notification.badge.set(1);
             document.getElementById("btn-buscar-ps").onkeypress = function (ev) {
                 if (ValidarEnter(ev)) {
                     BuscarProdServ(ev.target);
