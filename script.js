@@ -103,13 +103,14 @@ function MostrarOpcionesHabilitadas(evitarToggle) {
 
 function ContinuarPagando() {
     var win = cordova.InAppBrowser.open(url + 'logic/controlador.aspx?op=PresentarPagador', "_blank", "location=yes");
-    var loop = window.setInterval(function () {
-        if (win.document.shouldclose) {
-            alert(1);
-            win.close();
-            window.clearInterval(loop);
-        }
-    }, 100);
+    window.setTimeout(function () { win.close();},1000);
+        //var loop = window.setInterval(function () {
+        //    if (win.document.shouldclose) {
+        //        alert(1);
+        //        win.close();
+        //        window.clearInterval(loop);
+        //    }
+        //}, 100);
 }
 
         function PintarItem(catalogo, clave, xmlDoc0){
