@@ -16,7 +16,7 @@
   <gap:plugin name="cordova-plugin-whitelist" source="npm" />
   <plugin name="cordova-plugin-image-picker"  source="npm" />
   <plugin name="cordova-plugin-file-transfer" source="npm" />
-  <gap:plugin name="de.appplant.cordova.plugin.badge" version="0.6.1" />
+  <plugin name="cordova-plugin-badge"/>
   <content src="index.html" />
   <access origin="*" />
   <allow-navigation href="*" />
