@@ -102,7 +102,7 @@ function MostrarOpcionesHabilitadas(evitarToggle) {
         }
 
 function ContinuarPagando() {
-    var win = window.open(url + 'logic/controlador.aspx?op=PresentarPagador', "_blank", "location=yes");
+    var win = window.open(url + 'logic/controlador.aspx?op=PresentarPagador', "_system", "location=yes");
     win.addEventListener('loadstart', function (event) { CerrarPago(event,win); });
     win.addEventListener('exit', function (event) { CerrarPago(event, win); });
 }
