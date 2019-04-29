@@ -103,12 +103,12 @@ function MostrarOpcionesHabilitadas(evitarToggle) {
 
 function ContinuarPagando() {
     var win = window.open(url + 'logic/controlador.aspx?op=PresentarPagador', "_blank", "location=yes");
-    win.addEventListener('loadstart', CerrarPago);
-    win.addEventListener('exit', CerrarPago);
+    win.addEventListener('loadstart', function (event) { CerrarPago(event,win); });
+    win.addEventListener('exit', function (event) { CerrarPago(event, win); });
 }
-function CerrarPago(event) {
+function CerrarPago(event,ventana) {
     if (event.url == url + 'logic/controlador.aspx?op=Finalizar') {
-        win.close();        
+        ventana.close();        
     }
 }
 
