@@ -102,9 +102,8 @@ function MostrarOpcionesHabilitadas(evitarToggle) {
         }
 
 function ContinuarPagando() {
-    var win = window.open(url + 'logic/controlador.aspx?op=PresentarPagador', "_blank", "location=yes");
-    win.addEventListener('loadstart', function (event) { CerrarPago(event,win); });
-    win.addEventListener('exit', function (event) { CerrarPago(event, win); });
+    var win = window.open(url + 'logic/controlador.aspx?op=PresentarPagador', "_system", "location=yes");
+    window.setInterval(function () { },2000);
 }
 function CerrarPago(event,ventana) {
     if (event.url == url + 'logic/controlador.aspx?op=Finalizar') {
@@ -528,6 +527,7 @@ function CerrarPago(event,ventana) {
         }
 
         function IniciarApp() {
+            cordova.plugins.notification.badge.set(1);
             document.getElementById("btn-buscar-ps").onkeypress = function (ev) {
                 if (ValidarEnter(ev)) {
                     BuscarProdServ(ev.target);
