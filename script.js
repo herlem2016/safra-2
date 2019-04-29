@@ -102,21 +102,8 @@ function MostrarOpcionesHabilitadas(evitarToggle) {
         }
 
 function ContinuarPagando() {
-    var win = cordova.InAppBrowser.open(url + 'logic/controlador.aspx?op=PresentarPagador', "_blank", "location=yes");
-    win.onloadstop = function () {
-        var loop = window.setInterval(function () {
-            win.executeScript({
-                    code: "window.shouldClose"
-                },
-                function (values) {
-                    if (values[0]) {
-                        win.close();
-                        window.clearInterval(loop);
-                    }
-                }
-            );
-        }, 100);
-    }
+    var win = window.open(url + 'logic/controlador.aspx?op=PresentarPagador', "_blank", "location=yes");
+    win.addEventListener('loadstart', function () { alert(event.url); });
 }
 
         function PintarItem(catalogo, clave, xmlDoc0){
