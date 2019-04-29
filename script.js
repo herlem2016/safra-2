@@ -101,17 +101,17 @@ function MostrarOpcionesHabilitadas(evitarToggle) {
             }
         }
 
-function ContinuarPagando() {
-    var win = cordova.InAppBrowser.open(url + 'logic/controlador.aspx?op=PresentarPagador', "_blank", "location=yes");
-    window.setTimeout(function () { win.close();},1000);
-        //var loop = window.setInterval(function () {
-        //    if (win.document.shouldclose) {
-        //        alert(1);
-        //        win.close();
-        //        window.clearInterval(loop);
-        //    }
-        //}, 100);
-}
+        function ContinuarPagando() {
+            var win = window.open(url + 'logic/controlador.aspx?op=PresentarPagador', "_blank","location=yes");
+            window.win = win;
+            //window.setTimeout(function () { window.win.close(); },1000);
+            var loop = window.setInterval(function () {
+                if (win.document.body.getAttribute("cerrar")) {
+                    win.close();
+                    window.clearInterval(loop);
+                }
+            }, 1000);
+        }
 
         function PintarItem(catalogo, clave, xmlDoc0){
             var cont = "", imgsTexto;
