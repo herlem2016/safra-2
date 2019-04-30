@@ -125,6 +125,10 @@ function CerrarPago(event,ventana) {
             var cont = "", imgsTexto;
             var xmlDoc = xmlDoc0.getElementsByTagName("Table")[0];
             switch (catalogo) {
+                case "aportaciones":
+                    document.getElementById("tgrupo-regen_" + catalogo).value = GetValor(xmlDoc, "titulo");
+                    document.getElementById("in-regen_" + catalogo).value = GetValor(xmlDoc, "indice");
+                    break;
                 case "inmuebles":
                     $("#calendario-ev-inm").datepicker();
                     document.getElementById("tgrupo-regen_" + catalogo).value = GetValor(xmlDoc, "titulo");
@@ -278,6 +282,10 @@ function CerrarPago(event,ventana) {
                 case "tiposgastos":
                     document.getElementById("clave-" + catalogo).value = clave;
                     CargarDatosFrmMap(xmlDoc, { indice: 'clave-tiposgastos', titulo:'tg-titulo',descripcion:'tg-descripcion'});
+                    break;
+                case "aportaciones":
+                    document.getElementById("clave-" + catalogo).value = clave;
+                    CargarDatosFrmMap(xmlDoc, { indice: 'clave-tiposgastos', titulo: 'tg-titulo', descripcion: 'tg-descripcion' });
                     break;
                 case "comunicados":
                 case "solicitudes":
@@ -659,6 +667,24 @@ function CerrarPago(event,ventana) {
             itemli.className = "item";
             var html = "";
             switch (catalogo) {
+                case "aportaciones":
+                    var indice = GetValor(item, "indice");
+                    itemli.onclick = function () {
+                        Mostrar('lista-' + catalogo, 'p-regen_' + catalogo, catalogo, indice);
+                    }
+                    if(GetValor(item,"cubierto")){
+                        itemli.innerHTML =
+                            '<li class="item" onclick="" id="actual-concepto">' +
+                            '<span class="t-1" onclick="SeleccionarConceptoPagar(this);" precio="170.00">ENERO-2019</span>' +
+                            '</li>';
+                    } else {
+                        itemli.innerHTML =
+                            '<li class="item" onclick="Mostrar(\'lista-aportaciones\',\'detalle-aportaciones\');">' +
+                            '<span class="t-1">DICIEMBRE-2018 - <b>Pagado</b></span>' +
+                            ' <span class="t-2">Folio: 00254<br /> 11-ene-2018 9:25 pm</span>' +
+                            '</li>';
+                    }
+                    break;
                 case "inmuebles":
                 case "tiposgastos":
                 case "egrepro":

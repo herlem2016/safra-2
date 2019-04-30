@@ -328,79 +328,25 @@
 
         <section class="pantalla aportaciones" id="aportaciones">            
             <div class="lista" id="lista-aportaciones">
-                <div class="titulo">Aportaciones</div>            
+                <div class="titulo">Registro de gastos</div>
                 <div class="busqueda"><input placeholder="Buscar" /></div>
-                <div class="agregar" id="pagar-concepto" ><button class="opcion-1" style="float:left;width:30%;">Actual</button><button clave_funcion="8" control="pagar-concepto" onclick="IniciarPagarAportaciones(true);" style="width:60%;float:right;">Aportar <span id="aportacion">$0.00</span></button><hr class="clearn" /></div>
-                <ul class="lista seleccionable pantalla-3" style="width:100%;" id="lista-conceptos">
-                    <div style="display:none;">
-                        <li class="item" onclick="Mostrar('lista-aportaciones','detalle-aportaciones');">       
-                            <span class="t-1">DICIEMBRE-2019</span>                                            
-                        </li>
-                        <li class="item" onclick="Mostrar('lista-aportaciones','detalle-aportaciones');">       
-                            <span class="t-1">NOVIEMBRE-2019</span>                                                
-                        </li>
-                        <li class="item" onclick="Mostrar('lista-aportaciones','detalle-aportaciones');">       
-                            <span class="t-1">OCTUBRE-2019</span>                                                 
-                        </li>
-                        <li class="item" onclick="Mostrar('lista-aportaciones','detalle-aportaciones');">       
-                            <span class="t-1">SEPTIEMBRE-2019</span>                                                
-                        </li>
-                        <li class="item" onclick="Mostrar('lista-aportaciones','detalle-aportaciones');">       
-                            <span class="t-1">AGOSTO-2019</span>                                                
-                        </li>
-                        <li class="item" onclick="Mostrar('lista-aportaciones','detalle-aportaciones');">       
-                            <span class="t-1">JULIO-2019</span>                                               
-                        </li>
-                        <li class="item" onclick="Mostrar('lista-aportaciones','detalle-aportaciones');">       
-                            <span class="t-1">JUNIO-2019</span>                                                
-                        </li>
-                        <li class="item" onclick="Mostrar('lista-aportaciones','detalle-aportaciones');">       
-                            <span class="t-1">MAYO-2019</span>                                                 
-                        </li>
-                        <li class="item" onclick="Mostrar('lista-aportaciones','detalle-aportaciones');">       
-                            <span class="t-1">ABRIL-2019</span>                                                
-                        </li>
-                        <li class="item" onclick="Mostrar('lista-aportaciones','detalle-aportaciones');">       
-                            <span class="t-1">MARZO-2019</span>                                                
-                        </li>
-                        <li class="item" onclick="Mostrar('lista-aportaciones','detalle-aportaciones');">       
-                            <span class="t-1">FEBRERO-2019</span>                                               
-                        </li>
-                    </div>
-                    <li class="item" onclick="" id="actual-concepto">       
-                        <span class="t-1" onclick="SeleccionarConceptoPagar(this);" precio="170.00">ENERO-2019</span>                                                
-                    </li>
-                    <li class="item" onclick="">       
-                        <span class="t-1" onclick="SeleccionarConceptoPagar(this);" precio="170.00">Biblioteca-2019</span>                                           
-                    </li>
-                    <li class="item" onclick="Mostrar('lista-aportaciones','detalle-aportaciones');">       
-                        <span class="t-1">DICIEMBRE-2018 - <b>Pagado</b></span>                                       
-                        <span class="t-2">Folio: 00254<br /> 11-ene-2018 9:25 pm</span>                    
-                    </li>
-                    <li class="item" onclick="Mostrar('lista-aportaciones','detalle-aportaciones');">       
-                        <span class="t-1">NOVIEMBRE-2018 - <b>Pagado</b></span>                                       
-                        <span class="t-2">Folio: 00254<br /> 11-ene-2018 9:25 pm</span>                    
-                    </li>
-                    <li class="item" onclick="Mostrar('lista-aportaciones','detalle-aportaciones');">       
-                        <span class="t-1">OCTUBRE-2018 - <b>Pagado</b></span>                                       
-                        <span class="t-2">Folio: 00254<br /> 11-ene-2018 9:25 pm</span>
-                        <hr style="min-height:500px;border:0px;clear:both;"/>                    
-                    </li>
-                </ul>
+                <div class="agregar" id="edicion-erogacion" style="display:none;"><button clave_funcion="2" control="edicion-erogacion" onclick="IniciarEditar(true,'aportaciones',2);">Agregar tipo de gasto</button></div>
+                <ul class="lista seleccionable pantalla-3" style="width:100%;"></ul>
             </div>
-            <div class="detalle" id="detalle-solmtto" style="display:none;">
-                <div class="titulo">Solicitud de Mantenimiento<button class="regresar" onclick="Mostrar('detalle-solmtto','lista-solmtto');">Regresar</button></div>  
-                <div class="pantalla-3">
-                    <div class="btns-up"><button class="edit-btn" clave_funcion="3" style="display:none;" control="edit-solmtto-8" id="edit-solmtto-8" onclick="IniciarEditarSolmtto();"><img src="img/edit.png" /></button><hr class="clearn" /></div>
-                    <span class="t-1">Lamparas descompuestas</span>                    
-                    <span class="t-2">Lucely Janet Rodriguez Almaguer</span>                    
-                    <span class="t-3">11-ene-2018</span>                    
-                    <span class="t-4">Buenas tardes, diculpen, solo para avisarles que dos lamparas de la calle sofia no prenden. vean: </span>                    
-                    <img class="file" src="img/Titan_Company_Logo.png" />                    
-                    <img class="file" src="img/call.png"/>   
-                    <hr />
-                </div>
-             </div>
+            <div class="edicion" style="display:none;" id="p-edicion-aportaciones">
+                <form onsubmit="return false;" id="frm-edit-aportaciones">
+                    <fieldset>
+                        <div class="titulo">Agregar tipo de gasto<button class="cancelar" id="cancelar-edit-aportaciones" onclick="Mostrar('p-edicion-aportaciones','lista-aportaciones');">Cancelar</button></div>
+                        <div class="pantalla-3">
+                            <input name="esNuevo" type="hidden" id="op-aportaciones" />
+                            <input name="clave" type="hidden" id="clave-aportaciones" />
+                            <label>Tipo de gasto</label><input name="titulo" id="tg-titulo" />
+                            <label>Describa a que se refiere el tipo</label><textarea maxlength="300" style="height:100px;" name="descripcion" id="tg-descripcion"></textarea>
+                            <button class="aceptar" style="margin-top:20px;" onclick="Guardar(this,'aportaciones', function () { LimpiarForm('aportaciones');CargarCatalogo(catalogo);Mostrar('p-edicion-aportaciones','lista-aportaciones');});">Guardar</button>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>   
             <div class="edicion" style="display:none;" id="p-edicion-solmtto">
                 <div class="titulo">Edición de Solcitud de Mtto. <button class="cancelar" id="cancelar-edit-solmtto">Cancelar</button></div>    
                 <div class="pantalla-3" >
@@ -414,6 +360,11 @@
                     </ul>                 
                     <button class="aceptar" >Aceptar</button>
                 </div>
+            </div>
+            <div class="detalle" id="detalle-aportaciones" style="display:none;">
+                <div class="titulo">aportaciones<button class="regresar" onclick="Mostrar('detalle-aportaciones', 'lista-aportaciones'); ">Regresar</button></div>
+                <div class="btns-up"><button class="edit-btn" clave_funcion="3" style="display:none;" control="edit-com-3" id="edit-com-3" onclick="IniciarEditar(false,'aportaciones');"><img src="img/edit.png" /></button><button style="display:none;" onclick="IniciarEliminar(this,'aportaciones');" clave_funcion="4" control="del-com-4" id="del-com-4" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>
+                <div class="pantalla-3" id="wrap-detalle-aportaciones"></div>
             </div>
         </section>
                 
