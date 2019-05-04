@@ -732,7 +732,7 @@ function CerrarPago(event,ventana) {
                 wrap.innerHTML = xmlDoc;
             });
         }
-
+        
         function MostrarGrafica(xmlDoc,configS) {
             window.eval("var config=" + configS + ";");
             var datos = { data: { datasets: [] , labels: []} };
@@ -760,7 +760,10 @@ function CerrarPago(event,ventana) {
                 datos[propiedad] = config.otros[propiedad];
             }
             var ctx = document.getElementById('graf-transparencia').getContext('2d');
-            var grafica = new Chart(ctx, datos);
+            if (window.grafica) {
+                window.grafica.destroy();
+            }
+            window.grafica = new Chart(ctx, datos);
         }
 
         function getRandomColor() {
