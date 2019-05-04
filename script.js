@@ -126,8 +126,15 @@ function CerrarPago(event,ventana) {
             var xmlDoc = xmlDoc0.getElementsByTagName("Table")[0];
             switch (catalogo) {
                 case "aportaciones":
-                    document.getElementById("tgrupo-regen_" + catalogo).value = GetValor(xmlDoc, "titulo");
-                    document.getElementById("in-regen_" + catalogo).value = GetValor(xmlDoc, "indice");
+                    var obs = GetValor(xmlDoc, "observaciones");
+                    var residente = GetValor(xmlDoc, "residente"); 
+                    document.getElementById("wrap-detalle-aportaciones").innerHTML =
+                        '<div class="' + GetValor(xmlDoc, "leyenda") + '" style="padding:35px;font-size:13px;line-height:7px;">' +
+                    '<span class="t-3" style="font-size:15px;"><b>' + GetValor(xmlDoc, "leyenda") + '</b><p>$ ' + GetValor(xmlDoc, "monto") + '</p></span><hr class="clearn"/>' +
+                     '<div class="t-1"><b>Concepto:</b><p>' + GetValor(xmlDoc, "concepto") + "</p><b>Folio:</b><p>" + GetValor(xmlDoc, "folio") + "</p><br/><b>Residente:</b><p>" + residente + "</p><br/><b>Fecha de registro:</b><p>" + GetValor(xmlDoc, "fecha") + '</p></div>' +
+                    '<div class="t-2"><b>Tipo de pago: </b><p>' + GetValor(xmlDoc, "tipoPago") + '</p><br/><b>Recibió:</b><p>' + GetValor(xmlDoc, "recibio") + '</p><br/><b>Canceló:</b><p>' + GetValor(xmlDoc, "cancelo") + '</p><br/></div>' +
+                    '<div class="t-2"><b>Observaciones: </b><p>' + GetValor(xmlDoc, "observaciones") + '</p></div>' +                    
+                    '</div>';
                     break;
                 case "inmuebles":
                     $("#calendario-ev-inm").datepicker();
@@ -282,10 +289,6 @@ function CerrarPago(event,ventana) {
                 case "tiposgastos":
                     document.getElementById("clave-" + catalogo).value = clave;
                     CargarDatosFrmMap(xmlDoc, { indice: 'clave-tiposgastos', titulo:'tg-titulo',descripcion:'tg-descripcion'});
-                    break;
-                case "aportaciones":
-                    document.getElementById("clave-" + catalogo).value = clave;
-                    CargarDatosFrmMap(xmlDoc, { indice: 'clave-tiposgastos', titulo: 'tg-titulo', descripcion: 'tg-descripcion' });
                     break;
                 case "comunicados":
                 case "solicitudes":
@@ -540,6 +543,10 @@ function CerrarPago(event,ventana) {
             return (ev.which == 13 || ev.keyCode == 13);
         }
 
+        function CargarPersonasAp() {
+            CargarCatalogo('ap_personas', function () { IntercambioVisual('lista-ap_personas', 'lista-aportaciones'); }, { buscar: document.getElementById('buscar-per').value });
+        }
+
         window.onresize = function () {
             //EstablecerDimensiones();
         }
@@ -576,24 +583,34 @@ function CerrarPago(event,ventana) {
             style.innerHTML = styleStr;
         }
 
-        function SeleccionarConceptoPagar(objeto){
-            if (objeto.className=="seleccionado") {
-                objeto.removeAttribute("class");
-            } else {
-                objeto.setAttribute("class","seleccionado");
-            }
-            CalcularAportacion();
+        function SeleccionarConceptoPagar(objeto,clave_concepto) {
+            $.post(url + 'logic/controlador.aspx' + '?op=ValidarAgregarPagar&seccion=aportaciones&concepto=' + clave_concepto, function (xmlDoc) {
+                if (GetValor(xmlDoc, "validacion") == 'CONTINUAR') {
+                    if ($(objeto).hasClass("seleccionado")) {
+                        $(objeto).removeClass("seleccionado");
+                    } else {
+                        $(objeto).addClass("seleccionado");
+                    }
+                    CalcularAportacion();
+                } else {
+                    alert(GetValor(xmlDoc, "validacion"));
+                    CargarCatalogo('aportaciones', function () {
+                        document.getElementById("aportacion").innerHTML = "Aportar";
+                        IntercambioVisual('lista-aportaciones', 'p-edicion-aportaciones');
+                    });
+                }              
+            });            
         }
 
         function CalcularAportacion() {
-            var items = document.getElementById("lista-conceptos").getElementsByTagName("li");
+            var items = $("#lista-aportaciones div.seleccionado span.t-1");
             var cuenta = 0;
             for (var i = 0; i < items.length; i++) {
-                if (items[i].getElementsByTagName("span").length > 0 && items[i].getElementsByTagName("span")[0].className == "seleccionado") {
-                    cuenta += parseFloat(items[i].getElementsByTagName("span")[0].getAttribute("precio"));
-                }
-            }
-            document.getElementById("aportacion").innerHTML = "$ " + cuenta;
+                cuenta += parseFloat(items[i].getAttribute("precio"));
+            }            
+            var btn = document.getElementById("aportacion");
+            btn.innerHTML = "Total Aportar $ " + cuenta;   
+            
         }
 
         function TabMostrar(tab, raiz, id,catalogo) {
@@ -662,27 +679,145 @@ function CerrarPago(event,ventana) {
             });
         }
 
+        function ToggleBusquedaAportar(obj) {
+            if (obj.hide == 1) {
+                PonerAportar(obj);               
+            } else {
+                obj.innerHTML = 'Aportar';
+                IntercambioVisual('b-f-aportaciones', 'btn-aportar');
+                CargarAportaciones(true);
+                obj.hide = 1;
+            }
+        }
+        function PonerAportar(obj) {
+            obj.innerHTML = 'Buscar';
+            obj.hide = 0;
+            document.getElementById('buscar-ap-fecha').value = "";
+            IntercambioVisual('btn-aportar', 'b-f-aportaciones');
+            CargarAportaciones();
+        }
+
+        function CargarAportaciones(esBusquedaF) {
+            document.getElementById("aportacion").innerHTML = "Aportar";
+            var residente_sel = document.getElementById('w-datos-persona').getAttribute('residente_sel');    
+            var fechas = document.getElementById('buscar-ap-fecha').value.split("-");
+            var datos = {};               
+            if (esBusquedaF) { datos["esBusquedaF"] = 1;}
+            if (fechas[0] && fechas[0].length>0) {
+                datos["fecha1"]=fechas[0];
+            }
+            if (fechas[1] && fechas[1].length > 0) {
+                datos["fecha2"] = fechas[1];
+            }
+            if (residente_sel) {
+                datos["residente_sel"] = residente_sel;
+            }
+            CargarCatalogo('aportaciones', function () { }, datos);
+        }
+
+        function VerInforme(clave,config) {
+            IntercambioVisual("detalle-transparencia", "lista-transparencia");
+            document.getElementById("table-resultados-tr").innerHTML = "";
+            if (config) {
+                document.getElementById('graf-transparencia').parentNode.style.display = "none";
+                $.post(url + 'logic/controlador.aspx' + '?op=ObtenerInforme&seccion=transparencia&grafica=1&clave=' + clave, function (xmlDoc) {
+                    document.getElementById('graf-transparencia').parentNode.style.display = "block";
+                    MostrarGrafica(xmlDoc, config);
+                });
+            } else {
+                document.getElementById('graf-transparencia').parentNode.style.display = "none";
+            }
+            $.post(url + 'logic/controlador.aspx' + '?op=ObtenerInforme&seccion=transparencia&tabla=1&clave=' + clave, function (xmlDoc) {
+                var wrap = document.getElementById("table-resultados-tr");
+                wrap.innerHTML = xmlDoc;
+            });
+        }
+
+        function MostrarGrafica(xmlDoc,configS) {
+            window.eval("var config=" + configS + ";");
+            var datos = { data: { datasets: [] , labels: []} };
+            var ds = xmlDoc.getElementsByTagName("Table");
+            var datasets = []; var colores = [];
+            for (var i = 0; i < config.datasets.length; i++) {
+                datasets[i] = [];
+            }
+            for (var j = 0; j < ds.length; j++){
+                for (var i = 0; i < config.datasets.length; i++){
+                    datasets[i][j] = GetValor(ds[j], config.datasets[i]);
+                }
+                datos.data.labels[j] = GetValor(ds[j], config.labelsTag);
+                if (config.colorPorLabel) {
+                    colores[j] = Chart.helpers.color(getRandomColor()).alpha(0.5).rgbString();
+                }
+            } 
+            for (var i = 0; i < config.datasets.length; i++) {
+                if (config.colorPorDS) {
+                    colores = Chart.helpers.color(getRandomColor()).alpha(0.5).rgbString();
+                }
+                datos.data.datasets[i] = { data: datasets[i], label: config.labelsDS[i],backgroundColor:colores };                  
+            }
+            for (var propiedad in config.otros) {
+                datos[propiedad] = config.otros[propiedad];
+            }
+            var ctx = document.getElementById('graf-transparencia').getContext('2d');
+            var grafica = new Chart(ctx, datos);
+        }
+
+        function getRandomColor() {
+            var letters = '0123456789ABCDEF';
+            var color = '#';
+            for (var i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+
         function ObtenerItem(catalogo, item) {
             var itemli = document.createElement("li");
             itemli.className = "item";
             var html = "";
             switch (catalogo) {
-                case "aportaciones":
-                    var indice = GetValor(item, "indice");
+                case "transparencia":
+                    itemli.setAttribute("config",GetValor(item, 'config'));
+                    itemli.innerHTML = '<button  class="aceptar" onclick="VerInforme(' + GetValor(item, 'clave') + ',this.parentNode.getAttribute(\'config\'));">' + GetValor(item,'descripcion') + '</button>';
+                    break;
+                case "ap_personas":                    
+                    itemli.innerHTML =
+                        '<span class="t-1" style="display:inline-block;width:90% !important;">' + GetValor(item, "residente") + '</span>' +
+                        '<span class="t-3" style="float:left;width:90% !important;"> ' + GetValor(item, "domicilio") + '</span><hr class="clearn"/>';                    
                     itemli.onclick = function () {
-                        Mostrar('lista-' + catalogo, 'p-regen_' + catalogo, catalogo, indice);
+                        var str = this.innerHTML;
+                        var residente_sel = GetValor(item, "clave");
+                        var datosp = document.getElementById("w-datos-persona");
+                        datosp.setAttribute("residente_sel", residente_sel);
+                        datosp.innerHTML = str;
+                        datosp.parentNode.style.display = "block";
+                        IntercambioVisual('lista-aportaciones', 'lista-ap_personas');
+                        document.getElementById('buscar-ap-fecha').value = "";
+                        PonerAportar(document.getElementById("toggle-aportaciones"));
+                        CargarAportaciones();
                     }
-                    if(GetValor(item,"cubierto")){
+                    break;
+                case "aportaciones":
+                    var leyenda = GetValor(item, "leyenda");
+                    if (leyenda == "PENDIENTE") {       
                         itemli.innerHTML =
-                            '<li class="item" onclick="" id="actual-concepto">' +
-                            '<span class="t-1" onclick="SeleccionarConceptoPagar(this);" precio="170.00">ENERO-2019</span>' +
-                            '</li>';
+                            '<div class="' + GetValor(item, "leyenda") + '" onclick="SeleccionarConceptoPagar(this,' + GetValor(item, "clave_concepto") + ');">'+
+                            '<span class="t-1" precio="' + GetValor(item, "monto") + '">' + GetValor(item, "concepto") + '</span>' +
+                            '<span class="t-3 ' + GetValor(item, "leyenda") + '" style="float:right;">' + GetValor(item, "leyenda") + ' <br/>$ ' + GetValor(item, "monto") + '</span><hr class="clearn"/>' +
+                            '</div>';
                     } else {
+                        var folio = GetValor(item, "folio");
+                        itemli.onclick = function () {                        
+                            Mostrar('lista-aportaciones', 'detalle-aportaciones', 'aportaciones', folio);
+                        }
+                        var residente = GetValor(item, "residente"); 
                         itemli.innerHTML =
-                            '<li class="item" onclick="Mostrar(\'lista-aportaciones\',\'detalle-aportaciones\');">' +
-                            '<span class="t-1">DICIEMBRE-2018 - <b>Pagado</b></span>' +
-                            ' <span class="t-2">Folio: 00254<br /> 11-ene-2018 9:25 pm</span>' +
-                            '</li>';
+                            '<div class="' + GetValor(item, "leyenda") + '">'+
+                            '<span class="t-1">' + GetValor(item, "concepto") + (residente ? ":" + residente : "") + '</span>'+
+                            '<span class="t-2">Tipo de pago: ' + GetValor(item, "tipoPago") + '<br/>Recibió:' + GetValor(item, "recibio") +  '<br/>Canceló:' + GetValor(item, "cancelo") + '<br /> Folio:' + folio + '<br/>' + GetValor(item, "fecha") + '</span>' +
+                            '<span class="t-3" style="float:right;"><b>' + GetValor(item, "leyenda") + '</b> <br/>$ ' + GetValor(item, "monto") + '</span><hr class="clearn"/>' +
+                            '</div>';
                     }
                     break;
                 case "inmuebles":
@@ -760,6 +895,30 @@ function CerrarPago(event,ventana) {
                     ; break;
             }
             return itemli;
+        }
+
+        function LeerMontoMensual() {
+            $.post(url + 'logic/controlador.aspx' + '?op=LeerMontoMensual&seccion=aportaciones', function (xmlDoc) {
+                document.getElementById("ap-montomensual").value = GetValor(xmlDoc, "montomensual");
+            });
+        }
+        function GuardarMonto() {
+            $.post(url + 'logic/controlador.aspx' + '?op=GuardarMonto&seccion=aportaciones&montomensual=' + document.getElementById("ap-montomensual").value, function (xmlDoc) {
+                LeerMontoMensual();                
+            });
+            alert(GetValor(xmlDoc, "mensaje"));
+        }
+
+        function GuardarConcepto() {
+            var datos = $("#frm-edit-aportaciones").serializeArray();
+            $.post(url + 'logic/controlador.aspx' + '?op=GuardarConcepto&seccion=aportaciones',datos, function (xmlDoc) {                
+                alert(GetValor(xmlDoc, "mensaje"));
+                if (GetValor(xmlDoc, "estatus") == 1) {
+                    CargarCatalogo('aportaciones', function () {
+                        IntercambioVisual('lista-aportaciones', 'p-edicion-aportaciones'); 
+                    });
+                }               
+            });
         }
 
         function MarcarVoto(objeto, encuesta, respuesta) {

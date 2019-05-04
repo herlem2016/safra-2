@@ -7,7 +7,6 @@
           content="default-src * 'self' 'unsafe-inline' data: gap: 'unsafe-eval';
     style-src * 'self' 'unsafe-inline';
     connect-src * ;
-    script-src * 'self' 'unsafe-inline';
     media-src *">
     <title>SAFRA</title>
     <link href="css/terceros.css" rel="stylesheet" />
@@ -36,6 +35,8 @@
     <link href="jqueryui/jquery-ui.min.css" rel="stylesheet" />
     <script src="jqueryui/jquery-ui.min.js"></script>
     <script src="script.js"></script>
+    <script src="chartjs/chart.js"></script>
+    <script src="chartjs/utils.js"></script>
 </head>
 <body unselectable="on" onselectstart="return false;" onload="IniciarApp();">
     <div class="login" style="z-index:1000;" id="login">
@@ -69,7 +70,7 @@
                 <li><button onclick="PantallaMostrar('aportaciones','section');" class="ok"><img src="img/aportaciones.png"/>Aportaciones</button></li>
                 <li><button onclick="PantallaMostrar('solicitudes','section');" class="ok"><img src="img/solmtto.png"/>Atención a Residentes</button></li>
                 <li><button onclick="PantallaMostrar('erogaciones','section',true);" class="ok"><img src="img/erogaciones.png"/>Registro de egresos</button></li>
-                <li><button onclick="PantallaMostrar('reportes','section');" class="no"><img src="img/reportes.png"/>Transparencia</button></li>
+                <li><button onclick="PantallaMostrar('transparencia','section');" class="no"><img src="img/reportes.png"/>Transparencia</button></li>
                 <li><button onclick="PantallaMostrar('encuestas','section');" class="no"><img src="img/encuestas.png"/>Encuestas</button></li>
                 <li><button onclick="PantallaMostrar('serviciosproductos','section',true);" class="ok"><img src="img/serviciosproductos.png"/>Productos y Servicios</button></li>
                 <li><button onclick="PantallaMostrar('directorio','section');" class="ok"><img src="img/directorio.png"/>Directorio</button></li>
@@ -90,7 +91,7 @@
             <div class="lista" id="lista-inmuebles">
                 <div class="titulo">Inmuebles</div>
                 <div class="busqueda"><input placeholder="Buscar" /></div>
-                <div class="agregar" id="edicion-erogacion" style="display:none;"><button clave_funcion="2" control="edicion-erogacion" onclick="IniciarEditar(true,'inmuebles',2);">Agregar inmueble</button></div>
+                <div class="agregar" id="edicion-inmuebles" style="display:none;"><button clave_funcion="2" control="edicion-inmuebles" onclick="IniciarEditar(true,'inmuebles',2);">Agregar inmueble</button></div>
                 <ul class="lista seleccionable pantalla-3" style="width:100%;"></ul>
             </div>
             <div class="edicion" style="display:none;" id="p-edicion-inmuebles">
@@ -126,7 +127,7 @@
             <div class="lista" id="lista-eventos"  style="display:none;" >
                 <div class="titulo">Registro de gastos</div>
                 <div class="busqueda"><input placeholder="Buscar" /></div>
-                <div class="agregar" id="edicion-erogacion" style="display:none;"><button clave_funcion="2" control="edicion-erogacion" onclick="IniciarEditar(true,'eventos',2);">Agregar tipo de gasto</button></div>
+                <div class="agregar" id="edicion-ev" style="display:none;"><button clave_funcion="2" control="edicion-ev" onclick="IniciarEditar(true,'eventos',2);">Agregar tipo de gasto</button></div>
                 <ul class="lista seleccionable pantalla-3" style="width:100%;"></ul>
             </div>
             <div class="edicion" style="display:none;" id="p-edicion-eventos">
@@ -326,45 +327,59 @@
             </div>
         </section>
 
-        <section class="pantalla aportaciones" id="aportaciones">            
+        <section class="pantalla aportaciones" id="aportaciones">  
             <div class="lista" id="lista-aportaciones">
-                <div class="titulo">Registro de gastos</div>
-                <div class="busqueda"><input placeholder="Buscar" /></div>
-                <div class="agregar" id="edicion-erogacion" style="display:none;"><button clave_funcion="2" control="edicion-erogacion" onclick="IniciarEditar(true,'aportaciones',2);">Agregar tipo de gasto</button></div>
+                <div class="titulo">Registro de gastos<button class="buscar" id="toggle-aportaciones" onclick="ToggleBusquedaAportar(this);">Buscar</button></div>
+                <div id="ap-datos-persona" style="display:none;position:relative;" class="datos-bd">
+                    <button class="cerrar-datos-p" onclick="this.parentNode.style.display = 'none'; document.getElementById('w-datos-persona').removeAttribute('residente_sel'); CargarAportaciones();">x</button>
+                    <div id="w-datos-persona" class="item"></div>
+                </div>
+                <div class="busqueda" id="b-f-aportaciones" style="display:none;"><input placeholder="Buscar por fecha" onkeypress="if (ValidarEnter(window.event)) { CargarAportaciones(true); };" id="buscar-ap-fecha"/></div>                
+                <div class="agregar" ><button onclick="IniciarPagar();" style="width:65%;" id="aportacion">Aportar</button></div>
+                <button clave_funcion="2" class="del-btn" style="display:none;float:left;clear:left;margin-left:25px;" control="edicion-aportaciones" id="edicion-aportaciones" onclick="document.getElementById('frm-edit-aportaciones').reset(); IntercambioVisual('p-edicion-aportaciones', 'lista-aportaciones'); LeerMontoMensual();"><img src="img/edit.png" /></button>
+                <button clave_funcion="2" class="del-btn" control="btn-ver-res" id="btn-ver-res" style="display:none;float:left;margin-left:25px;" onclick="CargarPersonasAp();"><img src="img/personas.png" /></button>                
+                <ul class="lista seleccionable pantalla-3" style="width:100%;"></ul>
+            </div>
+            <div class="lista" id="lista-ap_personas" style="display:none;">
+                <div class="titulo">Lista de Residentes<button class="cancelar" onclick="IntercambioVisual('lista-aportaciones', 'lista-ap_personas');">Cancelar</button></div>
+                <div class="busqueda"><input placeholder="Buscar" id="buscar-per" onkeypress="if (ValidarEnter(window.event)) { CargarPersonasAp();}"/></div>
                 <ul class="lista seleccionable pantalla-3" style="width:100%;"></ul>
             </div>
             <div class="edicion" style="display:none;" id="p-edicion-aportaciones">
                 <form onsubmit="return false;" id="frm-edit-aportaciones">
                     <fieldset>
-                        <div class="titulo">Agregar tipo de gasto<button class="cancelar" id="cancelar-edit-aportaciones" onclick="Mostrar('p-edicion-aportaciones','lista-aportaciones');">Cancelar</button></div>
+                        <div class="titulo">Editar aportaciones<button class="cancelar" id="cancelar-edit-aportaciones" onclick="Mostrar('p-edicion-aportaciones','lista-aportaciones');">Cancelar</button></div>
                         <div class="pantalla-3">
                             <input name="esNuevo" type="hidden" id="op-aportaciones" />
-                            <input name="clave" type="hidden" id="clave-aportaciones" />
-                            <label>Tipo de gasto</label><input name="titulo" id="tg-titulo" />
-                            <label>Describa a que se refiere el tipo</label><textarea maxlength="300" style="height:100px;" name="descripcion" id="tg-descripcion"></textarea>
-                            <button class="aceptar" style="margin-top:20px;" onclick="Guardar(this,'aportaciones', function () { LimpiarForm('aportaciones');CargarCatalogo(catalogo);Mostrar('p-edicion-aportaciones','lista-aportaciones');});">Guardar</button>
+                            <label>Monto Mensual</label><input name="montomesnual" id="ap-montomensual" onkeypress="return SoloNumeros(window.event,'.');"/>
+                            <div class="leyenda"><p>Nota: El cambio en el monto aplicará al mes actual cuando aun nadie haya registrado algún pago; en otro caso se aplicará a partir del siguiente mes.</p></div>
+                            <button class="aceptar" style="margin-top:20px;" onclick="GuardarMonto();">Guardar Cambio de Monto</button>
+                            <hr style="border:3px solid #ddd;width:80%;display:block;clear:both;margin:20px auto;"/>
+                            <label>Agregar concepto</label><input name="concepto" id="ap-concepto" />
+                            <label>Cantidad</label><input maxlength="300" name="monto" id="ap-monto" onkeypress="return SoloNumeros(window.event,'.');"/>
+                            <button class="aceptar" style="margin-top:20px;" onclick="GuardarConcepto();">Guardar Nuevo Concepto</button>
                         </div>
                     </fieldset>
                 </form>
-            </div>   
-            <div class="edicion" style="display:none;" id="p-edicion-solmtto">
-                <div class="titulo">Edición de Solcitud de Mtto. <button class="cancelar" id="cancelar-edit-solmtto">Cancelar</button></div>    
-                <div class="pantalla-3" >
-                    <label>Título</label><input />
-                    <label>Descripción</label><textarea style="height:180px;"></textarea>                                
-                    <div class="btns-up" style="margin-top:15px;"><button class="adjuntar-btn" style="width:100px;" onclick="IniciarAdjuntarEvidenciaSolmtto();"><img src="img/attach.png" /><span class="texto-discreto">Adjuntar</span></button><hr class="clearn" /></div>
-                    <ul class="lista-files">
-                        <li><button class="del-btn" ><img src="img/del.png" /></button><span>100_800.img</span></li>
-                        <li><button class="del-btn" ><img src="img/del.png" /></button><span>Minuta_12-ene-2018.pdf</span></li>
-                        <li><button class="del-btn" ><img src="img/del.png" /></button><span>Minuta_12-ene-2018.pdf</span></li>
-                    </ul>                 
-                    <button class="aceptar" >Aceptar</button>
-                </div>
-            </div>
+            </div>               
             <div class="detalle" id="detalle-aportaciones" style="display:none;">
-                <div class="titulo">aportaciones<button class="regresar" onclick="Mostrar('detalle-aportaciones', 'lista-aportaciones'); ">Regresar</button></div>
-                <div class="btns-up"><button class="edit-btn" clave_funcion="3" style="display:none;" control="edit-com-3" id="edit-com-3" onclick="IniciarEditar(false,'aportaciones');"><img src="img/edit.png" /></button><button style="display:none;" onclick="IniciarEliminar(this,'aportaciones');" clave_funcion="4" control="del-com-4" id="del-com-4" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>
+                <div class="titulo">Detalle de aportación<button class="regresar" onclick="Mostrar('detalle-aportaciones', 'lista-aportaciones'); ">Regresar</button></div>
+                <div class="btns-up" id="del-ap-4"  style="display:none;"><button onclick="CancelarAportacion(this,'aportaciones');" clave_funcion="2" control="del-ap-4" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>
                 <div class="pantalla-3" id="wrap-detalle-aportaciones"></div>
+            </div>
+        </section>
+
+        <section class="pantalla transparencia" id="transparencia">  
+            <div class="lista" id="lista-transparencia">
+                <div class="titulo">Transparencia</div>
+                <div class="busqueda"><input placeholder="Buscar" /></div>                
+                <ul class="lista seleccionable pantalla-3" style="width:100%;"></ul>             
+            </div>
+                         
+            <div class="detalle" id="detalle-transparencia" style="display:none;">
+                <div class="titulo">Resultados<button class="buscar" id="toggle-aportaciones" onclick="IntercambioVisual('lista-transparencia','detalle-transparencia'); ">Regresar</button></div>                
+                <div style="width:90%;margin:auto;"><canvas id="graf-transparencia"></canvas></div>
+                <table id="table-resultados-tr"></table>
             </div>
         </section>
                 

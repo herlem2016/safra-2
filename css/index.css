@@ -175,8 +175,9 @@ ul.lista {
     ul.lista .item {
         width: 100%;
         float: left;
-        border-bottom: 1px solid #808080;
-        padding-bottom: 5px;
+        border-bottom: 1px solid #bbb;
+        padding-top: 20px;
+        padding-bottom: 20px;
         margin: 0px;
     }
 
@@ -267,6 +268,14 @@ div.agregar {
     float: right;
     color: #4800ff;
     border: 0px;
+    background-color: transparent;
+}
+
+.titulo .buscar {
+    float: right;
+    color: #0094ff;
+    border: 0px;
+    font-weight:bold;
     background-color: transparent;
 }
 
@@ -369,6 +378,9 @@ button.aceptar {
 ul.lista .item span.t-1 {
     display: block;
     padding-top: 5px;
+    color:#333;
+    font-weight:bold;
+    font-size:13px;
 }
 
 ul.lista .item span.t-2 {
@@ -377,7 +389,7 @@ ul.lista .item span.t-2 {
     float: left;
     font-size: 11px;
     font-weight: normal;
-    color: #333;
+    color: #666;
     margin-top: 5px;
 }
 
@@ -521,6 +533,7 @@ html body hr.clearn {
 
 ul.seleccionable li {
     cursor: pointer;
+    clear:both;
 }
 
 ul.lista-files {
@@ -617,13 +630,11 @@ button.del-btn {
 .seleccionado {
     background-color: #0094ff;
     display: block;
-    padding: 10px;
 }
-
-
-div.home {
-    background-color: #fff;
-}
+    li.item div.seleccionado span.t-3{
+        font-weight:bold;
+        color:#fff !important;
+    }
 
 body .ui-datepicker {
     width: 95%;
@@ -968,3 +979,15 @@ button.con-btn{
     padding-top: 0px;
     padding-top: 5px;
 }
+
+div.PAGADO{background:url(../img/goodpay.png) no-repeat;background-size:30px;background-position-x:right 5px;background-position-y:center;}
+div.PAGADO .t-3{color:#168904 !important;}
+div.CANCELADO .t-3{color:#e53131 !important;font-weight:normal !important;}
+div.CANCELADO .t-3 b{font-weight:normal;}
+div.PENDIENTE{padding-top:15px;padding-bottom:15px;}
+div.PENDIENTE .t-3{color:#cf09cd !important;}
+ul.lista li .t-1{display:inline-block !important;width:60% !important;}
+ul.lista li .t-2{margin-top:0px;}
+
+.datos-bd{padding:15px;background-color:#fff;color:#666;}
+.datos-bd button{position:absolute;right:3px;top:30%;padding: 10px;border-radius: 5px;font-weight: bold;border:0px;color: #8a8a8a;background-color: #000;}
