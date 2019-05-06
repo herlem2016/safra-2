@@ -1,4 +1,17 @@
-﻿document.addEventListener("deviceready", function () {
+﻿function ActivarAplicacion(objeto) {
+    $.post(url + 'logic/controlador.aspx' + '?op=ActivarAplicacion&clave=' + objeto.value, function (xmlDoc) {
+        if (GetValor(xmlDoc, "estatus") == 1) {
+            localStorage.setItem("ClaveActivacion ", GetValor(xmlDoc, "clave"));
+            localStorage.setItem("srclogo ", GetValor(xmlDoc, "srclogo"));
+            CargarInicio();
+        } else {
+            alert("Lo sentimos, no se encontró la clave de activación, verifique.");
+        }
+    });
+}
+
+
+document.addEventListener("deviceready", function () {
     FCMPlugin.subscribeToTopic('FRA-1');
     FCMPlugin.onNotification(function (data) {
         if (data.modulo == 1) {
