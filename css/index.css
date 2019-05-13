@@ -13,7 +13,6 @@ button {
 
 .pantalla {
     border-bottom: 1px solid #b6ff00;
-    background-color: #eee;
     position: absolute;
     left: 0px;
     top: 34px;
@@ -22,7 +21,7 @@ button {
 
 .login fieldset {
     width: 80%;
-    border-radius: 5%;
+    border-radius: 7px;
     margin: auto;
     border: 2px solid #0094ff;
     background-color: #fff;
@@ -123,8 +122,7 @@ button {
     border-bottom: 5px solid #0094ff;
     background-color: #eee;
     margin: 0px;
-    padding: 20px;
-    padding-left: 40px;
+    padding: 5%;
     font-size: 12px;
     list-style: none;
 }
@@ -383,6 +381,12 @@ ul.lista .item span.t-1 {
     font-size:13px;
 }
 
+ul.lista .item span.t-1 b{
+    color: #999;
+}
+
+
+
 ul.lista .item span.t-2 {
     display: block;
     width: 65%;
@@ -394,13 +398,12 @@ ul.lista .item span.t-2 {
 }
 
 ul.lista .item span.t-3 {
-    display: block;
     width: 30%;
-    float: left;
-    font-size: 11px;
-    color: #0094ff;
-    font-weight: normal;
+    padding-left:5px;
 }
+li .btnSPR{float:right;width:120px; margin-right:10px;}
+
+.nos_dom input{width:23%;float:left;margin-left:2%;}
 
 ul.lista .item span.t-4 {
     display: block;
@@ -410,6 +413,9 @@ ul.lista .item span.t-4 {
     color: #0094ff;
     font-weight: normal;
 }
+
+.btnsm30 button{margin-top:30px;}
+.padd30{padding:22px;}
 
 span.t-1 {
     display: block;
@@ -432,12 +438,12 @@ span.t-2 {
 
 span.t-3 {
     display: block;
-    width: 30%;
     float: left;
     font-size: 11px;
     color: #0094ff;
     font-weight: normal;
-    width:90%;word-wrap:break-word;
+    width:90%;
+    word-wrap:break-word;
 }
 
 span.t-4 {
@@ -607,17 +613,17 @@ button.del-btn {
         margin-bottom: 30px;
     }
 
-    .buscador p,div.leyenda p{
+    .buscador p, div.leyenda p {
         width: 60%;
         display: block;
         margin: auto;
         margin-top: 30px;
-        font-size: 12px;
+        font-size: 1em;
         background-color: #dadada;
         border-radius: 8px;
         padding: 20px;
         text-align: center;
-        color: #0e507a;
+        color: #104363;
     }
 
 .agregar .opcion-1 {
@@ -986,8 +992,36 @@ div.CANCELADO .t-3{color:#e53131 !important;font-weight:normal !important;}
 div.CANCELADO .t-3 b{font-weight:normal;}
 div.PENDIENTE{padding-top:15px;padding-bottom:15px;}
 div.PENDIENTE .t-3{color:#cf09cd !important;}
-ul.lista li .t-1{display:inline-block !important;width:60% !important;}
+ul.lista li .t-1m{display:inline-block !important;width:60% !important;}
 ul.lista li .t-2{margin-top:0px;}
 
 .datos-bd{padding:15px;background-color:#fff;color:#666;}
 .datos-bd button{position:absolute;right:3px;top:30%;padding: 10px;border-radius: 5px;font-weight: bold;border:0px;color: #8a8a8a;background-color: #000;}
+.btn2 {
+    width: 100%;
+    text-align: left;
+    box-shadow: inset 0px 1px 0px 0px #ffffff;
+    background: linear-gradient(to bottom, #f9f9f9 5%, #e9e9e9 100%);
+    background-color: #f9f9f9;
+    border-radius: 6px;
+    border: 1px solid #dcdcdc;
+    display: inline-block;
+    cursor: pointer;
+    color: #666666;
+    font-family: Arial;
+    font-size: 15px;
+    font-weight: bold;
+    padding: 6px 24px;
+    text-decoration: none;
+    text-shadow: 0px 1px 0px #ffffff;
+}
+
+.btn2:hover {
+    background: linear-gradient(to bottom, #e9e9e9 5%, #f9f9f9 100%);
+    background-color: #e9e9e9;
+}
+
+.btn2:active {
+    position: relative;
+    top: 1px;
+}

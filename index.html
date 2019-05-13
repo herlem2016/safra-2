@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <meta name="viewport" content="width=device-width, height=device-height" />
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=0">
     <meta http-equiv="Content-Security-Policy"
           content="default-src * 'self' 'unsafe-inline' data: gap: 'unsafe-eval';
     style-src * 'self' 'unsafe-inline';
@@ -10,7 +10,6 @@
     media-src *">
     <title>SAFRA</title>
     <link href="css/terceros.css" rel="stylesheet" />
-
     <style>
         @media only screen and (min-width: 600px) {
             html,body {
@@ -18,20 +17,30 @@
                 margin: auto;
             }
         }
-        html,body{margin:0px auto 0px auto;font-family:Verdana;background-color:#0094ff;padding:0px;height:100%;overflow:hidden;position:relative;}
-        .share{position:absolute;position: absolute;right: 120px;width: 10%;top: 60px;z-index: 99999;cursor:pointer;}
-        .share:hover{box-shadow: 5px 5px 15px 5px #0094ff;}
-        .share img {width: 100%;}
-        
+        @font-face {font-family: HelveticaN;src:url(fonts/HelveticaNeue-Light.woff),url(fonts/HelveticaNeue-Medium.ttf); font-weight:300;}
+        html,body{margin:0px auto 0px auto;font-family:'HelveticaN'; text-rendering: optimizeLegibility;background-color:#ddd;padding:0px;height:100%;overflow-x:hidden;position:relative;}
+        .pantalla.activacion {background: #f2f2f2;width: 100%;height: 100%;top: 0px;margin: 0px;}
+         .pantalla.activacion h2 {text-align:center;margin-top:14%;margin-bottom:10%; color: #2ba0d7;letter-spacing: .1em;}
+         .pantalla.activacion .btn2 {}
+        span.copyright {
+            display:block;text-align:center;margin-top:40px;width:100%;
+            color: rgba(0,0,0,.7);
+            text-shadow: 0 1px rgba(255, 255, 255, 0.1);font-size:0.8em;
+        }
+        .main{margin:0px auto 0px auto;font-family:Verdana;background-color:#0094ff;padding:0px;height:100%;overflow:hidden;position:relative;}
+        .share img {width: 25px;}
+        .logo-centrado{width:30%;margin:auto;display:block;}
+        .link-o{display:block;text-align:center;color:#211e8a;padding-bottom:30px;}
+        a{cursor:pointer;}
     </style>
     <link href="css/index.css" rel="stylesheet" />
     <style id="css-sizes"></style>
     <script src="cordova.js"></script>
     <script src="jquery-1.11.3.min.js"></script>    
     <script>
-        var url = "http://192.168.0.101:82/";
+        //var url = "http://192.168.0.101:82/";
+        var url = "http://localhost:61157/";
         var urlNotas = "http://207.249.77.114/intranet/Modulos/Capacitacion/CursosNegocio/notavoz.mp3?op=ObtenerNotaVozSlide&nota=Alerta%20vecinal%2C%20alerta%20vecinal%2Ccalle%20sof%C3%ADa%20106%2Ccalle%20sof%C3%ADa%20106";
-        //var url = "http://localhost:61157/";
         $.support.cors = true;        
     </script>
     <link href="jqueryui/jquery-ui.min.css" rel="stylesheet" />
@@ -41,32 +50,68 @@
     <script src="chartjs/utils.js"></script>
 </head>
 <body unselectable="on" onselectstart="return false;" onload="IniciarApp();">
-    <div class="login" style="z-index:1000;" id="login">
-        <fieldset>
-            <legend><img src="img/Titan_Company_Logo.png" id="smallImage"/></legend>
-            <input placeholder="Usuario" />
-            <input placeholder="Contraseña" />
-            <button class="aceptar" onclick="IniciarSesion();">Iniciar</button>            
-        </fieldset>
-        <span class="copyright">Copyright &#x24B8; 2018 Softronel,Inc.</span>
-    </div>
 
-    <div style="position:relative;" id="main">
+    <section class="pantalla activacion" id="activacion" style="display:none;z-index:1000;">
+        <form id="frmActivacion" onsubmit="return false;" class="edicion">
+            <div>
+                <h2>¡BIENVENIDO!</h2>
+                <div class="leyenda">
+                    <p>Gracias Por utilizar el mejor servicio de comunicación residencial, <b>safra&reg;</b>.</p>
+                    <p>Para poder disfrutar de la experiencia movil, ingrese por favor el código de activación que le proporcionó su administrador.</p>
+                </div>
+                <input placeholder="Codigo de activación"  style="width:80%;display:block;margin:auto;margin-top:50px;" name="codigoactivacion" id="codigoactivacion"/>
+                <button class="btn2" style="width:80%;display:block;margin:auto;margin-top:20px;text-align:center;" onclick="ActivarAplicacion();">Activar</button>
+            </div>
+            <span class="copyright">Copyright &#x24B8; 2019 Softronel,Inc.</span>
+        </form>
+    </section>
 
+    <section class="login" id="reg-usuario" style="display:none;z-index:1000;">
+        <form id="frmRegUsuario" onsubmit="return false;" style="min-height: 70%;margin-top:15%;">
+            <fieldset style="height: 100%;">
+                <img src="" id="smallImage" class="logo" style="width: 60%;margin-top: 12%;display: block;margin-left: auto;margin-right: auto;border-radius: 10px;"/>
+                <input placeholder="Nombre" name="usuario" />
+                <input placeholder="Apellidos" name="apellidos" />
+                <input placeholder="E-mail" name="email" />
+                <input placeholder="Contraseña" name="contrasena" type="password" />
+                <button class="aceptar" onclick="RegistrarUsuario();">Registrar usuario</button>
+                <a class="link-o" onclick="PantallaMostrar('login','section',true);">Iniciar Sesión</a>
+            </fieldset>
+            <span class="copyright">Copyright &#x24B8; 2019 Softronel,Inc.</span>
+        </form>
+    </section>
+
+    <section class="login" id="login" style="display:none;z-index:1000;">
+        <form id="frmSesion" onsubmit="return false;" style="min-height: 70%;margin-top:15%;">
+            <fieldset style="height: 100%;">
+                <img src="" id="smallImage" class="logo" style="width: 60%;margin-top: 12%;display: block;margin-left: auto;margin-right: auto;border-radius: 10px;" />
+                <input placeholder="E-mail" name="email" />
+                <input placeholder="Contraseña" name="contrasena" type="password" />
+                <button class="aceptar" onclick="IniciarSesion('frmSesion');">Iniciar</button>
+                <a class="link-o" onclick="PantallaMostrar('reg-usuario','section',true);">Registrar usuario</a>
+            </fieldset>
+            <span class="copyright">Copyright &#x24B8; 2019 Softronel,Inc.</span>
+        </form>
+    </section>
+
+    <div style="position:relative;display:none;" id="main">
         <div class="opciones-usuario">
-            <div class="datos-usuario"><img class="home" style="margin-top:-8px;" src="img/home.png"  onclick='PantallaMostrar("home", "section",true);' /><span>Lucely Janeth Rodriguez Almaguer</span><img src="img/user.png" onclick="ToogleOpcionesUsuario('opciones-usuario');" /></div>
-            <ul id="opciones-usuario" style="display:none;position:absolute;z-index:99999;width:100%;margin:0px;">
-                <li>Usuario Residente</li>
-                <li><i>Calle Sofía No. 106, Mz-3, Lt-24, IB</i></li>
-                <li><b>Fraccionamiento Los Amores de Don Juan</b></li>
-                <li><button onclick="MostrarOpcionesHabilitadas();" id="mostrar-opciones">Mostrar opciones de edición</button></li>                
-                <li><button onclick="OcultarOpciones();" id="ocultar-opciones" style="display:none;">Ocultar opciones de edición</button></li>
-                <li><button onclick="CerrarSesion">Cerrar sesión</button></li>
-                <li class="share"><img src="img/share.png" title="Compartir" />Compartir</li>
+            <div class="datos-usuario"><img class="home" style="margin-top:-8px;" src="img/home.png"  onclick='PantallaMostrar("home", "section",true);' /><span id="nombre-usuario"></span><img src="img/user.png" onclick="ToogleOpcionesUsuario('opciones-usuario');" /></div>
+            <ul id="opciones-usuario" style="display:none;position:absolute;z-index:99999;width:90%;margin:0px;">
+                <li><img src="" class="logo logo-centrado"/></li>
+                <li id="tipo-usuario"></li>
+                <li><i id="u-domicilio"></i></li>
+                <li><b id="u-fraccionamiento"></b></li>
+                <li><button class="share btn2" onclick="CompartirAplicacion()"><img src="img/share.png" title="Compartir" style="float:left;"/><span style="float:left;margin-top:5px;margin-left:10px;" >Compartir aplicación</span><hr class="clearn"/></button></li>
+                <li><button class="btn2" onclick="MostrarOpcionesHabilitadas();" id="mostrar-opciones">Mostrar opciones de edición</button></li>                
+                <li><button class="btn2" onclick="OcultarOpciones();" id="ocultar-opciones" style="display:none;">Ocultar opciones de edición</button></li>
+                <li><button class="btn2" onclick="PantallaMostrar('safra','section');ToogleOpcionesUsuario('opciones-usuario');" >Cuenta SAFRA</button></li>
+                <hr />
+                <li><button class="btn2" onclick="CerrarSesion();">Cerrar sesión</button></li>
             </ul>
         </div>
         
-        <section class="pantalla home" id="home">
+        <section class="pantalla home" id="home" style="display:none;">
             <ul class="menu">
                 <!--<li class="alarma">Alarma Vecinal</li>-->
                 <li><button onclick="PantallaMostrar('projectos','section');" class="no"><img src="img/proyectos.png"/>Propuestas de proyectos</button></li>
@@ -84,68 +129,122 @@
                 <li class="alertav"><button onclick="ActivarAlarma();"  class="ok"><img src="img/alertav.png"/>Activar</button></li>
             </ul>
         </section>
-
+        
         <div id="alarma" style="position:absolute;display:none;z-index:9999;width:80%;padding:10%;margin-top:35%;background-color:#ff0000;text-align:center;">            
             <audio id="alarma-v" loop controls onplay="document.getElementById('alarma-s').play();" onpause="document.getElementById('alarma-s').pause();"></audio>
             <audio id="alarma-s" loop></audio>
             <button class="aceptar" onclick="DesactivarAlarma();" style="margin-top:20px;">Enterado</button>
         </div>
 
+        <section class="pantalla safra" id="safra">
+
+            <div class="detalle" id="detalle-safra">
+                <div class="titulo">safra<button class="regresar" onclick="Mostrar('detalle-safra', 'lista-safra'); ">cerrar</button></div>
+                <div class="btns-up"><button class="edit-btn" clave_funcion="3" style="display:none;" control="edit-safra" id="edit-safra" onclick="IniciarEditar(false,'safra');"><img src="img/edit.png" /></button><hr class="clearn" /></div>
+                <div id="wrap-detalle-safra">
+                    <p>
+                        Gracias Por utilizar SAFRA!
+                    </p>
+                    <span class='logo-centrado'><img src="img/Titan_Company_Logo.png" /></span>
+                    <span class='campo'><label>Nombre del condominio o fraccionamiento</label><span>Fraccionamiento Amores de Don Juan</span></span>
+                    <span class='campo'><label>Domicilio</label>Zempoala Hidalgo</span>
+                </div>
+                <div class="lista pantalla-3" id="lista-safra">
+                    <div class="titulo">Licencias adquiridas</div>
+                    <div class="agregar" id="edicion-licencia" style="display:none;"><button clave_funcion="5" control="edicion-licencia" onclick="IniciarEditar(true,'safra');">Comprar nueva licencia</button></div>
+                    <ul class="lista seleccionable">
+                        <li class="item" onclick="Mostrar('lista-notificaciones','detalle-notificaciones');">
+                            <span class="t-1">Licencia : 0025</span>
+                            <span class="t-2">Vigencia:  17 febrero 2017 al 17 febrereo 2018</span>
+                            <span class="t-3">Adquirida 17 Febrero del 2017 5:25 pm</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="detalle" id="detalle-licencia" style="display:none;">
+                <div class="titulo">licencia<button class="regresar" onclick="Mostrar('detalle-licencia', 'lista-licencia');">Regresar</button></div>
+                <div class="btns-up"><button class="edit-btn" clave_funcion="3" style="display:none;" control="edit-com-3" id="edit-com-3" onclick="IniciarEditar(false,'licencia');"><img src="img/edit.png" /></button><button style="display:none;" onclick="IniciarEliminar(this,'licencia');" clave_funcion="4" control="del-com-4" id="del-com-4" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>
+                <div class="pantalla-3" id="wrap-detalle-licencia"></div>
+            </div>
+            <div class="edicion " style="display:none;" id="p-edicion-safra">
+                <div class="titulo">Edición de safra <button class="cancelar" id="cancelar-edit-safra">Cancelar</button></div>
+                <form class="pantalla-3" id="frm-edit-safra" onsubmit="return false;">
+                    <fieldset style="border:0px;">
+                        <span class='campo'><label>Nombre del condominio o fraccionamiento</label><input name="nombre" /></span>
+                        <span class='campo'><label>Domicilio</label><input name="nombre" /></span>
+                        <span class='campo'><label>Logo(Formato .JPG o .NPG)</label><input type="file" name="nombre" /></span>
+                        <span class='campo'><label>Responsable del sistema</label><input type="file" name="nombre" /></span>                        
+                        <button class="aceptar" style="margin-top:30px;margin-bottom:50px;" onclick="Guardar(this,'safra', function () { LimpiarForm('safra');CargarCatalogo(catalogo);Mostrar('p-edicion-safra','lista-safra');});">Aceptar</button>
+                    </fieldset>
+                </form>
+            </div>
+        </section>
 
         <section class="pantalla usuarios" id="usuarios">
             <div class="lista" id="lista-usuarios">
                 <div class="titulo">usuarios</div>
                 <div class="busqueda"><input placeholder="Buscar" /></div>
-                <div class="agregar" id="edicion-usuarios" style="display:none;"><button clave_funcion="5" control="edicion-usuarios" onclick="IniciarEditar(true,'usuarios');">Aregar comunicado</button></div>
+                <div class="agregar" id="edicion-usuarios" style="display:none;"><button clave_funcion="5" control="edicion-usuarios" onclick="IniciarEditar(true,'usuarios',2);">Aregar usuario</button></div>
                 <ul class="lista seleccionable pantalla-3"></ul>
             </div>
 
             <div class="detalle" id="detalle-usuarios" style="display:none;">
                 <div class="titulo">usuarios<button class="regresar" onclick="Mostrar('detalle-usuarios', 'lista-usuarios'); ">Regresar</button></div>
-                <div class="btns-up"><button class="edit-btn" clave_funcion="3" style="display:none;" control="edit-com-3" id="edit-com-3" onclick="IniciarEditar(false,'usuarios');"><img src="img/edit.png" /></button><button style="display:none;" onclick="IniciarEliminar(this,'usuarios');" clave_funcion="4" control="del-com-4" id="del-com-4" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>
+                <div class="btns-up"><button class="edit-btn" clave_funcion="3" style="display:none;" control="edit-usu" id="edit-usu" onclick="IniciarEditar(false,'usuarios');"><img src="img/edit.png" /></button><hr class="clearn" /></div>
                 <div class="pantalla-3" id="wrap-detalle-usuarios"></div>
             </div>
 
             <div class="edicion " style="display:none;" id="p-edicion-usuarios">
                 <div class="titulo">Edición de usuarios <button class="cancelar" id="cancelar-edit-usuarios">Cancelar</button></div>
-                <form class="pantalla-3" id="frm-edit-usuarios" onsubmit="return false;">
+                <form class="pantalla-4" id="frm-edit-usuarios" onsubmit="return false;">
                     <fieldset style="border:0px;">
-                        <label>Título</label><input name="titulo" />
+                        <label>Nombre</label><input name="nombre"  id="nombre-usu" />
                         <input name="esNuevo" type="hidden" id="op-usuarios" />
-                        <input name="clave" type="hidden" id="clave-usuarios" />
-                        <label>Descripción</label><textarea style="height:180px;" name="descripcion"></textarea>
-                        <label>Imagenes y descripción<hr class="clearn" /></label>
-                        <div id="c-e-usuarios"></div>
-                        <div><button class="adjuntar-btn" style="width:100px;" onclick="IAgregarImagenTexto('c-e-usuarios');"><img src="img/attach.png" /><span class="texto-discreto">Agregar</span></button><hr class="clearn" /></div>
+                        <input name="clave" type="hidden" id="clave-usu" />
+                        <label>Apellidos</label><input name="apellidos" id="apellidos-usu" />
+                        <label>E-mail</label><input name="email" id="email-usu" >
+                        <label>Confirme E-mail</label><input name="confemail"  />
+                        <label>Contraseña anterior</label><input placeholder="Opcional" name="passant"  type="password"/>
+                        <label>Contraseña</label><input placeholder="Requerido" name="pass"  type="password"/>
+                        <label>Confirme contraseña</label><input placeholder="Opcional" name="confpass"  type="password"/>
                         <button class="aceptar" style="margin-top:30px;margin-bottom:50px;" onclick="Guardar(this,'usuarios', function () { LimpiarForm('usuarios');CargarCatalogo(catalogo);Mostrar('p-edicion-usuarios','lista-usuarios');});">Aceptar</button>
                     </fieldset>
                 </form>
             </div>
+
             <div class="lista" id="lista-cargos" style="display:none;">
-                <div class="titulo">cargos</div>
-                <div class="busqueda"><input placeholder="Buscar" /></div>
-                <div class="agregar" id="edicion-cargos" style="display:none;"><button clave_funcion="5" control="edicion-cargos" onclick="IniciarEditar(true,'cargos');">Aregar comunicado</button></div>
-                <ul class="lista seleccionable pantalla-3"></ul>
+                <div class="titulo">Cargos <button class="regresar" onclick="Mostrar('lista-cargosacciones', 'lista-cargos'); ">Regresar</button></div>
+                <div id="UnUsuario"></div>
+                <div class="agregar" id="edicion-cargos" style="display:none;"><button clave_funcion="5" control="edicion-cargos" onclick="IniciarEditar(true,'cargos',2);">Aregar cargo</button></div>
+                <ul class="lista seleccionable pantalla-2"></ul>
             </div>
 
-            <div class="detalle" id="detalle-cargos" style="display:none;">
-                <div class="titulo">cargos<button class="regresar" onclick="Mostrar('detalle-cargos', 'lista-cargos'); ">Regresar</button></div>
-                <div class="btns-up"><button class="edit-btn" clave_funcion="3" style="display:none;" control="edit-com-3" id="edit-com-3" onclick="IniciarEditar(false,'cargos');"><img src="img/edit.png" /></button><button style="display:none;" onclick="IniciarEliminar(this,'cargos');" clave_funcion="4" control="del-com-4" id="del-com-4" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>
-                <div class="pantalla-3" id="wrap-detalle-cargos"></div>
+            <div class="detalle" id="lista-cargosacciones" style="display:none;">
+                <form onsubmit="return false" method="post" id="frm-edit-cargosacciones">
+                    <fieldset>
+                        <div class="titulo">Cargos y acciones<button class="regresar" onclick="Mostrar('lista-cargosacciones', 'lista-cargos'); ">Regresar</button></div>
+                        <div class="btns-up"><button class="edit-btn" clave_funcion="3" style="display:none;" control="edit-ca-3" id="edit-ca-3" onclick="IniciarEditar(false, 'cargos', 2, {a:'lista-cargosacciones',b:'p-edicion-cargos'},document.getElementById('clavecargo').value);"><img src="img/edit.png" /></button><button style="display:none;" onclick="IniciarEliminar(this,'cargos',document.getElementById('clavecargo').value);"  control="del-ca-4" id="del-ca-4" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>
+                        <div id="UnCargoEd"></div>
+                        <div><input style="float:right;" type="checkbox" onchange="ToggleChecks(this,'lista-ulacciones');"/></div>
+                        <input type="hidden" name="clavecargo" id="clavecargo"/>
+                        <div class="pantalla-3">
+                            <ul class="lista seleccionable" id="lista-ulacciones"></ul>
+                            <button class="aceptar" style="margin-top:30px;margin-bottom:50px;" onclick="Guardar(this, 'cargosacciones', function () { LimpiarForm('cargosacciones'); CargarCatalogo(catalogo, function(){},{cargo:document.getElementById('clavecargo').value});});">Guardar configuración</button>
+                        </div>
+                    </fieldset>
+                </form>
             </div>
 
             <div class="edicion " style="display:none;" id="p-edicion-cargos">
                 <div class="titulo">Edición de cargos <button class="cancelar" id="cancelar-edit-cargos">Cancelar</button></div>
                 <form class="pantalla-3" id="frm-edit-cargos" onsubmit="return false;">
                     <fieldset style="border:0px;">
-                        <label>Título</label><input name="titulo" />
+                        <label>Nombre del cargo</label><input name="nombre" id="nombre-cargos" />
                         <input name="esNuevo" type="hidden" id="op-cargos" />
                         <input name="clave" type="hidden" id="clave-cargos" />
-                        <label>Descripción</label><textarea style="height:180px;" name="descripcion"></textarea>
-                        <label>Imagenes y descripción<hr class="clearn" /></label>
-                        <div id="c-e-cargos"></div>
-                        <div><button class="adjuntar-btn" style="width:100px;" onclick="IAgregarImagenTexto('c-e-cargos');"><img src="img/attach.png" /><span class="texto-discreto">Agregar</span></button><hr class="clearn" /></div>
-                        <button class="aceptar" style="margin-top:30px;margin-bottom:50px;" onclick="Guardar(this,'cargos', function () { LimpiarForm('cargos');CargarCatalogo(catalogo);Mostrar('p-edicion-cargos','lista-cargos');});">Aceptar</button>
+                        <label>Descripción</label><textarea style="height:180px;" name="descripcion" id="descripcion-cargos" ></textarea>  
+                        <button class="aceptar" style="margin-top:30px;margin-bottom:50px;" onclick="Guardar(this,'cargos', function () { LimpiarForm('cargos');CargarCatalogo(catalogo);IntercambioVisual('lista-cargos','p-edicion-cargos');});">Aceptar</button>
                     </fieldset>
                 </form>
             </div>
@@ -204,7 +303,7 @@
                 </form>
             </div>
             <div class="edicion" style="display:none;" id="p-regen_inmuebles">
-                <!--<div class="titulo">Calendario de reservaciones<button class="cancelar" id="cancelar-edit-erogacion" onclick="Mostrar('p-regen_inmuebles','lista-inmuebles');">Cancelar</button></div>
+                <div class="titulo">Calendario de reservaciones<button class="cancelar" id="cancelar-edit-erogacion" onclick="Mostrar('p-regen_inmuebles','lista-inmuebles');">Cancelar</button></div>
                 <div>
                     <div class="leyenda" style="margin-bottom:30px;margin-top:50px;">
                         <p>
@@ -213,11 +312,7 @@
                         </p>
                     </div>
                     <div id="calendario-ev-inm"></div>
-                </div>-->
-                <div id="frm-payu">
-                
-                    <button onclick="ContinuarPagando();">Continuar</button>
-                </div>
+                </div>                
             </div>
             <div class="lista" id="lista-eventos"  style="display:none;" >
                 <div class="titulo">Registro de gastos</div>
@@ -431,7 +526,7 @@
                 </div>
                 <div class="busqueda" id="b-f-aportaciones" style="display:none;"><input placeholder="Buscar por fecha" onkeypress="if (ValidarEnter(window.event)) { CargarAportaciones(true); };" id="buscar-ap-fecha"/></div>                
                 <div class="agregar" ><button onclick="IniciarPagar();" style="width:65%;" id="aportacion">Aportar</button></div>
-                <button clave_funcion="2" class="del-btn" style="display:none;float:left;clear:left;margin-left:25px;" control="edicion-aportaciones" id="edicion-aportaciones" onclick="document.getElementById('frm-edit-aportaciones').reset(); IntercambioVisual('p-edicion-aportaciones', 'lista-aportaciones'); LeerMontoMensual();"><img src="img/edit.png" /></button>
+                <button clave_funcion="2" class="del-btn" style="display:none;float:left;clear:left;margin-left:25px;" control="edicion-aportaciones" id="edicion-aportaciones" onclick="IntercambioVisual('p-edicion-aportaciones', 'lista-aportaciones');"><img src="img/edit.png" /></button>
                 <button clave_funcion="2" class="del-btn" control="btn-ver-res" id="btn-ver-res" style="display:none;float:left;margin-left:25px;" onclick="CargarPersonasAp();"><img src="img/personas.png" /></button>                
                 <ul class="lista seleccionable pantalla-3" style="width:100%;"></ul>
             </div>
@@ -445,68 +540,79 @@
                 <div class="btns-up" id="del-ap-4"  style="display:none;"><button onclick="CancelarAportacion(this,'aportaciones');" clave_funcion="2" control="del-ap-4" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>
                 <div class="pantalla-3" id="wrap-detalle-aportaciones"></div>
             </div>
-            <div class="edicion" style="display:none;" id="p-edicion-aportaciones">
-                <button class="aceptar" style="margin-top:20px;" onclick="GuardarMonto();">Editar aportación mensual</button>
-                <button class="aceptar" style="margin-top:20px;" onclick="GuardarMonto();">Editar conceptos</button>
-                <button class="aceptar" style="margin-top:20px;" onclick="GuardarMonto();">Editar domicilios</button>
+            <div class="edicion" style="display:none;padding-top:50px;" id="p-edicion-aportaciones">
+                <button class="aceptar" style="margin-top:20px;" onclick="VerEdicionConceptos();">Editar conceptos</button>
+                <button class="aceptar" style="margin-top:20px;" onclick="VerEdicionDomicilios();">Editar domicilios</button>
+                <button class="aceptar" style="margin-top:20px;" onclick="VerAportacionesIniciales();">Aportaciones pendientes iniciales</button>
             </div>
+                        
             <div class="lista" id="lista-ap_conceptos" style="display:none;">
-                <div class="titulo">Lista de Residentes<button class="cancelar" onclick="IntercambioVisual('lista-aportaciones', 'lista-ap_personas');">Cancelar</button></div>
-                <div class="busqueda"><input placeholder="Buscar" id="buscar-per" onkeypress="if (ValidarEnter(window.event)) { CargarPersonasAp();}" /></div>
+                <div class="titulo">Conceptos<button class="cancelar" onclick="IntercambioVisual('p-edicion-aportaciones', 'lista-ap_conceptos');">Cancelar</button></div>
+                <div class="agregar" id="edicion-ap_conceptos" style="display:none;"><button clave_funcion="2" control="edicion-ap_conceptos" onclick="IniciarEditar(true,'ap_conceptos',2);">Agregar concepto</button></div>
                 <ul class="lista seleccionable pantalla-3" style="width:100%;"></ul>
             </div>
+            <div class="detalle" id="detalle-ap_conceptos" style="display:none;">
+                <div class="titulo">Detalle de conceptos<button class="regresar" onclick="Mostrar('detalle-ap_conceptos', 'lista-ap_conceptos'); ">Regresar</button></div>
+                <div class="btns-up" id="del-con-4" style="display:none;"><button onclick="CancelarAportacion(this,'ap_conceptos');" clave_funcion="2" control="del-con-4" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>
+                <div class="pantalla-3" id="wrap-detalle-ap_conceptos"></div>
+            </div>
+            <div class="edicion" style="display:none;" id="p-edicion-ap_conceptos">
+                <form onsubmit="return false;" id="frm-edit-ap_conceptos">
+                    <fieldset>
+                        <div class="titulo">Editar Concepto<button class="cancelar" id="cancelar-edit-ap_conceptos" onclick="Mostrar('p-edicion-conceptos-m','lista-ap_conceptos');">Cancelar</button></div>
+                        <div class="pantalla-3">
+                            <input name="esNuevo" type="hidden" id="op-ap_conceptos" />    
+                            <input name="esNuevo" type="hidden" id="op-ap_conceptos" />                        
+                            <label>Concepto</label><input name="concepto" id="con-nombre" />
+                            <label>Cantidad</label><input maxlength="300" name="monto" id="con-monto" onkeypress="return SoloNumeros(window.event,'.');" />
+                            <label>Descripción</label><textarea maxlength="300" name="descripcion" id="con-descripcion" ></textarea>
+                            <button class="aceptar" style="margin-top:20px;" onclick="GuardarItem(this,'ap_conceptos');">Guardar Nuevo Concepto</button>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+
             <div class="lista" id="lista-ap_domicilios" style="display:none;">
-                <div class="titulo">Lista de Residentes<button class="cancelar" onclick="IntercambioVisual('lista-aportaciones', 'lista-ap_personas');">Cancelar</button></div>
+                <div class="titulo">Lista de Domicilios<button class="cancelar" onclick="IntercambioVisual('p-edicion-aportaciones', 'lista-ap_domicilios');">Cancelar</button></div>
                 <div class="busqueda"><input placeholder="Buscar" id="buscar-per" onkeypress="if (ValidarEnter(window.event)) { CargarPersonasAp();}" /></div>
+                <div class="agregar" id="edicion-ap_domicilios" style="display:none;"><button clave_funcion="2" control="edicion-ap_domicilios" onclick="IniciarEditar(true,'ap_domicilios',2);">Agregar Domicilio</button></div>
                 <ul class="lista seleccionable pantalla-3" style="width:100%;"></ul>
             </div>
-            <div class="edicion" style="display:none;" id="p-edicion-aportacion-m">
-                <form onsubmit="return false;" id="frm-edit-aportaciones">
+            <div class="detalle" id="detalle-ap_domicilios" style="display:none;">
+                <div class="titulo">Detalle de Domicilio<button class="regresar" onclick="Mostrar('detalle-ap_domicilios', 'lista-ap_domicilios'); ">Regresar</button></div>
+                <div class="btns-up" id="del-dom-4" style="display:none;"><button class="edit-btn" onclick="IniciarEditar(false,'ap_domicilios');"><img src="img/edit.png" /></button><button onclick="CancelarAportacion(this,'ap_domicilios');" clave_funcion="2" control="del-dom-4" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>
+                <div class="pantalla-3" id="wrap-detalle-ap_domicilios"></div>
+            </div>
+            <div class="edicion" style="display:none;" id="p-edicion-ap_domicilios">
+                <form onsubmit="return false;" id="frm-edit-ap_domicilios">
                     <fieldset>
-                        <div class="titulo">Editar aportaciones<button class="cancelar" id="cancelar-edit-aportaciones" onclick="Mostrar('p-edicion-aportaciones','lista-aportaciones');">Cancelar</button></div>
+                        <div class="titulo">Editar Domicilio<button class="cancelar" id="cancelar-edit-ap_domicilios" onclick="Mostrar('p-edicion-ap_domicilios','lista-ap_domicilios');">Cancelar</button></div>
                         <div class="pantalla-3">
-                            <input name="esNuevo" type="hidden" id="op-aportaciones" />
-                            <label>Monto Mensual</label><input name="montomesnual" id="ap-montomensual" onkeypress="return SoloNumeros(window.event,'.');" />
-                            <div class="leyenda"><p>Nota: El cambio en el monto aplicará al mes actual cuando aun nadie haya registrado algún pago; en otro caso se aplicará a partir del siguiente mes.</p></div>
-                            <button class="aceptar" style="margin-top:20px;" onclick="GuardarMonto();">Guardar Cambio de Monto</button>
-                            <hr style="border:3px solid #ddd;width:80%;display:block;clear:both;margin:20px auto;" />
-                            <label>Agregar concepto</label><input name="concepto" id="ap-concepto" />
-                            <label>Cantidad</label><input maxlength="300" name="monto" id="ap-monto" onkeypress="return SoloNumeros(window.event,'.');" />
-                            <button class="aceptar" style="margin-top:20px;" onclick="GuardarConcepto();">Guardar Nuevo Concepto</button>
+                            <input name="esNuevo" type="hidden" id="op-ap_domicilios" />
+                            <input name="clave" type="hidden" id="clave-ap_domicilios" />
+                            <label>Titular</label><input name="titular" id="dom-titular" />
+                            <label>Domicilio</label><input name="calle" id="dom-calle" placeholder="Calle"/>                            
+                            <div class="nos_dom"><input name="numero" id="dom-numero"  placeholder="Número" style="margin-left:0px;"/><input name="no_interior" id="dom-no_int" placeholder="No. Int."/><input name="mz" id="dom-mz" placeholder="Mz"/><input name="lt" id="dom-lt" placeholder="Lt."/></div>                          
+                            <button class="aceptar" style="margin-top:20px;" onclick="GuardarItem(this,'ap_domicilios');">Guardar domicilio</button>
                         </div>
                     </fieldset>
                 </form>
             </div>
-            <div class="edicion" style="display:none;" id="p-edicion-conceptos-m">
-                <form onsubmit="return false;" id="frm-edit-aportaciones">
-                    <fieldset>
-                        <div class="titulo">Editar aportaciones<button class="cancelar" id="cancelar-edit-aportaciones" onclick="Mostrar('p-edicion-aportaciones','lista-aportaciones');">Cancelar</button></div>
-                        <div class="pantalla-3">
-                            <input name="esNuevo" type="hidden" id="op-aportaciones" />
-                            <label>Monto Mensual</label><input name="montomesnual" id="ap-montomensual" onkeypress="return SoloNumeros(window.event,'.');" />
-                            <div class="leyenda"><p>Nota: El cambio en el monto aplicará al mes actual cuando aun nadie haya registrado algún pago; en otro caso se aplicará a partir del siguiente mes.</p></div>
-                            <button class="aceptar" style="margin-top:20px;" onclick="GuardarMonto();">Guardar Cambio de Monto</button>
-                            <hr style="border:3px solid #ddd;width:80%;display:block;clear:both;margin:20px auto;" />
-                            <label>Agregar concepto</label><input name="concepto" id="ap-concepto" />
-                            <label>Cantidad</label><input maxlength="300" name="monto" id="ap-monto" onkeypress="return SoloNumeros(window.event,'.');" />
-                            <button class="aceptar" style="margin-top:20px;" onclick="GuardarConcepto();">Guardar Nuevo Concepto</button>
-                        </div>
-                    </fieldset>
-                </form>
+            <div class="lista" id="lista-ap_domicilios2" style="display:none;">
+                <div class="titulo">Lista de Domicilios<button class="cancelar" onclick="IntercambioVisual('p-edicion-aportaciones', 'lista-ap_domicilios2');">Cancelar</button></div>
+                <div class="busqueda"><input placeholder="Buscar" id="buscar-per" onkeypress="if (ValidarEnter(window.event)) { CargarPersonasAp();}" /></div>                    
+                <ul class="lista seleccionable pantalla-3" style="width:100%;"></ul>
             </div>
-            <div class="edicion" style="display:none;" id="p-edicion-domicilios-m">
-                <form onsubmit="return false;" id="frm-edit-aportaciones">
+            <div class="edicion" style="display:none;" id="lista-domiciliosconceptosini">
+                <form onsubmit="return false" method="post" id="frm-edit-domiciliosconceptosini">
                     <fieldset>
-                        <div class="titulo">Editar aportaciones<button class="cancelar" id="cancelar-edit-aportaciones" onclick="Mostrar('p-edicion-aportaciones','lista-aportaciones');">Cancelar</button></div>
+                        <div class="titulo">Captura inicial<button class="regresar" onclick="Mostrar('lista-domiciliosconceptosini', 'lista-ap_domicilios2'); ">Regresar</button></div>                        
+                        <div id="UnDomicilioEd" class="selec"></div>
+                        <div><input style="float:right;" type="checkbox" onchange="ToggleChecks(this,'lista-domiciliosconceptosini');"/></div>
+                        <input type="hidden" name="clavedomicilio" id="clavedomicilio"/>
                         <div class="pantalla-3">
-                            <input name="esNuevo" type="hidden" id="op-aportaciones" />
-                            <label>Monto Mensual</label><input name="montomesnual" id="ap-montomensual" onkeypress="return SoloNumeros(window.event,'.');" />
-                            <div class="leyenda"><p>Nota: El cambio en el monto aplicará al mes actual cuando aun nadie haya registrado algún pago; en otro caso se aplicará a partir del siguiente mes.</p></div>
-                            <button class="aceptar" style="margin-top:20px;" onclick="GuardarMonto();">Guardar Cambio de Monto</button>
-                            <hr style="border:3px solid #ddd;width:80%;display:block;clear:both;margin:20px auto;" />
-                            <label>Agregar concepto</label><input name="concepto" id="ap-concepto" />
-                            <label>Cantidad</label><input maxlength="300" name="monto" id="ap-monto" onkeypress="return SoloNumeros(window.event,'.');" />
-                            <button class="aceptar" style="margin-top:20px;" onclick="GuardarConcepto();">Guardar Nuevo Concepto</button>
+                            <ul class="lista seleccionable" id="lista-ulacciones"></ul>
+                            <button class="aceptar" style="margin-top:30px;margin-bottom:50px;" onclick="Guardar(this, 'domiciliosconceptosini', function () { LimpiarForm('domiciliosconceptosini'); CargarCatalogo(catalogo, function(){},{clave:document.getElementById('clavedomicilio').value});});">Guardar configuración</button>
                         </div>
                     </fieldset>
                 </form>

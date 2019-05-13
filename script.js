@@ -1,24 +1,99 @@
-﻿function ActivarAplicacion(objeto) {
-    $.post(url + 'logic/controlador.aspx' + '?op=ActivarAplicacion&clave=' + objeto.value, function (xmlDoc) {
-        if (GetValor(xmlDoc, "estatus") == 1) {
-            localStorage.setItem("ClaveActivacion ", GetValor(xmlDoc, "clave"));
-            localStorage.setItem("srclogo ", GetValor(xmlDoc, "srclogo"));
-            CargarInicio();
+﻿
+window.onresize = function () {
+    //EstablecerDimensiones();
+}
+
+function IniciarApp() {
+    document.getElementById("main").style.display = "none";
+    if (window.localStorage.getItem("codigoActivacion")) {
+        InicializarApp();
+        if (window.localStorage.getItem("email_")) {
+            document.getElementById("main").style.display = "block";
+            PantallaMostrar("home", "section", true);
         } else {
-            alert("Lo sentimos, no se encontró la clave de activación, verifique.");
+            PantallaMostrar("login", "section", true);
         }
-    });
+    } else {
+        PantallaMostrar("activacion", "section", true);
+    }
+}
+
+function InicializarApp() {
+    EstablecerLogo();
+    document.getElementById("btn-buscar-ps").onkeypress = function (ev) {
+        if (ValidarEnter(ev)) {
+            BuscarProdServ(ev.target);
+        }
+    }
+    EstablecerDimensiones();
+    var tabInicioPro = document.getElementById("tab-inicio-pro");
+    TabMostrar(tabInicioPro, tabInicioPro.parentNode, 'pro-ejecucion');
+    var tabInicioPag = document.getElementById("tab-inicio-pagos");
+    TabMostrar(tabInicioPag, tabInicioPag.parentNode, 'tab-pcorriente', 'tiposgastos');
+    LlenarSelect(url + 'logic/controlador.aspx?op=ObtenerClasificacion&seccion=Generico&clave=6', 's-tipossolicitudatencion', undefined, 'indice', 'descripcion');
+    LlenarSelect(url + 'logic/controlador.aspx?op=ObtenerPropuestasProy&seccion=egrepro&', 's-egre-propro', 'Seleccione proyecto', 'clave', 'titulo');
+}
+
+function EstablecerDimensiones() {
+    var style = document.getElementById("css-sizes");
+    var styleStr = "";
+    var heightApp = parseInt(window.innerHeight - 40, 10) + 5;
+    styleStr += ".pantalla {height:" + heightApp + "px !important;}";
+    styleStr += ".menu button img {height:" + (heightApp - 100) / 8 + "px !important;}";
+    styleStr += ".pantalla-2 {height:" + (heightApp - 64) + "px !important;}";
+    styleStr += ".pantalla-3 {height:" + (heightApp - 132) + "px !important;}";
+    styleStr += ".pantalla-4 {height:" + (heightApp - 27) + "px !important;}";
+    styleStr += ".scrollable {height:" + (heightApp - 132) + "px !important;}";
+    styleStr += ".scrollable-2 {height:" + (heightApp - 168) + "px !important;}";
+    styleStr += ".menu li {height:" + (heightApp - 50) / 5 + "px !important;}";
+
+    style.innerHTML = styleStr;
+}
+
+function ActivarAplicacion(objeto) {
+    var clave = document.getElementById("codigoactivacion").value;
+    if (clave) {
+        var datos = [{ name:'codigoActivacion',value:clave}];
+        $.post(url + 'logic/controlador.aspx' + '?op=ActivarAplicacion&seccion=seguridad', datos, function (xmlDoc) {
+            var estatus = GetValor(xmlDoc, "estatus");
+            if (estatus == 1) {
+                window.localStorage.setItem("codigoActivacion", GetValor(xmlDoc, "codigoActivacion"));
+                window.localStorage.setItem("srclogo ", GetValor(xmlDoc, "srclogo"));                
+                InicializarApp();
+                document.getElementById("main").style.display = "block";
+                PantallaMostrar("reg-usuario", "section", true);
+            } else {
+                if (GetValor(xmlDoc, "codigoActivacion") && estatus == 0) {
+                    alert("Su comite de administración tiene un proceso pendiente, consulte a su administrador.");
+                } else {
+                    alert("Lo sentimos, no se encontró la clave de activación, verifique.");
+                }
+            }
+        });
+    } else {
+        alert("Debe ingresar clave de activación");
+    }
+}
+
+function EstablecerLogo() {
+    var imgs = $("img.logo");
+    for (var i = 0; i < imgs.length; i++) {
+        imgs[i].setAttribute("src", url + "/src-img/fraccionamientos/_" + window.localStorage.getItem("codigoActivacion")+"/logo.png");
+    }
 }
 
 
+
 document.addEventListener("deviceready", function () {
-    FCMPlugin.subscribeToTopic('FRA-1');
-    FCMPlugin.onNotification(function (data) {
-        if (data.modulo == 1) {
-            ActivarAlarma_();
-        }
-    });
-    cordova.plugins.notification.badge.set(1);
+    if (window.localStorage.getItem("email_")) {
+        FCMPlugin.subscribeToTopic('FRA-' + window.localStorage.getItem("codigoActivacion"));
+        FCMPlugin.onNotification(function (data) {
+            if (data.modulo == 1) {
+                ActivarAlarma_();
+            }
+        });
+        cordova.plugins.notification.badge.set(1);
+    }
 }, false);
 
 function ActivarAlarma() {
@@ -134,10 +209,60 @@ function CerrarPago(event,ventana) {
     }
 }
 
+function GuardarItem(obj,catalogo){
+    Guardar(obj, catalogo, function () {
+        LimpiarForm(catalogo);
+        CargarCatalogo(catalogo, function () {
+            IntercambioVisual('lista-' + catalogo, 'p-edicion-' + catalogo);
+        });
+    });
+}
+
+
+function IniciarAsociarCargo() {
+    IntercambioVisual("lista-cargos", "detalle-usuarios");
+    CargarCatalogo("cargos");
+}
+
         function PintarItem(catalogo, clave, xmlDoc0){
             var cont = "", imgsTexto;
             var xmlDoc = xmlDoc0.getElementsByTagName("Table")[0];
             switch (catalogo) {
+                case "ap_domicilios":
+                    var pantalla = document.getElementById("detalle-" + catalogo);
+                    pantalla.setAttribute("clave", clave);
+                    cont =
+                        '<span class="t-1">' + GetValor(xmlDoc, "domicilio") + '</span>' +
+                        '<span class="t-2">' + GetValor(xmlDoc, "titular") + '</span>';
+                    document.getElementById("wrap-detalle-" + catalogo).innerHTML = cont;
+                    ; break;
+                case "ap_conceptos":
+                    var pantalla = document.getElementById("detalle-" + catalogo);
+                    pantalla.setAttribute("clave", clave);
+                    cont =
+                        '<span class="t-1">' + GetValor(xmlDoc, "nombre") + '</span>' +
+                        '<span class="t-2">' + GetValor(xmlDoc, "descripcion") + '</span>';
+                    document.getElementById("wrap-detalle-" + catalogo).innerHTML = cont;
+                    ; break;
+                case "usuarios":
+                var pantalla = document.getElementById("detalle-" + catalogo);
+                pantalla.setAttribute("clave", clave);
+                var cargo = GetValor(xmlDoc, "cargo");
+                var clave_cargo = GetValor(xmlDoc, "clave_cargo");
+                var usuario = GetValor(xmlDoc, "usuario");
+                cont ='<div class="padd30 btnsm30" style="line-height:20px;">'+
+                    '<span class="t-1"><b>Nombre: </b>' + usuario + '</span>' +
+                    '<span class="t-3"><b>Domicilio: </b>' + GetValor(xmlDoc, "domicilio") + '</span>' +
+                    (cargo?
+                    '<span class="t-2"><b>Cargo: </b>' + GetValor(xmlDoc, "cargo") + '</span>' +
+                    '<button clave_funcion="2" id="cargo-usu" control="cargo-usu" class="btn2" style="display:none;" onclick="RemoverCargoUsuario(' + clave + ',' + clave_cargo + ');">Remover Cargo</button>' 
+                    :
+                    '<button clave_funcion="2" id="cargo-usu-a" control="cargo-usu-a" class="btn2" style="display:none;" onclick="IniciarAsociarCargo();">Asociar Cargo</button>' 
+                    )+
+                    '<span><button class="btn2">Suspender AV(Alerta Vecinal) 3 días</button></span>' +
+                    '<button class="btn2">Cerrar Sesión Usuario</button></div>';
+                document.getElementById("wrap-detalle-" + catalogo).innerHTML = cont;
+                ; break;
                 case "aportaciones":
                     var obs = GetValor(xmlDoc, "observaciones");
                     var residente = GetValor(xmlDoc, "residente"); 
@@ -294,6 +419,18 @@ function CerrarPago(event,ventana) {
             var xmlDoc = xmlDoc0.getElementsByTagName("Table")[0];
             var frm = document.getElementById("frm-edit-" + catalogo);
             switch (catalogo) {
+                case "ap_domicilios":
+                    CargarDatosFrmMap(xmlDoc, { clave: 'clave-ap_domicilios', calle: 'dom-calle', titular: 'dom-titular',manzana:'dom-mz',lote:'dom-lt',numero:'dom-numero',no_interior:'dom-no_int' });
+                    break;
+                case "ap_conceptos":
+                    CargarDatosFrmMap(xmlDoc, { clave: 'clave-ap_conceptos', nombre: 'con-nombre', descripcion: 'con-descripcion',monto:'con-monto' });
+                    break;
+                case "cargos":
+                    CargarDatosFrmMap(xmlDoc, { clave: 'clave-cargos', nombre: 'nombre-cargos', descripcion: 'descripcion-cargos'});
+                    break;
+                case "usuarios":
+                    CargarDatosFrmMap(xmlDoc, { clave: 'clave-usu', usuario: 'nombre-usu', apellidos: 'apellidos-usu',correo:"email-usu" });
+                    break;
                 case "egrepro":
                     document.getElementById("clave-" + catalogo).value = clave;
                     CargarDatosFrmMap(xmlDoc, { indice: 'clave-egrepro', titulo: 'egrepro-titulo', proyecto: 's-egre-propro' });
@@ -469,6 +606,10 @@ function CerrarPago(event,ventana) {
                     Mostrar('detalle-' + catalogo, 'p-edicion-' + catalogo);
                     document.getElementById("cancelar-edit-" + catalogo).onclick = function () { Mostrar('p-edicion-' + catalogo, 'detalle-' + catalogo); }
                 }
+                var frm = document.getElementById("frm-edit-" + catalogo);
+                if (frm) {
+                    frm.reset();
+                }                
                 $.post(url + 'logic/controlador.aspx' + '?op=ObtenerItem&seccion=' + catalogo + '&claveItem=' + clave, function (xmlDoc) {
                     //QuitarEspera();
                     PintarItemEditar(catalogo, clave, xmlDoc);
@@ -560,42 +701,6 @@ function CerrarPago(event,ventana) {
             CargarCatalogo('ap_personas', function () { IntercambioVisual('lista-ap_personas', 'lista-aportaciones'); }, { buscar: document.getElementById('buscar-per').value });
         }
 
-        window.onresize = function () {
-            //EstablecerDimensiones();
-        }
-
-        function IniciarApp() {
-            document.getElementById("btn-buscar-ps").onkeypress = function (ev) {
-                if (ValidarEnter(ev)) {
-                    BuscarProdServ(ev.target);
-                }
-            }
-            EstablecerDimensiones();
-            PantallaMostrar("home", "section",true);
-            var tabInicioPro = document.getElementById("tab-inicio-pro");
-            TabMostrar(tabInicioPro, tabInicioPro.parentNode, 'pro-ejecucion');
-            var tabInicioPag = document.getElementById("tab-inicio-pagos");
-            TabMostrar(tabInicioPag, tabInicioPag.parentNode, 'tab-pcorriente','tiposgastos');
-            LlenarSelect(url + 'logic/controlador.aspx?op=ObtenerClasificacion&seccion=Generico&clave=6' , 's-tipossolicitudatencion', undefined, 'indice', 'descripcion');
-            LlenarSelect(url + 'logic/controlador.aspx?op=ObtenerPropuestasProy&seccion=egrepro&', 's-egre-propro', 'Seleccione proyecto', 'clave', 'titulo');
-        }
-
-        function EstablecerDimensiones() {
-            var style = document.getElementById("css-sizes");
-            var styleStr = ".login fieldset{height:" + parseInt(0.7 * window.innerHeight, 10) + "px !important;margin-top:" + parseInt(0.10 * window.innerHeight,10) + "px;}";
-            var heightApp = parseInt(window.innerHeight - 40, 10) + 5;
-            styleStr += ".pantalla {height:" + heightApp + "px !important;}";
-            styleStr += ".menu button img {height:" + (heightApp-100)/8 + "px !important;}";
-            styleStr += ".pantalla-2 {height:" + (heightApp - 64) + "px !important;}";
-            styleStr += ".pantalla-3 {height:" + (heightApp - 132) + "px !important;}";
-            styleStr += ".pantalla-4 {height:" + (heightApp - 27) + "px !important;}";
-            styleStr += ".scrollable {height:" + (heightApp - 132) + "px !important;}";
-            styleStr += ".scrollable-2 {height:" + (heightApp - 168) + "px !important;}";
-            styleStr += ".menu li {height:" + (heightApp - 50)/5 + "px !important;}";
-
-            style.innerHTML = styleStr;
-        }
-
         function SeleccionarConceptoPagar(objeto,clave_concepto) {
             $.post(url + 'logic/controlador.aspx' + '?op=ValidarAgregarPagar&seccion=aportaciones&concepto=' + clave_concepto, function (xmlDoc) {
                 if (GetValor(xmlDoc, "validacion") == 'CONTINUAR') {
@@ -670,8 +775,56 @@ function CerrarPago(event,ventana) {
             Mostrar('lista-pro','p-edicion-pro');
         }
 
-        function IniciarSesion() {
-            IntercambioVisual('main','login');
+        function RegistrarUsuario() {
+            var codigoActivacion = window.localStorage.getItem("codigoActivacion");
+            if (codigoActivacion) {
+                var titular = prompt("Por favor escriba el nombre del titular registrado");
+                if (titular.trim().length) {
+                    var datos = $("#frmRegUsuario").serializeArray();
+                    datos.push({ name: 'fraccionamiento', value: codigoActivacion });
+                    datos.push({ name: 'titular', value: titular });
+                    $.post(url + 'logic/controlador.aspx?op=RegistrarUsuario&seccion=seguridad', datos, function (xmlDoc) {
+                        if (GetValor(xmlDoc, "estatus") == 1) {
+                            IniciarSesion("frmRegUsuario");
+                        } else {
+                            alert(GetValor(xmlDoc, "mensaje"));
+                        }
+                    });
+                } else {
+                    alert("Para poder registrar su cuenta necesita indicar el nombre del titular");
+                }
+            } else {
+                alert("No ha activado la aplicación");
+            }
+        }
+
+        function IniciarSesion(frm) {
+            var datos = $("#" + frm).serializeArray();
+            $.post(url + 'logic/controlador.aspx?op=IniciarSesion&seccion=seguridad', datos, function(xmlDoc) {
+                if (GetValor(xmlDoc, "estatus") == 1) {
+                    window.localStorage.setItem("email_", datos[0].value);
+                    window.localStorage.setItem("contrasena_", datos[1].value);
+                    document.getElementById("nombre-usuario").innerHTML = GetValor(xmlDoc,"nombre");
+                    document.getElementById("u-fraccionamiento").innerHTML = GetValor(xmlDoc,"s_nfracc");
+                    document.getElementById("u-domicilio").innerHTML = GetValor(xmlDoc,"s_domicilio");
+                    document.getElementById("tipo-usuario").innerHTML = GetValor(xmlDoc, "cargo");
+                    IniciarApp();
+                } else {
+                    alert(GetValor(xmlDoc,"mensaje"));
+                }            
+            });
+        }
+
+        function CerrarSesion() {
+            $.post(url + 'logic/controlador.aspx?op=CerrarSesion&seccion=seguridad',function(xmlDoc){
+                if (GetValor(xmlDoc, "estatus") == 1) {
+                    window.localStorage.setItem("email_","");
+                    window.localStorage.setItem("contrasena_","");
+                    IntercambioVisual('login', 'main');
+                } else {
+                    alert(GetValor(xmlDoc, "mensaje"));
+                }
+            });
         }
 
         function IntercambioVisual(id1,id2){
@@ -679,7 +832,7 @@ function CerrarPago(event,ventana) {
             document.getElementById(id2).style.display = "none";
         }
 
-        function CargarCatalogo(catalogo,callback,parametros) {
+        function CargarCatalogo(catalogo,callback,parametros,callbackin) {
             $.post(url + 'logic/controlador.aspx' + '?op=cargar&seccion=' + catalogo,parametros, function (xmlDoc) {
                 var items = xmlDoc.getElementsByTagName(catalogo == "encuestas" ? "Encuesta" : "Table");
                 var lista = document.getElementById("lista-" + catalogo).getElementsByTagName("ul")[0];
@@ -788,142 +941,243 @@ function CerrarPago(event,ventana) {
             return color;
         }
 
-        function ObtenerItem(catalogo, item) {
-            var itemli = document.createElement("li");
-            itemli.className = "item";
-            var html = "";
-            switch (catalogo) {
-                case "transparencia":
-                    itemli.setAttribute("config",GetValor(item, 'config'));
-                    itemli.innerHTML = '<button  class="aceptar" onclick="VerInforme(' + GetValor(item, 'clave') + ',this.parentNode.getAttribute(\'config\'));">' + GetValor(item,'descripcion') + '</button>';
-                    break;
-                case "ap_personas":                    
-                    itemli.innerHTML =
-                        '<span class="t-1" style="display:inline-block;width:90% !important;">' + GetValor(item, "residente") + '</span>' +
-                        '<span class="t-3" style="float:left;width:90% !important;"> ' + GetValor(item, "domicilio") + '</span><hr class="clearn"/>';                    
-                    itemli.onclick = function () {
-                        var str = this.innerHTML;
-                        var residente_sel = GetValor(item, "clave");
-                        var datosp = document.getElementById("w-datos-persona");
-                        datosp.setAttribute("residente_sel", residente_sel);
-                        datosp.innerHTML = str;
-                        datosp.parentNode.style.display = "block";
-                        IntercambioVisual('lista-aportaciones', 'lista-ap_personas');
-                        document.getElementById('buscar-ap-fecha').value = "";
-                        PonerAportar(document.getElementById("toggle-aportaciones"));
-                        CargarAportaciones();
-                    }
-                    break;
-                case "aportaciones":
-                    var leyenda = GetValor(item, "leyenda");
-                    if (leyenda == "PENDIENTE") {       
-                        itemli.innerHTML =
-                            '<div class="' + GetValor(item, "leyenda") + '" onclick="SeleccionarConceptoPagar(this,' + GetValor(item, "clave_concepto") + ');">'+
-                            '<span class="t-1" precio="' + GetValor(item, "monto") + '">' + GetValor(item, "concepto") + '</span>' +
-                            '<span class="t-3 ' + GetValor(item, "leyenda") + '" style="float:right;">' + GetValor(item, "leyenda") + ' <br/>$ ' + GetValor(item, "monto") + '</span><hr class="clearn"/>' +
-                            '</div>';
-                    } else {
-                        var folio = GetValor(item, "folio");
-                        itemli.onclick = function () {                        
-                            Mostrar('lista-aportaciones', 'detalle-aportaciones', 'aportaciones', folio);
-                        }
-                        var residente = GetValor(item, "residente"); 
-                        itemli.innerHTML =
-                            '<div class="' + GetValor(item, "leyenda") + '">'+
-                            '<span class="t-1">' + GetValor(item, "concepto") + (residente ? ":" + residente : "") + '</span>'+
-                            '<span class="t-2">Tipo de pago: ' + GetValor(item, "tipoPago") + '<br/>Recibió:' + GetValor(item, "recibio") +  '<br/>Canceló:' + GetValor(item, "cancelo") + '<br /> Folio:' + folio + '<br/>' + GetValor(item, "fecha") + '</span>' +
-                            '<span class="t-3" style="float:right;"><b>' + GetValor(item, "leyenda") + '</b> <br/>$ ' + GetValor(item, "monto") + '</span><hr class="clearn"/>' +
-                            '</div>';
-                    }
-                    break;
-                case "inmuebles":
-                case "tiposgastos":
-                case "egrepro":
-                    var indice = GetValor(item, "indice");
-                    itemli.onclick = function () {
-                        Mostrar('lista-' + catalogo, 'p-regen_' + catalogo, catalogo, indice);
-                    }
-                    itemli.innerHTML =
-                        '<span class="t-1" >' + GetValor(item, "titulo") + '</span>' +
-                    '<button class="edit-btn" clave_funcion="2" control="ed-tg-' + indice + '" id="ed-tg-' + indice + '" style="display:none;"  onclick="IniciarEditar(false, \'' + catalogo + '\', 2, { a: \'lista-' + catalogo + '\', b: \'p-edicion-' + catalogo + '\' },' + indice + ');" ><img  src="img/edit.png" /></button>' +
-                    '<button class="edit-btn" clave_funcion="2" control="del-tg-' + indice + '" id="del-tg-' + indice + '" style="display:none;"  onclick="IniciarEliminar(this,\'' + catalogo + '\',' + indice + ',{ b: \'lista-' + catalogo + '\', a: \'p-edicion-' + catalogo + '\' },true);" ><img  src="img/del.png" /></button>';
-                    break;
-                case "comunicados":
-                case "solicitudes":
-                    itemli.onclick = function () { Mostrar('lista-' + catalogo, 'detalle-' + catalogo, catalogo, GetValor(item, "clave")); }
-                    itemli.innerHTML = '<span class="t-1" >' + GetValor(item, "titulo") + '</span>' +
-                        '<span class="t-2">' + GetValor(item, "nombre") + '</span>' +
-                        '<span class="t-3">' + GetValor(item, "fecha1") + '</span>'+
-                        '<span class="aux-1">' + GetValor(item, "alias") + '</span>';
-                    break;
-                case "directorio":
-                    itemli.setAttribute("nombre",GetValor(item, "nombre"));
-                    html = '<span>' + GetValor(item, "nombre") + '</span>' +
-                        '<button class="edit-btn" clave_funcion="2" control="ed-2-' + GetValor(item, "indice") + '" id="ed-2-' + GetValor(item, "indice") + '" style="display:none;"  onclick="IniciarEditarDirectorio(false,' + GetValor(item, "indice") + ');" ><img  src="img/edit.png" /></button>' +
-                        '<button class="edit-btn" clave_funcion="2" control="del-2-' + GetValor(item, "indice") + '" id="del-2-' + GetValor(item, "indice") + '" style="display:none;"  onclick="IniciarEliminarDirectorio(' + GetValor(item, "indice") + ',this);" ><img  src="img/del.png" /></button>'+
-                        '<ol>';
-                     for (var k = 1; k < 4; k++) {
-                         if (GetValor(item, "telefono" + k)) {
-                             html += '<li>' +                                 
-                                 '<span>' + GetValor(item, "telefono" + k) + '</span>' +
-                                 '<a class="call-btn" href="tel://' + GetValor(item, "telefono" + k) + '"><img src="img/call.png" /></a>' +
-                                 '<hr class="clear" />' +
-                                 '</li>';
-                         }
-                    }
-                    itemli.innerHTML = html + '</ol>';
-                    ; break;
-                case "prodserv":
-                    itemli.onclick = function () { Mostrar('lista-' + catalogo, 'detalle-' + catalogo, catalogo, GetValor(item, "clave")); }
-                    itemli.innerHTML =
-                        '<span class="t-1">' + GetValor(item,"NombreNegocio") + '</span>' +
-                    '<span class="t-2">Teléfono(s): ' + GetValor(item, "telefonos") +  '</span>' +
-                    '<span class="t-3">Horario: ' + GetValor(item, "horario") + '</span>';                                  
-                    break;
-                case "encuestas":
-                    html =
-                        ' <span class="t-1">' + GetValor(item, "pregunta") + '</span>' +
-                    '<button class="edit-btn" clave_funcion="2" control="ed-2-' + GetValor(item, "clave") + '" id="ed-2-' + GetValor(item, "clave") + '" style="display:none;"  onclick="IniciarEditar(false, \'encuestas\', 1, { a: \'lista-encuestas\', b: \'p-edicion-encuestas\' },' + GetValor(item, "clave") +');" ><img  src="img/edit.png" /></button>' +
-                    '<button class="edit-btn" clave_funcion="2" control="del-2-' + GetValor(item, "clave") + '" id="del-2-' + GetValor(item, "clave") + '" style="display:none;"  onclick="IniciarEliminar(this,\'encuestas\',' + GetValor(item, "clave") + ',{ b: \'lista-encuestas\', a: \'p-edicion-encuestas\' });" ><img  src="img/del.png" /></button>' +
-                        '<span class="t-2">' + GetValor(item, "fecha") + '</span>';                        
-                    var respuestas = item.getElementsByTagName("Respuesta");
-                    if (GetValor(item, "yaVoto") == 1) {
-                        html += '<table class="transparente">';
-                        for (var i = 0; i < respuestas.length; i++) {
-                            html += '<tr ' + (GetValor(respuestas[i], "respondio")==1 ? 'class="votado"' : "") + '><td><div class="graf-barra" onclick="Mostrar(\'lista-encuesta\',\'encuesta-votantes\');"><span class="progreso" style="width:' + GetValor(respuestas[i], "porc") + '%"></span><label><b>' + GetValor(respuestas[i], "porc") + '%</b>' + GetValor(respuestas[i], "respuesta") + '</label></div></td></tr>';
-                        }
-                        html += '</table>';
-                    } else {
-                        var encuesta = GetValor(item, "clave");
-                        html +=
-                            '<div class="separado10 item-enc"  id="tab-resp-' + encuesta +'">' +
-                            '<table>';
-                        for (var i = 0; i < respuestas.length; i++) {
-                            html +=
-                                '<tr><td style="width:75%;"><label for="resp-' + GetValor(respuestas[i], "clave") + '">' + GetValor(respuestas[i], "respuesta") + '</label></td><td style="width:25%;"><input type="radio" id="resp-' + GetValor(respuestas[i], "clave") + '" name="enc-' + encuesta + '" onchange="MarcarVoto(this,' + encuesta + ',' + GetValor(respuestas[i], "clave") + ');"/></td></tr>';
-                        }
-                        html +=
-                            '</table>' +
-                        '<button class="centrado30" id="btn-votar-enc-' + encuesta + '" onclick="RegistrarVoto(this,' + encuesta  + ')">Votar</button>' +
-                            '</div>';                        
-                    }
-                    itemli.innerHTML = html;
-                    ; break;
+        function ToggleChecks(obj, id) {
+            var lista = $("#" + id + " input[type=checkbox]");
+            var checked = obj.checked;
+            for (var i = 0; i < lista.length; i++) {
+                lista[i].checked = checked;
             }
-            return itemli;
         }
 
-        function LeerMontoMensual() {
-            $.post(url + 'logic/controlador.aspx' + '?op=LeerMontoMensual&seccion=aportaciones', function (xmlDoc) {
-                document.getElementById("ap-montomensual").value = GetValor(xmlDoc, "montomensual");
-            });
-        }
-        function GuardarMonto() {
-            $.post(url + 'logic/controlador.aspx' + '?op=GuardarMonto&seccion=aportaciones&montomensual=' + document.getElementById("ap-montomensual").value, function (xmlDoc) {
-                LeerMontoMensual();                
-            });
-            alert(GetValor(xmlDoc, "mensaje"));
-        }
+function ConfigurarCargo(obj,cargo) {
+    var unCargo = obj.parentNode.txt;
+    document.getElementById("UnCargoEd").innerHTML = unCargo;
+    IntercambioVisual("lista-cargosacciones", "lista-cargos");
+    document.getElementById("clavecargo").value = cargo;
+    CargarCatalogo("cargosacciones", function () { }, { cargo: cargo });
+}
+
+
+function VerEdicionConceptos() {
+    CargarCatalogo("ap_conceptos", function(){
+        IntercambioVisual('lista-ap_conceptos', 'p-edicion-aportaciones');
+    });    
+}
+
+function VerEdicionDomicilios() {
+    CargarCatalogo("ap_domicilios", function(){
+        IntercambioVisual('lista-ap_domicilios','p-edicion-aportaciones');
+    });   
+}
+
+function VerAportacionesIniciales() {
+    CargarCatalogo("ap_domicilios2", function () {
+        IntercambioVisual('lista-ap_domicilios2', 'p-edicion-aportaciones');
+    });
+}
+
+function SeleccionarCargo(obj) {
+    var clave = obj.getAttribute("clave");
+    var usuario = document.getElementById("UnUsuario").getAttribute("usuario");
+    $.post(url + 'logic/controlador.aspx' + '?op=RegistrarCargoUsuario&seccion=usuarios&clave_usuario=' + usuario + "&cargo=" + clave, function (xmlDoc) {
+        Mostrar('lista-cargos', 'detalle-usuarios', 'usuarios', usuario);
+        CargarCatalogo("usuarios");
+    });
+}
+
+function RemoverCargoUsuario(usuario,cargo) {
+    $.post(url + 'logic/controlador.aspx' + '?op=RemoverCargoUsuario&seccion=usuarios&clave_usuario=' + usuario + "&cargo=" + cargo, function (xmlDoc) {
+        Mostrar('detalle-usuarios', 'detalle-usuarios', 'usuarios', usuario);
+        CargarCatalogo("usuarios");
+    });
+}
+
+function VerDomiciliosAportaciones(domicilio) {
+    CargarCatalogo("domiciliosconceptosini", function () {
+        IntercambioVisual('lista-domiciliosconceptosini','lista-ap_domicilios2');
+    }, {clave:domicilio});
+}
+
+function ObtenerItem(catalogo, item) {
+    var itemli = document.createElement("li");
+    itemli.className = "item";
+    var html = "";
+    switch (catalogo) {
+        case "domiciliosconceptosini":
+            var registrado = GetValor(item, "registrado");
+            itemli.innerHTML =
+                '<span class="t-1">' + GetValor(item, "nombre") + '</span><span class="t-3">$ ' + GetValor(item, "monto") + '</span><input type="checkbox" name="concepto" value="' + GetValor(item, "clave") + '" ' + (registrado ? 'checked="checked"' : '') + ' />';
+            break;
+        case "ap_domicilios2":
+            var domicilio = GetValor(item, "clave");                
+            var str = '<span class="t-1" >' + GetValor(item, "domicilio") + '</span>' +
+                '<span class="t-3">' + GetValor(item, "titular") + '</span>';
+            itemli.str = str;
+            itemli.onclick = function () {
+                document.getElementById("clavedomicilio").value = domicilio;
+                document.getElementById("UnDomicilioEd").innerHTML = this.str;
+                VerDomiciliosAportaciones(domicilio);
+            }
+            itemli.innerHTML = str;
+            break;
+        case "ap_domicilios":
+            itemli.onclick = function () { Mostrar('lista-' + catalogo, 'detalle-' + catalogo, catalogo, GetValor(item, "clave")); }
+            itemli.innerHTML = '<span class="t-1" >' + GetValor(item, "domicilio") + '</span>' +
+                '<span class="t-3">' + GetValor(item, "titular") + '</span>';
+            break;
+        case "ap_conceptos":
+            itemli.onclick = function () { Mostrar('lista-' + catalogo, 'detalle-' + catalogo, catalogo, GetValor(item, "clave")); }
+            itemli.innerHTML = '<span class="t-1" >' + GetValor(item, "nombre") + '</span>' +
+                '<span class="t-3">' + GetValor(item, "fecha1") + '</span>';
+            break;
+        case "cargosacciones":
+            var accion = GetValor(item,"clave_accion");
+            itemli.innerHTML =
+                '<span class="t-1m">' + GetValor(item, "descripcion") + '</span><input type="checkbox" name="accion" value="' + GetValor(item, "clave") + '" ' + (accion? 'checked="checked"':'') +' />';
+            break;
+        case "cargos":
+            var clave = GetValor(item, "clave");
+            var txt =
+                '<span class="t-1" clave="' + clave + '" onclick="SeleccionarCargo(this);">' + GetValor(item, "nombre") + '</span>' +
+                '<span class="t-3"><b>' + GetValor(item, "fecha_registro") + '</b></span>';
+            itemli.txt = txt;
+            itemli.innerHTML =
+                txt +
+                '<button class="btn2 btnSPR" onclick="ConfigurarCargo(this,' + clave + ');" >Configurar</button>'
+                '<hr class="clearn"/>';
+            break;
+        case "usuarios":
+            var clave = GetValor(item,"clave");
+            itemli.onclick = function () {
+                var html = this.innerHTML;
+                document.getElementById("UnUsuario").innerHTML = html;
+                document.getElementById("UnUsuario").setAttribute("usuario",clave);
+                Mostrar('lista-usuarios', 'detalle-usuarios', 'usuarios', clave);
+            }
+            var cargo = GetValor(item, "cargo");
+            itemli.innerHTML =
+                '<span class="t-1">' + GetValor(item, "usuario") + (cargo ? ":<b>" + cargo + '</b>' : "") + '</span>' +
+                '<span class="t-3"><b>' + GetValor(item, "domicilio") + '</b></span><hr class="clearn"/>';
+            break;
+        case "transparencia":
+            itemli.setAttribute("config",GetValor(item, 'config'));
+            itemli.innerHTML = '<button  class="aceptar" onclick="VerInforme(' + GetValor(item, 'clave') + ',this.parentNode.getAttribute(\'config\'));">' + GetValor(item,'descripcion') + '</button>';
+            break;
+        case "ap_personas":                    
+            itemli.innerHTML =
+                '<span class="t-1" style="display:inline-block;width:90% !important;">' + GetValor(item, "residente") + '</span>' +
+                '<span class="t-3" style="float:left;width:90% !important;"> ' + GetValor(item, "domicilio") + '</span><hr class="clearn"/>';                    
+            itemli.onclick = function () {
+                var str = this.innerHTML;
+                var residente_sel = GetValor(item, "clave");
+                var datosp = document.getElementById("w-datos-persona");
+                datosp.setAttribute("residente_sel", residente_sel);
+                datosp.innerHTML = str;
+                datosp.parentNode.style.display = "block";
+                IntercambioVisual('lista-aportaciones', 'lista-ap_personas');
+                document.getElementById('buscar-ap-fecha').value = "";
+                PonerAportar(document.getElementById("toggle-aportaciones"));
+                CargarAportaciones();
+            }
+            break;
+        case "aportaciones":
+            var leyenda = GetValor(item, "leyenda");
+            if (leyenda == "PENDIENTE") {       
+                itemli.innerHTML =
+                    '<div class="' + GetValor(item, "leyenda") + '" onclick="SeleccionarConceptoPagar(this,' + GetValor(item, "clave_concepto") + ');">'+
+                    '<span class="t-1" precio="' + GetValor(item, "monto") + '">' + GetValor(item, "concepto") + '</span>' +
+                    '<span class="t-3 ' + GetValor(item, "leyenda") + '" style="float:right;">' + GetValor(item, "leyenda") + ' <br/>$ ' + GetValor(item, "monto") + '</span><hr class="clearn"/>' +
+                    '</div>';
+            } else {
+                var folio = GetValor(item, "folio");
+                itemli.onclick = function () {                        
+                    Mostrar('lista-aportaciones', 'detalle-aportaciones', 'aportaciones', folio);
+                }
+                var residente = GetValor(item, "residente"); 
+                itemli.innerHTML =
+                    '<div class="' + GetValor(item, "leyenda") + '">'+
+                    '<span class="t-1">' + GetValor(item, "concepto") + (residente ? ":" + residente : "") + '</span>'+
+                    '<span class="t-2">Tipo de pago: ' + GetValor(item, "tipoPago") + '<br/>Recibió:' + GetValor(item, "recibio") +  '<br/>Canceló:' + GetValor(item, "cancelo") + '<br /> Folio:' + folio + '<br/>' + GetValor(item, "fecha") + '</span>' +
+                    '<span class="t-3" style="float:right;"><b>' + GetValor(item, "leyenda") + '</b> <br/>$ ' + GetValor(item, "monto") + '</span><hr class="clearn"/>' +
+                    '</div>';
+            }
+            break;
+        case "inmuebles":
+        case "tiposgastos":
+        case "egrepro":
+            var indice = GetValor(item, "indice");
+            itemli.onclick = function () {
+                Mostrar('lista-' + catalogo, 'p-regen_' + catalogo, catalogo, indice);
+            }
+            itemli.innerHTML =
+                '<span class="t-1" >' + GetValor(item, "titulo") + '</span>' +
+            '<button class="edit-btn" clave_funcion="2" control="ed-tg-' + indice + '" id="ed-tg-' + indice + '" style="display:none;"  onclick="IniciarEditar(false, \'' + catalogo + '\', 2, { a: \'lista-' + catalogo + '\', b: \'p-edicion-' + catalogo + '\' },' + indice + ');" ><img  src="img/edit.png" /></button>' +
+            '<button class="edit-btn" clave_funcion="2" control="del-tg-' + indice + '" id="del-tg-' + indice + '" style="display:none;"  onclick="IniciarEliminar(this,\'' + catalogo + '\',' + indice + ',{ b: \'lista-' + catalogo + '\', a: \'p-edicion-' + catalogo + '\' },true);" ><img  src="img/del.png" /></button>';
+            break;
+        case "comunicados":
+        case "solicitudes":
+            itemli.onclick = function () { Mostrar('lista-' + catalogo, 'detalle-' + catalogo, catalogo, GetValor(item, "clave")); }
+            itemli.innerHTML = '<span class="t-1" >' + GetValor(item, "titulo") + '</span>' +
+                '<span class="t-2">' + GetValor(item, "nombre") + '</span>' +
+                '<span class="t-3">' + GetValor(item, "fecha1") + '</span>'+
+                '<span class="aux-1">' + GetValor(item, "alias") + '</span>';
+            break;
+        case "directorio":
+            itemli.setAttribute("nombre",GetValor(item, "nombre"));
+            html = '<span>' + GetValor(item, "nombre") + '</span>' +
+                '<button class="edit-btn" clave_funcion="2" control="ed-2-' + GetValor(item, "indice") + '" id="ed-2-' + GetValor(item, "indice") + '" style="display:none;"  onclick="IniciarEditarDirectorio(false,' + GetValor(item, "indice") + ');" ><img  src="img/edit.png" /></button>' +
+                '<button class="edit-btn" clave_funcion="2" control="del-2-' + GetValor(item, "indice") + '" id="del-2-' + GetValor(item, "indice") + '" style="display:none;"  onclick="IniciarEliminarDirectorio(' + GetValor(item, "indice") + ',this);" ><img  src="img/del.png" /></button>'+
+                '<ol>';
+                for (var k = 1; k < 4; k++) {
+                    if (GetValor(item, "telefono" + k)) {
+                        html += '<li>' +                                 
+                            '<span>' + GetValor(item, "telefono" + k) + '</span>' +
+                            '<a class="call-btn" href="tel://' + GetValor(item, "telefono" + k) + '"><img src="img/call.png" /></a>' +
+                            '<hr class="clear" />' +
+                            '</li>';
+                    }
+            }
+            itemli.innerHTML = html + '</ol>';
+            ; break;
+        case "prodserv":
+            itemli.onclick = function () { Mostrar('lista-' + catalogo, 'detalle-' + catalogo, catalogo, GetValor(item, "clave")); }
+            itemli.innerHTML =
+                '<span class="t-1">' + GetValor(item,"NombreNegocio") + '</span>' +
+            '<span class="t-2">Teléfono(s): ' + GetValor(item, "telefonos") +  '</span>' +
+            '<span class="t-3">Horario: ' + GetValor(item, "horario") + '</span>';                                  
+            break;
+        case "encuestas":
+            html =
+                ' <span class="t-1">' + GetValor(item, "pregunta") + '</span>' +
+            '<button class="edit-btn" clave_funcion="2" control="ed-2-' + GetValor(item, "clave") + '" id="ed-2-' + GetValor(item, "clave") + '" style="display:none;"  onclick="IniciarEditar(false, \'encuestas\', 1, { a: \'lista-encuestas\', b: \'p-edicion-encuestas\' },' + GetValor(item, "clave") +');" ><img  src="img/edit.png" /></button>' +
+            '<button class="edit-btn" clave_funcion="2" control="del-2-' + GetValor(item, "clave") + '" id="del-2-' + GetValor(item, "clave") + '" style="display:none;"  onclick="IniciarEliminar(this,\'encuestas\',' + GetValor(item, "clave") + ',{ b: \'lista-encuestas\', a: \'p-edicion-encuestas\' });" ><img  src="img/del.png" /></button>' +
+                '<span class="t-2">' + GetValor(item, "fecha") + '</span>';                        
+            var respuestas = item.getElementsByTagName("Respuesta");
+            if (GetValor(item, "yaVoto") == 1) {
+                html += '<table class="transparente">';
+                for (var i = 0; i < respuestas.length; i++) {
+                    html += '<tr ' + (GetValor(respuestas[i], "respondio")==1 ? 'class="votado"' : "") + '><td><div class="graf-barra" onclick="Mostrar(\'lista-encuesta\',\'encuesta-votantes\');"><span class="progreso" style="width:' + GetValor(respuestas[i], "porc") + '%"></span><label><b>' + GetValor(respuestas[i], "porc") + '%</b>' + GetValor(respuestas[i], "respuesta") + '</label></div></td></tr>';
+                }
+                html += '</table>';
+            } else {
+                var encuesta = GetValor(item, "clave");
+                html +=
+                    '<div class="separado10 item-enc"  id="tab-resp-' + encuesta +'">' +
+                    '<table>';
+                for (var i = 0; i < respuestas.length; i++) {
+                    html +=
+                        '<tr><td style="width:75%;"><label for="resp-' + GetValor(respuestas[i], "clave") + '">' + GetValor(respuestas[i], "respuesta") + '</label></td><td style="width:25%;"><input type="radio" id="resp-' + GetValor(respuestas[i], "clave") + '" name="enc-' + encuesta + '" onchange="MarcarVoto(this,' + encuesta + ',' + GetValor(respuestas[i], "clave") + ');"/></td></tr>';
+                }
+                html +=
+                    '</table>' +
+                '<button class="centrado30" id="btn-votar-enc-' + encuesta + '" onclick="RegistrarVoto(this,' + encuesta  + ')">Votar</button>' +
+                    '</div>';                        
+            }
+            itemli.innerHTML = html;
+            ; break;
+    }
+    return itemli;
+}
 
         function GuardarConcepto() {
             var datos = $("#frm-edit-aportaciones").serializeArray();
