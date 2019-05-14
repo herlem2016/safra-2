@@ -8,7 +8,9 @@ function IniciarApp() {
     if (window.localStorage.getItem("codigoActivacion")) {
         InicializarApp();
         if (window.localStorage.getItem("email_")) {
+
             document.getElementById("main").style.display = "block";
+
             PantallaMostrar("home", "section", true);
         } else {
             PantallaMostrar("login", "section", true);
@@ -799,7 +801,12 @@ function IniciarAsociarCargo() {
         }
 
         function IniciarSesion(frm) {
-            var datos = $("#" + frm).serializeArray();
+            var datos;
+            if (frm) {
+                datos = $("#" + frm).serializeArray();
+            } else {
+                datos = { email: window.localStorage.getItem("email_"), contrasena: window.localStorage.getItem("contrasena_")};
+            }
             $.post(url + 'logic/controlador.aspx?op=IniciarSesion&seccion=seguridad', datos, function(xmlDoc) {
                 if (GetValor(xmlDoc, "estatus") == 1) {
                     window.localStorage.setItem("email_", datos[0].value);
