@@ -4,14 +4,12 @@ window.onresize = function () {
 }
 
 function IniciarApp() {
+    EstablecerDimensiones();
     document.getElementById("main").style.display = "none";
     if (window.localStorage.getItem("codigoActivacion")) {
-        InicializarApp();
+        EstablecerLogo();
         if (window.localStorage.getItem("email_")) {
-
-            document.getElementById("main").style.display = "block";
-
-            PantallaMostrar("home", "section", true);
+            IniciarSesion();            
         } else {
             PantallaMostrar("login", "section", true);
         }
@@ -21,15 +19,13 @@ function IniciarApp() {
 }
 
 function InicializarApp() {
-    EstablecerLogo();
     document.getElementById("btn-buscar-ps").onkeypress = function (ev) {
         if (ValidarEnter(ev)) {
             BuscarProdServ(ev.target);
         }
     }
-    EstablecerDimensiones();
     var tabInicioPro = document.getElementById("tab-inicio-pro");
-    TabMostrar(tabInicioPro, tabInicioPro.parentNode, 'pro-ejecucion');
+    TabMostrar(tabInicioPro, tabInicioPro.parentNode, 'pro_ejecucion','pro_ejecucion');
     var tabInicioPag = document.getElementById("tab-inicio-pagos");
     TabMostrar(tabInicioPag, tabInicioPag.parentNode, 'tab-pcorriente', 'tiposgastos');
     LlenarSelect(url + 'logic/controlador.aspx?op=ObtenerClasificacion&seccion=Generico&clave=6', 's-tipossolicitudatencion', undefined, 'indice', 'descripcion');
@@ -41,14 +37,13 @@ function EstablecerDimensiones() {
     var styleStr = "";
     var heightApp = parseInt(window.innerHeight - 40, 10) + 5;
     styleStr += ".pantalla {height:" + heightApp + "px !important;}";
-    styleStr += ".menu button img {height:" + (heightApp - 100) / 8 + "px !important;}";
+    styleStr += ".menu button img {height:" + (heightApp - 100) / 9 + "px !important;}";
     styleStr += ".pantalla-2 {height:" + (heightApp - 64) + "px !important;}";
     styleStr += ".pantalla-3 {height:" + (heightApp - 132) + "px !important;}";
     styleStr += ".pantalla-4 {height:" + (heightApp - 27) + "px !important;}";
     styleStr += ".scrollable {height:" + (heightApp - 132) + "px !important;}";
     styleStr += ".scrollable-2 {height:" + (heightApp - 168) + "px !important;}";
-    styleStr += ".menu li {height:" + (heightApp - 50) / 5 + "px !important;}";
-
+    styleStr += ".menu li {height:" + (heightApp - 50) / 6 + "px !important;margin-bottom:" + (heightApp - 50) /40 + "px !important;}";
     style.innerHTML = styleStr;
 }
 
@@ -85,6 +80,65 @@ function EstablecerLogo() {
 }
 
 
+function RegistrarUsuario() {
+    var codigoActivacion = window.localStorage.getItem("codigoActivacion");
+    if (codigoActivacion) {
+        var titular = prompt("Por favor escriba el nombre del titular registrado");
+        if (titular.trim().length) {
+            var datos = $("#frmRegUsuario").serializeArray();
+            datos.push({ name: 'fraccionamiento', value: codigoActivacion });
+            datos.push({ name: 'titular', value: titular });
+            $.post(url + 'logic/controlador.aspx?op=RegistrarUsuario&seccion=seguridad', datos, function (xmlDoc) {
+                if (GetValor(xmlDoc, "estatus") == 1) {
+                    IniciarSesion("frmRegUsuario");
+                } else {
+                    alert(GetValor(xmlDoc, "mensaje"));
+                }
+            });
+        } else {
+            alert("Para poder registrar su cuenta necesita indicar el nombre del titular");
+        }
+    } else {
+        alert("No ha activado la aplicación");
+    }
+}
+
+function IniciarSesion(frm) {
+    var datos;
+    if (frm) {
+        datos = $("#" + frm).serializeArray();
+    } else {
+        datos = [{ name: "email", value: window.localStorage.getItem("email_") }, { name: "contrasena", value: window.localStorage.getItem("contrasena_") }];
+    }
+    $.post(url + 'logic/controlador.aspx?op=IniciarSesion&seccion=seguridad', datos, function (xmlDoc) {
+        if (GetValor(xmlDoc, "estatus") == 1) {
+            window.localStorage.setItem("email_", datos[0].value);
+            window.localStorage.setItem("contrasena_", datos[1].value);
+            document.getElementById("nombre-usuario").innerHTML = GetValor(xmlDoc, "nombre");
+            document.getElementById("u-fraccionamiento").innerHTML = GetValor(xmlDoc, "s_nfracc");
+            document.getElementById("u-domicilio").innerHTML = GetValor(xmlDoc, "s_domicilio");
+            document.getElementById("tipo-usuario").innerHTML = GetValor(xmlDoc, "cargo");
+            document.getElementById("main").style.display = "block";
+            InicializarApp();
+            PantallaMostrar("home", "section", true);
+        } else {
+            alert(GetValor(xmlDoc, "mensaje"));
+        }
+    });
+}
+
+function CerrarSesion() {
+    $.post(url + 'logic/controlador.aspx?op=CerrarSesion&seccion=seguridad', function (xmlDoc) {
+        if (GetValor(xmlDoc, "estatus") == 1) {
+            window.localStorage.setItem("email_", "");
+            window.localStorage.setItem("contrasena_", "");
+            IntercambioVisual('login', 'main');
+        } else {
+            alert(GetValor(xmlDoc, "mensaje"));
+        }
+    });
+}
+
 
 document.addEventListener("deviceready", function () {
     if (window.localStorage.getItem("email_")) {
@@ -109,10 +163,10 @@ function ActivarAlarma_() {
     var alarmaVoz = document.getElementById("alarma-v");
     var alarma = document.getElementById("alarma-s");
     alarmaVoz.setAttribute("src", urlNotas);
-    alarma.setAttribute("src", "audios/alerta3.mp3");
+    alarma.setAttribute("src", "audios/alerta2.mp3");
     alarmaVoz.play();
     alarma.play();
-    alarma.volume = 0.5;
+    alarma.volume = 0.7;
     document.getElementById("alarma").style.display = "block";
 }
 
@@ -220,6 +274,17 @@ function GuardarItem(obj,catalogo){
     });
 }
 
+function RegistrarVotoProP(voto) {
+    $.post(url + 'logic/controlador.aspx' + '?op=RegistrarVotoProP&seccion=pro_propuestas' + '&voto=' + voto + "&clave=" + document.getElementById("clave-pro_propuesta").value, function (xmlDoc) {
+        if (GetValor(xmlDoc, "estatus")) {
+            CargarCatalogo('pro_propuestas', function () {
+                IntercambioVisual('lista-pro_propuestas', 'detalle-pro_propuestas');
+            });
+        } else {
+            alert(GetValor(xmlDoc,"mensaje"));
+        }
+    });
+}
 
 function IniciarAsociarCargo() {
     IntercambioVisual("lista-cargos", "detalle-usuarios");
@@ -230,6 +295,17 @@ function IniciarAsociarCargo() {
             var cont = "", imgsTexto;
             var xmlDoc = xmlDoc0.getElementsByTagName("Table")[0];
             switch (catalogo) {
+                case "pro_propuestas":
+                    var pantalla = document.getElementById("detalle-" + catalogo);
+                    pantalla.setAttribute("clave", clave);
+                    document.getElementById("clave-pro_propuesta").value = clave;
+                    cont =
+                        '<span class="t-1">' + GetValor(xmlDoc, "titulo") + '</span>' +
+                        '<span class="t-2">' + GetValor(xmlDoc, "descripcion") + '</span>' +
+                        '<span class="t-3">' + GetValor(xmlDoc, "fecha") + '</span>';
+                    cont += PintarImagenesTexto(xmlDoc0);
+                    document.getElementById("wrap-detalle-" + catalogo).innerHTML = cont;
+                    ; break;
                 case "ap_domicilios":
                     var pantalla = document.getElementById("detalle-" + catalogo);
                     pantalla.setAttribute("clave", clave);
@@ -733,7 +809,7 @@ function IniciarAsociarCargo() {
             
         }
 
-        function TabMostrar(tab, raiz, id,catalogo) {
+        function TabMostrar(tab, raiz, id, catalogo) {
             try { raiz.seleccionado.className="tab"; } catch (e) { }
             raiz.seleccionado = tab;
             raiz.seleccionado.className = "tab tab-sel";
@@ -775,63 +851,6 @@ function IniciarAsociarCargo() {
 
         function IniciarRegistrarPro() {
             Mostrar('lista-pro','p-edicion-pro');
-        }
-
-        function RegistrarUsuario() {
-            var codigoActivacion = window.localStorage.getItem("codigoActivacion");
-            if (codigoActivacion) {
-                var titular = prompt("Por favor escriba el nombre del titular registrado");
-                if (titular.trim().length) {
-                    var datos = $("#frmRegUsuario").serializeArray();
-                    datos.push({ name: 'fraccionamiento', value: codigoActivacion });
-                    datos.push({ name: 'titular', value: titular });
-                    $.post(url + 'logic/controlador.aspx?op=RegistrarUsuario&seccion=seguridad', datos, function (xmlDoc) {
-                        if (GetValor(xmlDoc, "estatus") == 1) {
-                            IniciarSesion("frmRegUsuario");
-                        } else {
-                            alert(GetValor(xmlDoc, "mensaje"));
-                        }
-                    });
-                } else {
-                    alert("Para poder registrar su cuenta necesita indicar el nombre del titular");
-                }
-            } else {
-                alert("No ha activado la aplicación");
-            }
-        }
-
-        function IniciarSesion(frm) {
-            var datos;
-            if (frm) {
-                datos = $("#" + frm).serializeArray();
-            } else {
-                datos = { email: window.localStorage.getItem("email_"), contrasena: window.localStorage.getItem("contrasena_")};
-            }
-            $.post(url + 'logic/controlador.aspx?op=IniciarSesion&seccion=seguridad', datos, function(xmlDoc) {
-                if (GetValor(xmlDoc, "estatus") == 1) {
-                    window.localStorage.setItem("email_", datos[0].value);
-                    window.localStorage.setItem("contrasena_", datos[1].value);
-                    document.getElementById("nombre-usuario").innerHTML = GetValor(xmlDoc,"nombre");
-                    document.getElementById("u-fraccionamiento").innerHTML = GetValor(xmlDoc,"s_nfracc");
-                    document.getElementById("u-domicilio").innerHTML = GetValor(xmlDoc,"s_domicilio");
-                    document.getElementById("tipo-usuario").innerHTML = GetValor(xmlDoc, "cargo");
-                    IniciarApp();
-                } else {
-                    alert(GetValor(xmlDoc,"mensaje"));
-                }            
-            });
-        }
-
-        function CerrarSesion() {
-            $.post(url + 'logic/controlador.aspx?op=CerrarSesion&seccion=seguridad',function(xmlDoc){
-                if (GetValor(xmlDoc, "estatus") == 1) {
-                    window.localStorage.setItem("email_","");
-                    window.localStorage.setItem("contrasena_","");
-                    IntercambioVisual('login', 'main');
-                } else {
-                    alert(GetValor(xmlDoc, "mensaje"));
-                }
-            });
         }
 
         function IntercambioVisual(id1,id2){
@@ -1010,6 +1029,21 @@ function ObtenerItem(catalogo, item) {
     itemli.className = "item";
     var html = "";
     switch (catalogo) {
+        case "pro_propuestas":
+            var registrado = GetValor(item, "registrado");
+            var proyecto = GetValor(item,"clave");
+            var voto = GetValor(item, "voto");
+            var html =
+                '<span class="t-1">' + GetValor(item, "titulo") + '</span>' +
+                '<span class="t-2">' + GetValor(item, "fecha") + '</span>'+
+                '<table class="transparente">'+
+                '<tr ' + (voto == 'false' ? 'class="votado"' : "") + '><td style="width:15%;"><span class="p12">No</span></td><td><div class="graf-barra"><span class="progreso" style="width:' + GetValor(item, "porc_no") + '%"></span><b>' + GetValor(item, "porc_no") + '%</b></div></td></tr>'+                                        
+                '<tr ' + (voto == 'true' ? 'class="votado"' : "") + '><td><span class="p12">Si</span></td><td><div class="graf-barra"><span class="progreso" style="width:' + GetValor(item, "porc_si") + '%"></span><b>' + GetValor(item, "porc_si") + '%</b></div></td></tr>'+                                        
+                '<tr><td><span class="p12">Abst.</span></td><td><div class="graf-barra"><span class="progreso" style="width:' + GetValor(item, "porc_abst") + '%"></span><b>' + GetValor(item, "porc_abst") + '%</b></div></td></tr>'+      
+                '</table>' +
+                (!voto ? '<div><button class="centrado30 btn2" id="btn-votar-enc-' + proyecto + '" onclick="Mostrar(\'lista-pro_propuestas\',\'detalle-pro_propuestas\',\'pro_propuestas\',' + proyecto + ');">Votar</button></div>':"");
+            itemli.innerHTML = html;                  
+            break;
         case "domiciliosconceptosini":
             var registrado = GetValor(item, "registrado");
             itemli.innerHTML =

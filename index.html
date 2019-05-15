@@ -18,7 +18,7 @@
             }
         }
         @font-face {font-family: HelveticaN;src:url(fonts/HelveticaNeue-Light.woff),url(fonts/HelveticaNeue-Medium.ttf); font-weight:300;}
-        html,body{margin:0px auto 0px auto;font-family:'HelveticaN'; text-rendering: optimizeLegibility;background-color:#ddd;padding:0px;height:100%;overflow-x:hidden;position:relative;}
+        html,body{margin:0px auto 0px auto;font-family:'HelveticaN'; text-rendering: optimizeLegibility;background-color:#ececec;padding:0px;height:100%;overflow-x:hidden;position:relative;}
         .pantalla.activacion {background: #f2f2f2;width: 100%;height: 100%;top: 0px;margin: 0px;}
          .pantalla.activacion h2 {text-align:center;margin-top:14%;margin-bottom:10%; color: #2ba0d7;letter-spacing: .1em;}
          .pantalla.activacion .btn2 {}
@@ -38,9 +38,9 @@
     <script src="cordova.js"></script>
     <script src="jquery-1.11.3.min.js"></script>    
     <script>
-        var url = "http://safra.softronel.com.mx/";
+         //var url = "http://safra.softronel.com.mx/";
         //var url = "http://192.168.0.101:82/";
-        //var url = "http://localhost:61157/";
+       var url = "http://localhost:61157/";
         var urlNotas = "http://207.249.77.114/intranet/Modulos/Capacitacion/CursosNegocio/notavoz.mp3?op=ObtenerNotaVozSlide&nota=Alerta%20vecinal%2C%20alerta%20vecinal%2Ccalle%20sof%C3%ADa%20106%2Ccalle%20sof%C3%ADa%20106";
         $.support.cors = true;        
     </script>
@@ -115,18 +115,20 @@
         <section class="pantalla home" id="home" style="display:none;">
             <ul class="menu">
                 <!--<li class="alarma">Alarma Vecinal</li>-->
-                <li><button onclick="PantallaMostrar('projectos','section');" class="no"><img src="img/proyectos.png"/>Propuestas de proyectos</button></li>
-                <li><button onclick="PantallaMostrar('aportaciones','section');" class="ok"><img src="img/aportaciones.png"/>Aportaciones</button></li>
+                <li><button onclick="PantallaMostrar('proyectos','section',true);" class="no"><img src="img/proyectos.png"/>Proyectos</button></li>
+                <li><button onclick="PantallaMostrar('aportaciones','section');" class="ok"><img src="img/aportaciones.png"/>Ingresos</button></li>
                 <li><button onclick="PantallaMostrar('solicitudes','section');" class="ok"><img src="img/solmtto.png"/>Atención a Residentes</button></li>
-                <li><button onclick="PantallaMostrar('erogaciones','section',true);" class="ok"><img src="img/erogaciones.png"/>Registro de egresos</button></li>
+                <li><button onclick="PantallaMostrar('erogaciones','section',true);" class="ok"><img src="img/erogaciones.png"/>Egresos</button></li>
                 <li><button onclick="PantallaMostrar('transparencia','section');" class="no"><img src="img/reportes.png"/>Transparencia</button></li>
                 <li><button onclick="PantallaMostrar('encuestas','section');" class="no"><img src="img/encuestas.png"/>Encuestas</button></li>
-                <li><button onclick="PantallaMostrar('serviciosproductos','section',true);" class="ok"><img src="img/serviciosproductos.png"/>Productos y Servicios</button></li>
+                <li><button onclick="PantallaMostrar('serviciosproductos','section',true);" class="ok"><img src="img/serviciosproductos.png"/>Negocios</button></li>
                 <li><button onclick="PantallaMostrar('directorio','section');" class="ok"><img src="img/directorio.png"/>Directorio</button></li>
                 <li><button onclick="PantallaMostrar('comunicados','section');" class="ok"><img src="img/comunicados.png" />Comunicados</button></li>
                 <li><button onclick="PantallaMostrar('inmuebles','section');" class="ok"><img src="img/reservation.png"/>Reservaciones</button></li>
                 <li><button onclick="PantallaMostrar('notificaciones','section');" class="ok"><img src="img/notificaciones.png" />Notificaciones</button></li>
                 <li><button onclick="PantallaMostrar('usuarios','section');" class="ok"><img src="img/users.png" />Usuarios</button></li>
+                <li><button onclick="PantallaMostrar('vigilancia','section');" class="ok"><img src="img/vigilancia.png" />Vigilancia</button></li>
+                <li><button onclick="PantallaMostrar('docs','section');" class="ok"><img src="img/docs.png" />Documentos</button></li>
                 <li class="alertav"><button onclick="ActivarAlarma();"  class="ok"><img src="img/alertav.png"/>Activar</button></li>
             </ul>
         </section>
@@ -733,48 +735,16 @@
             </div>
         </section>
                 
-        <section class="pantalla proyectos" id="projectos"> 
-            <div id="pro-ejecucion">
-                <div class="lista graficas" id="lista-proyectos">
+        <section class="pantalla proyectos" id="proyectos"> 
+             <div id="pro_ejecucion">
+                <div class="lista graficas" id="lista-pro_ejecucion">
                     <div class="titulo">Proyectos en Ejecución</div>            
-                    <div class="busqueda"><input placeholder="Buscar" /></div>                    
-                    <ul class="lista seleccionable scrollable edicion" style="width:100%;">
-                        <li class="item">                               
-                            <table>
-                                <tr><th style="width:70%;"><span class="t-1">Proyecto</span></th><th style="width:30%;">Avance</th></tr>
-                                <tr><td style="width:70%;"><span class="t-1">Compra e instalación de jegos toboganes para niños de hasta 12 años</span></td><td><div class="graf-pie" onclick="Mostrar('lista-proyectos','detalle-proyectos-avance');"><img src="img/pie.png" /></div></td></tr>
-                                <tr><td style="width:70%;"><span class="t-1">Compra e instalación de jegos toboganes para niños de hasta 12 años</span></td><td><div class="graf-pie" onclick="Mostrar('lista-proyectos','detalle-proyectos-avance');"><img src="img/pie.png" /></div></td></tr>
-                                <tr><td style="width:70%;"><span class="t-1">Compra e instalación de jegos toboganes para niños de hasta 12 años</span></td><td><div class="graf-pie" onclick="Mostrar('lista-proyectos','detalle-proyectos-avance');"><img src="img/pie.png" /></div></td></tr>
-
-                            </table>                                           
-                        </li>
-                        
+                    <div class="busqueda"><input placeholder="Buscar" /></div>
+                    <ul class="scrollable-2" style="width:100%;">
+                        <li><span class="t-1">Compra e instalación de jegos toboganes para niños de hasta 12 años</span><div class="graf-pie" onclick="Mostrar('lista-proyectos','detalle-proyectos-avance');"><img src="img/pie.png" /></div></li>
                     </ul>
                 </div>
-                <div class="detalle" id="detalle-proyectos-pagos" style="display:none;">
-                    <div class="titulo">Detalle de proyecto<button class="regresar" onclick="Mostrar('detalle-erogacion','lista-erogacion');">Regresar</button></div>  
-                    <div class="scrollable">
-                        <div class="btns-up">
-                            <button class="edit-btn" clave_funcion="12" control="edit-pro" id="edit-pro" onclick="IniciarEditarPlanPro('detalle-proyectos-pagos');"><img src="img/edit.png" /></button>                            
-                            <button onclick="IniciarEditarPagosPro('detalle-proyectos-pagos');" clave_funcion="4" control="del-com-4" id="del-com-4" class="delete-btn"><img src="img/payok.png" /></button>
-                            <hr class="clearn" />
-                        </div>                        
-                        <label>Plan de Trabajo <i class="subtotal">$ 3,600.00</i></label>
-                        <table class="desglose">
-                            <tr><th colspan="3">Obras y servicios <i class="subtotal">$ 2,200.00</i></th></tr>
-                            <tr><td><span class="t-41">Flete de Material</span></td><td><span class="t-5">$200.00</span></td><td><img src="img/pendiente.png"/></td></tr>
-                            <tr><td><span class="t-41">Flete de Material</span></td><td><span class="t-5">$200.00</span></td><td><img src="img/pendiente.png"/></td></tr>
-                            <tr><td><span class="t-41">Flete de Material</span><span class="t-2">21-enero 2019 11:20 am</span></td><td><span class="t-5">$200.00</span></td><td><img src="img/ok.png"/></td></tr>
-                            <tr><td><span class="t-41">Flete de Material</span><span class="t-2">Precio original: $ 157.00</span><span class="t-2">21-enero 2019 11:20 am</span></td><td><span class="t-5">$200.00</span></td><td><img src="img/ok.png"/></td></tr>                        
-                        </table> 
-                        <table class="desglose" style="margin-top:20px;border-top:1px solid #ddd;">
-                            <tr><th colspan="3">Material<i class="subtotal">$ 1,400.00</i></th></tr>
-                            <tr><td><span class="t-41">Equipo y accesorios</span></td><td><span class="t-5">$200.00</span></td><td><img src="img/pendiente.png"/></td></tr>                        
-                            <tr><td><span class="t-41">Cemento,grava y arena  </span><span class="t-2">Precio original: $ 157.00</span><span class="t-2">21-enero 2019 11:20 am</span></td><td><span class="t-5">$200.00</span></td><td><img src="img/ok.png"/></td></tr>                        
-                        </table> 
-                        <hr />
-                    </div>
-                 </div>
+                
                 <div class="detalle" id="detalle-proyectos-avance" style="display:none;">
                     <div class="titulo">Detalle de proyecto<button class="regresar" onclick="Mostrar('detalle-erogacion','lista-erogacion');">Regresar</button></div>  
                     <div class="scrollable">
@@ -827,103 +797,44 @@
                         </table>                         
                         <button class="aceptar" style="margin-top:10px;" >Estoy de acuerdo</button>
                     </div>
-                </div>
-                <div class="edicion" style="display:none;" id="p-edicion-proyecto-pagos">
-                    <div class="titulo">Registro de pagos <button class="cancelar" id="cancelar-edit-proyecto"  onclick="Mostrar('p-edicion-proyecto','lista-proyecto');">Cancelar</button></div>    
-                    <div class="scrollable" >                                              
-                        <label>Plan de Trabajo <i class="subtotal">$ 3,600.00</i></label>
-                        <table class="desglose">
-                            <tr><th colspan="3">Obras y servicios <i class="subtotal">$ 2,200.00</i></th></tr>
-                            <tr><td><span class="t-41">Flete de Material</span><span class="t-2">Precio original: $ 157.00</span><span class="t-2">21-enero 2019 11:20 am</span></td><td><input /></td><td><button><img src="img/ok.png"/></button></td></tr>
-                            <tr><td><span class="t-41">Flete de Material</span><span class="t-2">Precio original: $ 157.00</span><span class="t-2">21-enero 2019 11:20 am</span></td><td><input /></td><td><button><img src="img/ok.png"/></button></td></tr>
-                            <tr><td><span class="t-41">Flete de Material</span><span class="t-2">Precio original: $ 157.00</span><span class="t-2">21-enero 2019 11:20 am</span></td><td><span class="t-5">$200.00</span></td><td><img src="img/ok.png"/></td></tr>
-                            <tr><td><span class="t-41">Flete de Material</span><span class="t-2">Precio original: $ 157.00</span><span class="t-2">21-enero 2019 11:20 am</span></td><td><span class="t-5">$200.00</span></td><td><img src="img/ok.png"/></td></tr>                        
-                        </table> 
-                        <table class="desglose" style="margin-top:20px;border-top:1px solid #ddd;">
-                            <tr><th colspan="3">Material<i class="subtotal">$ 1,400.00</i></th></tr>
-                            <tr><td><span class="t-41">Equipo y accesorios</span><span class="t-2">Precio original: $ 157.00</span><span class="t-2">21-enero 2019 11:20 am</span></td><td><input /></td><td><button><img src="img/ok.png"/></button></td></tr>                        
-                            <tr><td><span class="t-41">Cemento,grava y arena  </span><span class="t-2">Precio original: $ 157.00</span><span class="t-2">21-enero 2019 11:20 am</span></td><td><span class="t-5">$200.00</span></td><td><img src="img/ok.png"/></td></tr>                        
-                        </table> 
-                        <hr />
-                        <button class="aceptar" style="margin-top:10px;" >Estoy de acuerdo</button>
-                    </div>
-                    </div>
-                </div>
-            <div id="pro-propuestas" style="display:none;">
-                <div class="lista" id="lista-pro">
+                </div>                
+            </div>
+
+            <div id="pro_propuestas" style="display:none;">
+                <div class="lista" id="lista-pro_propuestas">
                     <div class="titulo">Propuestas de proyectos</div>            
                     <div class="busqueda"><input placeholder="Buscar" /></div>
-                    <div class="agregar" id="edicion-erogacion" ><button clave_funcion="8" control="pagar-erogacion" onclick="IniciarRegistrarPro(true);" >Registrar nueva propuesta</button></div>                    
-                    <ul class="lista seleccionable scrollable-2" style="width:100%;">
-                        <li class="item" onclick="Mostrar('lista-erogacion','detalle-erogacion');">                             
-                            <span class="t-1">Compra e instalación de juegos toboganes, para niños de hasta 12 años.</span> 
-                            <span class="t-2">18-Enero-2019 7:00 pm</span>
-                            <table class="transparente" onclick="Mostrar('lista-pro','lista-pro-domicilios');">
-                                <tr><td style="width:15%;"><span class="p12">Si</span></td><td style="width:70%;"><div class="graf-barra"><span class="progreso" style="width:25%"></span><b>25%</b></div></td></tr>
-                                <tr><td><span class="p12">No</span></td><td><div class="graf-barra"><span class="progreso" style="width:30%"></span><b>30%</b></div></td></tr>
-                                <tr><td><span class="p12">Abst.</span></td><td><div class="graf-barra"><span class="progreso" style="width:65%"></span><b>65%</b></div></td></tr>
-                                <tr><td colspan="2"><div class="agregar" ><button onclick="Mostrar('lista-pro','detalle-pro');">Votar</button></div></td></tr>
-                            </table>
-                        </li> 
-                        <li class="item" onclick="Mostrar('lista-erogacion','detalle-erogacion');">                             
-                            <span class="t-1">Compra e instalación de juegos toboganes, para niños de hasta 12 años.</span> 
-                            <span class="t-2">18-Enero-2019 7:00 pm</span>
-                            <table class="transparente">
-                                <tr><td style="width:15%;"><span class="p12">Si</span></td><td style="width:70%;"><div class="graf-barra"><span class="progreso" style="width:25%"></span><b>25%</b></div></td></tr>
-                                <tr><td><span class="p12">No</span></td><td><div class="graf-barra"><span class="progreso" style="width:30%"></span><b>30%</b></div></td></tr>
-                                <tr><td><span class="p12">Abst.</span></td><td><div class="graf-barra"><span class="progreso" style="width:65%"></span><b>65%</b></div></td></tr>
-                                <tr><td colspan="2"><div class="agregar" ><button onclick="Mostrar('lista-pro','detalle-pro');">Votar</button></div></td></tr>
-                            </table>
-                        </li> 
-                        <li class="item" onclick="Mostrar('lista-erogacion','detalle-erogacion');">                             
-                            <span class="t-1">Compra e instalación de juegos toboganes, para niños de hasta 12 años.</span> 
-                            <span class="t-2">18-Enero-2019 7:00 pm</span>
-                            <table class="transparente">
-                                <tr><td style="width:15%;"><span class="p12">Si</span></td><td style="width:70%;"><div class="graf-barra" onclick="Mostrar('lista-licitacion','licitacion-votantes');"><span class="progreso" style="width:25%"></span><b>25%</b></div></td></tr>
-                                <tr><td><span class="p12">No</span></td><td><div class="graf-barra"><span class="progreso" style="width:30%"></span><b>30%</b></div></td></tr>
-                                <tr><td><span class="p12">Abst.</span></td><td><div class="graf-barra"><span class="progreso" style="width:65%"></span><b>65%</b></div></td></tr>
-                                <tr><td colspan="2"><div class="agregar" ><button onclick="Mostrar('lista-pro','detalle-pro');">Votar</button></div></td></tr>
-                            </table>
-                        </li>                         
-                    </ul>
+                    <div class="agregar" id="edicion-erogacion" ><button clave_funcion="8" control="pagar-erogacion" onclick="IniciarEditar(true,'pro_propuestas');" >Registrar nueva propuesta</button></div>                    
+                    <ul class="lista seleccionable scrollable-2" style="width:100%;"></ul>
                 </div>
-                <div class="detalle" id="detalle-pro" style="display:none;">
-                    <div class="titulo">Detalle de pago<button class="regresar" onclick="Mostrar('detalle-erogacion','lista-erogacion');">Regresar</button></div>  
-                    <div class="scrollable">
-                        <div class="btns-up"><button class="edit-btn" clave_funcion="3" style="display:none;" control="edit-solmtto-8" id="edit-solmtto-8" onclick="IniciarEditarSolmtto();"><img src="img/edit.png" /></button><hr class="clearn" /></div>
-                        <span class="t-1">Compra e instalación de juegos toboganes, para niños de hasta 12 años.</span>  
-                        <span class="t-3">11-ene-2018</span>                    
-                        <span class="t-4">Propongo que se compren juegos de toboganes del tipo que se muestran en las imagenes. Ya que los que existen acualmente representan un peligro para los niños. También les muestro unas fotos donde identifico los riesgos en cada uno de estas.</span>                    
-                        <span class="t-41">Aquí Observamos el tipo de juego que les propongo, lo vi en internet y cuesta alrdededor de 125000.000</span>
-                        <img class="file" src="img/Titan_Company_Logo.png" />                    
-                        <span class="t-41">Esta es una imagen donde se ve la parte inferior de los subeybaja, estos tienen una lamina vertical que pudiera caer encima de un niño y lastimarlo severamente.</span>
-                        <img class="file" src="img/call.png"/>  
+
+                <div class="detalle" id="detalle-pro_propuestas" style="display:none;">
+                    <div class="titulo">Propuesta de proyecto<button class="regresar" onclick="Mostrar('detalle-pro_propuestas', 'lista-pro_propuestas'); ">Regresar</button></div>
+                    <div class="btns-up"><button class="edit-btn" clave_funcion="3" style="display:none;" control="edit-pro_p-3" id="edit-pro_p-3" onclick="IniciarEditar(false,'pro_propuestas');"><img src="img/edit.png" /></button><button style="display:none;" onclick="IniciarEliminar(this,'comunicados');" clave_funcion="4" control="del-pro_p-4" id="del-pro_p-4" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>
+                    <div class="pantalla-3">
+                        <input name="clave" type="hidden" id="clave-pro_propuesta" />
+                        <div id="wrap-detalle-pro_propuestas"></div>
                         <div class="edicion btns-texto" style="margin-bottom:200px;margin-top:30px;">
                             <label>¿Esta de acuerdo en apoyar esta propuesta?</label>
-                            <table><tr><td style="width:50%;"><button>No</button></td><td style="width:50%;"><button>Si</button></td></tr></table>
+                            <table><tr><td style="width:50%;"><button onclick="RegistrarVotoProP(false);">No</button></td><td style="width:50%;"><button onclick="RegistrarVotoProP(true);">Si</button></td></tr></table>
                         </div>
-                        <hr />
+                        <hr />                  
                     </div>
                  </div>
-                <div class="edicion" style="display:none;" id="p-edicion-pro">
-                    <div class="titulo">Edición de Propuesta <button class="cancelar" id="cancelar-edit-erogacion"  onclick="Mostrar('p-edicion-erogacion','lista-erogacion');">Cancelar</button></div>    
-                    <div class="pantalla-2" >
-                        <label>Título</label><textarea style="height:40px;" maxlength="150"></textarea>                        
-                        <label>Descripción y/o Necesidad</label><textarea style="height:100px;"></textarea>      
-                        
-                        <label>Imagenes y descripción<button class="adjuntar-btn" style="width:100px;" onclick="IniciarAdjuntarEvidenciaSolmtto();"><img src="img/attach.png" /><span class="texto-discreto">Agregar</span></button><hr class="clearn" /></label>
-                        <table class="lista-files">
-                            
-                            <tr><td style="width:90%"><img src="img/tobog.jpg" /></td><td style="width:10%" rowspan="2" class="del" ><button class="del-btn"><img src="img/del.png" /></button></td></tr>
-                            <tr><td ><textarea maxlength="200"></textarea></td></tr>
-                            
-                            <tr><td style="width:90%"><img src="img/tobog.jpg" /></td><td style="width:10%" rowspan="2" class="del"><button class="del-btn"><img src="img/del.png" /></button></td></tr>
-                            <tr><td ><textarea maxlength="200"></textarea></td></tr>
-
-                        </table>                 
-                        <button class="aceptar" style="margin-top:10px;margin-bottom:150px;" >Aceptar</button>
-                    </div>                
-                </div>
+                <div class="edicion" style="display:none;" id="p-edicion-pro_propuestas">
+                    <div class="titulo">Edición de Propuesta <button class="cancelar" id="cancelar-edit-erogacion" onclick="Mostrar('p-edicion-pro_propuestas','lista-pro_propuestas');">Cancelar</button></div>
+                    <form class="pantalla-3" id="frm-edit-pro_propuestas" onsubmit="return false;">
+                        <fieldset style="border:0px;">
+                            <input name="esNuevo" type="hidden" id="op-pro_propuestas" />
+                            <input name="clave" type="hidden" id="clave-pro_propuestas" />
+                            <label>Título</label><textarea style="height:40px;" maxlength="150" name="titulo"></textarea>
+                            <label>Descripción y/o Necesidad</label><textarea style="height:100px;"name="descripcion"></textarea>
+                            <label>Imágenes y descripción<button class="adjuntar-btn" style="width:100px;" onclick="IAgregarImagenTexto('c-e-encuestas',1);"><img src="img/add.png" /><span class="texto-discreto">Agregar</span></button><hr class="clearn" /></label>
+                            <div id="c-e-pro_propuestas"></div>
+                            <button class="aceptar" style="margin-top:10px;margin-bottom:150px;"onclick="GuardarItem(this,'pro_propuestas');">Aceptar</button>
+                        </fieldset>
+                    </form>
+                </div> 
 
                 <div class="detalle" id="lista-pro-domicilios" style="display:none;">
                     <div class="titulo">Votantes de propuesta<button class="regresar" onclick="Mostrar('detalle-licitacion','lista-licitacion');">Regresar</button></div>  
@@ -949,9 +860,9 @@
                  </div>
 
             </div>
-            <div style="height:32px;" tabs="pro-ejecucion,pro-propuestas" class="tabs-down">
-                <div class="tab" id="tab-inicio-pro" onclick="TabMostrar(this,this.parentNode,'pro-ejecucion');">Ejecución</div>
-                <div class="tab" onclick="TabMostrar(this,this.parentNode,'pro-propuestas');">Propuestas</div>
+            <div style="height:32px;" tabs="pro_ejecucion,pro_propuestas" class="tabs-down">
+                <div class="tab" id="tab-inicio-pro" onclick="TabMostrar(this,this.parentNode,'pro_ejecucion','pro_ejecucion');">Ejecución</div>
+                <div class="tab" onclick="TabMostrar(this,this.parentNode,'pro_propuestas','pro_propuestas');">Propuestas</div>
             </div>
         </section>
 
