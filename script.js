@@ -159,7 +159,7 @@ function IniciarSesion(frm) {
         if (GetValor(xmlDoc, "estatus") == 1) {
             window.localStorage.setItem("email_", datos[0].value);
             window.localStorage.setItem("contrasena_", datos[1].value);
-            window.localStorage.setItem("domicilio", GetValor(xmlDoc, "s_domicilio"));
+            window.localStorage.setItem("domicilio", GetValor(xmlDoc, "domicilio"));
             document.getElementById("nombre-usuario").innerHTML = GetValor(xmlDoc, "nombre");
             document.getElementById("u-fraccionamiento").innerHTML = GetValor(xmlDoc, "s_nfracc");
             document.getElementById("u-domicilio").innerHTML = GetValor(xmlDoc, "s_domicilio");
