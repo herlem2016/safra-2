@@ -193,7 +193,7 @@ document.addEventListener("deviceready", function () {
         FCMPlugin.onNotification(function (data) {
             if (data.modulo == 1) {
                 ActivarAlarma_();
-            } else if (data.modulo == 1) {
+            } else if (data.modulo == 2) {
                 ActivarTimbre_();
             }
         });
