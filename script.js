@@ -190,6 +190,7 @@ document.addEventListener("deviceready", function () {
     if (window.localStorage.getItem("email_")) {
         FCMPlugin.subscribeToTopic('FRA_' + window.localStorage.getItem("codigoActivacion"));
         FCMPlugin.subscribeToTopic('FRA_' + window.localStorage.getItem("codigoActivacion") + "-dom_" + window.localStorage.getItem("domicilio"));
+        alert('FRA_' + window.localStorage.getItem("codigoActivacion") + "-dom_" + window.localStorage.getItem("domicilio"));
         FCMPlugin.onNotification(function (data) {
             if (data.modulo == 1) {
                 ActivarAlarma_();
@@ -202,7 +203,7 @@ document.addEventListener("deviceready", function () {
 }, false);
 
 function ActivarAlarma() {
-    if (confirm("Confirme que desea activr la Alarma Vecinal, Recuerde que todo abuso sera sancionado.")) {
+    if (confirm("Confirme que desea activar la Alarma Vecinal, Recuerde que todo abuso sera sancionado.")) {
         ActivarAlarma_();
     }
 }
