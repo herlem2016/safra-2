@@ -188,7 +188,7 @@ function CerrarSesion() {
 document.addEventListener("deviceready", function () {
     if (window.localStorage.getItem("email_")) {
         FCMPlugin.subscribeToTopic('FRA_' + window.localStorage.getItem("codigoActivacion"));
-        FCMPlugin.subscribeToTopic('FRA_' + window.localStorage.getItem("codigoActivacion") + "/dom_" + window.localStorage.getItem("domicilio"));
+        FCMPlugin.subscribeToTopic('FRA_' + window.localStorage.getItem("codigoActivacion") + "-dom_" + window.localStorage.getItem("domicilio"));
         FCMPlugin.onNotification(function (data) {
             if (data.modulo == 1) {
                 ActivarAlarma_();
