@@ -169,7 +169,14 @@ button {
 ul.lista {
     padding: 0px;
 }
-
+    ul.lista .itemg {
+        width: 100%;
+        float: left;
+        border-bottom: 1px solid #bbb;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        margin: 0px;
+    }
     ul.lista .item {
         width: 100%;
         float: left;
@@ -179,9 +186,12 @@ ul.lista {
         margin: 0px;
     }
 
+    .diaSel{ background-color:#0094ff;color:#fff}
+    .diaSel a{ background:#0094ff !important;color:#fff !important}
+
         ul.lista .item > span {
-            font-size: 13px;
-            font-weight: bold;
+            font-family:Verdana;
+            font-size:0.95em;
             padding-left: 2%;
         }
 
@@ -417,6 +427,26 @@ ul.lista .item span.t-4 {
 .btnsm30 button{margin-top:30px;}
 .padd30{padding:22px;}
 
+span.t-1g {
+    display: block;
+    clear: both;
+    padding: 2%;
+    width: 95%;
+    word-wrap: break-word;
+    color: #333;
+    font-weight: bold;
+    font-size: 0.95em;
+    margin:auto;
+}
+span.t-1l {
+    display: block;
+    clear: left;
+    padding: 2%;
+    width: 66%;
+    float:left;
+    word-wrap: break-word;
+}
+
 span.t-1 {
     display: block;
     clear: both;
@@ -436,6 +466,16 @@ span.t-2 {
     width:90%;word-wrap:break-word;
 }
 
+span.t-2n {
+    display: block;
+    width: 35%;
+    float: left;
+    font-size: 11px;
+    font-weight: normal;
+    color: #777;
+    word-wrap: break-word;
+}
+
 span.t-3 {
     display: block;
     float: left;
@@ -444,6 +484,16 @@ span.t-3 {
     font-weight: normal;
     width:90%;
     word-wrap:break-word;
+}
+
+span.t-3n {
+    display: block;
+    float: right;
+    font-size: 11px;
+    color: #0094ff;
+    font-weight: normal;
+    width: 35%;
+    word-wrap: break-word;
 }
 
 span.t-4 {
@@ -755,6 +805,7 @@ tr.resultado {
     position: absolute;
     bottom: 0px;
     width: 100%;
+    z-index:999;
 }
 
 .tab {
@@ -767,6 +818,8 @@ tr.resultado {
     background-color: #fff;
     color: #2c5878;
 }
+.v-p-si{background-color:#50a019 !important;color:#fff !important;}
+.v-p-no{background-color:#424242  !important;color:#666 !important;}
 
 .graficas li.item {
     padding-bottom: 15px;
@@ -842,11 +895,10 @@ table.graficas td {
 
 .graf-pie {
     text-align: center;
+    width:70%;
+    clear:both;
+    margin:auto;
 }
-
-    .graf-pie img {
-        width: 70%;
-    }
 
 table.desglose {
     margin-top: 20px;
@@ -989,6 +1041,9 @@ button.con-btn{
     padding-top: 0px;
     padding-top: 5px;
 }
+.btn-apl{width:40px;height:40px;padding:1%;float:right;margin-right:1%;position:relative;}
+.btn-apl button{width:100%;position:absolute;top:0px;left:0px;z-index:+1;}
+.btn-apl >img{width:100%;position:absolute;top:0px;left:0px;}
 
 div.PAGADO{background:url(../img/goodpay.png) no-repeat;background-size:30px;background-position-x:right 5px;background-position-y:center;}
 div.PAGADO .t-3{color:#168904 !important;}
@@ -1004,7 +1059,7 @@ ul.lista li .t-2{margin-top:0px;}
 
 .menu button, .btn2 {
     width: 100%;
-    text-align: center;
+    text-align: left;
     box-shadow: inset 0px 1px 0px 0px #ffffff;
     background: linear-gradient(to bottom, #f9f9f9 5%, #e9e9e9 100%);
     background-color: #f9f9f9;

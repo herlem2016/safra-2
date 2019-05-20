@@ -115,7 +115,7 @@
         <section class="pantalla home" id="home" style="display:none;">
             <ul class="menu">
                 <!--<li class="alarma">Alarma Vecinal</li>-->
-                <li><button onclick="PantallaMostrar('proyectos','section',true);" class="no"><img src="img/proyectos.png"/>Proyectos</button></li>
+                <li><button onclick="PantallaMostrar('proyectos','section',true);" class="no"><img src="img/proyectos.png"/>Iniciativas</button></li>
                 <li><button onclick="PantallaMostrar('aportaciones','section');" class="ok"><img src="img/aportaciones.png"/>Ingresos</button></li>
                 <li><button onclick="PantallaMostrar('solicitudes','section');" class="ok"><img src="img/solmtto.png"/>Atención a Residentes</button></li>
                 <li><button onclick="PantallaMostrar('erogaciones','section',true);" class="ok"><img src="img/erogaciones.png"/>Egresos</button></li>
@@ -132,6 +132,8 @@
                 <li class="alertav"><button onclick="ActivarAlarma();"  class="ok"><img src="img/alertav.png"/>Activar</button></li>
             </ul>
         </section>
+
+        <audio id="alarma-timbre" src="audios/timbre.mp3" style="display:none;"></audio>
         
         <div id="alarma" style="position:absolute;display:none;z-index:9999;width:80%;padding:10%;margin-top:35%;background-color:#ff0000;text-align:center;">            
             <audio id="alarma-v" loop controls onplay="document.getElementById('alarma-s').play();" onpause="document.getElementById('alarma-s').pause();"></audio>
@@ -253,32 +255,46 @@
             </div>
         </section>
 
-        <section class="pantalla comunicados" id="comunicados">
-            <div class="lista" id="lista-comunicados">
-                <div class="titulo">Comunicados</div>
-                <div class="busqueda"><input placeholder="Buscar" /></div>
-                <div class="agregar" id="edicion-comunicados" style="display:none;"><button clave_funcion="5" control="edicion-comunicados" onclick="IniciarEditar(true,'comunicados');">Aregar comunicado</button></div>
+        <section class="pantalla vigilancia" id="vigilancia">
+            <div class="lista" id="lista-vigilancia">
+                <div class="titulo">Vigilancia</div>
+                <div class="busqueda"><input placeholder="Domicilio o fecha(dd/mm/aaaa)" id="bus-vigilancia" onkeypress="if (ValidarEnter(event)) { CargarCatalogo('vigilancia', undefined, { buscar: this.value });}"/></div>
+                <div class="agregar"><button onclick="IniciarRegistroVisita();">Registrar visita</button></div>
                 <ul class="lista seleccionable pantalla-3"></ul>
             </div>
 
-            <div class="detalle" id="detalle-comunicados" style="display:none;">
-                <div class="titulo">Comunicados<button class="regresar" onclick="Mostrar('detalle-comunicados', 'lista-comunicados'); ">Regresar</button></div>
-                <div class="btns-up"><button class="edit-btn" clave_funcion="3" style="display:none;" control="edit-com-3" id="edit-com-3" onclick="IniciarEditar(false,'comunicados');"><img src="img/edit.png" /></button><button style="display:none;" onclick="IniciarEliminar(this,'comunicados');" clave_funcion="4" control="del-com-4" id="del-com-4" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>
-                <div class="pantalla-3" id="wrap-detalle-comunicados"></div>
+            <div class="lista" id="lista-vigilancia.BuscarDomicilio" style="display:none;">
+                <div class="titulo">Seleccione domicilio<button class="regresar" onclick="IntercambioVisual('lista-vigilancia', 'lista-vigilancia.BuscarDomicilio'); ">Regresar</button></div>
+                <div class="busqueda"><input placeholder="Buscar domicilio" onkeypress="if(ValidarEnter(event)){CargarCatalogo('vigilancia.BuscarDomicilio', undefined, { buscar: this.value });}"/></div>
+                <div class="agregar" id="edicion-vigilancia" style="display:none;"><button clave_funcion="5" control="edicion-vigilancia" onclick="document.getElementById('clave-vigilancia').value = '';">SIN domicilio</button></div>
+                <ul class="lista seleccionable pantalla-3"></ul>
             </div>
 
-            <div class="edicion " style="display:none;" id="p-edicion-comunicados">
-                <div class="titulo">Edición de comunicados <button class="cancelar" id="cancelar-edit-comunicados">Cancelar</button></div>
-                <form class="pantalla-3" id="frm-edit-comunicados" onsubmit="return false;">
+            <div class="detalle" id="detalle-vigilancia" style="display:none;">
+                <div class="titulo">Visitas<button class="regresar" onclick="Mostrar('detalle-vigilancia', 'lista-vigilancia'); ">Regresar</button></div>
+                <div class="btns-up"><button class="edit-btn" clave_funcion="3" style="display:none;" control="edit-com-3" id="edit-com-3" onclick="IniciarEditar(false,'vigilancia');"><img src="img/edit.png" /></button><button style="display:none;" onclick="IniciarEliminar(this,'vigilancia');" clave_funcion="4" control="del-com-4" id="del-com-4" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>
+                <div class="pantalla-3" id="wrap-detalle-vigilancia"></div>
+            </div>
+
+            <div class="edicion " style="display:none;" id="p-edicion-vigilancia">
+                <div class="titulo">Registrar visita <button class="cancelar" id="cancelar-edit-vigilancia">Cancelar</button></div>
+                <form class="pantalla-3" id="frm-edit-vigilancia" onsubmit="return false;">
                     <fieldset style="border:0px;">
-                        <label>Título</label><input name="titulo" />
-                        <input name="esNuevo" type="hidden" id="op-comunicados" />
-                        <input name="clave" type="hidden" id="clave-comunicados" />
-                        <label>Descripción</label><textarea style="height:180px;" name="descripcion"></textarea>
-                        <label>Imagenes y descripción<hr class="clearn" /></label>
-                        <div id="c-e-comunicados"></div>
-                        <div><button class="adjuntar-btn" style="width:100px;" onclick="IAgregarImagenTexto('c-e-comunicados');"><img src="img/attach.png" /><span class="texto-discreto">Agregar</span></button><hr class="clearn" /></div>
-                        <button class="aceptar" style="margin-top:30px;margin-bottom:50px;" onclick="Guardar(this,'comunicados', function () { LimpiarForm('comunicados');CargarCatalogo(catalogo);Mostrar('p-edicion-comunicados','lista-comunicados');});">Aceptar</button>
+                        <input name="esNuevo" type="hidden" id="op-vigilancia" />
+                        <input name="clave" type="hidden" id="clave-vigilancia" />
+                        <input name="domicilio" type="hidden" id="clave-domicilio-v" />
+                        <input name="es_vigilancia" type="hidden" id="es_vigilancia" />
+                        <div id="usu-prog">
+                            <label>Comentario</label><textarea style="height:80px;" name="otro_programo" id="otro_programo"></textarea>
+                            <label>Fecha programada</label><input name="fecha_programada" id="fecha_programada"/>
+                        </div>
+                        <div id="vigi-c">
+                            <label>VISITANTE</label><input name="visita" id="v-visita"/>
+                            <label>PLACAS</label><input name="placas" id="v-placas"/>
+                            <label>OTRO</label><textarea style="height:80px;" name="otro" id="v-otro"></textarea>
+                        </div>
+                        
+                        <button class="aceptar" style="margin-top:30px;margin-bottom:50px;" onclick="GuardarVisita(this);">Registrar visita</button>
                     </fieldset>
                 </form>
             </div>
@@ -306,9 +322,10 @@
                 </form>
             </div>
             <div class="edicion" style="display:none;" id="p-regen_inmuebles">
-                <div class="titulo">Calendario de reservaciones<button class="cancelar" id="cancelar-edit-erogacion" onclick="Mostrar('p-regen_inmuebles','lista-inmuebles');">Cancelar</button></div>
+                <div class="titulo">Calendario de reservaciones<button class="cancelar" id="cancelar-edit-erogacion" onclick="IntercambioVisual('lista-inmuebles','p-regen_inmuebles');">Regresar</button></div>
                 <div>
                     <div class="leyenda" style="margin-bottom:30px;margin-top:50px;">
+                        <input type="hidden" id="inmueble" />
                         <p>
                             En el calendario aparecen marcadas las fechas donde hay horarios reservados.<br/><br />
                             Seleccione la fecha de su interés para reservar un horario disponible.
@@ -317,26 +334,41 @@
                     <div id="calendario-ev-inm"></div>
                 </div>                
             </div>
-            <div class="lista" id="lista-eventos"  style="display:none;" >
-                <div class="titulo">Registro de gastos</div>
+            <div class="lista" id="lista-reservaciones"  style="display:none;" >
+                <div class="titulo">Reservaciones del día<button class="regresar" onclick="IntercambioVisual( 'p-regen_inmuebles','lista-reservaciones'); ">Regresar</button></div>
                 <div class="busqueda"><input placeholder="Buscar" /></div>
-                <div class="agregar" id="edicion-ev" style="display:none;"><button clave_funcion="2" control="edicion-ev" onclick="IniciarEditar(true,'eventos',2);">Agregar tipo de gasto</button></div>
+                <input type="hidden" id="fecha-res" />
+                <input type="hidden" id="mes-res" />
+                <input type="hidden" id="anio-res" />
+                <input type="hidden" id="inmueble-res" />
+                <div class="agregar" ><button onclick="IniciarEditar(true, 'reservaciones', 2, undefined, undefined, function () { document.getElementById('fecha_reservada').value = document.getElementById('fecha-res').value; document.getElementById('ed-res-inmueble').value = document.getElementById('inmueble').value;});">Agregar Reservación</button></div>
                 <ul class="lista seleccionable pantalla-3" style="width:100%;"></ul>
             </div>
-            <div class="edicion" style="display:none;" id="p-edicion-eventos">
-                <form onsubmit="return false;" id="frm-edit-eventos">
+
+            <div class="detalle" id="detalle-reservaciones" style="display:none;">
+                <div class="titulo">Detalle de reservación<button class="regresar" onclick="IntercambioVisual( 'lista-reservaciones','detalle-reservaciones'); ">Regresar</button></div>
+                <div class="btns-up"><button class="edit-btn" clave_funcion="3" style="display:none;" control="edit-rese-3" id="edit-rese-3" onclick="IniciarEditar(false,'reservaciones');"><img src="img/edit.png" /></button><button style="display:none;" onclick="IniciarEliminar(this,'reservaciones');" clave_funcion="4" control="del-rese-4" id="del-rese-4" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>
+                <div class="pantalla-3" id="wrap-detalle-reservaciones"></div>
+            </div>
+
+            <div class="edicion" style="display:none;" id="p-edicion-reservaciones">
+                <form onsubmit="return false;" id="frm-edit-reservaciones">
                     <fieldset>
-                        <div class="titulo">Agregar tipo de gasto<button class="cancelar" id="cancelar-edit-eventos" onclick="Mostrar('p-edicion-eventos','lista-eventos');">Cancelar</button></div>
+                        <div class="titulo">Editar reservación<button class="cancelar" id="cancelar-edit-reservaciones" onclick="Mostrar('p-edicion-reservaciones','lista-reservaciones');">Cancelar</button></div>
                         <div class="pantalla-3">
-                            <input name="esNuevo" type="hidden" id="op-eventos" />
-                            <input name="clave" type="hidden" id="clave-eventos" />
-                            <label>Tipo de gasto</label><input name="titulo" id="tg-titulo" />
-                            <label>Describa a que se refiere el tipo</label><textarea maxlength="300" style="height:100px;" name="descripcion" id="tg-descripcion"></textarea>
-                            <button class="aceptar" style="margin-top:20px;" onclick="Guardar(this,'eventos', function () { LimpiarForm('eventos');CargarCatalogo(catalogo);Mostrar('p-edicion-eventos','lista-eventos');});">Guardar</button>
+                            <input name="esNuevo" type="hidden" id="op-reservaciones" />
+                            <input name="clave" type="hidden" id="clave-reservaciones" />
+                            <input name="inmueble" type="hidden" id="ed-res-inmueble" />
+                            <label>Fecha para reservada</label><input name="fecha_reservada" readonly="readonly" id="fecha_reservada" />
+                            <label>Hora de inicio</label><input name="inicio" id="res-inicio" placeholder="HH:MM" />
+                            <label>Hora que finaliza</label><input name="fin" id="res-fin" placeholder="HH:MM" />
+                            <label>Escriba una breve referencia del evento</label><textarea maxlength="300" style="height:100px;" name="descripcion" id="res-descripcion"></textarea>
+                            <button class="aceptar" style="margin-top:20px;" onclick="Guardar(this, 'reservaciones', function () { LimpiarForm('reservaciones'); CargarCatalogo(catalogo, function () {CalendarioR.yaConsulto = false;$('#calendario-ev-inm').datepicker('refresh');}, {fecha:document.getElementById('fecha-res').value,clave:document.getElementById('inmueble').value});Mostrar('p-edicion-reservaciones','lista-reservaciones');});">Guardar</button>
                         </div>
                     </fieldset>
                 </form>
             </div>
+
         </section>
 
         <section class="pantalla directorio" id="directorio">
@@ -527,7 +559,7 @@
                     <button class="cerrar-datos-p" onclick="this.parentNode.style.display = 'none'; document.getElementById('w-datos-persona').removeAttribute('residente_sel'); CargarAportaciones();">x</button>
                     <div id="w-datos-persona" class="item"></div>
                 </div>
-                <div class="busqueda" id="b-f-aportaciones" style="display:none;"><input placeholder="Buscar por fecha" onkeypress="if (ValidarEnter(window.event)) { CargarAportaciones(true); };" id="buscar-ap-fecha"/></div>                
+                <div class="busqueda" id="b-f-aportaciones" style="display:none;"><input placeholder="Buscar por fecha" onkeypress="if (ValidarEnter(event)) { CargarAportaciones(true); };" id="buscar-ap-fecha"/></div>                
                 <div class="agregar" ><button onclick="IniciarPagar();" style="width:65%;" id="aportacion">Aportar</button></div>
                 <button clave_funcion="2" class="del-btn" style="display:none;float:left;clear:left;margin-left:25px;" control="edicion-aportaciones" id="edicion-aportaciones" onclick="IntercambioVisual('p-edicion-aportaciones', 'lista-aportaciones');"><img src="img/edit.png" /></button>
                 <button clave_funcion="2" class="del-btn" control="btn-ver-res" id="btn-ver-res" style="display:none;float:left;margin-left:25px;" onclick="CargarPersonasAp();"><img src="img/personas.png" /></button>                
@@ -535,7 +567,7 @@
             </div>
             <div class="lista" id="lista-ap_personas" style="display:none;">
                 <div class="titulo">Lista de Residentes<button class="cancelar" onclick="IntercambioVisual('lista-aportaciones', 'lista-ap_personas');">Cancelar</button></div>
-                <div class="busqueda"><input placeholder="Buscar" id="buscar-per" onkeypress="if (ValidarEnter(window.event)) { CargarPersonasAp();}"/></div>
+                <div class="busqueda"><input placeholder="Buscar" id="buscar-per" onkeypress="if (ValidarEnter(event)) { CargarPersonasAp();}"/></div>
                 <ul class="lista seleccionable pantalla-3" style="width:100%;"></ul>
             </div>             
             <div class="detalle" id="detalle-aportaciones" style="display:none;">
@@ -567,7 +599,7 @@
                             <input name="esNuevo" type="hidden" id="op-ap_conceptos" />    
                             <input name="esNuevo" type="hidden" id="op-ap_conceptos" />                        
                             <label>Concepto</label><input name="concepto" id="con-nombre" />
-                            <label>Cantidad</label><input maxlength="300" name="monto" id="con-monto" onkeypress="return SoloNumeros(window.event,'.');" />
+                            <label>Cantidad</label><input maxlength="300" name="monto" id="con-monto" onkeypress="return SoloNumeros(event,'.');" />
                             <label>Descripción</label><textarea maxlength="300" name="descripcion" id="con-descripcion" ></textarea>
                             <button class="aceptar" style="margin-top:20px;" onclick="GuardarItem(this,'ap_conceptos');">Guardar Nuevo Concepto</button>
                         </div>
@@ -577,7 +609,7 @@
 
             <div class="lista" id="lista-ap_domicilios" style="display:none;">
                 <div class="titulo">Lista de Domicilios<button class="cancelar" onclick="IntercambioVisual('p-edicion-aportaciones', 'lista-ap_domicilios');">Cancelar</button></div>
-                <div class="busqueda"><input placeholder="Buscar" id="buscar-per" onkeypress="if (ValidarEnter(window.event)) { CargarPersonasAp();}" /></div>
+                <div class="busqueda"><input placeholder="Buscar" id="buscar-per" onkeypress="if (ValidarEnter(event)) { CargarPersonasAp();}" /></div>
                 <div class="agregar" id="edicion-ap_domicilios" style="display:none;"><button clave_funcion="2" control="edicion-ap_domicilios" onclick="IniciarEditar(true,'ap_domicilios',2);">Agregar Domicilio</button></div>
                 <ul class="lista seleccionable pantalla-3" style="width:100%;"></ul>
             </div>
@@ -603,7 +635,7 @@
             </div>
             <div class="lista" id="lista-ap_domicilios2" style="display:none;">
                 <div class="titulo">Lista de Domicilios<button class="cancelar" onclick="IntercambioVisual('p-edicion-aportaciones', 'lista-ap_domicilios2');">Cancelar</button></div>
-                <div class="busqueda"><input placeholder="Buscar" id="buscar-per" onkeypress="if (ValidarEnter(window.event)) { CargarPersonasAp();}" /></div>                    
+                <div class="busqueda"><input placeholder="Buscar" id="buscar-per" onkeypress="if (ValidarEnter(event)) { CargarPersonasAp();}" /></div>                    
                 <ul class="lista seleccionable pantalla-3" style="width:100%;"></ul>
             </div>
             <div class="edicion" style="display:none;" id="lista-domiciliosconceptosini">
@@ -659,12 +691,12 @@
                     </form>
                 </div>
                 <div class="edicion" style="display:none;" id="p-regen_tiposgastos">
-                    <div class="titulo">Edición de Solcitud de Mtto. <button class="cancelar" id="cancelar-edit-erogacion" onclick="Mostrar('p-regen_tiposgastos','lista-tiposgastos');">Cancelar</button></div>
+                    <div class="titulo">Registro de Gastos<button class="cancelar" id="cancelar-edit-erogacion" onclick="Mostrar('p-regen_tiposgastos','lista-tiposgastos');">Cancelar</button></div>
                     <div class="pantalla-3">
                         <form onsubmit="return false;" id="frm-edit-regen_tiposgastos">
                             <fieldset>
                                 <label>Registrar en:</label><input readonly="readonly" id="tgrupo-regen_tiposgastos" /><input type="hidden" id="in-regen_tiposgastos" name="tipogasto" />
-                                <div><button class="adjuntar-btn" style="width:100px;" onclick="IAgregarComprobante('c-e-regen_tiposgastos');"><img src="img/attach.png" /><span class="texto-discreto">Agregar</span></button><hr class="clearn" /></div>
+                                <div><button class="adjuntar-btn" style="width:100px;" onclick="IAgregarCosto('c-e-regen_tiposgastos');"><img src="img/attach.png" /><span class="texto-discreto">Agregar</span></button><hr class="clearn" /></div>
                                 <div id="c-e-regen_tiposgastos" style="margin-bottom:20px;"></div>
                                 <button class="aceptar" onclick="GuardarComprobante(this, 'regen_tiposgastos', function () { },'regen_tiposgastos');">Guardar</button>
                             </fieldset>
@@ -676,35 +708,55 @@
             <div id="tab-pproyectos">
                 <div class="lista" id="lista-egrepro">
                     <div class="titulo">Registro de egresos por proyectos</div>
-                    <div class="busqueda"><input placeholder="Buscar" /></div>
-                    <div class="agregar" id="edicion-erogacion-1" style="display:none;"><button clave_funcion="2" control="edicion-erogacion-1"  onclick="IniciarEditar(true,'egrepro',2);">Dar de alta proyecto</button></div>
+                    <div class="busqueda"><input placeholder="Buscar" /></div>                    
                     <ul class="lista seleccionable pantalla-3" style="width:100%;"></ul>
                 </div>
-                <div class="edicion" style="display:none;" id="p-edicion-egrepro">
-                    <div class="titulo">Dar de alta proyecto<button class="cancelar" id="cancelar-edit-egrepro" onclick="Mostrar('p-edicion-egrepro','lista-egrepro');">Cancelar</button></div>
+
+                <div class="lista" id="lista-planpresupuestal">
+                    <div class="titulo">Plan Presupuestal<button class="cancelar" id="cancelar-edit-egrepro" onclick="IntercambioVisual('lista-egrepro','lista-planpresupuestal')">Cancelar</button></div>
+                    <input name="clave" type="hidden" id="clave-egrepro-OPP" />
+                    <div id="proy-act"></div>
+                    <div class="agregar" id="edicion-preP" style="display:none;"><button clave_funcion="2" control="edicion-preP" onclick="IniciarEditarActividad(true);">Agregar actividad</button></div>                                        
+                    <ul class="lista seleccionable pantalla-3" style="width:100%;"></ul>
+                </div>
+
+                <div class="edicion" style="display:none;" id="p-edicion-planpresupuestal">
+                    <div class="titulo">Editar Plan Presupuestal<button class="cancelar" id="cancelar-edit-planpresupuestal" onclick="IntercambioVisual('lista-planpresupuestal','p-edicion-planpresupuestal');">Cancelar</button></div>
                     <div class="pantalla-3">
-                        <form onsubmit="return false;" id="frm-edit-egrepro">
-                            <fieldset>
-                                <input name="esNuevo" type="hidden" id="op-egrepro" />
-                                <input name="clave" type="hidden" id="clave-egrepro" />
-                                <label>Seleccione el proyecto</label><select style="width:100%;" name="proyecto" id="s-egre-propro"></select>
-                                <label>Título de proyecto</label><textarea maxlength="300" style="height:100px;" name="titulo" id="egrepro-titulo"></textarea>
-                                <button class="aceptar" style="margin-top:20px;" onclick="Guardar(this,'egrepro', function () { LimpiarForm('egrepro');CargarCatalogo(catalogo);Mostrar('p-edicion-egrepro','lista-egrepro');});">Guardar</button>
+                        <form onsubmit="return false;" id="frm-edit-planpresupuestal">
+                            <fieldset style="border:0px;">
+                                <input name="esNuevo" type="hidden" id="op-planpresupuestal" />
+                                <input name="clave" type="hidden" id="clave-planpresupuestal" />
+                                <input type="hidden" id="in-planpresupuestal" name="indice" />
+                                <div id="pro-pre" class="leyenda"></div>                                
+                                <div id="c-e-planpresupuestal" style="margin-bottom:20px;"></div>
+                                <button class="aceptar" onclick="GuardarComprobante(this, 'planpresupuestal', function () { CargarCatalogo('planpresupuestal', function () { IntercambioVisual('lista-planpresupuestal', 'p-edicion-planpresupuestal'); MostrarOpcionesHabilitadas(true); }, {clave:document.getElementById('clave-egrepro-OPP').value})},'planpresupuestal');">Guardar</button>
                             </fieldset>
                         </form>
                     </div>
                 </div>
-                <div class="edicion" style="display:none;" id="p-regen-grepro">
-                    <div class="titulo">Edición de Solcitud de Mtto. <button class="cancelar" id="cancelar-edit-erogacion" onclick="Mostrar('p-edicion-erogacion-p','lista-erogacion-p');">Cancelar</button></div>
-                    <div class="pantalla-3">
-                        <label>Proyecto</label><input readonly="readonly" id="tgrupo-regen_tiposgastos" /><input type="hidden" id="tgrupo-regen_tiposgastos" name="tipogasto" />
-                        <label>Registro de pagos<button class="adjuntar-btn" style="width:100px;" onclick="IniciarAdjuntarEvidenciaSolmtto();"><img src="img/attach.png" /><span class="texto-discreto">Agregar</span></button><hr class="clearn" /></label>
-                        <table class="lista-files">
-                            <tr><td><button class="del-btn"><img src="img/del.png" /></button></td><td style="width:70%"><input /></td><td style="width:30%"><input /></td><td><button class="con-btn"><img src="img/touch.png" /></button></td><td><button class="con-btn"><img src="img/payok.png" style="width:100%;" /></button></td></tr>
-                            <tr class="resultado"><td></td><td><b>Total</b></td><td><b>$ 4,200.00</b></td><td></td><td></td></tr>
-                        </table>
-                    </div>
+
+                <div class="edicion" style="display:none;" id="lista-regen_egrepro">
+                    <div class="titulo">Registro de Gastos<button class="cancelar" onclick="IntercambioVisual('lista-planpresupuestal','lista-regen_egrepro');">Cancelar</button></div>
+                    <div class="agregar" id="edicion-egrepro" style="display:none;"><button clave_funcion="2" control="edicion-egrepro" onclick="IniciarEditarPago(true);">Registrar gasto</button></div>                                        
+                    <ul class="lista seleccionable pantalla-3" style="width:100%;"></ul>                    
                 </div>
+
+                <div class="edicion" style="display:none;" id="p-edicion-regen_egrepro">
+                    <div class="titulo">Editar gasto<button class="cancelar" id="cancelar-edit-regen_egrepro" onclick="IntercambioVisual('lista-regen_egrepro','p-edicion-regen_egrepro');">Cancelar</button></div>
+                    <div class="pantalla-3">
+                        <form onsubmit="return false;" style="display:none;" id="frm-edit-regen_egrepro">
+                            <fieldset>
+                                <input name="esNuevo" type="hidden" id="op-regen_egrepro" />
+                                <input name="clave" type="hidden" id="clave-regen_egrepro" />
+                                <input type="hidden" id="in-regen_egrepro" name="egrepro" />                                
+                                <div id="c-e-regen_egrepro" style="margin-bottom:20px;"></div>
+                                <button clave_funcion="2" control="frm-edit-regen_egrepro" class="aceptar" onclick="GuardarComprobante(this, 'regen_egrepro', function () { CargarCatalogo('regen_egrepro', function () { IntercambioVisual('lista-regen_egrepro', 'p-edicion-regen_egrepro'); MostrarOpcionesHabilitadas(true); }, document.getElementById('in-planpresupuestal').params)},'regen_egrepro');">Guardar</button>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>              
+
             </div>
             <div style="height:32px;" tabs="tab-pcorriente,tab-pproyectos" class="tabs-down">
                 <div class="tab" id="tab-inicio-pagos" onclick="TabMostrar(this, this.parentNode, 'tab-pcorriente', 'tiposgastos');">Gasto corriente</div>
@@ -737,97 +789,60 @@
                 
         <section class="pantalla proyectos" id="proyectos"> 
              <div id="pro_ejecucion">
-                <div class="lista graficas" id="lista-pro_ejecucion">
-                    <div class="titulo">Proyectos en Ejecución</div>            
-                    <div class="busqueda"><input placeholder="Buscar" /></div>
-                    <ul class="scrollable-2" style="width:100%;">
-                        <li><span class="t-1">Compra e instalación de jegos toboganes para niños de hasta 12 años</span><div class="graf-pie" onclick="Mostrar('lista-proyectos','detalle-proyectos-avance');"><img src="img/pie.png" /></div></li>
-                    </ul>
-                </div>
-                
-                <div class="detalle" id="detalle-proyectos-avance" style="display:none;">
-                    <div class="titulo">Detalle de proyecto<button class="regresar" onclick="Mostrar('detalle-erogacion','lista-erogacion');">Regresar</button></div>  
-                    <div class="scrollable">
-                        <div class="btns-up">
-                            <button class="edit-btn" clave_funcion="12" control="edit-pro" id="edit-pro" onclick="IniciarEditarPlanPro();"><img src="img/edit.png" /></button>
-                            <button onclick="IniciarEditarAvancesPro('detalle-proyectos-avance');" clave_funcion="4" control="del-com-4" id="del-com-4" class="delete-btn"><img src="img/vobo.png" /></button>
-                        </div>                        
-                        <label>Plan de Trabajo</label>
-                        <table class="desglose">
-                            <tr><th colspan="3">Obras y servicios </th></tr>
-                            <tr><td><span class="t-41">Flete de Material</span></td><td><img src="img/pendiente.png"/></td></tr>
-                            <tr><td><span class="t-41">Flete de Material</span></td><td><img src="img/pendiente.png"/></td></tr>
-                            <tr><td><span class="t-41">Flete de Material</span><span class="t-2">21-enero 2019 11:20 am</span></td><td><img src="img/ok.png"/></td></tr>
-                            <tr><td><span class="t-41">Flete de Material</span><span class="t-2">21-enero 2019 11:20 am</span></td><td><img src="img/ok.png"/></td></tr>                        
-                        </table>                          
-                        <hr />
-                    </div>
+                 <div class="lista" id="lista-proyectos">
+                     <div class="titulo">Proyectos</div>
+                     <div class="agregar" id="edicion-proyectos-1" style="display:none;"><button clave_funcion="2" control="edicion-proyectos-1" onclick="IniciarEditar(true,'proyectos',2);">Dar de alta proyecto</button></div>
+                     <ul class="lista seleccionable pantalla-3 color" style="width:100%;"></ul>
                  </div>
-                <div class="edicion" style="display:none;" id="p-edicion-proyecto">
-                    <div class="titulo">Edición de Solcitud de Mtto. <button class="cancelar" id="cancelar-edit-proyecto"  onclick="Mostrar('p-edicion-proyecto','lista-proyecto');">Cancelar</button></div>    
-                    <div class="scrollable desglose" >
-                        <label>Descripción</label><textarea style="height:100px;"></textarea>                                                    
-                        <label class="btns-up">Material<button  style="width:100px;" onclick="IniciarAdjuntarEvidenciaSolmtto();"><img src="img/add.png" /></button><hr class="clearn" /></label>
-                        <table class="lista-files">
-                            <tr><td style="width:70%"><input /></td><td  style="width:30%"><input /></td><td><button class="del-btn" ><img src="img/del.png" /></button></td></tr>
-                            <tr><td><input /></td><td><input /></td><td><button class="del-btn" ><img src="img/del.png" /></button></td></tr>
-                            <tr><td><input /></td><td><input /></td><td><button class="del-btn" ><img src="img/del.png" /></button></td></tr>
-                            <tr class="resultado"><td><b>Total</b></td><td><b>$ 4,200.00</b></td><td><button class="del-btn" ><img src="img/del.png" /></button></td></tr>
-                        </table>  
-                        <label class="btns-up">Obras y servicios<button  style="width:100px;" onclick="IniciarAdjuntarEvidenciaSolmtto();"><img src="img/add.png" /></button><hr class="clearn" /></label>
-                        <table class="lista-files">
-                            <tr><td style="width:70%"><input /></td><td  style="width:30%"><input /></td><td><button class="del-btn" ><img src="img/del.png" /></button></td></tr>
-                            <tr><td><input /></td><td><input /></td><td><button class="del-btn" ><img src="img/del.png" /></button></td></tr>
-                            <tr><td><input /></td><td><input /></td><td><button class="del-btn" ><img src="img/del.png" /></button></td></tr>
-                            <tr class="resultado"><td><b>Total</b></td><td><b>$ 4,200.00</b></td><td><button class="del-btn" ><img src="img/del.png" /></button></td></tr>
-                        </table>  
-                        <button class="aceptar" style="margin-top:10px;" >Estoy de acuerdo</button>
-                    </div>
-                </div>
-                <div class="edicion" style="display:none;" id="p-edicion-proyecto-avance">
-                    <div class="titulo">Registro de Avances<button class="cancelar" id="cancelar-edit-proyecto"  onclick="Mostrar('p-edicion-proyecto','lista-proyecto');">Cancelar</button></div>    
-                    <div class="scrollable" >
-                        <label>Plan de Trabajo </label>
-                        <table class="desglose">
-                            <tr><th colspan="3">Obras y servicios </th></tr>
-                            <tr><td><span class="t-41">Flete de Material</span></td><td><button><img src="img/ok.png"/></button></td></tr>
-                            <tr><td><span class="t-41">Flete de Material</span></td><td><button><img src="img/ok.png"/></button></td></tr>
-                            <tr><td><span class="t-41">Flete de Material</span><span class="t-2">21-enero 2019 11:20 am</span></td><td><img src="img/ok.png"/></td></tr>
-                            <tr><td><span class="t-41">Flete de Material</span><span class="t-2">Precio original: $ 157.00</span><span class="t-2">21-enero 2019 11:20 am</span></td><td><img src="img/ok.png"/></td></tr>                        
-                        </table>                         
-                        <button class="aceptar" style="margin-top:10px;" >Estoy de acuerdo</button>
-                    </div>
-                </div>                
+                 <div class="edicion" style="display:none;" id="p-edicion-proyectos">
+                     <div class="titulo">Dar de alta proyecto<button class="cancelar" id="cancelar-edit-proyectos" onclick="Mostrar('p-edicion-proyectos','lista-proyectos');">Cancelar</button></div>
+                     <div class="pantalla-3">
+                         <form onsubmit="return false;" id="frm-edit-proyectos">
+                             <fieldset>
+                                 <input name="esNuevo" type="hidden" id="op-proyectos" />
+                                 <input name="clave" type="hidden" id="clave-proyectos" />
+                                 <label>Seleccione la propuesta </label><select style="width:100%;" name="proyectos" id="s-egre-propro"></select>
+                                 <label>Título de proyectos</label><textarea maxlength="300" style="height:100px;" name="titulo" id="proyectos-titulo"></textarea>                                 
+                                 <button class="aceptar" style="margin-top:20px;" onclick="Guardar(this,'proyectos', function () { LimpiarForm('proyectos');CargarCatalogo(catalogo);Mostrar('p-edicion-proyectos','lista-proyectos');});">Guardar</button>
+                             </fieldset>
+                         </form>
+                     </div>
+                 </div>                                 
+                 <div class="edicion" style="display:none;" id="lista-proyectos.ObtenerAvance">
+                    <div class="titulo">Registro de Avances<button class="cancelar" id="cancelar-edit-proyectos"  onclick="IntercambioVisual('lista-proyectos','lista-proyectos.ObtenerAvance');">Cancelar</button></div> 
+                    <button onclick="ToggleControlesPantalla(this.parentNode);" clave_funcion="4" control="ed-pa" id="ed-pa" class="del-btn" style="float:right;margin-right:30px;margin-top:15px;"><img src="img/vobo.png" /></button>   
+                    <ul class="lista pantalla-3 color2"></ul>
+                 </div> 
             </div>
 
             <div id="pro_propuestas" style="display:none;">
                 <div class="lista" id="lista-pro_propuestas">
-                    <div class="titulo">Propuestas de proyectos</div>            
+                    <div class="titulo">Iniciativas</div>            
                     <div class="busqueda"><input placeholder="Buscar" /></div>
                     <div class="agregar" id="edicion-erogacion" ><button clave_funcion="8" control="pagar-erogacion" onclick="IniciarEditar(true,'pro_propuestas');" >Registrar nueva propuesta</button></div>                    
                     <ul class="lista seleccionable scrollable-2" style="width:100%;"></ul>
                 </div>
 
                 <div class="detalle" id="detalle-pro_propuestas" style="display:none;">
-                    <div class="titulo">Propuesta de proyecto<button class="regresar" onclick="Mostrar('detalle-pro_propuestas', 'lista-pro_propuestas'); ">Regresar</button></div>
-                    <div class="btns-up"><button class="edit-btn" clave_funcion="3" style="display:none;" control="edit-pro_p-3" id="edit-pro_p-3" onclick="IniciarEditar(false,'pro_propuestas');"><img src="img/edit.png" /></button><button style="display:none;" onclick="IniciarEliminar(this,'comunicados');" clave_funcion="4" control="del-pro_p-4" id="del-pro_p-4" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>
+                    <div class="titulo">Propuesta<button class="regresar" onclick="Mostrar('detalle-pro_propuestas', 'lista-pro_propuestas'); ">Regresar</button></div>
+                    <div class="btns-up" id="edit-pro_p" style="display:none;"><button class="edit-btn" clave_funcion="3" onclick="IniciarEditar(false,'pro_propuestas');"><img src="img/edit.png" /></button><button onclick="IniciarEliminar(this,'pro_propuestas');" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>
                     <div class="pantalla-3">
                         <input name="clave" type="hidden" id="clave-pro_propuesta" />
                         <div id="wrap-detalle-pro_propuestas"></div>
                         <div class="edicion btns-texto" style="margin-bottom:200px;margin-top:30px;">
                             <label>¿Esta de acuerdo en apoyar esta propuesta?</label>
-                            <table><tr><td style="width:50%;"><button onclick="RegistrarVotoProP(false);">No</button></td><td style="width:50%;"><button onclick="RegistrarVotoProP(true);">Si</button></td></tr></table>
+                            <fieldset style="border:0px;" id="votos-pp"><table><tr><td style="width:50%;"><button onclick="RegistrarVotoProP(false);" id="voto-p-no">No</button></td><td style="width:50%;"><button onclick="RegistrarVotoProP(true);" id="voto-p-si">Si</button></td></tr></table></fieldset>
                         </div>
                         <hr />                  
                     </div>
                  </div>
                 <div class="edicion" style="display:none;" id="p-edicion-pro_propuestas">
-                    <div class="titulo">Edición de Propuesta <button class="cancelar" id="cancelar-edit-erogacion" onclick="Mostrar('p-edicion-pro_propuestas','lista-pro_propuestas');">Cancelar</button></div>
+                    <div class="titulo">Edición de Propuesta <button class="cancelar" id="cancelar-edit-pro_propuestas" onclick="Mostrar('p-edicion-pro_propuestas','lista-pro_propuestas');">Cancelar</button></div>
                     <form class="pantalla-3" id="frm-edit-pro_propuestas" onsubmit="return false;">
                         <fieldset style="border:0px;">
+                            <label>Título</label><textarea style="height:40px;" maxlength="150" name="titulo"></textarea>
                             <input name="esNuevo" type="hidden" id="op-pro_propuestas" />
                             <input name="clave" type="hidden" id="clave-pro_propuestas" />
-                            <label>Título</label><textarea style="height:40px;" maxlength="150" name="titulo"></textarea>
                             <label>Descripción y/o Necesidad</label><textarea style="height:100px;"name="descripcion"></textarea>
                             <label>Imágenes y descripción<button class="adjuntar-btn" style="width:100px;" onclick="IAgregarImagenTexto('c-e-encuestas',1);"><img src="img/add.png" /><span class="texto-discreto">Agregar</span></button><hr class="clearn" /></label>
                             <div id="c-e-pro_propuestas"></div>
@@ -836,33 +851,17 @@
                     </form>
                 </div> 
 
-                <div class="detalle" id="lista-pro-domicilios" style="display:none;">
-                    <div class="titulo">Votantes de propuesta<button class="regresar" onclick="Mostrar('detalle-licitacion','lista-licitacion');">Regresar</button></div>  
+                <div class="detalle" id="lista-pro_propuestas.ObtenerVotosPP" style="display:none;">
+                    <div class="titulo">Votantes de propuesta<button class="regresar" onclick="IntercambioVisual('lista-pro_propuestas','lista-pro_propuestas.ObtenerVotosPP');">Regresar</button></div>  
                     <div class="scrollable">
-                        <ul class="lista seleccionable scrollable">
-                            <li class="item">
-                                <span class="t-2 si">Sofía 106-B</span>              
-                            </li>
-                            <li class="item">                 
-                                <span class="t-2 si">Sofía 106-B</span>
-                            </li>
-                            <li class="item">             
-                                <span class="t-2 no">Sofía 106-B</span>
-                            </li>
-                            <li class="item">                  
-                                <span class="t-2 si">Sofía 106-B</span>
-                            </li>
-                            <li class="item">                 
-                                <span class="t-2 no">Sofía 106-B</span>
-                            </li>
-                        </ul>
+                        <ul class="lista seleccionable scrollable"></ul>
                     </div>
                  </div>
 
             </div>
-            <div style="height:32px;" tabs="pro_ejecucion,pro_propuestas" class="tabs-down">
-                <div class="tab" id="tab-inicio-pro" onclick="TabMostrar(this,this.parentNode,'pro_ejecucion','pro_ejecucion');">Ejecución</div>
-                <div class="tab" onclick="TabMostrar(this,this.parentNode,'pro_propuestas','pro_propuestas');">Propuestas</div>
+            <div style="height:32px;" tabs="pro_propuestas,pro_ejecucion" class="tabs-down">
+                <div class="tab" id="tab-inicio-pro" onclick="TabMostrar(this,this.parentNode,'pro_propuestas','pro_propuestas');">Propuestas</div>
+                <div class="tab"  onclick="TabMostrar(this,this.parentNode,'pro_ejecucion','proyectos');">Proyectos</div>
             </div>
         </section>
 
