@@ -6,7 +6,7 @@ button {
 .login {
     height: 100% !important;
     position: absolute;
-    background-color: #0094ff;
+    background-color: #2b78c2;
     overflow-x: hidden;
     width: 100%;
 }
@@ -23,7 +23,7 @@ button {
     width: 80%;
     border-radius: 7px;
     margin: auto;
-    border: 2px solid #0094ff;
+    border: 2px solid #2b78c2;
     background-color: #fff;
     display: block;
 }
@@ -53,7 +53,7 @@ button {
         background-repeat: no-repeat;
         background-position-x: 5px;
         background-position-y: center;
-        border: 1px solid #0094ff;
+        border: 1px solid #2b78c2;
         border-radius: 4px;
     }
 
@@ -116,10 +116,10 @@ button {
     }
 
 .opciones-usuario ul {
-    border: 1px solid #0094ff;
+    border: 1px solid #2b78c2;
     border-left: 0px;
     border-right: 0px;
-    border-bottom: 5px solid #0094ff;
+    border-bottom: 5px solid #2b78c2;
     background-color: #eee;
     margin: 0px;
     padding: 5%;
@@ -135,7 +135,7 @@ button {
     margin: auto;
     display: block;
     padding: 5px;
-    background-color: #0094ff;
+    background-color: #2b78c2;
 }
 
     .busqueda input {
@@ -151,7 +151,7 @@ button {
         background-repeat: no-repeat;
         background-position-x: 5px;
         background-position-y: center;
-        border: 1px solid #0094ff;
+        border: 1px solid #2b78c2;
         border-radius: 4px;
     }
 
@@ -186,8 +186,8 @@ ul.lista {
         margin: 0px;
     }
 
-    .diaSel{ background-color:#0094ff;color:#fff}
-    .diaSel a{ background:#0094ff !important;color:#fff !important}
+    .diaSel{ background-color:#2b78c2;color:#fff}
+    .diaSel a{ background:#2b78c2 !important;color:#fff !important}
 
         ul.lista .item > span {
             font-family:Verdana;
@@ -246,14 +246,14 @@ ul.lista {
         }
 
 div.agregar {
-    border-bottom: 1px solid #0094ff;
+    border-bottom: 1px solid #2b78c2;
     padding: 10px;
 }
 
     div.agregar button {
         width: 80%;
         color: #fff;
-        background-color: #0094ff;
+        background-color: #2b78c2;
         border-radius: 4px;
         padding: 10px;
         margin: auto;
@@ -268,7 +268,7 @@ div.agregar {
     }
 
         div.agregar button:active {
-            color: #0094ff;
+            color: #2b78c2;
             background-color: #fff;
         }
 
@@ -281,7 +281,7 @@ div.agregar {
 
 .titulo .buscar {
     float: right;
-    color: #0094ff;
+    color: #2b78c2;
     border: 0px;
     font-weight:bold;
     background-color: transparent;
@@ -359,7 +359,7 @@ div.agregar {
 
 .edicion table td.del {
     background-color: #333;
-    border-bottom: 1px solid #0094ff;
+    border-bottom: 1px solid #2b78c2;
 }
 
 .edicion table textarea {
@@ -369,7 +369,7 @@ div.agregar {
 button.aceptar {
     width: 80%;
     color: #fff;
-    background-color: #0094ff;
+    background-color: #2b78c2;
     border-radius: 4px;
     padding: 10px;
     margin: auto;
@@ -379,7 +379,7 @@ button.aceptar {
 }
 
     button.aceptar:active {
-        color: #0094ff;
+        color: #2b78c2;
         background-color: #fff;
     }
 
@@ -420,7 +420,7 @@ ul.lista .item span.t-4 {
     width: 30%;
     float: left;
     font-size: 11px;
-    color: #0094ff;
+    color: #2b78c2;
     font-weight: normal;
 }
 
@@ -480,7 +480,7 @@ span.t-3 {
     display: block;
     float: left;
     font-size: 11px;
-    color: #0094ff;
+    color: #2b78c2;
     font-weight: normal;
     width:90%;
     word-wrap:break-word;
@@ -490,7 +490,7 @@ span.t-3n {
     display: block;
     float: right;
     font-size: 11px;
-    color: #0094ff;
+    color: #2b78c2;
     font-weight: normal;
     width: 35%;
     word-wrap: break-word;
@@ -538,7 +538,7 @@ span.t-5 {
     border: 0px;
     width: 80%;
     color: #fff;
-    background-color: #0094ff;
+    background-color: #2b78c2;
     border-radius: 4px;
     padding: 10px;
     margin: auto;
@@ -552,13 +552,13 @@ span.t-5 {
 }
 
     .detalle button.file:active {
-        color: #0094ff;
+        color: #2b78c2;
         background-color: #fff;
     }
 
 .detalle hr {
     border: 0px;
-    border-bottom: 1px solid #0094ff;
+    border-bottom: 1px solid #2b78c2;
     margin-top: 20px;
     margin-bottom: 20px;
 }
@@ -625,7 +625,7 @@ button.del-btn {
 }
 
 .check-activacion {
-    border-top: 1px solid #0094ff;
+    border-top: 1px solid #2b78c2;
     border-bottom: 10px solid #dadada;
     font-size: 13px;
     padding: 5px;
@@ -651,7 +651,7 @@ button.del-btn {
     }
 
         .buscador .busqueda input {
-            border: 1px solid #0094ff !important;
+            border: 1px solid #2b78c2 !important;
             width: 70% !important;
         }
 
@@ -678,13 +678,13 @@ button.del-btn {
 
 .agregar .opcion-1 {
     background-color: #dadada;
-    color: #0094ff;
+    color: #2b78c2;
     padding-left: 40px;
     background-image: url(img/date.png)
 }
 
 .seleccionado {
-    background-color: #0094ff;
+    background-color: #2b78c2;
     display: block;
 }
     li.item div.seleccionado span.t-3{
@@ -798,7 +798,7 @@ tr.resultado {
 }
 
 .tabs-down {
-    background-color: #0094ff;
+    background-color: #2b78c2;
     color: #fff;
     padding-top: 3px;
     border: 1px solid #116f8f;
@@ -847,7 +847,7 @@ tr.resultado {
 
     .g-1 span {
         display: block;
-        background-color: #0094ff;
+        background-color: #2b78c2;
         position: absolute;
         height: 14px;
     }
@@ -867,7 +867,7 @@ table {
 }
 
     table td {
-        border: 0px solid #0094ff;
+        border: 0px solid #2b78c2;
     }
 
     table th {
@@ -976,7 +976,7 @@ table.transparente tr {
         margin-top: 20px;
         margin-bottom: 12px;
         border: 1px solid #0e507a;
-        background-color: #0094ff;
+        background-color: #2b78c2;
         padding: 10px;
     }
 
