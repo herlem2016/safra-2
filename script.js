@@ -24,6 +24,7 @@ function InicializarApp() {
             BuscarProdServ(ev.target);
         }
     }
+    RegistrarNotificaciones();    
     var tabInicioPro = document.getElementById("tab-inicio-pro");
     TabMostrar(tabInicioPro, tabInicioPro.parentNode, 'pro_propuestas','pro_propuestas');
     var tabInicioPag = document.getElementById("tab-inicio-pagos");
@@ -186,9 +187,12 @@ function CerrarSesion() {
 }
 
 
-document.addEventListener("deviceready", function () {
+function RegistrarNotificaciones(){
     if (window.localStorage.getItem("email_")) {
-        FCMPlugin.subscribeToTopic('FRA_' + window.localStorage.getItem("codigoActivacion")+"-fun_1");
+        ConsultarEsVigilante(function () {
+            window.localStorage.setItem("es_vigilancia", GetValor(xmlDoc, "es_vigilancia") == 'true');
+            FCMPlugin.subscribeToTopic('FRA_' + window.localStorage.getItem("codigoActivacion") + "-fun_1");
+        });
         FCMPlugin.subscribeToTopic('FRA_' + window.localStorage.getItem("codigoActivacion") + "-dom_" + window.localStorage.getItem("domicilio"));
         FCMPlugin.onNotification(function (data) {
             if (data.modulo == 1) {
@@ -199,7 +203,7 @@ document.addEventListener("deviceready", function () {
         });
         cordova.plugins.notification.badge.set(1);
     }
-}, false);
+}
 
 function ActivarAlarma() {
     if (confirm("Confirme que desea activar la Alarma Vecinal, Recuerde que todo abuso sera sancionado.")) {
@@ -1196,7 +1200,7 @@ function QuitarVoBoActividad(indice, proyecto) {
 
 function IniciarRegistroVisita(callback) {
     ConsultarEsVigilante(function (xmlDoc) {
-        var domicilio = GetValor(xmlDoc,"domicilio");
+        var domicilio = GetValor(xmlDoc, "domicilio");        
         if (GetValor(xmlDoc,"es_vigilancia") == 'true') {
             BuscarDomicilioV('');
         } else {
