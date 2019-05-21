@@ -188,12 +188,11 @@ function CerrarSesion() {
 
 document.addEventListener("deviceready", function () {
     if (window.localStorage.getItem("email_")) {
-        FCMPlugin.subscribeToTopic('FRA_' + window.localStorage.getItem("codigoActivacion"));
+        FCMPlugin.subscribeToTopic('FRA_' + window.localStorage.getItem("codigoActivacion")+"-fun_1");
         FCMPlugin.subscribeToTopic('FRA_' + window.localStorage.getItem("codigoActivacion") + "-dom_" + window.localStorage.getItem("domicilio"));
-        alert('FRA_' + window.localStorage.getItem("codigoActivacion") + "-dom_" + window.localStorage.getItem("domicilio"));
         FCMPlugin.onNotification(function (data) {
             if (data.modulo == 1) {
-                ActivarAlarma_();
+                ActivarAlarma_(data.contenidovoz);
             } else if (data.modulo == 2) {
                 ActivarTimbre_();
             }
@@ -204,7 +203,13 @@ document.addEventListener("deviceready", function () {
 
 function ActivarAlarma() {
     if (confirm("Confirme que desea activar la Alarma Vecinal, Recuerde que todo abuso sera sancionado.")) {
-        ActivarAlarma_();
+        $.post(url + 'logic/controlador.aspx?op=ActivarAlarmaVecinal&seccion=seguridad', function (xmlDoc) {
+            if (GetValor(xmlDoc, "estatus") == 1) {
+                alert("Alarma enviada");
+            } else {
+                alert(GetValor(xmlDoc, "mensaje"));
+            }
+        });
     }
 }
 
@@ -212,10 +217,10 @@ function ActivarTimbre_() {
     document.getElementById("alarma-timbre").play();
 }
 
-function ActivarAlarma_() {
+function ActivarAlarma_(contenidovoz) {
     var alarmaVoz = document.getElementById("alarma-v");
     var alarma = document.getElementById("alarma-s");
-    alarmaVoz.setAttribute("src", urlNotas);
+    alarmaVoz.setAttribute("src", contenidovoz);
     alarma.setAttribute("src", "audios/alerta2.mp3");
     alarmaVoz.play();
     alarma.play();
