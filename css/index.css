@@ -159,7 +159,9 @@ button {
     font-weight: bold;
     font-size: 14px;
     font-family: arial;
+    padding-bottom: 0px;
 }
+.titulo span{padding-top:7px;display:inline-block;}
 
 ul.lista {
     padding: 0px;
@@ -732,18 +734,20 @@ tr.resultado {
 
 .proyectos {
 }
+.buscar-min{width:30px;float:right;padding:0px;border:0px;background:transparent;}
+.buscar-min img{width:100%;}
 
 .tab {
     width: 45%;
     margin-left: 1%;
     text-align: center;
-    padding-top: 5px;
-    padding-bottom: 5px;
+    padding-top: 7px;
+    padding-bottom: 7px;
     float: left;
     cursor: pointer;
 }
 
-.tabs-down {
+.tabs-down{
     color: #3f4445;
     padding-top: 3px;
     border: 1px solid #3f4445;
@@ -760,8 +764,10 @@ tr.resultado {
 }
 
 .tab-sel {
-    background-color: #fff;
-    color: #2c5878;
+    background-color: #2c5878;
+    color: #fff;
+    font-weight:normal !important;
+    text-shadow:none;
 }
 .v-p-si{background-color:#50a019 !important;color:#fff !important;}
 .v-p-no{background-color:#424242  !important;color:#666 !important;}
@@ -869,9 +875,9 @@ table.desglose th {
     position: relative;
     z-index:99;
 }
-table.transparente tr.votado {
+table.transparente td.votado {
     background-image: url(../img/ok.png);
-    background-position: right 20px center;
+    background-position: right center;
     background-repeat: no-repeat;
     background-size: 25px;
 }
@@ -965,7 +971,7 @@ table.lista-files {
 .espera img{margin:-12px auto 0px auto;height:100px;position:relative;}
 .pantalla-3 p {padding:5px;width:90%;word-wrap:break-word; font-size:13px;color:#333;clear:both;display:block;}
 
-button.centrado30{margin:auto;width:30%;padding:3px;display:block;clear:both;margin-top:10px;}
+button.centrado30{margin:auto;width:30%;padding:3px;display:block;clear:both;margin-top:10px;text-align:center;}
 .separado10{margin-top:10px;margin-bottom:10px}
 div.item-enc td label{display:block;cursor:pointer;}
 
@@ -1058,10 +1064,11 @@ div.agregar button, .menu button{text-align:center;}
 .busqueda input, textarea, .login fieldset input {
     transition: all 0.30s ease-in-out;
     outline: none;
+    box-shadow: 0 0 5px rgba(200, 200, 200, 1);
     border: 1px solid #e1f6ff;
 }
 
-    .busqueda input:focus, .edicion input:focus, textarea:focus, .login fieldset input:focus{
-        box-shadow: 0 0 5px rgba(81, 203, 238, 1);
-        border: 1px solid rgba(81, 203, 238, 1);
-    }
+.busqueda input:focus, .edicion input:focus, textarea:focus, .login fieldset input:focus{
+    box-shadow: 0 0 5px rgba(81, 203, 238, 1);
+    border: 1px solid rgba(81, 203, 238, 1);
+}

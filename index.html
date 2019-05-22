@@ -809,15 +809,15 @@
                  <div class="edicion" style="display:none;" id="lista-proyectos.ObtenerAvance">
                     <div class="titulo">Registro de Avances<button class="cancelar" id="cancelar-edit-proyectos"  onclick="IntercambioVisual('lista-proyectos','lista-proyectos.ObtenerAvance');">Cancelar</button></div> 
                     <button onclick="ToggleControlesPantalla(this.parentNode);" clave_funcion="4" control="ed-pa" id="ed-pa" class="del-btn" style="float:right;margin-right:30px;margin-top:15px;"><img src="img/vobo.png" /></button>   
-                    <ul class="lista pantalla-3 color2"></ul>
+                    <ul class="lista pantalla-3 color"></ul>
                  </div> 
             </div>
 
             <div id="pro_propuestas" style="display:none;">
                 <div class="lista" id="lista-pro_propuestas">
-                    <div class="titulo">Iniciativas</div>            
-                    <div class="busqueda"><input placeholder="Buscar" /></div>
-                    <div class="agregar" id="edicion-erogacion" ><button clave_funcion="8" control="pagar-erogacion" onclick="IniciarEditar(true,'pro_propuestas');" >Registrar nueva propuesta</button></div>                    
+                    <div class="titulo"><span>Iniciativas</span><button class="buscar-min" onclick="MostrarBuscar('b-prop','pro_propuestas');"><img src="img/buscar.png"/></button><hr class="clearn"/></div>            
+                    <div class="busqueda" id="b-prop" style="display:none;"><input placeholder="Buscar" onkeypress="if(ValidarEnter(event)){CargarCatalogo('pro_propuestas', undefined, { buscar: this.value });}"/></div>
+                    <div class="agregar" id="edicion-erogacion" ><button clave_funcion="8" control="pagar-erogacion" onclick="IniciarEditar(true,'pro_propuestas');" >Registrar propuesta</button></div>                    
                     <ul class="lista seleccionable scrollable-2" style="width:100%;"></ul>
                 </div>
 

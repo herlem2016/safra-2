@@ -209,6 +209,17 @@ function RegistrarNotificaciones() {
     } catch (e){ }
 }
 
+function MostrarBuscar(id,catalogo) {
+    var obj= document.getElementById(id);
+    if (obj.style.display == "none") {
+        obj.style.display = "block";
+    } else {
+        obj.style.display = "none";
+        obj.getElementsByTagName("input")[0].value = "";
+        CargarCatalogo(catalogo, undefined, { buscar: '' });
+    }
+}
+
 function ActivarAlarma() {
     if (confirm("Confirme que desea activar la Alarma Vecinal, Recuerde que todo abuso sera sancionado.")) {
         $.post(url + 'logic/controlador.aspx?op=ActivarAlarmaVecinal&seccion=seguridad', function (xmlDoc) {
@@ -1339,8 +1350,8 @@ function ObtenerItem(catalogo, item) {
             var datos = []; datos[0] = GetValor(item, "resueltos"); datos[1] = GetValor(item, "faltantes"); var av = parseInt((100 * datos[0]) / (parseInt(datos[0],10) + parseInt(datos[1],10)),10);
             var config = {
                 type: 'doughnut',
-                data: { datasets: [{ data:datos, backgroundColor: [window.chartColors.green, window.chartColors.gray] }] },
-                options: { responsive: true, legend: { display: false }, elements: { center: { text: av+ "%",color: window.chartColors.green,sidePadding: 20}},tooltips: {enabled: false}} };
+                data: { datasets: [{ data: datos, backgroundColor: ["#009933", window.chartColors.gray] }] },
+                options: { responsive: true, legend: { display: false }, elements: { center: { text: av+ "%",color: "#009933",sidePadding: 20}},tooltips: {enabled: false}} };
             new Chart(canvas.getContext("2d"), config);            
             break;
         case "pro_propuestas.ObtenerVotosPP":
@@ -1360,17 +1371,14 @@ function ObtenerItem(catalogo, item) {
                 } else if (this.voto == 'false') {
                     document.getElementById("voto-p-no").className = "v-p-si";
                     document.getElementById("voto-p-si").className = "v-p-no";
-                } else {
-                    document.getElementById("voto-p-no").className = "v-p-no";
-                    document.getElementById("voto-p-si").className = "v-p-no";
-                }
+                } 
             }
             var html =
                 '<span class="t-1" onclick="Mostrar(\'lista-pro_propuestas\',\'detalle-pro_propuestas\',\'pro_propuestas\',' + proyecto + ');">' + GetValor(item, "titulo") + '</span>' +
                 '<span class="t-2">' + GetValor(item, "fecha") + '</span>'+
                 '<table class="transparente" onclick="VerVotantesPP(' + proyecto +');">'+
-                '<tr ' + (voto == 'false' ? 'class="votado"' : "") + '><td style="width:15%;"><span class="p12">No</span></td><td><div class="graf-barra" ><span class="progreso" style="width:' + GetValor(item, "porc_no") + '%"></span><b>' + GetValor(item, "porc_no") + '%</b></div></td></tr>'+                                        
-                '<tr ' + (voto == 'true' ? 'class="votado"' : "") + '><td><span class="p12">Si</span></td><td><div class="graf-barra"><span class="progreso" style="width:' + GetValor(item, "porc_si") + '%"></span><b>' + GetValor(item, "porc_si") + '%</b></div></td></tr>'+                                        
+                '<tr><td style="width:15%;" ' + (voto == 'false' ? 'class="votado"' : "") + ' ><span class="p12">No</span></td><td><div class="graf-barra" ><span class="progreso" style="width:' + GetValor(item, "porc_no") + '%"></span><b>' + GetValor(item, "porc_no") + '%</b></div></td></tr>'+                                        
+                '<tr><td ' + (voto == 'true' ? 'class="votado"' : "") + '><span class="p12">Si</span></td><td><div class="graf-barra"><span class="progreso" style="width:' + GetValor(item, "porc_si") + '%"></span><b>' + GetValor(item, "porc_si") + '%</b></div></td></tr>'+                                        
                 '<tr><td><span class="p12">Abst.</span></td><td><div class="graf-barra"><span class="progreso" style="width:' + GetValor(item, "porc_abst") + '%"></span><b>' + GetValor(item, "porc_abst") + '%</b></div></td></tr>'+      
                 '</table>' +
                 (!voto ? '<div><button class="centrado30 btn2" id="btn-votar-enc-' + proyecto + '" onclick="Mostrar(\'lista-pro_propuestas\',\'detalle-pro_propuestas\',\'pro_propuestas\',' + proyecto + ');">Votar</button></div>':"");
