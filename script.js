@@ -187,22 +187,26 @@ function CerrarSesion() {
 }
 
 
-function RegistrarNotificaciones(){
-    if (window.localStorage.getItem("email_")) {
-        ConsultarEsVigilante(function () {
-            window.localStorage.setItem("es_vigilancia", GetValor(xmlDoc, "es_vigilancia") == 'true');
-            FCMPlugin.subscribeToTopic('FRA_' + window.localStorage.getItem("codigoActivacion") + "-fun_1");
-        });
-        FCMPlugin.subscribeToTopic('FRA_' + window.localStorage.getItem("codigoActivacion") + "-dom_" + window.localStorage.getItem("domicilio"));
-        FCMPlugin.onNotification(function (data) {
-            if (data.modulo == 1) {
-                ActivarAlarma_(data.contenidovoz);
-            } else if (data.modulo == 2) {
-                ActivarTimbre_();
-            }
-        });
-        cordova.plugins.notification.badge.set(1);
-    }
+function RegistrarNotificaciones() {
+    try {
+        if (window.localStorage.getItem("email_")) {
+            ConsultarEsVigilante(function (xmlDoc) {
+                try {
+                    window.localStorage.setItem("es_vigilancia", GetValor(xmlDoc, "es_vigilancia") == 'true');
+                    FCMPlugin.subscribeToTopic('FRA_' + window.localStorage.getItem("codigoActivacion") + "-fun_1");
+                } catch (e){ }
+            });
+            FCMPlugin.subscribeToTopic('FRA_' + window.localStorage.getItem("codigoActivacion") + "-dom_" + window.localStorage.getItem("domicilio"));
+            FCMPlugin.onNotification(function (data) {
+                if (data.modulo == 1) {
+                    ActivarAlarma_(data.contenidovoz);
+                } else if (data.modulo == 2) {
+                    ActivarTimbre_();
+                }
+            });
+            cordova.plugins.notification.badge.set(1);
+        }
+    } catch (e){ }
 }
 
 function ActivarAlarma() {
