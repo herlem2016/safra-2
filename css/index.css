@@ -507,6 +507,8 @@ span.t-5 {
     font-size:1em;
 }
 
+.detalle-w p{margin-top:0px;font-size:1em;}
+
 .detalle button.file {
     border: 0px;
     width: 80%;

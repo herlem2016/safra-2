@@ -385,9 +385,9 @@ function IniciarAsociarCargo() {
                     pantalla.setAttribute("clave", clave);
                     document.getElementById("clave-pro_propuesta").value = clave;
                     cont =
+                        '<span class="t-3">' + GetValor(xmlDoc, "fecha") + '</span>' +
                         '<span class="t-1">' + GetValor(xmlDoc, "titulo") + '</span>' +
-                        '<span class="t-2">' + GetValor(xmlDoc, "descripcion") + '</span>' +
-                        '<span class="t-3">' + GetValor(xmlDoc, "fecha") + '</span>';
+                        '<span class="t-2">' + GetValor(xmlDoc, "descripcion") + '</span>';
                     cont += PintarImagenesTexto(xmlDoc0);
                     document.getElementById("wrap-detalle-" + catalogo).innerHTML = cont;
                     ; break;
