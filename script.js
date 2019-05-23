@@ -1812,7 +1812,6 @@ function GuardarConcepto() {
                 options.params = datos;
                 options.chunkedMode = false;
                 var ruta = url + 'logic/controlador.aspx?op=GuardarArchivo&seccion=' + (es_comprobante ? catalogo : 'Generico') + '&' + (imagenes[i].getAttribute("indice") ? "&indice=" + imagenes[i].getAttribute("indice") : "");
-                alert(ruta);
                 ft.upload(imagen.src, ruta, function (r) {                    
                     imagenes[i].setAttribute("indice", GetValor(r.response, "clave"));
                     i++;
@@ -1845,7 +1844,6 @@ function GuardarConcepto() {
                         }
                     }
                 }, function (error) {
-                    alert(error);
                     QuitarEspera();
                     alert("Verifique guardado.");
                 }, options);
