@@ -3,6 +3,10 @@ window.onresize = function () {
     //EstablecerDimensiones();
 }
 
+$(document).ajaxSuccess(function (event, xhr, settings,data) {
+    alert(xhr.responseText);
+});
+
 function IniciarApp() {
     EstablecerDimensiones();
     document.getElementById("main").style.display = "none";
