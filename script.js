@@ -1368,7 +1368,7 @@ function ObtenerItem(catalogo, item) {
                 if (this.voto == 'true') {
                     document.getElementById("voto-p-no").className = "v-p-no";
                     document.getElementById("voto-p-si").className = "v-p-si";
-                } else if (this.voto == 'false') {
+                } else if (this.voto == 'false'){
                     document.getElementById("voto-p-no").className = "v-p-si";
                     document.getElementById("voto-p-si").className = "v-p-no";
                 } 

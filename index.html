@@ -167,12 +167,12 @@
             </div>
             
             <div class="detalle" id="detalle-licencia" style="display:none;">
-                <div class="titulo">licencia<button class="regresar" onclick="Mostrar('detalle-licencia', 'lista-licencia');">Regresar</button></div>
+                <div class="titulo">licencia<button class="regresar" onclick="Mostrar('detalle-licencia', 'lista-licencia');"><img src="img/back.png"/></button></div>
                 <div class="btns-up"><button class="edit-btn" clave_funcion="3" style="display:none;" control="edit-com-3" id="edit-com-3" onclick="IniciarEditar(false,'licencia');"><img src="img/edit.png" /></button><button style="display:none;" onclick="IniciarEliminar(this,'licencia');" clave_funcion="4" control="del-com-4" id="del-com-4" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>
                 <div class="pantalla-3" id="wrap-detalle-licencia"></div>
             </div>
             <div class="edicion " style="display:none;" id="p-edicion-safra">
-                <div class="titulo">Edición de safra <button class="cancelar" id="cancelar-edit-safra">Cancelar</button></div>
+                <div class="titulo">Edición de safra <button class="regresar" id="cancelar-edit-safra"><img src="img/back.png/><hr class="clearn"/></button></div>
                 <form class="pantalla-3" id="frm-edit-safra" onsubmit="return false;">
                     <fieldset style="border:0px;">
                         <span class='campo'><label>Nombre del condominio o fraccionamiento</label><input name="nombre" /></span>
@@ -194,13 +194,13 @@
             </div>
 
             <div class="detalle" id="detalle-usuarios" style="display:none;">
-                <div class="titulo">usuarios<button class="regresar" onclick="Mostrar('detalle-usuarios', 'lista-usuarios'); ">Regresar</button></div>
+                <div class="titulo">usuarios<button class="regresar" onclick="Mostrar('detalle-usuarios', 'lista-usuarios'); "><img src="img/back.png"/></button></div>
                 <div class="btns-up"><button class="edit-btn" clave_funcion="3" style="display:none;" control="edit-usu" id="edit-usu" onclick="IniciarEditar(false,'usuarios');"><img src="img/edit.png" /></button><hr class="clearn" /></div>
                 <div class="pantalla-3" id="wrap-detalle-usuarios"></div>
             </div>
 
             <div class="edicion " style="display:none;" id="p-edicion-usuarios">
-                <div class="titulo">Edición de usuarios <button class="cancelar" id="cancelar-edit-usuarios">Cancelar</button></div>
+                <div class="titulo">Edición de usuarios <button class="regresar" id="cancelar-edit-usuarios"><img src="img/back.png"/><hr class="clearn"/></button></div>
                 <form class="pantalla-4" id="frm-edit-usuarios" onsubmit="return false;">
                     <fieldset style="border:0px;">
                         <label>Nombre</label><input name="nombre"  id="nombre-usu" />
@@ -218,16 +218,16 @@
             </div>
 
             <div class="lista" id="lista-cargos" style="display:none;">
-                <div class="titulo">Cargos <button class="regresar" onclick="Mostrar('lista-cargosacciones', 'lista-cargos'); ">Regresar</button></div>
+                <div class="titulo">Cargos <button class="regresar" onclick="Mostrar('lista-cargosacciones', 'lista-cargos'); "><img src="img/back.png"/></button></div>
                 <div id="UnUsuario"></div>
                 <div class="agregar" id="edicion-cargos" style="display:none;"><button clave_funcion="5" control="edicion-cargos" onclick="IniciarEditar(true,'cargos',2);">Aregar cargo</button></div>
                 <ul class="lista seleccionable pantalla-2"></ul>
             </div>
 
-            <div class="detalle" id="lista-cargosacciones" style="display:none;">
+            <div id="lista-cargosacciones" style="display:none;">
                 <form onsubmit="return false" method="post" id="frm-edit-cargosacciones">
                     <fieldset>
-                        <div class="titulo">Cargos y acciones<button class="regresar" onclick="Mostrar('lista-cargosacciones', 'lista-cargos'); ">Regresar</button></div>
+                        <div class="titulo">Cargos y acciones<button class="regresar" onclick="Mostrar('lista-cargosacciones', 'lista-cargos'); "><img src="img/back.png"/></button></div>
                         <div class="btns-up"><button class="edit-btn" clave_funcion="3" style="display:none;" control="edit-ca-3" id="edit-ca-3" onclick="IniciarEditar(false, 'cargos', 2, {a:'lista-cargosacciones',b:'p-edicion-cargos'},document.getElementById('clavecargo').value);"><img src="img/edit.png" /></button><button style="display:none;" onclick="IniciarEliminar(this,'cargos',document.getElementById('clavecargo').value);"  control="del-ca-4" id="del-ca-4" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>
                         <div id="UnCargoEd"></div>
                         <div><input style="float:right;" type="checkbox" onchange="ToggleChecks(this,'lista-ulacciones');"/></div>
@@ -241,7 +241,7 @@
             </div>
 
             <div class="edicion " style="display:none;" id="p-edicion-cargos">
-                <div class="titulo">Edición de cargos <button class="cancelar" id="cancelar-edit-cargos">Cancelar</button></div>
+                <div class="titulo">Edición de cargos <button class="regresar" id="cancelar-edit-cargos"><img src="img/back.png"/><hr class="clearn"/></button></div>
                 <form class="pantalla-3" id="frm-edit-cargos" onsubmit="return false;">
                     <fieldset style="border:0px;">
                         <label>Nombre del cargo</label><input name="nombre" id="nombre-cargos" />
@@ -263,20 +263,20 @@
             </div>
 
             <div class="lista" id="lista-vigilancia.BuscarDomicilio" style="display:none;">
-                <div class="titulo">Seleccione domicilio<button class="regresar" onclick="IntercambioVisual('lista-vigilancia', 'lista-vigilancia.BuscarDomicilio'); ">Regresar</button></div>
+                <div class="titulo">Seleccione domicilio<button class="regresar" onclick="IntercambioVisual('lista-vigilancia', 'lista-vigilancia.BuscarDomicilio'); "><img src="img/back.png"/></button></div>
                 <div class="busqueda"><input placeholder="Buscar domicilio" onkeypress="if(ValidarEnter(event)){CargarCatalogo('vigilancia.BuscarDomicilio', undefined, { buscar: this.value });}"/></div>
                 <div class="agregar" id="edicion-vigilancia" style="display:none;"><button clave_funcion="5" control="edicion-vigilancia" onclick="document.getElementById('clave-vigilancia').value = '';">SIN domicilio</button></div>
                 <ul class="lista seleccionable pantalla-3"></ul>
             </div>
 
             <div class="detalle" id="detalle-vigilancia" style="display:none;">
-                <div class="titulo">Visitas<button class="regresar" onclick="Mostrar('detalle-vigilancia', 'lista-vigilancia'); ">Regresar</button></div>
+                <div class="titulo">Visitas<button class="regresar" onclick="Mostrar('detalle-vigilancia', 'lista-vigilancia'); "><img src="img/back.png"/></button></div>
                 <div class="btns-up"><button class="edit-btn" clave_funcion="3" style="display:none;" control="edit-com-3" id="edit-com-3" onclick="IniciarEditar(false,'vigilancia');"><img src="img/edit.png" /></button><button style="display:none;" onclick="IniciarEliminar(this,'vigilancia');" clave_funcion="4" control="del-com-4" id="del-com-4" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>
                 <div class="pantalla-3" id="wrap-detalle-vigilancia"></div>
             </div>
 
             <div class="edicion " style="display:none;" id="p-edicion-vigilancia">
-                <div class="titulo">Registrar visita <button class="cancelar" id="cancelar-edit-vigilancia">Cancelar</button></div>
+                <div class="titulo">Registrar visita <button class="regresar" id="cancelar-edit-vigilancia"><img src="img/back.png"/><hr class="clearn"/></button></div>
                 <form class="pantalla-3" id="frm-edit-vigilancia" onsubmit="return false;">
                     <fieldset style="border:0px;">
                         <input name="esNuevo" type="hidden" id="op-vigilancia" />
@@ -309,7 +309,7 @@
             <div class="edicion" style="display:none;" id="p-edicion-inmuebles">
                 <form onsubmit="return false;" id="frm-edit-inmuebles">
                     <fieldset>
-                        <div class="titulo">Agregar inmueble<button class="cancelar" id="cancelar-edit-inmuebles" onclick="Mostrar('p-edicion-inmuebles','lista-inmuebles');">Cancelar</button></div>
+                        <div class="titulo">Agregar inmueble<button class="regresar" id="cancelar-edit-inmuebles" onclick="Mostrar('p-edicion-inmuebles','lista-inmuebles');"><img src="img/back.png"/><hr class="clearn"/></button></div>
                         <div class="pantalla-3">
                             <input name="esNuevo" type="hidden" id="op-inmuebles" />
                             <input name="clave" type="hidden" id="clave-inmuebles" />
@@ -321,7 +321,7 @@
                 </form>
             </div>
             <div class="edicion" style="display:none;" id="p-regen_inmuebles">
-                <div class="titulo">Calendario de reservaciones<button class="cancelar" id="cancelar-edit-erogacion" onclick="IntercambioVisual('lista-inmuebles','p-regen_inmuebles');">Regresar</button></div>
+                <div class="titulo">Calendario de reservaciones<button class="regresar" id="cancelar-edit-erogacion" onclick="IntercambioVisual('lista-inmuebles','p-regen_inmuebles');"><img src="img/back.png"/></button></div>
                 <div>
                     <div class="leyenda" style="margin-bottom:30px;margin-top:50px;">
                         <input type="hidden" id="inmueble" />
@@ -334,7 +334,7 @@
                 </div>                
             </div>
             <div class="lista" id="lista-reservaciones"  style="display:none;" >
-                <div class="titulo">Reservaciones del día<button class="regresar" onclick="IntercambioVisual( 'p-regen_inmuebles','lista-reservaciones'); ">Regresar</button></div>
+                <div class="titulo">Reservaciones del día<button class="regresar" onclick="IntercambioVisual( 'p-regen_inmuebles','lista-reservaciones'); "><img src="img/back.png"/></button></div>
                 <div class="busqueda"><input placeholder="Buscar" /></div>
                 <input type="hidden" id="fecha-res" />
                 <input type="hidden" id="mes-res" />
@@ -345,7 +345,7 @@
             </div>
 
             <div class="detalle" id="detalle-reservaciones" style="display:none;">
-                <div class="titulo">Detalle de reservación<button class="regresar" onclick="IntercambioVisual( 'lista-reservaciones','detalle-reservaciones'); ">Regresar</button></div>
+                <div class="titulo">Detalle de reservación<button class="regresar" onclick="IntercambioVisual( 'lista-reservaciones','detalle-reservaciones'); "><img src="img/back.png"/></button></div>
                 <div class="btns-up"><button class="edit-btn" clave_funcion="3" style="display:none;" control="edit-rese-3" id="edit-rese-3" onclick="IniciarEditar(false,'reservaciones');"><img src="img/edit.png" /></button><button style="display:none;" onclick="IniciarEliminar(this,'reservaciones');" clave_funcion="4" control="del-rese-4" id="del-rese-4" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>
                 <div class="pantalla-3" id="wrap-detalle-reservaciones"></div>
             </div>
@@ -353,7 +353,7 @@
             <div class="edicion" style="display:none;" id="p-edicion-reservaciones">
                 <form onsubmit="return false;" id="frm-edit-reservaciones">
                     <fieldset>
-                        <div class="titulo">Editar reservación<button class="cancelar" id="cancelar-edit-reservaciones" onclick="Mostrar('p-edicion-reservaciones','lista-reservaciones');">Cancelar</button></div>
+                        <div class="titulo">Editar reservación<button class="regresar" id="cancelar-edit-reservaciones" onclick="Mostrar('p-edicion-reservaciones','lista-reservaciones');"><img src="img/back.png"/><hr class="clearn"/></button></div>
                         <div class="pantalla-3">
                             <input name="esNuevo" type="hidden" id="op-reservaciones" />
                             <input name="clave" type="hidden" id="clave-reservaciones" />
@@ -378,7 +378,7 @@
                 <ul class="lista seleccionable pantalla-3"></ul>
             </div>
             <div class="edicion pantalla-3" style="display:none;" id="p-edicion-directorio">
-                <div class="titulo">Edición de contácto <button class="cancelar" onclick="Mostrar('p-edicion-directorio','lista-directorio');">Cancelar</button></div>
+                <div class="titulo">Edición de contácto <button class="regresar" onclick="Mostrar('p-edicion-directorio','lista-directorio');"><img src="img/back.png"/><hr class="clearn"/></button></div>
                 <form onsubmit="return false;" id="frm-edit-directorio">
                 <fieldset>
                     <input type="hidden" id="op-directorio" name="esNuevo" />
@@ -402,13 +402,13 @@
             </div>
             
             <div class="detalle" id="detalle-comunicados" style="display:none;">
-                <div class="titulo">Comunicados<button class="regresar" onclick="Mostrar('detalle-comunicados', 'lista-comunicados'); ">Regresar</button></div>
+                <div class="titulo">Comunicados<button class="regresar" onclick="Mostrar('detalle-comunicados', 'lista-comunicados'); "><img src="img/back.png"/></button></div>
                 <div class="btns-up"><button class="edit-btn" clave_funcion="3" style="display:none;" control="edit-com-3" id="edit-com-3" onclick="IniciarEditar(false,'comunicados');" ><img src="img/edit.png" /></button><button style="display:none;" onclick="IniciarEliminar(this,'comunicados');" clave_funcion="4" control="del-com-4" id="del-com-4" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>
                 <div class="pantalla-3" id="wrap-detalle-comunicados"></div>
             </div>
 
             <div class="edicion " style="display:none;" id="p-edicion-comunicados" >
-                <div class="titulo">Edición de comunicados <button class="cancelar" id="cancelar-edit-comunicados">Cancelar</button></div>    
+                <div class="titulo">Edición de comunicados <button class="regresar" id="cancelar-edit-comunicados"><img src="img/back.png"/><hr class="clearn"/></button></div>    
                 <form class="pantalla-3" id="frm-edit-comunicados" onsubmit="return false;">
                     <fieldset style="border:0px;">
                         <label>Título</label><input name="titulo" />
@@ -459,7 +459,7 @@
                 </ul>
             </div>
             <div class="detalle" id="detalle-notificaciones" style="display:none;">
-                <div class="titulo">Notificación <button class="regresar" onclick="Mostrar('detalle-notificaciones','lista-notificaciones');">Regresar</button></div>  
+                <div class="titulo">Notificación <button class="regresar" onclick="Mostrar('detalle-notificaciones','lista-notificaciones');"><img src="img/back.png"/></button></div>  
                 <div class="pantalla-3">
                     <div class="btns-up"><button class="edit-btn" clave_funcion="6" style="display:none;" control="edit-not-6" id="edit-not-6" onclick="IniciarConfigurarNotificaciones();"><img src="img/edit.png" /></button><button style="display:none;" onclick="IniciarEliminarNotificacion();" clave_funcion="7" control="del-notif-7" id="del-notif-7" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>
                     <span class="t-1">Nuevo cumunicado</span>                    
@@ -469,7 +469,7 @@
                 </div>
              </div>
             <div class="configuracion" style="display:none;" id="p-edicion-notificaciones">
-                <div class="titulo">Edición de comunicados <button class="cancelar" id="cancelar-edit-notificaciones">Cancelar</button></div>    
+                <div class="titulo">Edición de comunicados <button class="regresar" id="cancelar-edit-notificaciones"><img src="img/back.png"/><hr class="clearn"/></button></div>    
                 <div class="pantalla-3" >
                     <div class="check-activacion"><label class="etiqueta">Hay una diferencia mayor que $ 2000.00, entre saldo físico y saldo real.</label><label class="switch"><input type="checkbox"/><span class="slider round"></span></label><hr class="clearn" /></div>
                     <div class="check-activacion"><label class="etiqueta">Hay una diferencia mayor que $ 2000.00, entre saldo físico y saldo real.</label><label class="switch"><input type="checkbox"/><span class="slider round"></span></label><hr class="clearn" /></div>
@@ -489,19 +489,19 @@
             </div>
 
             <div class="lista" id="lista-prodserv" style="display:none;">
-                <div class="titulo"><button class="regresar" onclick="Mostrar('lista-prodserv','buscador-prodserv');">Regresar</button>Productos y Servicios</div>   
+                <div class="titulo"><button class="regresar" onclick="Mostrar('lista-prodserv','buscador-prodserv');"><img src="img/back.png"/></button>Productos y Servicios</div>   
                 <div class="agregar" id="edicion-prodserv" style="display:none;"><button clave_funcion="5" control="edicion-prodserv" onclick="IniciarEditar(true,'prodserv');">Aregar Negocio</button></div>
                 <ul class="lista seleccionable pantalla-3"></ul>
             </div>
             <div class="detalle" id="detalle-prodserv" style="display:none;">
-                <div class="titulo">Productos y Servicios <button class="regresar" onclick="Mostrar('detalle-prodserv','lista-prodserv');">Regresar</button></div>
+                <div class="titulo">Productos y Servicios <button class="regresar" onclick="Mostrar('detalle-prodserv','lista-prodserv');"><img src="img/back.png"/></button></div>
                 <div class="btns-up"><button class="edit-btn" clave_funcion="3" style="display:none;" control="edit-prodserv-3" id="edit-prodserv-3" onclick="IniciarEditar(false,'prodserv');" ><img src="img/edit.png" /></button><button style="display:none;" onclick="IniciarEliminar(this,'prodserv');" clave_funcion="4" control="del-prodserv-4" id="del-prodserv-4" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>
                 <div class="check-activacion"><label class="etiqueta">Publicar</label><label class="switch"><input type="checkbox" id="activar-negocio" onchange="ActivarNegocio(this);" /><span class="slider round"></span></label><hr class="clearn" /></div>
                 <div class="pantalla-3" id="wrap-detalle-prodserv"></div>
              </div>
             
             <div class="edicion" style="display:none;" id="p-edicion-prodserv">
-                <div class="titulo">Edite los datos de su negocio <button class="cancelar" id="cancelar-edit-prodserv">Cancelar</button></div>
+                <div class="titulo">Edite los datos de su negocio <button class="regresar" id="cancelar-edit-prodserv"><img src="img/back.png"/><hr class="clearn"/></button></div>
                 <form class="pantalla-3" id="frm-edit-prodserv" onsubmit="return false;">
                     <fieldset style="border:0px;">
                         <label>Nombre de su negocio</label><input name="titulo" />
@@ -529,12 +529,12 @@
             </div>
 
             <div class="detalle" id="detalle-solicitudes" style="display:none;">
-                <div class="titulo">Detalle de asunto<button class="regresar" onclick="Mostrar('detalle-solicitudes', 'lista-solicitudes'); ">Regresar</button></div>                
+                <div class="titulo">Detalle de asunto<button class="regresar" onclick="Mostrar('detalle-solicitudes', 'lista-solicitudes'); "><img src="img/back.png"/></button></div>                
                 <div class="pantalla-3" id="wrap-detalle-solicitudes"></div>                
             </div>
 
             <div class="edicion " style="display:none;" id="p-edicion-solicitudes">
-                <div class="titulo">Edición de Reporte <button class="cancelar" id="cancelar-edit-solicitudes">Cancelar</button></div>
+                <div class="titulo">Edición de Reporte <button class="regresar" id="cancelar-edit-solicitudes"><img src="img/back.png"/><hr class="clearn"/></button></div>
                 <form class="pantalla-3" id="frm-edit-solicitudes" onsubmit="return false;">
                     <fieldset style="border:0px;">
                         <label>Tipo de asunto</label><select name="tipo_asunto" style="width:100%;margin:auto;display:block;" id="s-tipossolicitudatencion"></select>
@@ -565,12 +565,12 @@
                 <ul class="lista seleccionable pantalla-3" style="width:100%;"></ul>
             </div>
             <div class="lista" id="lista-ap_personas" style="display:none;">
-                <div class="titulo">Lista de Residentes<button class="cancelar" onclick="IntercambioVisual('lista-aportaciones', 'lista-ap_personas');">Cancelar</button></div>
+                <div class="titulo">Lista de Residentes<button class="regresar" onclick="IntercambioVisual('lista-aportaciones', 'lista-ap_personas');"><img src="img/back.png"/><hr class="clearn"/></button></div>
                 <div class="busqueda"><input placeholder="Buscar" id="buscar-per" onkeypress="if (ValidarEnter(event)) { CargarPersonasAp();}"/></div>
                 <ul class="lista seleccionable pantalla-3" style="width:100%;"></ul>
             </div>             
             <div class="detalle" id="detalle-aportaciones" style="display:none;">
-                <div class="titulo">Detalle de aportación<button class="regresar" onclick="Mostrar('detalle-aportaciones', 'lista-aportaciones'); ">Regresar</button></div>
+                <div class="titulo">Detalle de aportación<button class="regresar" onclick="Mostrar('detalle-aportaciones', 'lista-aportaciones'); "><img src="img/back.png"/></button></div>
                 <div class="btns-up" id="del-ap-4"  style="display:none;"><button onclick="CancelarAportacion(this,'aportaciones');" clave_funcion="2" control="del-ap-4" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>
                 <div class="pantalla-3" id="wrap-detalle-aportaciones"></div>
             </div>
@@ -581,19 +581,19 @@
             </div>
                         
             <div class="lista" id="lista-ap_conceptos" style="display:none;">
-                <div class="titulo">Conceptos<button class="cancelar" onclick="IntercambioVisual('p-edicion-aportaciones', 'lista-ap_conceptos');">Cancelar</button></div>
+                <div class="titulo">Conceptos<button class="regresar" onclick="IntercambioVisual('p-edicion-aportaciones', 'lista-ap_conceptos');"><img src="img/back.png"/><hr class="clearn"/></button></div>
                 <div class="agregar" id="edicion-ap_conceptos" style="display:none;"><button clave_funcion="2" control="edicion-ap_conceptos" onclick="IniciarEditar(true,'ap_conceptos',2);">Agregar concepto</button></div>
                 <ul class="lista seleccionable pantalla-3" style="width:100%;"></ul>
             </div>
             <div class="detalle" id="detalle-ap_conceptos" style="display:none;">
-                <div class="titulo">Detalle de conceptos<button class="regresar" onclick="Mostrar('detalle-ap_conceptos', 'lista-ap_conceptos'); ">Regresar</button></div>
+                <div class="titulo">Detalle de conceptos<button class="regresar" onclick="Mostrar('detalle-ap_conceptos', 'lista-ap_conceptos'); "><img src="img/back.png"/></button></div>
                 <div class="btns-up" id="del-con-4" style="display:none;"><button onclick="CancelarAportacion(this,'ap_conceptos');" clave_funcion="2" control="del-con-4" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>
                 <div class="pantalla-3" id="wrap-detalle-ap_conceptos"></div>
             </div>
             <div class="edicion" style="display:none;" id="p-edicion-ap_conceptos">
                 <form onsubmit="return false;" id="frm-edit-ap_conceptos">
                     <fieldset>
-                        <div class="titulo">Editar Concepto<button class="cancelar" id="cancelar-edit-ap_conceptos" onclick="Mostrar('p-edicion-conceptos-m','lista-ap_conceptos');">Cancelar</button></div>
+                        <div class="titulo">Editar Concepto<button class="regresar" id="cancelar-edit-ap_conceptos" onclick="Mostrar('p-edicion-conceptos-m','lista-ap_conceptos');"><img src="img/back.png"/><hr class="clearn"/></button></div>
                         <div class="pantalla-3">
                             <input name="esNuevo" type="hidden" id="op-ap_conceptos" />    
                             <input name="esNuevo" type="hidden" id="op-ap_conceptos" />                        
@@ -607,20 +607,20 @@
             </div>
 
             <div class="lista" id="lista-ap_domicilios" style="display:none;">
-                <div class="titulo">Lista de Domicilios<button class="cancelar" onclick="IntercambioVisual('p-edicion-aportaciones', 'lista-ap_domicilios');">Cancelar</button></div>
+                <div class="titulo">Lista de Domicilios<button class="regresar" onclick="IntercambioVisual('p-edicion-aportaciones', 'lista-ap_domicilios');"><img src="img/back.png"/><hr class="clearn"/></button></div>
                 <div class="busqueda"><input placeholder="Buscar" id="buscar-per" onkeypress="if (ValidarEnter(event)) { CargarPersonasAp();}" /></div>
                 <div class="agregar" id="edicion-ap_domicilios" style="display:none;"><button clave_funcion="2" control="edicion-ap_domicilios" onclick="IniciarEditar(true,'ap_domicilios',2);">Agregar Domicilio</button></div>
                 <ul class="lista seleccionable pantalla-3" style="width:100%;"></ul>
             </div>
             <div class="detalle" id="detalle-ap_domicilios" style="display:none;">
-                <div class="titulo">Detalle de Domicilio<button class="regresar" onclick="Mostrar('detalle-ap_domicilios', 'lista-ap_domicilios'); ">Regresar</button></div>
+                <div class="titulo">Detalle de Domicilio<button class="regresar" onclick="Mostrar('detalle-ap_domicilios', 'lista-ap_domicilios'); "><img src="img/back.png"/></button></div>
                 <div class="btns-up" id="del-dom-4" style="display:none;"><button class="edit-btn" onclick="IniciarEditar(false,'ap_domicilios');"><img src="img/edit.png" /></button><button onclick="CancelarAportacion(this,'ap_domicilios');" clave_funcion="2" control="del-dom-4" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>
                 <div class="pantalla-3" id="wrap-detalle-ap_domicilios"></div>
             </div>
             <div class="edicion" style="display:none;" id="p-edicion-ap_domicilios">
                 <form onsubmit="return false;" id="frm-edit-ap_domicilios">
                     <fieldset>
-                        <div class="titulo">Editar Domicilio<button class="cancelar" id="cancelar-edit-ap_domicilios" onclick="Mostrar('p-edicion-ap_domicilios','lista-ap_domicilios');">Cancelar</button></div>
+                        <div class="titulo">Editar Domicilio<button class="regresar" id="cancelar-edit-ap_domicilios" onclick="Mostrar('p-edicion-ap_domicilios','lista-ap_domicilios');"><img src="img/back.png"/><hr class="clearn"/></button></div>
                         <div class="pantalla-3">
                             <input name="esNuevo" type="hidden" id="op-ap_domicilios" />
                             <input name="clave" type="hidden" id="clave-ap_domicilios" />
@@ -633,14 +633,14 @@
                 </form>
             </div>
             <div class="lista" id="lista-ap_domicilios2" style="display:none;">
-                <div class="titulo">Lista de Domicilios<button class="cancelar" onclick="IntercambioVisual('p-edicion-aportaciones', 'lista-ap_domicilios2');">Cancelar</button></div>
+                <div class="titulo">Lista de Domicilios<button class="regresar" onclick="IntercambioVisual('p-edicion-aportaciones', 'lista-ap_domicilios2');"><img src="img/back.png"/><hr class="clearn"/></button></div>
                 <div class="busqueda"><input placeholder="Buscar" id="buscar-per" onkeypress="if (ValidarEnter(event)) { CargarPersonasAp();}" /></div>                    
                 <ul class="lista seleccionable pantalla-3" style="width:100%;"></ul>
             </div>
             <div class="edicion" style="display:none;" id="lista-domiciliosconceptosini">
                 <form onsubmit="return false" method="post" id="frm-edit-domiciliosconceptosini">
                     <fieldset>
-                        <div class="titulo">Captura inicial<button class="regresar" onclick="Mostrar('lista-domiciliosconceptosini', 'lista-ap_domicilios2'); ">Regresar</button></div>                        
+                        <div class="titulo">Captura inicial<button class="regresar" onclick="Mostrar('lista-domiciliosconceptosini', 'lista-ap_domicilios2'); "><img src="img/back.png"/></button></div>                        
                         <div id="UnDomicilioEd" class="selec"></div>
                         <div><input style="float:right;" type="checkbox" onchange="ToggleChecks(this,'lista-domiciliosconceptosini');"/></div>
                         <input type="hidden" name="clavedomicilio" id="clavedomicilio"/>
@@ -661,7 +661,7 @@
             </div>
                          
             <div class="detalle" id="detalle-transparencia" style="display:none;">
-                <div class="titulo">Resultados<button class="buscar" id="toggle-aportaciones" onclick="IntercambioVisual('lista-transparencia','detalle-transparencia'); ">Regresar</button></div>                
+                <div class="titulo">Resultados<button class="buscar" id="toggle-aportaciones" onclick="IntercambioVisual('lista-transparencia','detalle-transparencia'); "><img src="img/back.png"/></button></div>                
                 <div style="width:90%;margin:auto;overflow:hidden;"><canvas id="graf-transparencia"></canvas></div>
                 <table id="table-resultados-tr"></table>
             </div>
@@ -678,7 +678,7 @@
                 <div class="edicion" style="display:none;" id="p-edicion-tiposgastos">
                     <form onsubmit="return false;" id="frm-edit-tiposgastos">
                         <fieldset>
-                            <div class="titulo">Agregar tipo de gasto<button class="cancelar" id="cancelar-edit-tiposgastos" onclick="Mostrar('p-edicion-tiposgastos','lista-tiposgastos');">Cancelar</button></div>
+                            <div class="titulo">Agregar tipo de gasto<button class="regresar" id="cancelar-edit-tiposgastos" onclick="Mostrar('p-edicion-tiposgastos','lista-tiposgastos');"><img src="img/back.png"/><hr class="clearn"/></button></div>
                             <div class="pantalla-3">
                                 <input name="esNuevo" type="hidden" id="op-tiposgastos" />
                                 <input name="clave" type="hidden" id="clave-tiposgastos" />
@@ -690,7 +690,7 @@
                     </form>
                 </div>
                 <div class="edicion" style="display:none;" id="p-regen_tiposgastos">
-                    <div class="titulo">Registro de Gastos<button class="cancelar" id="cancelar-edit-erogacion" onclick="Mostrar('p-regen_tiposgastos','lista-tiposgastos');">Cancelar</button></div>
+                    <div class="titulo">Registro de Gastos<button class="regresar" id="cancelar-edit-erogacion" onclick="Mostrar('p-regen_tiposgastos','lista-tiposgastos');"><img src="img/back.png"/><hr class="clearn"/></button></div>
                     <div class="pantalla-3">
                         <form onsubmit="return false;" id="frm-edit-regen_tiposgastos">
                             <fieldset>
@@ -711,7 +711,7 @@
                 </div>
 
                 <div class="lista" id="lista-planpresupuestal">
-                    <div class="titulo">Plan Presupuestal<button class="cancelar" id="cancelar-edit-egrepro" onclick="IntercambioVisual('lista-egrepro','lista-planpresupuestal')">Cancelar</button></div>
+                    <div class="titulo">Plan Presupuestal<button class="regresar" id="cancelar-edit-egrepro" onclick="IntercambioVisual('lista-egrepro','lista-planpresupuestal')"><img src="img/back.png"/><hr class="clearn"/></button></div>
                     <input name="clave" type="hidden" id="clave-egrepro-OPP" />
                     <div id="proy-act"></div>
                     <div class="agregar" id="edicion-preP" style="display:none;"><button clave_funcion="2" control="edicion-preP" onclick="IniciarEditarActividad(true);">Agregar actividad</button></div>                                        
@@ -719,7 +719,7 @@
                 </div>
 
                 <div class="edicion" style="display:none;" id="p-edicion-planpresupuestal">
-                    <div class="titulo">Editar Plan Presupuestal<button class="cancelar" id="cancelar-edit-planpresupuestal" onclick="IntercambioVisual('lista-planpresupuestal','p-edicion-planpresupuestal');">Cancelar</button></div>
+                    <div class="titulo">Editar Plan Presupuestal<button class="regresar" id="cancelar-edit-planpresupuestal" onclick="IntercambioVisual('lista-planpresupuestal','p-edicion-planpresupuestal');"><img src="img/back.png"/><hr class="clearn"/></button></div>
                     <div class="pantalla-3">
                         <form onsubmit="return false;" id="frm-edit-planpresupuestal">
                             <fieldset style="border:0px;">
@@ -735,13 +735,13 @@
                 </div>
 
                 <div class="edicion" style="display:none;" id="lista-regen_egrepro">
-                    <div class="titulo">Registro de Gastos<button class="cancelar" onclick="IntercambioVisual('lista-planpresupuestal','lista-regen_egrepro');">Cancelar</button></div>
+                    <div class="titulo">Registro de Gastos<button class="regresar" onclick="IntercambioVisual('lista-planpresupuestal','lista-regen_egrepro');"><img src="img/back.png"/><hr class="clearn"/></button></div>
                     <div class="agregar" id="edicion-egrepro" style="display:none;"><button clave_funcion="2" control="edicion-egrepro" onclick="IniciarEditarPago(true);">Registrar gasto</button></div>                                        
                     <ul class="lista seleccionable pantalla-3" style="width:100%;"></ul>                    
                 </div>
 
                 <div class="edicion" style="display:none;" id="p-edicion-regen_egrepro">
-                    <div class="titulo">Editar gasto<button class="cancelar" id="cancelar-edit-regen_egrepro" onclick="IntercambioVisual('lista-regen_egrepro','p-edicion-regen_egrepro');">Cancelar</button></div>
+                    <div class="titulo">Editar gasto<button class="regresar" id="cancelar-edit-regen_egrepro" onclick="IntercambioVisual('lista-regen_egrepro','p-edicion-regen_egrepro');"><img src="img/back.png"/><hr class="clearn"/></button></div>
                     <div class="pantalla-3">
                         <form onsubmit="return false;" style="display:none;" id="frm-edit-regen_egrepro">
                             <fieldset>
@@ -771,7 +771,7 @@
             </div>
                          
             <div class="edicion" style="display:none;" id="p-edicion-encuestas">
-                <div class="titulo">Editar encuesta <button class="cancelar" id="cancelar-edit-encuestas">Regresar</button></div>
+                <div class="titulo">Editar encuesta <button class="regresar" id="cancelar-edit-encuestas"><img src="img/back.png"/></button></div>
                 <form class="pantalla-3" id="frm-edit-encuestas" onsubmit="return false;">
                     <fieldset style="border:0px;">
                         <input name="esNuevo" type="hidden" id="op-encuestas" />
@@ -793,7 +793,7 @@
                      <ul class="lista seleccionable pantalla-3 color" style="width:100%;"></ul>
                  </div>
                  <div class="edicion" style="display:none;" id="p-edicion-proyectos">
-                     <div class="titulo">Dar de alta proyecto<button class="cancelar" id="cancelar-edit-proyectos" onclick="Mostrar('p-edicion-proyectos','lista-proyectos');">Cancelar</button></div>
+                     <div class="titulo">Dar de alta proyecto<button class="regresar" id="cancelar-edit-proyectos" onclick="Mostrar('p-edicion-proyectos','lista-proyectos');"><img src="img/back.png"/><hr class="clearn"/></button></div>
                      <div class="pantalla-3">
                          <form onsubmit="return false;" id="frm-edit-proyectos">
                              <fieldset>
@@ -807,7 +807,7 @@
                      </div>
                  </div>                                 
                  <div class="edicion" style="display:none;" id="lista-proyectos.ObtenerAvance">
-                    <div class="titulo">Registro de Avances<button class="cancelar" id="cancelar-edit-proyectos"  onclick="IntercambioVisual('lista-proyectos','lista-proyectos.ObtenerAvance');">Cancelar</button></div> 
+                    <div class="titulo">Registro de Avances<button class="regresar" id="cancelar-edit-proyectos" onclick="IntercambioVisual('lista-proyectos','lista-proyectos.ObtenerAvance');"><img src="img/back.png" /></button><hr class="clearn" /></div> 
                     <button onclick="ToggleControlesPantalla(this.parentNode);" clave_funcion="4" control="ed-pa" id="ed-pa" class="del-btn" style="float:right;margin-right:30px;margin-top:15px;"><img src="img/vobo.png" /></button>   
                     <ul class="lista pantalla-3 color"></ul>
                  </div> 
@@ -822,12 +822,12 @@
                 </div>
 
                 <div class="detalle" id="detalle-pro_propuestas" style="display:none;">
-                    <div class="titulo">Propuesta<button class="regresar" onclick="Mostrar('detalle-pro_propuestas', 'lista-pro_propuestas'); ">Regresar</button></div>
+                    <div class="titulo"><span>Propuesta</span><button class="regresar" onclick="Mostrar('detalle-pro_propuestas', 'lista-pro_propuestas'); "><img src="img/back.png"/></button><hr class="clearn"/></div>
                     <div class="btns-up" id="edit-pro_p" style="display:none;"><button class="edit-btn" clave_funcion="3" onclick="IniciarEditar(false,'pro_propuestas');"><img src="img/edit.png" /></button><button onclick="IniciarEliminar(this,'pro_propuestas');" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>
-                    <div class="pantalla-3">
+                    <div class="detalle-w pantalla-3">
                         <input name="clave" type="hidden" id="clave-pro_propuesta" />
                         <div id="wrap-detalle-pro_propuestas"></div>
-                        <div class="edicion btns-texto" style="margin-bottom:200px;margin-top:30px;">
+                        <div class="btns-texto" style="margin-bottom:200px;margin-top:30px;">
                             <label>¿Esta de acuerdo en apoyar esta propuesta?</label>
                             <fieldset style="border:0px;" id="votos-pp"><table><tr><td style="width:50%;"><button onclick="RegistrarVotoProP(false);" id="voto-p-no">No</button></td><td style="width:50%;"><button onclick="RegistrarVotoProP(true);" id="voto-p-si">Si</button></td></tr></table></fieldset>
                         </div>
@@ -835,7 +835,7 @@
                     </div>
                  </div>
                 <div class="edicion" style="display:none;" id="p-edicion-pro_propuestas">
-                    <div class="titulo">Edición de Propuesta <button class="cancelar" id="cancelar-edit-pro_propuestas" onclick="Mostrar('p-edicion-pro_propuestas','lista-pro_propuestas');">Cancelar</button></div>
+                    <div class="titulo">Edición de Propuesta <button class="regresar" id="cancelar-edit-pro_propuestas" onclick="Mostrar('p-edicion-pro_propuestas','lista-pro_propuestas');"><img src="img/back.png"/><hr class="clearn"/></button></div>
                     <form class="pantalla-3" id="frm-edit-pro_propuestas" onsubmit="return false;">
                         <fieldset style="border:0px;">
                             <label>Título</label><textarea style="height:40px;" maxlength="150" name="titulo"></textarea>
@@ -849,8 +849,8 @@
                     </form>
                 </div> 
 
-                <div class="detalle" id="lista-pro_propuestas.ObtenerVotosPP" style="display:none;">
-                    <div class="titulo">Votantes de propuesta<button class="regresar" onclick="IntercambioVisual('lista-pro_propuestas','lista-pro_propuestas.ObtenerVotosPP');">Regresar</button></div>  
+                <div id="lista-pro_propuestas.ObtenerVotosPP" style="display:none;">
+                    <div class="titulo">Votantes de propuesta<button class="regresar" onclick="IntercambioVisual('lista-pro_propuestas','lista-pro_propuestas.ObtenerVotosPP');"><img src="img/back.png"/></button></div>  
                     <div class="scrollable">
                         <ul class="lista seleccionable scrollable"></ul>
                     </div>

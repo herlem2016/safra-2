@@ -71,7 +71,7 @@ input:checked + .slider:before {
 }
 
 table td {
-    padding: 7px;
+    padding: 3px;
 }
 /* provide some minimal visual accomodation for IE8 and below */
 table tr {

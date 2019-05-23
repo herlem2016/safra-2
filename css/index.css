@@ -258,11 +258,17 @@ ul.lista {
     background-color: transparent;
 }
 
-.titulo .regresar {
+.titulo button.regresar{
     float: left;
-    color: #4800ff;
-    border: 0px;
-    background-color: transparent;
+    width:40px;
+    border:0px;
+    background-color:transparent;
+    padding:0px;
+    margin-left:5px;
+}
+
+.titulo button.regresar img{
+    width:100%;
 }
 
 .edicion label {
@@ -487,6 +493,18 @@ span.t-5 {
     max-width: 95%;
     margin:auto;
     clear:both;
+}
+.detalle-w {
+    padding: 20px;
+    font-size: 1.2em;
+}
+
+.detalle-w span.t-1 {
+    font-weight:bold;
+}
+
+.detalle-w span.t-2{
+    font-size:1em;
 }
 
 .detalle button.file {
@@ -914,29 +932,29 @@ table.transparente tr {
     text-align: center;
 }
 
-    .btns-texto label {
-        padding: 15px;
-    }
+.btns-texto label {
+    padding: 15px;
+}
 
-    .btns-texto table tr td {
-        border: 0px;
-    }
+.btns-texto table tr td {
+    border: 0px;
+}
 
-    .btns-texto button {
-        width: 80%;
-        font-size: 20px;
-        color: #fff;
-        margin-top: 20px;
-        margin-bottom: 12px;
-        border: 1px solid #0e507a;
-        background-color: #00556b;
-        padding: 10px;
-    }
+.btns-texto button {
+    width: 80%;
+    font-size: 20px;
+    color: #fff;
+    margin-top: 20px;
+    margin-bottom: 12px;
+    border: 1px solid #0e507a;
+    background-color: #0ec5f5;
+    padding: 5px;
+}
 
-        .btns-texto button:active {
-            color: #0e507a;
-            background-color: #fff;
-        }
+.btns-texto button:active{
+    color: #0e507a;
+    background-color: #fff;
+}
 
 table.lista-files {
     text-align: center;
