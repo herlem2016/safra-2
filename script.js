@@ -4,7 +4,11 @@ window.onresize = function () {
 }
 
 $(document).ajaxSuccess(function (event, xhr, settings,data) {
-    alert(xhr.responseText);
+    if (GetValor(xhr.responseXML, "mensaje").indexOf("sesion_inactiva")>0){
+        IniciarSesion_back(function () {
+            $.ajax(settings);
+        });
+    }
 });
 
 function IniciarApp() {
@@ -162,13 +166,7 @@ function IniciarSesion(frm) {
     }
     $.post(url + 'logic/controlador.aspx?op=IniciarSesion&seccion=seguridad', datos, function (xmlDoc) {
         if (GetValor(xmlDoc, "estatus") == 1) {
-            window.localStorage.setItem("email_", datos[0].value);
-            window.localStorage.setItem("contrasena_", datos[1].value);
-            window.localStorage.setItem("domicilio", GetValor(xmlDoc, "domicilio"));
-            document.getElementById("nombre-usuario").innerHTML = GetValor(xmlDoc, "nombre");
-            document.getElementById("u-fraccionamiento").innerHTML = GetValor(xmlDoc, "s_nfracc");
-            document.getElementById("u-domicilio").innerHTML = GetValor(xmlDoc, "s_domicilio");
-            document.getElementById("tipo-usuario").innerHTML = GetValor(xmlDoc, "cargo");
+            RegistrarVariables(datos, xmlDoc);
             document.getElementById("main").style.display = "block";
             InicializarApp();
             PantallaMostrar("home", "section", true);
@@ -177,6 +175,30 @@ function IniciarSesion(frm) {
         }
     });
 }
+
+
+function IniciarSesion_back(callback) {
+    var datos = [{ name: "email", value: window.localStorage.getItem("email_") }, { name: "contrasena", value: window.localStorage.getItem("contrasena_") }];
+    $.post(url + 'logic/controlador.aspx?op=IniciarSesion&seccion=seguridad', datos, function (xmlDoc) {
+        if (GetValor(xmlDoc, "estatus") == 1) {
+            RegistrarVariables(datos, xmlDoc);
+            if (callback) callback();
+        } else {
+            alert(GetValor(xmlDoc, "mensaje"));
+        }
+    });
+}
+
+function RegistrarVariables(datos,xmlDoc) {
+    window.localStorage.setItem("email_", datos[0].value);
+    window.localStorage.setItem("contrasena_", datos[1].value);
+    window.localStorage.setItem("domicilio", GetValor(xmlDoc, "domicilio"));
+    document.getElementById("nombre-usuario").innerHTML = GetValor(xmlDoc, "nombre");
+    document.getElementById("u-fraccionamiento").innerHTML = GetValor(xmlDoc, "s_nfracc");
+    document.getElementById("u-domicilio").innerHTML = GetValor(xmlDoc, "s_domicilio");
+    document.getElementById("tipo-usuario").innerHTML = GetValor(xmlDoc, "cargo");
+}
+
 
 function CerrarSesion() {
     $.post(url + 'logic/controlador.aspx?op=CerrarSesion&seccion=seguridad', function (xmlDoc) {

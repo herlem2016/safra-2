@@ -667,17 +667,6 @@ body .ui-datepicker td span, body .ui-datepicker td a{padding-top:1em;padding-bo
         position: absolute;
         bottom: 0px;
         right: 0px;
-        border: 10px solid #bcb56d;
-        border-right-color: currentcolor;
-        border-right-style: solid;
-        border-right-width: 10px;
-        border-bottom-color: currentcolor;
-        border-bottom-style: solid;
-        border-bottom-width: 10px;
-        border-right: 0px;
-        border-bottom: 0px;
-        border-radius: 53%;
-        background-color: #e1dfb3;
         width:20%;
     }
 
@@ -1071,7 +1060,7 @@ div.agregar button, .menu button{text-align:center;}
     transition: all 0.30s ease-in-out;
     outline: none;
     box-shadow: 0 0 5px rgba(200, 200, 200, 1);
-    border: 1px solid #e1f6ff;
+    border: 1px solid #b6b6b6;
 }
 
 .busqueda input:focus, .edicion input:focus, textarea:focus, .login fieldset input:focus{
