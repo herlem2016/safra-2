@@ -1835,10 +1835,8 @@ function GuardarConcepto() {
                             }
                         } else {
                             if (GetValor(r.response, "estatus") == 1) {
-                                alert("Guardado correctamente");
-                            } else {
                                 QuitarEspera();
-                                alert(GetValor(r.response, "mensaje"));
+                                alert("Guardado correctamente");
                                 if (callback) callback();
                             }                            
                         }
