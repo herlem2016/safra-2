@@ -96,15 +96,18 @@
 
     <div style="position:relative;display:none;" id="main">
         <div class="opciones-usuario">
-            <div class="datos-usuario"><img class="home" style="margin-top:-8px;" src="img/home.png"  onclick='PantallaMostrar("home", "section",true);' /><span id="nombre-usuario"></span><img src="img/user.png" onclick="ToogleOpcionesUsuario('opciones-usuario');" /></div>
+            <div class="datos-usuario">
+                <img class="home" style="margin-top:-8px;" src="img/home.png"  onclick='PantallaMostrar("home", "section",true);' />
+                <img class="home" style="margin-top:-8px;" src="img/lapiz.png" onclick="MostrarOpcionesHabilitadas();"/>
+                <span id="nombre-usuario"></span>
+                <img src="img/user.png" onclick="ToogleOpcionesUsuario('opciones-usuario');" />
+            </div>
             <ul id="opciones-usuario" style="display:none;position:absolute;z-index:99999;width:90%;margin:0px;">
                 <li><img src="" class="logo logo-centrado"/></li>
                 <li id="tipo-usuario"></li>
                 <li><i id="u-domicilio"></i></li>
                 <li><b id="u-fraccionamiento"></b></li>
-                <li><button class="share btn2" onclick="CompartirAplicacion()"><img src="img/share.png" title="Compartir" style="float:left;"/><span style="float:left;margin-top:5px;margin-left:10px;" >Compartir aplicación</span><hr class="clearn"/></button></li>
-                <li><button class="btn2" onclick="MostrarOpcionesHabilitadas();" id="mostrar-opciones">Mostrar opciones de edición</button></li>                
-                <li><button class="btn2" onclick="OcultarOpciones();" id="ocultar-opciones" style="display:none;">Ocultar opciones de edición</button></li>
+                <li><button class="share btn2" onclick="CompartirAplicacion()"><img src="img/share.png" title="Compartir" style="float:left;"/><span style="float:left;margin-top:5px;margin-left:10px;" >Compartir aplicación</span></button><hr class="clearn"/></li>                
                 <li><button class="btn2" onclick="PantallaMostrar('safra','section');ToogleOpcionesUsuario('opciones-usuario');" >Cuenta SAFRA</button></li>
                 <hr />
                 <li><button class="btn2" onclick="CerrarSesion();">Cerrar sesión</button></li>
@@ -172,7 +175,7 @@
                 <div class="pantalla-3" id="wrap-detalle-licencia"></div>
             </div>
             <div class="edicion " style="display:none;" id="p-edicion-safra">
-                <div class="titulo">Edición de safra <button class="regresar" id="cancelar-edit-safra"><img src="img/back.png/><hr class="clearn"/></button></div>
+                <div class="titulo">Edición de safra <button class="regresar" id="cancelar-edit-safra"><img src="img/back.png/></button><hr class="clearn"/></div>
                 <form class="pantalla-3" id="frm-edit-safra" onsubmit="return false;">
                     <fieldset style="border:0px;">
                         <span class='campo'><label>Nombre del condominio o fraccionamiento</label><input name="nombre" /></span>
@@ -200,7 +203,7 @@
             </div>
 
             <div class="edicion " style="display:none;" id="p-edicion-usuarios">
-                <div class="titulo">Edición de usuarios <button class="regresar" id="cancelar-edit-usuarios"><img src="img/back.png"/><hr class="clearn"/></button></div>
+                <div class="titulo">Edición de usuarios <button class="regresar" id="cancelar-edit-usuarios"><img src="img/back.png"/></button><hr class="clearn"/></div>
                 <form class="pantalla-4" id="frm-edit-usuarios" onsubmit="return false;">
                     <fieldset style="border:0px;">
                         <label>Nombre</label><input name="nombre"  id="nombre-usu" />
@@ -241,7 +244,7 @@
             </div>
 
             <div class="edicion " style="display:none;" id="p-edicion-cargos">
-                <div class="titulo">Edición de cargos <button class="regresar" id="cancelar-edit-cargos"><img src="img/back.png"/><hr class="clearn"/></button></div>
+                <div class="titulo">Edición de cargos <button class="regresar" id="cancelar-edit-cargos"><img src="img/back.png"/></button><hr class="clearn"/></div>
                 <form class="pantalla-3" id="frm-edit-cargos" onsubmit="return false;">
                     <fieldset style="border:0px;">
                         <label>Nombre del cargo</label><input name="nombre" id="nombre-cargos" />
@@ -276,7 +279,7 @@
             </div>
 
             <div class="edicion " style="display:none;" id="p-edicion-vigilancia">
-                <div class="titulo">Registrar visita <button class="regresar" id="cancelar-edit-vigilancia"><img src="img/back.png"/><hr class="clearn"/></button></div>
+                <div class="titulo">Registrar visita <button class="regresar" id="cancelar-edit-vigilancia"><img src="img/back.png"/></button><hr class="clearn"/></div>
                 <form class="pantalla-3" id="frm-edit-vigilancia" onsubmit="return false;">
                     <fieldset style="border:0px;">
                         <input name="esNuevo" type="hidden" id="op-vigilancia" />
@@ -309,7 +312,7 @@
             <div class="edicion" style="display:none;" id="p-edicion-inmuebles">
                 <form onsubmit="return false;" id="frm-edit-inmuebles">
                     <fieldset>
-                        <div class="titulo">Agregar inmueble<button class="regresar" id="cancelar-edit-inmuebles" onclick="Mostrar('p-edicion-inmuebles','lista-inmuebles');"><img src="img/back.png"/><hr class="clearn"/></button></div>
+                        <div class="titulo">Agregar inmueble<button class="regresar" id="cancelar-edit-inmuebles" onclick="Mostrar('p-edicion-inmuebles','lista-inmuebles');"><img src="img/back.png"/></button><hr class="clearn"/></div>
                         <div class="pantalla-3">
                             <input name="esNuevo" type="hidden" id="op-inmuebles" />
                             <input name="clave" type="hidden" id="clave-inmuebles" />
@@ -353,7 +356,7 @@
             <div class="edicion" style="display:none;" id="p-edicion-reservaciones">
                 <form onsubmit="return false;" id="frm-edit-reservaciones">
                     <fieldset>
-                        <div class="titulo">Editar reservación<button class="regresar" id="cancelar-edit-reservaciones" onclick="Mostrar('p-edicion-reservaciones','lista-reservaciones');"><img src="img/back.png"/><hr class="clearn"/></button></div>
+                        <div class="titulo">Editar reservación<button class="regresar" id="cancelar-edit-reservaciones" onclick="Mostrar('p-edicion-reservaciones','lista-reservaciones');"><img src="img/back.png"/></button><hr class="clearn"/></div>
                         <div class="pantalla-3">
                             <input name="esNuevo" type="hidden" id="op-reservaciones" />
                             <input name="clave" type="hidden" id="clave-reservaciones" />
@@ -378,7 +381,7 @@
                 <ul class="lista seleccionable pantalla-3"></ul>
             </div>
             <div class="edicion pantalla-3" style="display:none;" id="p-edicion-directorio">
-                <div class="titulo">Edición de contácto <button class="regresar" onclick="Mostrar('p-edicion-directorio','lista-directorio');"><img src="img/back.png"/><hr class="clearn"/></button></div>
+                <div class="titulo">Edición de contácto <button class="regresar" onclick="Mostrar('p-edicion-directorio','lista-directorio');"><img src="img/back.png"/></button><hr class="clearn"/></div>
                 <form onsubmit="return false;" id="frm-edit-directorio">
                 <fieldset>
                     <input type="hidden" id="op-directorio" name="esNuevo" />
@@ -408,7 +411,7 @@
             </div>
 
             <div class="edicion " style="display:none;" id="p-edicion-comunicados" >
-                <div class="titulo">Edición de comunicados <button class="regresar" id="cancelar-edit-comunicados"><img src="img/back.png"/><hr class="clearn"/></button></div>    
+                <div class="titulo">Edición de comunicados <button class="regresar" id="cancelar-edit-comunicados"><img src="img/back.png"/></button><hr class="clearn"/></div>    
                 <form class="pantalla-3" id="frm-edit-comunicados" onsubmit="return false;">
                     <fieldset style="border:0px;">
                         <label>Título</label><input name="titulo" />
@@ -469,7 +472,7 @@
                 </div>
              </div>
             <div class="configuracion" style="display:none;" id="p-edicion-notificaciones">
-                <div class="titulo">Edición de comunicados <button class="regresar" id="cancelar-edit-notificaciones"><img src="img/back.png"/><hr class="clearn"/></button></div>    
+                <div class="titulo">Edición de comunicados <button class="regresar" id="cancelar-edit-notificaciones"><img src="img/back.png"/></button><hr class="clearn"/></div>    
                 <div class="pantalla-3" >
                     <div class="check-activacion"><label class="etiqueta">Hay una diferencia mayor que $ 2000.00, entre saldo físico y saldo real.</label><label class="switch"><input type="checkbox"/><span class="slider round"></span></label><hr class="clearn" /></div>
                     <div class="check-activacion"><label class="etiqueta">Hay una diferencia mayor que $ 2000.00, entre saldo físico y saldo real.</label><label class="switch"><input type="checkbox"/><span class="slider round"></span></label><hr class="clearn" /></div>
@@ -501,7 +504,7 @@
              </div>
             
             <div class="edicion" style="display:none;" id="p-edicion-prodserv">
-                <div class="titulo">Edite los datos de su negocio <button class="regresar" id="cancelar-edit-prodserv"><img src="img/back.png"/><hr class="clearn"/></button></div>
+                <div class="titulo">Edite los datos de su negocio <button class="regresar" id="cancelar-edit-prodserv"><img src="img/back.png"/></button><hr class="clearn"/></div>
                 <form class="pantalla-3" id="frm-edit-prodserv" onsubmit="return false;">
                     <fieldset style="border:0px;">
                         <label>Nombre de su negocio</label><input name="titulo" />
@@ -534,7 +537,7 @@
             </div>
 
             <div class="edicion " style="display:none;" id="p-edicion-solicitudes">
-                <div class="titulo">Edición de Reporte <button class="regresar" id="cancelar-edit-solicitudes"><img src="img/back.png"/><hr class="clearn"/></button></div>
+                <div class="titulo">Edición de Reporte <button class="regresar" id="cancelar-edit-solicitudes"><img src="img/back.png"/></button><hr class="clearn"/></div>
                 <form class="pantalla-3" id="frm-edit-solicitudes" onsubmit="return false;">
                     <fieldset style="border:0px;">
                         <label>Tipo de asunto</label><select name="tipo_asunto" style="width:100%;margin:auto;display:block;" id="s-tipossolicitudatencion"></select>
@@ -565,7 +568,7 @@
                 <ul class="lista seleccionable pantalla-3" style="width:100%;"></ul>
             </div>
             <div class="lista" id="lista-ap_personas" style="display:none;">
-                <div class="titulo">Lista de Residentes<button class="regresar" onclick="IntercambioVisual('lista-aportaciones', 'lista-ap_personas');"><img src="img/back.png"/><hr class="clearn"/></button></div>
+                <div class="titulo">Lista de Residentes<button class="regresar" onclick="IntercambioVisual('lista-aportaciones', 'lista-ap_personas');"><img src="img/back.png"/></button><hr class="clearn"/></div>
                 <div class="busqueda"><input placeholder="Buscar" id="buscar-per" onkeypress="if (ValidarEnter(event)) { CargarPersonasAp();}"/></div>
                 <ul class="lista seleccionable pantalla-3" style="width:100%;"></ul>
             </div>             
@@ -581,7 +584,7 @@
             </div>
                         
             <div class="lista" id="lista-ap_conceptos" style="display:none;">
-                <div class="titulo">Conceptos<button class="regresar" onclick="IntercambioVisual('p-edicion-aportaciones', 'lista-ap_conceptos');"><img src="img/back.png"/><hr class="clearn"/></button></div>
+                <div class="titulo">Conceptos<button class="regresar" onclick="IntercambioVisual('p-edicion-aportaciones', 'lista-ap_conceptos');"><img src="img/back.png"/></button><hr class="clearn"/></div>
                 <div class="agregar" id="edicion-ap_conceptos" style="display:none;"><button clave_funcion="2" control="edicion-ap_conceptos" onclick="IniciarEditar(true,'ap_conceptos',2);">Agregar concepto</button></div>
                 <ul class="lista seleccionable pantalla-3" style="width:100%;"></ul>
             </div>
@@ -593,7 +596,7 @@
             <div class="edicion" style="display:none;" id="p-edicion-ap_conceptos">
                 <form onsubmit="return false;" id="frm-edit-ap_conceptos">
                     <fieldset>
-                        <div class="titulo">Editar Concepto<button class="regresar" id="cancelar-edit-ap_conceptos" onclick="Mostrar('p-edicion-conceptos-m','lista-ap_conceptos');"><img src="img/back.png"/><hr class="clearn"/></button></div>
+                        <div class="titulo">Editar Concepto<button class="regresar" id="cancelar-edit-ap_conceptos" onclick="Mostrar('p-edicion-conceptos-m','lista-ap_conceptos');"><img src="img/back.png"/></button><hr class="clearn"/></div>
                         <div class="pantalla-3">
                             <input name="esNuevo" type="hidden" id="op-ap_conceptos" />    
                             <input name="esNuevo" type="hidden" id="op-ap_conceptos" />                        
@@ -607,7 +610,7 @@
             </div>
 
             <div class="lista" id="lista-ap_domicilios" style="display:none;">
-                <div class="titulo">Lista de Domicilios<button class="regresar" onclick="IntercambioVisual('p-edicion-aportaciones', 'lista-ap_domicilios');"><img src="img/back.png"/><hr class="clearn"/></button></div>
+                <div class="titulo">Lista de Domicilios<button class="regresar" onclick="IntercambioVisual('p-edicion-aportaciones', 'lista-ap_domicilios');"><img src="img/back.png"/></button><hr class="clearn"/></div>
                 <div class="busqueda"><input placeholder="Buscar" id="buscar-per" onkeypress="if (ValidarEnter(event)) { CargarPersonasAp();}" /></div>
                 <div class="agregar" id="edicion-ap_domicilios" style="display:none;"><button clave_funcion="2" control="edicion-ap_domicilios" onclick="IniciarEditar(true,'ap_domicilios',2);">Agregar Domicilio</button></div>
                 <ul class="lista seleccionable pantalla-3" style="width:100%;"></ul>
@@ -620,7 +623,7 @@
             <div class="edicion" style="display:none;" id="p-edicion-ap_domicilios">
                 <form onsubmit="return false;" id="frm-edit-ap_domicilios">
                     <fieldset>
-                        <div class="titulo">Editar Domicilio<button class="regresar" id="cancelar-edit-ap_domicilios" onclick="Mostrar('p-edicion-ap_domicilios','lista-ap_domicilios');"><img src="img/back.png"/><hr class="clearn"/></button></div>
+                        <div class="titulo">Editar Domicilio<button class="regresar" id="cancelar-edit-ap_domicilios" onclick="Mostrar('p-edicion-ap_domicilios','lista-ap_domicilios');"><img src="img/back.png"/></button><hr class="clearn"/></div>
                         <div class="pantalla-3">
                             <input name="esNuevo" type="hidden" id="op-ap_domicilios" />
                             <input name="clave" type="hidden" id="clave-ap_domicilios" />
@@ -633,7 +636,7 @@
                 </form>
             </div>
             <div class="lista" id="lista-ap_domicilios2" style="display:none;">
-                <div class="titulo">Lista de Domicilios<button class="regresar" onclick="IntercambioVisual('p-edicion-aportaciones', 'lista-ap_domicilios2');"><img src="img/back.png"/><hr class="clearn"/></button></div>
+                <div class="titulo">Lista de Domicilios<button class="regresar" onclick="IntercambioVisual('p-edicion-aportaciones', 'lista-ap_domicilios2');"><img src="img/back.png"/></button><hr class="clearn"/></div>
                 <div class="busqueda"><input placeholder="Buscar" id="buscar-per" onkeypress="if (ValidarEnter(event)) { CargarPersonasAp();}" /></div>                    
                 <ul class="lista seleccionable pantalla-3" style="width:100%;"></ul>
             </div>
@@ -678,7 +681,7 @@
                 <div class="edicion" style="display:none;" id="p-edicion-tiposgastos">
                     <form onsubmit="return false;" id="frm-edit-tiposgastos">
                         <fieldset>
-                            <div class="titulo">Agregar tipo de gasto<button class="regresar" id="cancelar-edit-tiposgastos" onclick="Mostrar('p-edicion-tiposgastos','lista-tiposgastos');"><img src="img/back.png"/><hr class="clearn"/></button></div>
+                            <div class="titulo">Agregar tipo de gasto<button class="regresar" id="cancelar-edit-tiposgastos" onclick="Mostrar('p-edicion-tiposgastos','lista-tiposgastos');"><img src="img/back.png"/></button><hr class="clearn"/></div>
                             <div class="pantalla-3">
                                 <input name="esNuevo" type="hidden" id="op-tiposgastos" />
                                 <input name="clave" type="hidden" id="clave-tiposgastos" />
@@ -690,7 +693,7 @@
                     </form>
                 </div>
                 <div class="edicion" style="display:none;" id="p-regen_tiposgastos">
-                    <div class="titulo">Registro de Gastos<button class="regresar" id="cancelar-edit-erogacion" onclick="Mostrar('p-regen_tiposgastos','lista-tiposgastos');"><img src="img/back.png"/><hr class="clearn"/></button></div>
+                    <div class="titulo">Registro de Gastos<button class="regresar" id="cancelar-edit-erogacion" onclick="Mostrar('p-regen_tiposgastos','lista-tiposgastos');"><img src="img/back.png"/></button><hr class="clearn"/></div>
                     <div class="pantalla-3">
                         <form onsubmit="return false;" id="frm-edit-regen_tiposgastos">
                             <fieldset>
@@ -711,7 +714,7 @@
                 </div>
 
                 <div class="lista" id="lista-planpresupuestal">
-                    <div class="titulo">Plan Presupuestal<button class="regresar" id="cancelar-edit-egrepro" onclick="IntercambioVisual('lista-egrepro','lista-planpresupuestal')"><img src="img/back.png"/><hr class="clearn"/></button></div>
+                    <div class="titulo">Plan Presupuestal<button class="regresar" id="cancelar-edit-egrepro" onclick="IntercambioVisual('lista-egrepro','lista-planpresupuestal')"><img src="img/back.png"/></button><hr class="clearn"/></div>
                     <input name="clave" type="hidden" id="clave-egrepro-OPP" />
                     <div id="proy-act"></div>
                     <div class="agregar" id="edicion-preP" style="display:none;"><button clave_funcion="2" control="edicion-preP" onclick="IniciarEditarActividad(true);">Agregar actividad</button></div>                                        
@@ -719,7 +722,7 @@
                 </div>
 
                 <div class="edicion" style="display:none;" id="p-edicion-planpresupuestal">
-                    <div class="titulo">Editar Plan Presupuestal<button class="regresar" id="cancelar-edit-planpresupuestal" onclick="IntercambioVisual('lista-planpresupuestal','p-edicion-planpresupuestal');"><img src="img/back.png"/><hr class="clearn"/></button></div>
+                    <div class="titulo">Editar Plan Presupuestal<button class="regresar" id="cancelar-edit-planpresupuestal" onclick="IntercambioVisual('lista-planpresupuestal','p-edicion-planpresupuestal');"><img src="img/back.png"/></button><hr class="clearn"/></div>
                     <div class="pantalla-3">
                         <form onsubmit="return false;" id="frm-edit-planpresupuestal">
                             <fieldset style="border:0px;">
@@ -735,13 +738,13 @@
                 </div>
 
                 <div class="edicion" style="display:none;" id="lista-regen_egrepro">
-                    <div class="titulo">Registro de Gastos<button class="regresar" onclick="IntercambioVisual('lista-planpresupuestal','lista-regen_egrepro');"><img src="img/back.png"/><hr class="clearn"/></button></div>
+                    <div class="titulo">Registro de Gastos<button class="regresar" onclick="IntercambioVisual('lista-planpresupuestal','lista-regen_egrepro');"><img src="img/back.png"/></button><hr class="clearn"/></div>
                     <div class="agregar" id="edicion-egrepro" style="display:none;"><button clave_funcion="2" control="edicion-egrepro" onclick="IniciarEditarPago(true);">Registrar gasto</button></div>                                        
                     <ul class="lista seleccionable pantalla-3" style="width:100%;"></ul>                    
                 </div>
 
                 <div class="edicion" style="display:none;" id="p-edicion-regen_egrepro">
-                    <div class="titulo">Editar gasto<button class="regresar" id="cancelar-edit-regen_egrepro" onclick="IntercambioVisual('lista-regen_egrepro','p-edicion-regen_egrepro');"><img src="img/back.png"/><hr class="clearn"/></button></div>
+                    <div class="titulo">Editar gasto<button class="regresar" id="cancelar-edit-regen_egrepro" onclick="IntercambioVisual('lista-regen_egrepro','p-edicion-regen_egrepro');"><img src="img/back.png"/></button><hr class="clearn"/></div>
                     <div class="pantalla-3">
                         <form onsubmit="return false;" style="display:none;" id="frm-edit-regen_egrepro">
                             <fieldset>
@@ -793,10 +796,10 @@
                      <ul class="lista seleccionable pantalla-3 color" style="width:100%;"></ul>
                  </div>
                  <div class="edicion" style="display:none;" id="p-edicion-proyectos">
-                     <div class="titulo">Dar de alta proyecto<button class="regresar" id="cancelar-edit-proyectos" onclick="Mostrar('p-edicion-proyectos','lista-proyectos');"><img src="img/back.png"/><hr class="clearn"/></button></div>
+                     <div class="titulo">Dar de alta proyecto<button class="regresar" id="cancelar-edit-proyectos" onclick="Mostrar('p-edicion-proyectos','lista-proyectos');"><img src="img/back.png"/></button><hr class="clearn"/></div>
                      <div class="pantalla-3">
                          <form onsubmit="return false;" id="frm-edit-proyectos">
-                             <fieldset>
+                             <fieldset style="border:0px;">
                                  <input name="esNuevo" type="hidden" id="op-proyectos" />
                                  <input name="clave" type="hidden" id="clave-proyectos" />
                                  <label>Seleccione la propuesta </label><select style="width:100%;" name="proyectos" id="s-egre-propro"></select>
@@ -807,8 +810,7 @@
                      </div>
                  </div>                                 
                  <div class="edicion" style="display:none;" id="lista-proyectos.ObtenerAvance">
-                    <div class="titulo">Registro de Avances<button class="regresar" id="cancelar-edit-proyectos" onclick="IntercambioVisual('lista-proyectos','lista-proyectos.ObtenerAvance');"><img src="img/back.png" /></button><hr class="clearn" /></div> 
-                    <button onclick="ToggleControlesPantalla(this.parentNode);" clave_funcion="4" control="ed-pa" id="ed-pa" class="del-btn" style="float:right;margin-right:30px;margin-top:15px;"><img src="img/vobo.png" /></button>   
+                    <div class="titulo">Registro de Avances<button class="regresar" id="cancelar-edit-proyectos" onclick="IntercambioVisual('lista-proyectos','lista-proyectos.ObtenerAvance');"><img src="img/back.png" /></button><hr class="clearn" /></div>                      
                     <ul class="lista pantalla-3 color"></ul>
                  </div> 
             </div>
@@ -835,7 +837,7 @@
                     </div>
                  </div>
                 <div class="edicion" style="display:none;" id="p-edicion-pro_propuestas">
-                    <div class="titulo">Edición de Propuesta <button class="regresar" id="cancelar-edit-pro_propuestas" onclick="Mostrar('p-edicion-pro_propuestas','lista-pro_propuestas');"><img src="img/back.png"/><hr class="clearn"/></button></div>
+                    <div class="titulo"><span>Edición de Propuesta </span><button class="regresar" id="cancelar-edit-pro_propuestas" onclick="Mostrar('p-edicion-pro_propuestas','lista-pro_propuestas');"><img src="img/back.png"/></button><hr class="clearn"/></div>
                     <form class="pantalla-3" id="frm-edit-pro_propuestas" onsubmit="return false;">
                         <fieldset style="border:0px;">
                             <label>Título</label><textarea style="height:40px;" maxlength="150" name="titulo"></textarea>
@@ -844,13 +846,13 @@
                             <label>Descripción y/o Necesidad</label><textarea style="height:100px;"name="descripcion"></textarea>
                             <label>Imágenes y descripción<button class="adjuntar-btn" style="width:100px;" onclick="IAgregarImagenTexto('c-e-pro_propuestas');"><img src="img/add.png" /><span class="texto-discreto">Agregar</span></button><hr class="clearn" /></label>
                             <div id="c-e-pro_propuestas"></div>
-                            <button class="aceptar" style="margin-top:10px;margin-bottom:150px;"onclick="GuardarItem(this,'pro_propuestas');">Aceptar</button>
+                            <button class="aceptar" style="margin-top:10px;margin-bottom:150px;"onclick="GuardarItem(this,'pro_propuestas',true);">Aceptar</button>
                         </fieldset>
                     </form>
                 </div> 
 
                 <div id="lista-pro_propuestas.ObtenerVotosPP" style="display:none;">
-                    <div class="titulo">Votantes de propuesta<button class="regresar" onclick="IntercambioVisual('lista-pro_propuestas','lista-pro_propuestas.ObtenerVotosPP');"><img src="img/back.png"/></button></div>  
+                    <div class="titulo"><span>Votantes de propuesta</span><button class="regresar" onclick="IntercambioVisual('lista-pro_propuestas','lista-pro_propuestas.ObtenerVotosPP');"><img src="img/back.png"/></button></div>  
                     <div class="scrollable">
                         <ul class="lista seleccionable scrollable"></ul>
                     </div>

@@ -252,53 +252,35 @@ function DesactivarAlarma() {
     document.getElementById("alarma-v").pause();
 }
 
-function MostrarOpcionesHabilitadas(evitarToggle) {
-            var funcionesEnPantalla = { btns: [], claves: [] };
-            var botones = document.getElementsByTagName("button");
-            var j = 0;
-            for (var i = 0; i < botones.length;i++){
-                if (botones[i].getAttribute("clave_funcion")){
-                    funcionesEnPantalla.claves[j] = botones[i].getAttribute("clave_funcion");
-                    funcionesEnPantalla.btns[j++] = botones[i];
-                }
+function MostrarOpcionesHabilitadas() {
+    var wraper = window.pvisible;  
+    if (wraper) {
+        var funcionesEnPantalla = { btns: [], claves: [] };
+        var botones = wraper.getElementsByTagName("button");
+        var j = 0;
+        for (var i = 0; i < botones.length; i++) {
+            if (botones[i].getAttribute("clave_funcion")) {
+                funcionesEnPantalla.claves[j] = botones[i].getAttribute("clave_funcion");
+                funcionesEnPantalla.btns[j++] = botones[i];
             }
-            $.post(url + 'logic/controlador.aspx' + '?op=ObtenerFuncionesHabilitadas&seccion=seguridad&funciones=' + funcionesEnPantalla.claves.join(","), function (xmlDoc) {
-                var funcionesRecibidas = xmlDoc.getElementsByTagName("Table");
-                for (var n = 0; n<funcionesRecibidas.length;n++){
-                    for (var k = 0; k < funcionesEnPantalla.btns.length; k++){
-                        if (funcionesEnPantalla.btns[k].getAttribute("clave_funcion") == GetValor(funcionesRecibidas[n], "clave_funcion")) {
-                            try { document.getElementById(funcionesEnPantalla.btns[k].getAttribute("control")).style.display = "block"; } catch (e){ }
-                        }
+        }
+        $.post(url + 'logic/controlador.aspx' + '?op=ObtenerFuncionesHabilitadas&seccion=seguridad&funciones=' + funcionesEnPantalla.claves.join(","), function (xmlDoc) {
+            var funcionesRecibidas = xmlDoc.getElementsByTagName("Table");
+            for (var n = 0; n < funcionesRecibidas.length; n++) {
+                for (var k = 0; k < funcionesEnPantalla.btns.length; k++) {
+                    if (wraper.toggle == 1) {
+                        document.getElementById(funcionesEnPantalla.btns[k].getAttribute("control")).style.display = "none";
+                    } else if (funcionesEnPantalla.btns[k].getAttribute("clave_funcion") == GetValor(funcionesRecibidas[n], "clave_funcion")) {
+                        try { document.getElementById(funcionesEnPantalla.btns[k].getAttribute("control")).style.display = "block"; } catch (e) { }
                     }
                 }
-                if (!evitarToggle) {
-                    ToogleOpcionesUsuario('opciones-usuario');
-                }
-                document.getElementById("mostrar-opciones").style.display = "none";
-                document.getElementById("ocultar-opciones").style.display = "block";
-            });
-        }
-
-        function OcultarOpciones() {
-            var funcionesEnPantalla = { btns: [], claves: [] };
-            var botones = document.getElementsByTagName("button");
-            var j = 0;
-            for (var i = 0; i < botones.length; i++) {
-                if (botones[i].getAttribute("clave_funcion")) {
-                    funcionesEnPantalla.claves[j] = botones[i].getAttribute("clave_funcion");
-                    funcionesEnPantalla.btns[j++] = botones[i];
-                }
             }
-            for (var k = 0; k < funcionesEnPantalla.btns.length; k++) {
-                try {
-                    document.getElementById(funcionesEnPantalla.btns[k].getAttribute("control")).style.display = "none";
-                }catch(e){}
-            }
-            ToogleOpcionesUsuario('opciones-usuario');
-            document.getElementById("mostrar-opciones").style.display = "block";
-            document.getElementById("ocultar-opciones").style.display = "none";
-        }
+            wraper.toggle = (wraper.toggle ? 0 : 1);
+        });
+    }
+}
 
+        
         function ToogleOpcionesUsuario(obj) {
             obj = document.getElementById(obj);
             if (obj.style.display == "none") {
@@ -321,8 +303,7 @@ function MostrarOpcionesHabilitadas(evitarToggle) {
         }
 
         function Mostrar(p1, p2, catalogo, clave) {
-            document.getElementById(p1).style.display = "none";
-            document.getElementById(p2).style.display = "block";
+            IntercambioVisual(p2,p1);
             if (catalogo) {
                 //PonerEspera(boton, catalogo);
                 $.post(url + 'logic/controlador.aspx' + '?op=ObtenerItem&seccion=' + catalogo + '&claveItem=' + clave, function (xmlDoc) {
@@ -343,11 +324,18 @@ function CerrarPago(event,ventana) {
     }
 }
 
-function GuardarItem(obj,catalogo){
+function GuardarItem(obj,catalogo,detalle){
     Guardar(obj, catalogo, function () {
         LimpiarForm(catalogo);
         CargarCatalogo(catalogo, function () {
-            IntercambioVisual('lista-' + catalogo, 'p-edicion-' + catalogo);
+            if (detalle) {
+                var clave = document.getElementById("clave-pro_propuesta");
+                if (clave) {
+                    Mostrar( 'p-edicion-' + catalogo,'detalle-' + catalogo, catalogo, clave.value);
+                }
+            } else {
+                IntercambioVisual('lista-' + catalogo, 'p-edicion-' + catalogo);
+            }
         });
     });
 }
@@ -937,7 +925,10 @@ function IniciarAsociarCargo() {
             for (var i = 0; i < pants.length; i++){
                 pants[i].style.display = "none";
             }
-            document.getElementById(catalogo).style.display = "block";
+            var obj = document.getElementById(catalogo);
+            window.pvisible= obj.getElementsByTagName("div")[0];
+            obj.style.display = "block";
+
         }
 
         function IniciarEditarPlanPro(id) {
@@ -960,7 +951,9 @@ function IniciarAsociarCargo() {
         }
 
         function IntercambioVisual(id1,id2){
-            document.getElementById(id1).style.display = "block";
+            var obj = document.getElementById(id1);
+            obj.style.display = "block";
+            window.pvisible = obj;
             document.getElementById(id2).style.display = "none";
         }
 

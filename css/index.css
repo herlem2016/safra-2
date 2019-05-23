@@ -159,9 +159,9 @@ button {
     font-weight: bold;
     font-size: 14px;
     font-family: arial;
-    padding-bottom: 0px;
 }
-.titulo span{padding-top:7px;display:inline-block;}
+
+.titulo span{padding-top:5px;display:inline-block;}
 
 ul.lista {
     padding: 0px;
@@ -494,20 +494,6 @@ span.t-5 {
     margin:auto;
     clear:both;
 }
-.detalle-w {
-    padding: 20px;
-    font-size: 1.2em;
-}
-
-.detalle-w span.t-1 {
-    font-weight:bold;
-}
-
-.detalle-w span.t-2{
-    font-size:1em;
-}
-
-.detalle-w p{margin-top:0px;font-size:1em;}
 
 .detalle button.file {
     border: 0px;
@@ -1092,3 +1078,21 @@ div.agregar button, .menu button{text-align:center;}
     box-shadow: 0 0 5px rgba(81, 203, 238, 1);
     border: 1px solid rgba(81, 203, 238, 1);
 }
+
+.detalle-w {
+    padding: 20px;
+    font-size: 1.2em;
+}
+
+    .detalle-w span.t-1 {
+        font-weight: bold;
+    }
+
+    .detalle-w span.t-2 {
+        font-size: 1em;
+    }
+
+    .detalle-w p {
+        margin-top: 0px;
+        font-size: 1em;
+    }
