@@ -923,7 +923,7 @@ table.transparente tr {
     color: #fff;
     margin-top: 20px;
     margin-bottom: 12px;
-    border: 1px solid #0e507a;
+    border: 0px;
     background-color: #0ec5f5;
     padding: 5px;
 }

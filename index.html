@@ -790,10 +790,10 @@
                 
         <section class="pantalla proyectos" id="proyectos"> 
              <div id="pro_ejecucion">
-                 <div class="lista" id="lista-proyectos">
+                 <div class="lista pantalla-2" id="lista-proyectos">
                      <div class="titulo">Proyectos</div>
                      <div class="agregar" id="edicion-proyectos-1" style="display:none;"><button clave_funcion="2" control="edicion-proyectos-1" onclick="IniciarEditar(true,'proyectos',2);">Dar de alta proyecto</button></div>
-                     <ul class="lista seleccionable pantalla-3 color" style="width:100%;"></ul>
+                     <ul class="lista seleccionable pantalla-31 color" style="width:100%;"></ul>
                  </div>
                  <div class="edicion" style="display:none;" id="p-edicion-proyectos">
                      <div class="titulo">Dar de alta proyecto<button class="regresar" id="cancelar-edit-proyectos" onclick="Mostrar('p-edicion-proyectos','lista-proyectos');"><img src="img/back.png"/></button><hr class="clearn"/></div>
@@ -809,9 +809,9 @@
                          </form>
                      </div>
                  </div>                                 
-                 <div class="edicion" style="display:none;" id="lista-proyectos.ObtenerAvance">
+                 <div class="lista pantalla-2" style="display:none;" id="lista-proyectos.ObtenerAvance">
                     <div class="titulo">Registro de Avances<button class="regresar" id="cancelar-edit-proyectos" onclick="IntercambioVisual('lista-proyectos','lista-proyectos.ObtenerAvance');"><img src="img/back.png" /></button><hr class="clearn" /></div>                      
-                    <ul class="lista pantalla-3 color"></ul>
+                    <ul class="lista pantalla-31 color"></ul>
                  </div> 
             </div>
 
@@ -829,16 +829,16 @@
                     <div class="detalle-w pantalla-3">
                         <input name="clave" type="hidden" id="clave-pro_propuesta" />
                         <div id="wrap-detalle-pro_propuestas"></div>
-                        <div class="btns-texto" style="margin-bottom:200px;margin-top:30px;">
+                        <div class="btns-texto" style="margin-bottom:50px;margin-top:30px;">
                             <label>¿Esta de acuerdo en apoyar esta propuesta?</label>
                             <fieldset style="border:0px;" id="votos-pp"><table><tr><td style="width:50%;"><button onclick="RegistrarVotoProP(false);" id="voto-p-no">No</button></td><td style="width:50%;"><button onclick="RegistrarVotoProP(true);" id="voto-p-si">Si</button></td></tr></table></fieldset>
                         </div>
-                        <hr />                  
+                        <hr class="clearn"/>                  
                     </div>
                  </div>
                 <div class="edicion" style="display:none;" id="p-edicion-pro_propuestas">
                     <div class="titulo"><span>Edición de Propuesta </span><button class="regresar" id="cancelar-edit-pro_propuestas" onclick="Mostrar('p-edicion-pro_propuestas','lista-pro_propuestas');"><img src="img/back.png"/></button><hr class="clearn"/></div>
-                    <form class="pantalla-3" id="frm-edit-pro_propuestas" onsubmit="return false;">
+                    <form class="pantalla-31" id="frm-edit-pro_propuestas" onsubmit="return false;">
                         <fieldset style="border:0px;">
                             <label>Título</label><textarea style="height:40px;" maxlength="150" name="titulo"></textarea>
                             <input name="esNuevo" type="hidden" id="op-pro_propuestas" />
@@ -846,16 +846,14 @@
                             <label>Descripción y/o Necesidad</label><textarea style="height:100px;"name="descripcion"></textarea>
                             <label>Imágenes y descripción<button class="adjuntar-btn" style="width:100px;" onclick="IAgregarImagenTexto('c-e-pro_propuestas');"><img src="img/add.png" /><span class="texto-discreto">Agregar</span></button><hr class="clearn" /></label>
                             <div id="c-e-pro_propuestas"></div>
-                            <button class="aceptar" style="margin-top:10px;margin-bottom:150px;"onclick="GuardarItem(this,'pro_propuestas',true);">Aceptar</button>
+                            <button class="aceptar" style="margin-top:10px;margin-bottom:20px;"onclick="GuardarItem(this,'pro_propuestas',true,'clave');">Aceptar</button>
                         </fieldset>
                     </form>
                 </div> 
 
                 <div id="lista-pro_propuestas.ObtenerVotosPP" style="display:none;">
                     <div class="titulo"><span>Votantes de propuesta</span><button class="regresar" onclick="IntercambioVisual('lista-pro_propuestas','lista-pro_propuestas.ObtenerVotosPP');"><img src="img/back.png"/></button></div>  
-                    <div class="scrollable">
-                        <ul class="lista seleccionable scrollable"></ul>
-                    </div>
+                    <ul class="lista seleccionable pantalla-31"></ul>
                  </div>
 
             </div>

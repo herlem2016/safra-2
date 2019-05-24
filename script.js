@@ -46,12 +46,13 @@ function EstablecerDimensiones() {
     var styleStr = "";
     var heightApp = parseInt(window.innerHeight - 40, 10) + 5;
     styleStr += ".pantalla {height:" + heightApp + "px !important;}";
-    styleStr += ".menu button img {height:" + (heightApp - 100) / 9 + "px !important;}";
-    styleStr += ".pantalla-2 {height:" + (heightApp - 64) + "px !important;}";
-    styleStr += ".pantalla-3 {height:" + (heightApp - 132) + "px !important;}";
-    styleStr += ".pantalla-4 {height:" + (heightApp - 27) + "px !important;}";
-    styleStr += ".scrollable {height:" + (heightApp - 132) + "px !important;}";
-    styleStr += ".scrollable-2 {height:" + (heightApp - 168) + "px !important;}";
+    styleStr += ".menu button img {height:" + (heightApp - 100) / 9 + "px !important;overflow-y:auto;}";
+    styleStr += ".pantalla-2 {height:" + (heightApp - 64) + "px !important;overflow-y:auto;}";
+    styleStr += ".pantalla-3 {height:" + (heightApp - 132) + "px !important;margin-bottom:0px;overflow-y:auto;}";
+    styleStr += ".pantalla-31 {height:" + (heightApp - 104) + "px !important;margin-top:0px;margin-bottom:0px;overflow-y:auto;}";
+    styleStr += ".pantalla-4 {height:" + (heightApp - 27) + "px !important;overflow-y:auto;}";
+    styleStr += ".scrollable {height:" + (heightApp - 132) + "px !important;margin-bottom:0px;overflow-y:auto;}";
+    styleStr += ".scrollable-2 {height:" + (heightApp - 168) + "px !important;margin-bottom:0px;overflow-y:auto;}";
     styleStr += ".menu li {height:" + (heightApp - 50) / 6 + "px !important;margin-bottom:" + (heightApp - 50) /40 + "px !important;}";
     style.innerHTML = styleStr;
     RegistrarGrafica();
@@ -351,14 +352,11 @@ function CerrarPago(event,ventana) {
 }
 
 function GuardarItem(obj,catalogo,detalle){
-    Guardar(obj, catalogo, function () {
+        Guardar(obj, catalogo, function (claveItem) {
         LimpiarForm(catalogo);
         CargarCatalogo(catalogo, function () {
             if (detalle) {
-                var clave = document.getElementById("clave-pro_propuesta");
-                if (clave) {
-                    Mostrar( 'p-edicion-' + catalogo,'detalle-' + catalogo, catalogo, clave.value);
-                }
+                Mostrar('p-edicion-' + catalogo, 'detalle-' + catalogo, catalogo, claveItem);
             } else {
                 IntercambioVisual('lista-' + catalogo, 'p-edicion-' + catalogo);
             }
@@ -1718,34 +1716,34 @@ function GuardarConcepto() {
             PonerEspera(boton,catalogo);
             $.post(url + 'logic/controlador.aspx' + '?op=Guardar&seccion=' + catalogo, datos, function (xmlDoc) {  
                 if (GetValor(xmlDoc, "estatus") == 1) {
+                    var claveItem = GetValor(xmlDoc, "clave");
                     if (document.getElementById("c-e-" + catalogo)){
-                    try {
-                        var claveItem = GetValor(xmlDoc, "clave");
-                        var imagenes = document.getElementById("c-e-" + catalogo).getElementsByTagName("table");
-                        var imagenesCambio = [];
-                        var textosCambio = [];
-                        for (var i = 0; i < imagenes.length; i++){
-                            if (imagenes[i].getAttribute("cambioImagen") == "true") {
-                                imagenesCambio.push(imagenes[i]);
-                            } else if (imagenes[i].getAttribute("cambioTexto") == "true") {
-                                textosCambio.push(imagenes[i]);
+                        try {
+                            var imagenes = document.getElementById("c-e-" + catalogo).getElementsByTagName("table");
+                            var imagenesCambio = [];
+                            var textosCambio = [];
+                            for (var i = 0; i < imagenes.length; i++){
+                                if (imagenes[i].getAttribute("cambioImagen") == "true") {
+                                    imagenesCambio.push(imagenes[i]);
+                                } else if (imagenes[i].getAttribute("cambioTexto") == "true") {
+                                    textosCambio.push(imagenes[i]);
+                                }
                             }
-                        }
-                        if (imagenesCambio.length > 0) {
-                            GuardarUnaImagenTexto(imagenesCambio, textosCambio, 0, callback, claveItem, catalogo);
-                        } else if (textosCambio.length > 0) {
-                            GuardarUnTexto(textosCambio, 0, callback, claveItem, catalogo, subitemCatalogo);
-                        } else {
+                            if (imagenesCambio.length > 0) {
+                                GuardarUnaImagenTexto(imagenesCambio, textosCambio, 0, callback, claveItem, catalogo);
+                            } else if (textosCambio.length > 0) {
+                                GuardarUnTexto(textosCambio, 0, callback, claveItem, catalogo, subitemCatalogo);
+                            } else {
+                                QuitarEspera();
+                                if(callback) callback(claveItem);
+                            }                
+                        } catch (e) {
                             QuitarEspera();
-                            if(callback) callback();
-                        }                
-                    } catch (e) {
-                        QuitarEspera();
-                        alert(e.message);
+                            alert(e.message);
                         }
                     } else {
                         QuitarEspera();
-                        if (callback) callback();
+                        if (callback) callback(claveItem);
                     }
                 } else {
                     QuitarEspera();
@@ -1757,10 +1755,10 @@ function GuardarConcepto() {
         function GuardarComprobante(boton, catalogo, callback, subitemCatalogo) {
             var datos = $("#frm-edit-" + catalogo).serializeArray();
             PonerEspera(boton, catalogo);
+            var inDatos = document.getElementById("in-" + catalogo);
+            var claveItem = (inDatos.params ? inDatos.params : inDatos.value);
             if (document.getElementById("c-e-" + catalogo)) {
                 try {
-                    var inDatos = document.getElementById("in-" + catalogo);
-                    var claveItem = (inDatos.params ? inDatos.params : inDatos.value);
                     var imagenes = document.getElementById("c-e-" + catalogo).getElementsByTagName("table");
                     var imagenesCambio = [];
                     var textosCambio = [];
@@ -1777,15 +1775,15 @@ function GuardarConcepto() {
                         GuardarUnTexto(textosCambio, 0, callback, claveItem, catalogo, subitemCatalogo,true);
                     } else {
                         QuitarEspera();
-                        if (callback) callback();
+                        if (callback) callback(claveItem);
                     }
                 } catch (e) {
-                    QuitarEspera();
+                    QuitarEspera(claveItem);
                     alert(e.message);
                 }
             } else {
                 QuitarEspera();
-                if (callback) callback();
+                if (callback) callback(claveItem);
             }
         }
 
@@ -1841,7 +1839,7 @@ function GuardarConcepto() {
                             alert(e.message);
                             QuitarEspera();
                             alert("Verifique guardado");
-                            if (callback) callback();
+                            if (callback) callback(claveItem);
                         }
                     } else {
                         if (textosCambio.length > 0) {
@@ -1850,13 +1848,13 @@ function GuardarConcepto() {
                             } catch (e){
                                 QuitarEspera();
                                 alert(e.message);
-                                if (callback) callback();
+                                if (callback) callback(claveItem);
                             }
                         } else {
                             if (GetValor(r.response, "estatus") == 1) {
                                 QuitarEspera();
                                 alert("Guardado correctamente");
-                                if (callback) callback();
+                                if (callback) callback(claveItem);
                             }                            
                         }
                     }
@@ -1867,7 +1865,7 @@ function GuardarConcepto() {
             } else {
                 QuitarEspera();
                 alert("Guardado correctamente");
-                if (callback) callback();
+                if (callback) callback(claveItem);
             }
         }
 
@@ -1896,13 +1894,13 @@ function GuardarConcepto() {
                     } catch (e) {
                         QuitarEspera();
                         alert(e.message);
-                        if (callback) callback();
+                        if (callback) callback(clave);
                    }
                 } else {
                     QuitarEspera();
                     if (GetValor(xmlDoc, "estatus") == "1") {
                         if (callback) {
-                            callback();
+                            callback(clave);
                         } else {
                             alert("Guardado correctamente");
                         }
