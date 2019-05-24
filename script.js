@@ -231,18 +231,18 @@ function RegistrarNotificaciones() {
                 } else if (data.modulo == 2) {
                     ActivarTimbre_();
                 } else {
-                    InsertarNotificacion(data.dato);
+                    InsertarNotificacion(data.dato,data.modulo);            
+                    PantallaMostrar("notificaciones","section",true);
                 }
             }, function (msg) {
-                alert(msg.notification.title + ": " + msg.body);                
-                PantallaMostrar("notificaciones","section",true);
+                alert(msg.notification.title + ": " + msg.body);    
              });
             cordova.plugins.notification.badge.set(1);
         }
     } catch (e){ }
 }
 
-function InsertarNotificacion(dato) {
+function InsertarNotificacion(dato, data.modulo) {
     alert(dato);
 }
 
