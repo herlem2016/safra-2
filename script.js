@@ -392,7 +392,19 @@ function IniciarAsociarCargo() {
                     document.getElementById("wrap-detalle-" + catalogo).innerHTML = cont;
                     ; break;
                 case "pro_propuestas":
-                    document.getElementById("edit-pro_p").style.display = (GetValor(xmlDoc, "realizo") ? "block" : "none");
+                    var voto = GetValor(xmlDoc, "voto");
+                    document.getElementById("votos-pp").disabled = (voto ? true : false);
+                    if (voto == 1) {
+                        document.getElementById("voto-p-no").className = "v-p-no";
+                        document.getElementById("voto-p-si").className = "v-p-si";
+                    } else if (voto == 2) {
+                        document.getElementById("voto-p-no").className = "v-p-si";
+                        document.getElementById("voto-p-si").className = "v-p-no";
+                    } else {
+                        document.getElementById("voto-p-no").removeAttribute("class");
+                        document.getElementById("voto-p-si").removeAttribute("class");
+                    }
+                    document.getElementById("edit-pro_p").style.display = (GetValor(xmlDoc, "realizo")&& !GetValor(xmlDoc,"cuenta") ? "block" : "none");
                     var pantalla = document.getElementById("detalle-" + catalogo);
                     pantalla.setAttribute("clave", clave);
                     document.getElementById("clave-pro_propuesta").value = clave;
@@ -1379,20 +1391,7 @@ function ObtenerItem(catalogo, item) {
             var proyecto = GetValor(item, "clave");
             var voto = GetValor(item, "voto");
             itemli.voto = voto;
-            itemli.XML = item;
-            itemli.onclick = function () {
-                document.getElementById("votos-pp").disabled = (this.voto ? true : false);
-                if (this.voto == 'true') {
-                    document.getElementById("voto-p-no").className = "v-p-no";
-                    document.getElementById("voto-p-si").className = "v-p-si";
-                } else if (this.voto == 'false'){
-                    document.getElementById("voto-p-no").className = "v-p-si";
-                    document.getElementById("voto-p-si").className = "v-p-no";
-                } else{
-                    document.getElementById("voto-p-no").removeAttribute("class");
-                    document.getElementById("voto-p-si").removeAttribute("class");
-                }  
-            }
+            itemli.XML = item;            
             var html =
                 '<span class="t-1" onclick="Mostrar(\'lista-pro_propuestas\',\'detalle-pro_propuestas\',\'pro_propuestas\',' + proyecto + ');">' + GetValor(item, "titulo") + '</span>' +
                 '<span class="t-2">' + GetValor(item, "fecha") + '</span>'+
