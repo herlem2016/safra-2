@@ -1388,7 +1388,10 @@ function ObtenerItem(catalogo, item) {
                 } else if (this.voto == 'false'){
                     document.getElementById("voto-p-no").className = "v-p-si";
                     document.getElementById("voto-p-si").className = "v-p-no";
-                } 
+                } else if (this.voto == 'false') {
+                    document.getElementById("voto-p-no").removeAttribute("class");
+                    document.getElementById("voto-p-si").removeAttribute("class");
+                }  
             }
             var html =
                 '<span class="t-1" onclick="Mostrar(\'lista-pro_propuestas\',\'detalle-pro_propuestas\',\'pro_propuestas\',' + proyecto + ');">' + GetValor(item, "titulo") + '</span>' +
