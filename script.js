@@ -230,15 +230,20 @@ function RegistrarNotificaciones() {
                     ActivarAlarma_(data.contenidovoz);
                 } else if (data.modulo == 2) {
                     ActivarTimbre_();
+                } else {
+                    InsertarNotificacion(data.dato);
                 }
             }, function (msg) {
-                alert(msg.notification.title + ": " + msg.body);
-                //InsertarNotificacion();
+                alert(msg.notification.title + ": " + msg.body);                
                 PantallaMostrar("notificaciones","section",true);
              });
             cordova.plugins.notification.badge.set(1);
         }
     } catch (e){ }
+}
+
+function InsertarNotificacion(dato) {
+    alert(dato);
 }
 
 function MostrarBuscar(id,catalogo) {
