@@ -223,6 +223,7 @@ function RegistrarNotificaciones() {
                     FCMPlugin.subscribeToTopic('FRA_' + window.localStorage.getItem("codigoActivacion") + "-fun_1");
                 } catch (e){ }
             });
+            FCMPlugin.subscribeToTopic('FRA_' + window.localStorage.getItem("codigoActivacion"));
             FCMPlugin.subscribeToTopic('FRA_' + window.localStorage.getItem("codigoActivacion") + "-dom_" + window.localStorage.getItem("domicilio"));
             FCMPlugin.onNotification(function (data) {
                 if (data.modulo == 1) {
