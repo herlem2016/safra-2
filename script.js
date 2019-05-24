@@ -242,8 +242,8 @@ function RegistrarNotificaciones() {
     } catch (e){ }
 }
 
-function InsertarNotificacion(dato, data.modulo) {
-    alert(dato);
+function InsertarNotificacion(dato, modulo) {
+    alert(dato+ ", Modulo:" + modulo);
 }
 
 function MostrarBuscar(id,catalogo) {
