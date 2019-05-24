@@ -231,7 +231,9 @@ function RegistrarNotificaciones() {
                 } else if (data.modulo == 2) {
                     ActivarTimbre_();
                 }
-            });
+            }, function (msg) {
+                alert(msg.notification.title + ": " + msg.body);
+             });
             cordova.plugins.notification.badge.set(1);
         }
     } catch (e){ }
