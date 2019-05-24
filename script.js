@@ -233,6 +233,8 @@ function RegistrarNotificaciones() {
                 }
             }, function (msg) {
                 alert(msg.notification.title + ": " + msg.body);
+                //InsertarNotificacion();
+                PantallaMostrar("notificaciones","section",true);
              });
             cordova.plugins.notification.badge.set(1);
         }
