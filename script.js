@@ -1856,7 +1856,6 @@ function GuardarConcepto() {
                         } else {
                             if (GetValor(r.response, "estatus") == 1) {
                                 QuitarEspera();
-                                alert("Guardado correctamente");
                                 if (callback) callback(claveItem);
                             }                            
                         }
@@ -1867,7 +1866,6 @@ function GuardarConcepto() {
                 }, options);
             } else {
                 QuitarEspera();
-                alert("Guardado correctamente");
                 if (callback) callback(claveItem);
             }
         }
