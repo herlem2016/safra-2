@@ -1381,7 +1381,7 @@ function ObtenerItem(catalogo, item) {
             itemli.voto = voto;
             itemli.XML = item;
             itemli.onclick = function () {
-                if (this.voto) { document.getElementById("votos-pp").disabled = (this.voto ? true : false); }
+                document.getElementById("votos-pp").disabled = (this.voto ? true : false);
                 if (this.voto == 'true') {
                     document.getElementById("voto-p-no").className = "v-p-no";
                     document.getElementById("voto-p-si").className = "v-p-si";
