@@ -183,7 +183,7 @@ ul.lista {list-style:none;width:95%;margin-left:auto;margin-right:auto;padding:0
 
     .diaSel{ background-color:#00556b;color:#fff}
     .diaSel a{ background:#00556b !important;color:#fff !important}
-
+    ul{margin:0px;overflow-y:auto;}
         .item > span {
             font-family:Verdana;
             font-size:0.95em;
@@ -218,7 +218,7 @@ ul.lista {list-style:none;width:95%;margin-left:auto;margin-right:auto;padding:0
                     margin-right: 10px;
                 }
 
-                ul.lista .item button.edit-btn {
+                ul.lista li button.edit-btn {
                     display: block;
                     width: 30px;
                     float: left;
@@ -230,7 +230,7 @@ ul.lista {list-style:none;width:95%;margin-left:auto;margin-right:auto;padding:0
                     cursor: pointer;
                 }
 
-        ul.lista .item ol li > a img, .lista .item ol li > button img, ul.lista .item button img {
+        ul.lista .item ol li > a img, .lista .item ol li > button img, ul.lista li button img {
             width: 100%;
         }
 

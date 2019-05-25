@@ -37,8 +37,7 @@ function InicializarApp() {
     TabMostrar(tabInicioPro, tabInicioPro.parentNode, 'pro_propuestas','pro_propuestas');
     var tabInicioPag = document.getElementById("tab-inicio-pagos");
     TabMostrar(tabInicioPag, tabInicioPag.parentNode, 'tab-pcorriente', 'tiposgastos');
-    LlenarSelect(url + 'logic/controlador.aspx?op=ObtenerClasificacion&seccion=Generico&clave=6', 's-tipossolicitudatencion', undefined, 'indice', 'descripcion');
-    LlenarSelect(url + 'logic/controlador.aspx?op=ObtenerPropuestasProy&seccion=egrepro&', 's-egre-propro', 'Seleccione proyecto', 'clave', 'titulo');
+    LlenarSelect(url + 'logic/controlador.aspx?op=ObtenerClasificacion&seccion=Generico&clave=6', 's-tipossolicitudatencion', undefined, 'indice', 'descripcion');    
 }
 
 function EstablecerDimensiones() {
@@ -47,12 +46,13 @@ function EstablecerDimensiones() {
     var heightApp = parseInt(window.innerHeight - 40, 10) + 5;
     styleStr += ".pantalla {height:" + heightApp + "px !important;}";
     styleStr += ".menu button img {height:" + (heightApp - 100) / 9 + "px !important;overflow-y:auto;}";
-    styleStr += ".pantalla-2 {height:" + (heightApp - 64) + "px !important;overflow-y:auto;}";
-    styleStr += ".pantalla-3 {height:" + (heightApp - 132) + "px !important;margin-bottom:0px;overflow-y:auto;}";
-    styleStr += ".pantalla-31 {height:" + (heightApp - 104) + "px !important;margin-top:0px;margin-bottom:0px;overflow-y:auto;}";
+    styleStr += ".pantalla-2 {height:" + (heightApp - 54) + "px !important;overflow-y:auto;}";
+    styleStr += ".pantalla-21 {height:" + (heightApp - 91) + "px !important;overflow-y:auto;}";
+    styleStr += ".pantalla-3 {height:" + (heightApp - 132) + "px !important;overflow-y:auto;}";
+    styleStr += ".pantalla-31 {height:" + (heightApp - 104) + "px !important;overflow-y:auto;}";
     styleStr += ".pantalla-4 {height:" + (heightApp - 27) + "px !important;overflow-y:auto;}";
-    styleStr += ".scrollable {height:" + (heightApp - 132) + "px !important;margin-bottom:0px;overflow-y:auto;}";
-    styleStr += ".scrollable-2 {height:" + (heightApp - 168) + "px !important;margin-bottom:0px;overflow-y:auto;}";
+    styleStr += ".scrollable {height:" + (heightApp - 136) + "px !important;overflow-y:auto;}";
+    styleStr += ".scrollable-2 {height:" + (heightApp - 168) + "px !important;overflow-y:auto;}";
     styleStr += ".menu li {height:" + (heightApp - 50) / 6 + "px !important;margin-bottom:" + (heightApp - 50) /40 + "px !important;}";
     style.innerHTML = styleStr;
     RegistrarGrafica();
@@ -206,7 +206,7 @@ function CerrarSesion() {
         if (GetValor(xmlDoc, "estatus") == 1) {
             window.localStorage.setItem("email_", "");
             window.localStorage.setItem("contrasena_", "");
-            IntercambioVisual('login', 'main');
+            CambioPantalla('login', 'main');
         } else {
             alert(GetValor(xmlDoc, "mensaje"));
         }
@@ -246,14 +246,17 @@ function InsertarNotificacion(dato, modulo) {
     alert(dato+ ", Modulo:" + modulo);
 }
 
-function MostrarBuscar(id,catalogo) {
+function MostrarBuscar(id,catalogo,redim,c0,c1) {
     var obj= document.getElementById(id);
     if (obj.style.display == "none") {
+        MostrarOpcionesHabilitadas(true);
         obj.style.display = "block";
+        if (redim) ReplaceClass(redim, c0, c1);
     } else {
         obj.style.display = "none";
         obj.getElementsByTagName("input")[0].value = "";
         CargarCatalogo(catalogo, undefined, { buscar: '' });
+        if (redim) ReplaceClass(redim, c1, c0);
     }
 }
 
@@ -289,9 +292,32 @@ function DesactivarAlarma() {
     document.getElementById("alarma-v").pause();
 }
 
-function MostrarOpcionesHabilitadas() {
+function ReplaceClass(id,c0,c1) {
+    var obj = (typeof(id)=="string"?document.getElementById(id):id);
+    $(obj).removeClass(c0);
+    $(obj).addClass(c1);
+}
+
+function MostrarOpcionesHabilitadas(limpiar) {
     var wraper = window.pvisible;  
     if (wraper) {
+        if (limpiar) wraper.toggle = 1;
+        var redim = wraper.getAttribute("redim");
+        if (redim) {        
+            var obj = document.getElementById(redim);
+            var classToggle = obj.getAttribute("classToggle").split(',');
+            var c0 = classToggle[0];
+            var c1 = classToggle[1];
+            if (wraper.toggle == 1) {
+                $(obj).removeClass(c1);
+                $(obj).addClass(c0);
+            } else {
+                var hide = obj.getAttribute("hide");
+                if(hide) document.getElementById(hide).style.display = "none";
+                $(obj).removeClass(c0);
+                $(obj).addClass(c1);
+            }
+        }
         var funcionesEnPantalla = { btns: [], claves: [] };
         var botones = wraper.getElementsByTagName("button");
         var j = 0;
@@ -301,19 +327,24 @@ function MostrarOpcionesHabilitadas() {
                 funcionesEnPantalla.btns[j++] = botones[i];
             }
         }
-        $.post(url + 'logic/controlador.aspx' + '?op=ObtenerFuncionesHabilitadas&seccion=seguridad&funciones=' + funcionesEnPantalla.claves.join(","), function (xmlDoc) {
-            var funcionesRecibidas = xmlDoc.getElementsByTagName("Table");
-            for (var n = 0; n < funcionesRecibidas.length; n++) {
-                for (var k = 0; k < funcionesEnPantalla.btns.length; k++) {
-                    if (wraper.toggle == 1) {
-                        document.getElementById(funcionesEnPantalla.btns[k].getAttribute("control")).style.display = "none";
-                    } else if (funcionesEnPantalla.btns[k].getAttribute("clave_funcion") == GetValor(funcionesRecibidas[n], "clave_funcion")) {
-                        try { document.getElementById(funcionesEnPantalla.btns[k].getAttribute("control")).style.display = "block"; } catch (e) { }
+        if (wraper.toggle == 1) {
+            for (var k = 0; k < funcionesEnPantalla.btns.length; k++) {
+                document.getElementById(funcionesEnPantalla.btns[k].getAttribute("control")).style.display = "none";
+            }
+            wraper.toggle = 0;            
+        } else {
+            $.post(url + 'logic/controlador.aspx' + '?op=ObtenerFuncionesHabilitadas&seccion=seguridad&funciones=' + funcionesEnPantalla.claves.join(","), function (xmlDoc) {
+                var funcionesRecibidas = xmlDoc.getElementsByTagName("Table");
+                for (var n = 0; n < funcionesRecibidas.length; n++) {
+                    for (var k = 0; k < funcionesEnPantalla.btns.length; k++) {
+                        if (funcionesEnPantalla.btns[k].getAttribute("clave_funcion") == GetValor(funcionesRecibidas[n], "clave_funcion")) {
+                            try { document.getElementById(funcionesEnPantalla.btns[k].getAttribute("control")).style.display = "block"; } catch (e) { }
+                        }
                     }
                 }
-            }
-            wraper.toggle = (wraper.toggle ? 0 : 1);
-        });
+                wraper.toggle = 1;
+            });
+        }
     }
 }
 
@@ -340,7 +371,7 @@ function MostrarOpcionesHabilitadas() {
         }
 
         function Mostrar(p1, p2, catalogo, clave) {
-            IntercambioVisual(p2,p1);
+            CambioPantalla(p2,p1);
             if (catalogo) {
                 //PonerEspera(boton, catalogo);
                 $.post(url + 'logic/controlador.aspx' + '?op=ObtenerItem&seccion=' + catalogo + '&claveItem=' + clave, function (xmlDoc) {
@@ -368,7 +399,7 @@ function GuardarItem(obj,catalogo,detalle){
             if (detalle) {
                 Mostrar('p-edicion-' + catalogo, 'detalle-' + catalogo, catalogo, claveItem);
             } else {
-                IntercambioVisual('lista-' + catalogo, 'p-edicion-' + catalogo);
+                CambioPantalla('lista-' + catalogo, 'p-edicion-' + catalogo);
             }
         });
     });
@@ -378,7 +409,7 @@ function RegistrarVotoProP(voto) {
     $.post(url + 'logic/controlador.aspx' + '?op=RegistrarVotoProP&seccion=pro_propuestas' + '&voto=' + voto + "&clave=" + document.getElementById("clave-pro_propuesta").value, function (xmlDoc) {
         if (GetValor(xmlDoc, "estatus")) {
             CargarCatalogo('pro_propuestas', function () {
-                IntercambioVisual('lista-pro_propuestas', 'detalle-pro_propuestas');
+                CambioPantalla('lista-pro_propuestas', 'detalle-pro_propuestas');
             });
         } else {
             alert(GetValor(xmlDoc,"mensaje"));
@@ -387,7 +418,7 @@ function RegistrarVotoProP(voto) {
 }
 
 function IniciarAsociarCargo() {
-    IntercambioVisual("lista-cargos", "detalle-usuarios");
+    CambioPantalla("lista-cargos", "detalle-usuarios");
     CargarCatalogo("cargos");
 }
 
@@ -916,7 +947,7 @@ function IniciarAsociarCargo() {
         }
 
         function CargarPersonasAp() {
-            CargarCatalogo('ap_personas', function () { IntercambioVisual('lista-ap_personas', 'lista-aportaciones'); }, { buscar: document.getElementById('buscar-per').value });
+            CargarCatalogo('ap_personas', function () { CambioPantalla('lista-ap_personas', 'lista-aportaciones'); }, { buscar: document.getElementById('buscar-per').value });
         }
 
         function SeleccionarConceptoPagar(objeto,clave_concepto) {
@@ -932,7 +963,7 @@ function IniciarAsociarCargo() {
                     alert(GetValor(xmlDoc, "validacion"));
                     CargarCatalogo('aportaciones', function () {
                         document.getElementById("aportacion").innerHTML = "Aportar";
-                        IntercambioVisual('lista-aportaciones', 'p-edicion-aportaciones');
+                        CambioPantalla('lista-aportaciones', 'p-edicion-aportaciones');
                     });
                 }              
             });            
@@ -949,7 +980,7 @@ function IniciarAsociarCargo() {
             
         }
 
-        function TabMostrar(tab, raiz, id, catalogo) {
+        function TabMostrar(tab, raiz, id, catalogo,callback) {
             try { raiz.seleccionado.className="tab"; } catch (e) { }
             raiz.seleccionado = tab;
             raiz.seleccionado.className = "tab tab-sel";
@@ -957,10 +988,14 @@ function IniciarAsociarCargo() {
             for (var i = 0; i < tabs.length; i++) {
                 document.getElementById(tabs[i]).style.display = "none";
             }
-            document.getElementById(id).style.display = "block";
-            if (catalogo){
+            var obj = document.getElementById(id);
+            obj.style.display = "block";
+            window.pvisible = obj.getElementsByTagName("div")[0];
+            MostrarOpcionesHabilitadas(true);
+            if (catalogo) {
                 CargarCatalogo(catalogo);
-            }            
+            }   
+            if (callback) callback();
         }
 
         function PantallaMostrar(catalogo,tagName,no_post){
@@ -973,8 +1008,8 @@ function IniciarAsociarCargo() {
             }
             var obj = document.getElementById(catalogo);
             window.pvisible= obj.getElementsByTagName("div")[0];
+            MostrarOpcionesHabilitadas(true);
             obj.style.display = "block";
-
         }
 
         function IniciarEditarPlanPro(id) {
@@ -996,12 +1031,19 @@ function IniciarAsociarCargo() {
             Mostrar('lista-pro','p-edicion-pro');
         }
 
-        function IntercambioVisual(id1,id2){
+        function CambioPantalla(id1,id2){
             var obj = document.getElementById(id1);
-            obj.style.display = "block";
             window.pvisible = obj;
+            MostrarOpcionesHabilitadas(true);
             document.getElementById(id2).style.display = "none";
+            obj.style.display = "block";
         }
+
+        function IntercambioVisual(id1, id2) {
+            document.getElementById(id2).style.display = "none";
+            document.getElementById(id1).style.display = "block";
+        }
+
 
         function CargarCatalogo(catalogo, callback, parametros, callbackin) {
             var ops = catalogo.split("."), op = "cargar", cat_ = catalogo;            
@@ -1026,7 +1068,7 @@ function IniciarAsociarCargo() {
                 PonerAportar(obj);               
             } else {
                 obj.innerHTML = 'Aportar';
-                IntercambioVisual('b-f-aportaciones', 'btn-aportar');
+                CambioPantalla('b-f-aportaciones', 'btn-aportar');
                 CargarAportaciones(true);
                 obj.hide = 1;
             }
@@ -1035,7 +1077,7 @@ function IniciarAsociarCargo() {
             obj.innerHTML = 'Buscar';
             obj.hide = 0;
             document.getElementById('buscar-ap-fecha').value = "";
-            IntercambioVisual('btn-aportar', 'b-f-aportaciones');
+            CambioPantalla('btn-aportar', 'b-f-aportaciones');
             CargarAportaciones();
         }
 
@@ -1058,7 +1100,7 @@ function IniciarAsociarCargo() {
         }
 
         function VerInforme(clave,config) {
-            IntercambioVisual("detalle-transparencia", "lista-transparencia");
+            CambioPantalla("detalle-transparencia", "lista-transparencia");
             document.getElementById("table-resultados-tr").innerHTML = "";
             if (config) {
                 document.getElementById('graf-transparencia').parentNode.style.display = "none";
@@ -1127,7 +1169,7 @@ function IniciarAsociarCargo() {
 function ConfigurarCargo(obj,cargo) {
     var unCargo = obj.parentNode.txt;
     document.getElementById("UnCargoEd").innerHTML = unCargo;
-    IntercambioVisual("lista-cargosacciones", "lista-cargos");
+    CambioPantalla("lista-cargosacciones", "lista-cargos");
     document.getElementById("clavecargo").value = cargo;
     CargarCatalogo("cargosacciones", function () { }, { cargo: cargo });
 }
@@ -1135,19 +1177,19 @@ function ConfigurarCargo(obj,cargo) {
 
 function VerEdicionConceptos() {
     CargarCatalogo("ap_conceptos", function(){
-        IntercambioVisual('lista-ap_conceptos', 'p-edicion-aportaciones');
+        CambioPantalla('lista-ap_conceptos', 'p-edicion-aportaciones');
     });    
 }
 
 function VerEdicionDomicilios() {
     CargarCatalogo("ap_domicilios", function(){
-        IntercambioVisual('lista-ap_domicilios','p-edicion-aportaciones');
+        CambioPantalla('lista-ap_domicilios','p-edicion-aportaciones');
     });   
 }
 
 function VerAportacionesIniciales() {
     CargarCatalogo("ap_domicilios2", function () {
-        IntercambioVisual('lista-ap_domicilios2', 'p-edicion-aportaciones');
+        CambioPantalla('lista-ap_domicilios2', 'p-edicion-aportaciones');
     });
 }
 
@@ -1169,13 +1211,13 @@ function RemoverCargoUsuario(usuario,cargo) {
 
 function VerDomiciliosAportaciones(domicilio) {
     CargarCatalogo("domiciliosconceptosini", function () {
-        IntercambioVisual('lista-domiciliosconceptosini','lista-ap_domicilios2');
+        CambioPantalla('lista-domiciliosconceptosini','lista-ap_domicilios2');
     }, {clave:domicilio});
 }
 
 function VerVotantesPP(proyecto) {
     CargarCatalogo('pro_propuestas.ObtenerVotosPP', function () {
-        IntercambioVisual('lista-pro_propuestas.ObtenerVotosPP','lista-pro_propuestas');
+        CambioPantalla('lista-pro_propuestas.ObtenerVotosPP','lista-pro_propuestas');
     }, {clave:proyecto});
 }
 
@@ -1222,7 +1264,7 @@ function IniciarEditarPago(nuevo, clave) {
 
 function VerAvanceProyecto(clave){
     CargarCatalogo("proyectos.ObtenerAvance", function () {
-        IntercambioVisual('lista-proyectos.ObtenerAvance','lista-proyectos');
+        CambioPantalla('lista-proyectos.ObtenerAvance','lista-proyectos');
     }, { proyecto: clave });
 }
 
@@ -1284,8 +1326,16 @@ function GuardarVisita(obj) {
 
 function BuscarDomicilioV(buscar) {
     CargarCatalogo('vigilancia.BuscarDomicilio', function () {
-        IntercambioVisual('lista-vigilancia.BuscarDomicilio','lista-vigilancia');
+        CambioPantalla('lista-vigilancia.BuscarDomicilio','lista-vigilancia');
     }, { buscar: buscar });
+}
+
+function IniciarEditarProyecto(catalogo,indice) {
+    document.getElementById("s-proyecto").style.display = "none"; 
+    document.getElementById("nombre-proyecto").style.display = "block";
+    IniciarEditar(false, catalogo, 2, { a: 'lista-' + catalogo, b: 'p-edicion-' + catalogo }, indice, function (xmlDoc) {       
+        CargarDatosFrmMap(xmlDoc, { indice: 'clave-proyectos', titulo: 'proyectos-titulo',propuesta:'s-propro'});
+    });
 }
 
 function ObtenerItem(catalogo, item) {
@@ -1373,7 +1423,7 @@ function ObtenerItem(catalogo, item) {
                 var actividad = this.indice;
                 CargarCatalogo('regen_egrepro', function () {
                     document.getElementById("in-planpresupuestal").params = { proyecto: proyecto, actividad: actividad, tipo_erog: 2 };
-                    IntercambioVisual('lista-regen_egrepro', 'lista-planpresupuestal');
+                    CambioPantalla('lista-regen_egrepro', 'lista-planpresupuestal');
                 }, { proyecto: this.proyecto, actividad: this.indice, tipo_erog: 2 });
             }
             itemli.innerHTML = '<span class="t-1">' + GetValor(item, "descripcion") + '</span>' +
@@ -1384,7 +1434,11 @@ function ObtenerItem(catalogo, item) {
             break;
         case "proyectos":
             itemli.className = "itemg";
-            itemli.innerHTML = '<span class="t-1g">' + GetValor(item, "titulo") + '</span><div class="graf-pie" onclick="VerAvanceProyecto(' + GetValor(item, "indice") + ');"><canvas></canvas></div>';
+            var indice = GetValor(item, "indice");
+            itemli.innerHTML = '<span class="t-1g">' + GetValor(item, "titulo") + '</span>' +
+                '<button class="edit-btn" clave_funcion="2" control="ed-pro-' + indice + '" id="ed-pro-' + indice + '" style="display:none;"  onclick="IniciarEditarProyecto(\'' + catalogo + '\',' + indice + ');" ><img  src="img/edit.png" /></button>' +
+                '<button class="edit-btn" clave_funcion="2" control="del-pro-' + indice + '" id="del-pro-' + indice + '" style="display:none;"  onclick="IniciarEliminar(this,\'' + catalogo + '\',' + indice + ',{ b: \'lista-' + catalogo + '\', a: \'p-edicion-' + catalogo + '\' },true);" ><img  src="img/del.png" /></button>'+
+                '<div class="graf-pie" onclick="VerAvanceProyecto(' + indice + ');"><canvas></canvas></div>';
             var canvas = itemli.getElementsByTagName("canvas")[0];
             var datos = []; datos[0] = GetValor(item, "resueltos"); datos[1] = GetValor(item, "faltantes"); var av = parseInt((100 * datos[0]) / (parseInt(datos[0],10) + parseInt(datos[1],10)),10);
             var config = {
@@ -1484,7 +1538,7 @@ function ObtenerItem(catalogo, item) {
                 datosp.setAttribute("residente_sel", residente_sel);
                 datosp.innerHTML = str;
                 datosp.parentNode.style.display = "block";
-                IntercambioVisual('lista-aportaciones', 'lista-ap_personas');
+                CambioPantalla('lista-aportaciones', 'lista-ap_personas');
                 document.getElementById('buscar-ap-fecha').value = "";
                 PonerAportar(document.getElementById("toggle-aportaciones"));
                 CargarAportaciones();
@@ -1540,7 +1594,7 @@ function ObtenerItem(catalogo, item) {
             itemli.onclick = function () {
                 var clave_ = this.clave;
                 CargarCatalogo('planpresupuestal', function () {
-                    IntercambioVisual('lista-planpresupuestal', 'lista-egrepro');
+                    CambioPantalla('lista-planpresupuestal', 'lista-egrepro');
                     document.getElementById("clave-egrepro-OPP").value = clave_;
                 }, [{ name: "clave", value: this.clave }]);
             }
@@ -1618,7 +1672,7 @@ var CalendarioR={};
 function CargarCalendarioR(clave) {
         document.getElementById("inmueble").value=clave;         
         CalendarioR.yaConsulto = false;
-        IntercambioVisual('p-regen_inmuebles', 'lista-inmuebles');   
+        CambioPantalla('p-regen_inmuebles', 'lista-inmuebles');   
         try { $("#calendario-ev-inm").datepicker("refresh"); } catch (e) { }
         $("#calendario-ev-inm").datepicker({
             dateFormat: "dd/mm/yy",
@@ -1656,7 +1710,7 @@ function CargarCalendarioR(clave) {
                 var datos = { clave: clave, fecha: date};
                 CargarCatalogo("reservaciones", function () {
                     document.getElementById("fecha-res").value = date; 
-                    IntercambioVisual('lista-reservaciones','p-regen_inmuebles');
+                    CambioPantalla('lista-reservaciones','p-regen_inmuebles');
                 }, datos)
             }
         });
@@ -1668,7 +1722,7 @@ function GuardarConcepto() {
         alert(GetValor(xmlDoc, "mensaje"));
         if (GetValor(xmlDoc, "estatus") == 1) {
             CargarCatalogo('aportaciones', function () {
-                IntercambioVisual('lista-aportaciones', 'p-edicion-aportaciones'); 
+                CambioPantalla('lista-aportaciones', 'p-edicion-aportaciones'); 
             });
         }               
     });
