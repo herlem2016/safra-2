@@ -33,8 +33,6 @@ function InicializarApp() {
         }
     }
     RegistrarNotificaciones();    
-    var tabInicioPro = document.getElementById("tab-inicio-pro");
-    TabMostrar(tabInicioPro, tabInicioPro.parentNode, 'pro_propuestas','pro_propuestas');
     var tabInicioPag = document.getElementById("tab-inicio-pagos");
     TabMostrar(tabInicioPag, tabInicioPag.parentNode, 'tab-pcorriente', 'tiposgastos');
     LlenarSelect(url + 'logic/controlador.aspx?op=ObtenerClasificacion&seccion=Generico&clave=6', 's-tipossolicitudatencion', undefined, 'indice', 'descripcion');    
@@ -998,7 +996,7 @@ function IniciarAsociarCargo() {
             if (callback) callback();
         }
 
-        function PantallaMostrar(catalogo,tagName,no_post){
+        function PantallaMostrar(catalogo,tagName,no_post,callback){
             var pants = document.getElementsByTagName(tagName);
             if (!no_post) {
                 CargarCatalogo(catalogo);
@@ -1007,8 +1005,7 @@ function IniciarAsociarCargo() {
                 pants[i].style.display = "none";
             }
             var obj = document.getElementById(catalogo);
-            window.pvisible= obj.getElementsByTagName("div")[0];
-            MostrarOpcionesHabilitadas(true);
+            if (callback) callback();
             obj.style.display = "block";
         }
 

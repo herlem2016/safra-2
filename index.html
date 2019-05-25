@@ -119,7 +119,7 @@
         <section class="pantalla home" id="home" style="display:none;background-color:#dbdbdb">
             <ul class="menu">
                 <!--<li class="alarma">Alarma Vecinal</li>-->
-                <li><button onclick="PantallaMostrar('proyectos','section',true);" class="ok"><img src="img/proyectos.png"/>Iniciativas</button></li>
+                <li><button onclick="PantallaMostrar('proyectos', 'section', true, function () {var tabInicioPro = document.getElementById('tab-inicio-pro');TabMostrar(tabInicioPro, tabInicioPro.parentNode, 'pro_propuestas','pro_propuestas');});" class="ok"><img src="img/proyectos.png"/>Iniciativas</button></li>
                 <li><button onclick="PantallaMostrar('aportaciones','section');" class="ok"><img src="img/aportaciones.png"/>Ingresos</button></li>
                 <li><button onclick="PantallaMostrar('solicitudes','section');" class="ok"><img src="img/solmtto.png"/>Atención a Residentes</button></li>
                 <li><button onclick="PantallaMostrar('erogaciones','section',true);" class="ok"><img src="img/erogaciones.png"/>Egresos</button></li>
@@ -820,11 +820,11 @@
             </div>
 
             <div id="pro_propuestas" style="display:none;">
-                <div class="lista" id="lista-pro_propuestas">
+                <div class="lista" id="lista-pro_propuestas" redim="redim-pro_propuestas">
                     <div class="titulo"><span>Iniciativas</span><button class="buscar-min" onclick="MostrarBuscar('b-prop','pro_propuestas','redim-pro_propuestas','pantalla-21','pantalla-3');"><img src="img/buscar.png"/></button><hr class="clearn"/></div>            
                     <div class="busqueda" id="b-prop" style="display:none;"><input placeholder="Buscar" onkeypress="if(ValidarEnter(event)){CargarCatalogo('pro_propuestas', undefined, { buscar: this.value });}"/></div>
-                    <div class="agregar" id="edicion-pro_propuesta" ><button clave_funcion="8" control="edicion-pro_propuesta" onclick="IniciarEditar(true, 'pro_propuestas');" >Registrar propuesta</button></div>                    
-                    <ul class="lista seleccionable pantalla-21" id="redim-pro_propuestas"></ul>
+                    <div class="agregar" id="edicion-pro_propuesta" ><button clave_funcion="2" control="edicion-pro_propuesta" onclick="IniciarEditar(true, 'pro_propuestas');" >Registrar propuesta</button></div>                    
+                    <ul class="lista seleccionable pantalla-21" id="redim-pro_propuestas" classToggle="pantalla-21,pantalla-3" hide="b-prop"></ul>
                 </div>
 
                 <div class="detalle" id="detalle-pro_propuestas" style="display:none;">
