@@ -34,8 +34,7 @@ function InicializarApp() {
     }
     RegistrarNotificaciones();    
     var tabInicioPag = document.getElementById("tab-inicio-pagos");
-    TabMostrar(tabInicioPag, tabInicioPag.parentNode, 'tab-pcorriente', 'tiposgastos');
-    LlenarSelect(url + 'logic/controlador.aspx?op=ObtenerClasificacion&seccion=Generico&clave=6', 's-tipossolicitudatencion', undefined, 'indice', 'descripcion');    
+    TabMostrar(tabInicioPag, tabInicioPag.parentNode, 'tab-pcorriente', 'tiposgastos');   
 }
 
 function EstablecerDimensiones() {
@@ -51,6 +50,8 @@ function EstablecerDimensiones() {
     styleStr += ".pantalla-4 {height:" + (heightApp - 27) + "px !important;overflow-y:auto;}";
     styleStr += ".scrollable {height:" + (heightApp - 136) + "px !important;overflow-y:auto;}";
     styleStr += ".scrollable-2 {height:" + (heightApp - 168) + "px !important;overflow-y:auto;}";
+    styleStr += ".pantalla-5 {height:" + (heightApp - 190) + "px !important;overflow-y:auto;}";
+    styleStr += ".pantalla-51 {height:" + (heightApp - 230) + "px !important;overflow-y:auto;}";
     styleStr += ".menu li {height:" + (heightApp - 50) / 6 + "px !important;margin-bottom:" + (heightApp - 50) /40 + "px !important;}";
     style.innerHTML = styleStr;
     RegistrarGrafica();
@@ -244,17 +245,27 @@ function InsertarNotificacion(dato, modulo) {
     alert(dato+ ", Modulo:" + modulo);
 }
 
-function MostrarBuscar(id,catalogo,redim,c0,c1) {
-    var obj= document.getElementById(id);
+function MostrarBuscar(id,catalogo,redim,c0,c1,callback,params) {
+    var obj = document.getElementById(id);
+    var redim_ = document.getElementById(redim);
+    if (redim_ && !c0) {        
+        c0 = redim_.getAttribute("classToggle").split(",")[0];
+        c1 = redim_.getAttribute("classToggle").split(",")[1];
+    }
     if (obj.style.display == "none") {
         MostrarOpcionesHabilitadas(true);
         obj.style.display = "block";
-        if (redim) ReplaceClass(redim, c0, c1);
+        if (redim_) ReplaceClass(redim, c0, c1);
     } else {
         obj.style.display = "none";
         obj.getElementsByTagName("input")[0].value = "";
-        CargarCatalogo(catalogo, undefined, { buscar: '' });
-        if (redim) ReplaceClass(redim, c1, c0);
+        var datos = { buscar: '' };
+        for (var param in params) {
+            datos[param] = params[param];
+        }
+        if (callback) callback();
+        else CargarCatalogo(catalogo, undefined, datos);
+        if (redim_) ReplaceClass(redim, c1, c0);
     }
 }
 
@@ -380,9 +391,48 @@ function MostrarOpcionesHabilitadas(limpiar) {
             }
         }
 
+var consultasPago = 0;
 function ContinuarPagando() {
-    var win = window.open(url + 'logic/controlador.aspx?op=PresentarPagador', "_system", "location=yes");
-    window.setInterval(function () { },2000);
+    var dom_sel = document.getElementById("w-datos-persona").getAttribute("domicilio_sel");
+    var datos = { c: conceptospagar.join("|"), d: + dom_sel };
+    $.post(url + 'logic/controlador.aspx' + '?op=ValidarFormaPago&seccion=aportaciones', datos, function (xmlDoc) {
+        var tipopago = 0;
+        var monto = MoneyFormat(parseFloat(GetValor(xmlDoc, "monto")));
+        if (GetValor(xmlDoc, "tarjeta")) {
+            tipopago = 1;
+        } else if (GetValor(xmlDoc, "otroadmin")) {
+            if (confirm("Confirme que desea aplicar el pago para: " + GetValor(xmlDoc, "domicilio") + " por " + monto)) {
+                tipopago = 2;
+            } else {
+                tipopago = 0;
+            }            
+        } else if (GetValor(xmlDoc, "mismoadmin")) {
+            if (confirm("Confirme que desea aplicar el pago para su domicilio: " + GetValor(xmlDoc, "domicilio") + " por " + monto)) {
+                if (confirm("¿Desea registrar el pago con tarjeta?")) {
+                    tipopago = 1;
+                } else {
+                    tipopago = 2;
+                }
+            } else {
+                tipopago = 0;
+            }              
+        }
+        if (tipopago == 1) {
+            if (win) win.close();
+            var win = window.open(url + 'logic/controlador.aspx?op=PresentarPagador&c=' + conceptospagar.join("|") + "&d=" + dom_sel, "_system", "location=yes");            
+            consultasPago = 0;
+            window.setInterval(function () {
+                consultasPago++;
+            }, 5000);
+        } else if (tipopago == 2) {
+            $.post(url + 'logic/controlador.aspx' + '?op=RegistrarPagoEfectivo&seccion=aportaciones', datos, function (xmlDoc) {
+                alert(GetValor(xmlDoc, "mensaje"));
+                CargarAportaciones(false);
+            });
+        } else {
+            CargarAportaciones(false);
+        }
+    });
 }
 function CerrarPago(event,ventana) {
     if (event.url == url + 'logic/controlador.aspx?op=Finalizar') {
@@ -458,8 +508,12 @@ function IniciarAsociarCargo() {
                     var pantalla = document.getElementById("detalle-" + catalogo);
                     pantalla.setAttribute("clave", clave);
                     cont =
-                        '<span class="t-1">' + GetValor(xmlDoc, "domicilio") + '</span>' +
-                        '<span class="t-2">' + GetValor(xmlDoc, "titular") + '</span>';
+                        '<span class="t-1" style="font-size:0.85em;">' + GetValor(xmlDoc, "domicilio") + '</span>' +
+                        '<span class="t-2">' + GetValor(xmlDoc, "titular") + '</span>' + 
+                        '<span class="t-41"><b>Registró: </b>' + GetValor(xmlDoc, "usuario_registro") + ', ' + GetValor(xmlDoc, "fecha_alta") + '</span>' +
+                        '<span class="t-41"><b>Modificaciones iniciales: </b>' + GetValor(xmlDoc, "insercionesini") + '</span>' +
+                        (GetValor(xmlDoc, "usuario_modifico") ? '<span class="t-41"><b>Última modificación:</b>' + GetValor(xmlDoc, "usuario_modifico") + ',' + GetValor(xmlDoc, "fecha_modifico") + '</span>' : "") +
+                        '<span class="t-2">' + GetValor(xmlDoc, "descripcion") + '</span>';
                     document.getElementById("wrap-detalle-" + catalogo).innerHTML = cont;
                     ; break;
                 case "ap_conceptos":
@@ -467,7 +521,11 @@ function IniciarAsociarCargo() {
                     pantalla.setAttribute("clave", clave);
                     cont =
                         '<span class="t-1">' + GetValor(xmlDoc, "nombre") + '</span>' +
+                        '<span class="t-3">' + MoneyFormat(parseFloat(GetValor(xmlDoc, "monto"))) + '</span>' +
+                        '<span class="t-41"><b>Registró: </b>' + GetValor(xmlDoc, "usuario_registro") + ', ' + GetValor(xmlDoc, "fecha_alta") + '</span>' +
+                        (GetValor(xmlDoc, "usuario_modifico") ? '<span class="t-41"><b>Última modificación:</b>' + GetValor(xmlDoc, "usuario_modifico") + ',' + GetValor(xmlDoc, "fecha_modifico") + '</span>' : "") +
                         '<span class="t-2">' + GetValor(xmlDoc, "descripcion") + '</span>';
+                        
                     document.getElementById("wrap-detalle-" + catalogo).innerHTML = cont;
                     ; break;
                 case "usuarios":
@@ -494,7 +552,7 @@ function IniciarAsociarCargo() {
                     var residente = GetValor(xmlDoc, "residente"); 
                     document.getElementById("wrap-detalle-aportaciones").innerHTML =
                         '<div class="' + GetValor(xmlDoc, "leyenda") + '" style="padding:35px;font-size:13px;line-height:7px;">' +
-                    '<span class="t-3" style="font-size:15px;"><b>' + GetValor(xmlDoc, "leyenda") + '</b><p>$ ' + GetValor(xmlDoc, "monto") + '</p></span><hr class="clearn"/>' +
+                    '<span class="t-3" style="font-size:15px;"><b>' + GetValor(xmlDoc, "leyenda") + '</b><p>' + MoneyFormat(parseFloat(GetValor(xmlDoc, "monto"))) + '</p></span><hr class="clearn"/>' +
                      '<div class="t-1"><b>Concepto:</b><p>' + GetValor(xmlDoc, "concepto") + "</p><b>Folio:</b><p>" + GetValor(xmlDoc, "folio") + "</p><br/><b>Residente:</b><p>" + residente + "</p><br/><b>Fecha de registro:</b><p>" + GetValor(xmlDoc, "fecha") + '</p></div>' +
                     '<div class="t-2"><b>Tipo de pago: </b><p>' + GetValor(xmlDoc, "tipoPago") + '</p><br/><b>Recibió:</b><p>' + GetValor(xmlDoc, "recibio") + '</p><br/><b>Canceló:</b><p>' + GetValor(xmlDoc, "cancelo") + '</p><br/></div>' +
                     '<div class="t-2"><b>Observaciones: </b><p>' + GetValor(xmlDoc, "observaciones") + '</p></div>' +                    
@@ -523,15 +581,15 @@ function IniciarAsociarCargo() {
                     pantalla.setAttribute("clave", clave);
                     cont =                    
                         '<span class="t-1">' + GetValor(xmlDoc, "titulo") + '</span>' +
-                        '<span class="t-2">' + GetValor(xmlDoc, "nombre") + ' (' + GetValor(xmlDoc, "cargo") + ')</span>' +
-                        '<span class="t-3">' + GetValor(xmlDoc, "fecha") + '</span>' +
-                        '<span class="t-4">' + GetValor(xmlDoc, "descripcion") + '</span>';
+                    '<span class="t-2">' + GetValor(xmlDoc, "nombre") + (GetValor(xmlDoc, "cargo")?' (' + GetValor(xmlDoc, "cargo") + ')</span>':"") +
+                        '<span class="t-3" style="width:90%;clear:both;font-size:0.85em;">' + GetValor(xmlDoc, "fecha") + '</span>' +
+                        '<span class="t-2"><i>' + GetValor(xmlDoc, "descripcion") + '</i></span>';
                     cont += PintarImagenesTexto(xmlDoc0, true);
                     document.getElementById("wrap-detalle-" + catalogo).innerHTML = cont;
                     var contenedor = document.getElementById("wrap-detalle-solicitudes");
                     var control=IAgregarImagenTexto(contenedor, 1, true,true);
                     var btn = document.createElement("div");                    
-                    btn.className = "agregar";
+                    btn.className = "agregar btn-normal";
                     btn.innerHTML = "<button>Responder</button>";
                     contenedor.appendChild(btn);
                     btn.clave = clave;
@@ -573,7 +631,7 @@ function IniciarAsociarCargo() {
                 if (crearApartados) {
                     persona_ii = GetValor(imgsTexto[j], "persona");
                     if (persona_i != persona_ii ) {
-                        cont += "<div class='firma-hist'><span>" + GetValor(xmlDoc0, "nombre") + ", </span><span>" + GetValor(imgsTexto[j], "fecha") + "</span></div>";
+                        cont += "<div class='firma-hist'><span>" + GetValor(xmlDoc0, "nombre") + (GetValor(xmlDoc0, "cargo") ?"(" + GetValor(xmlDoc0, "cargo") + ")":"") + ", </span><span>" + GetValor(imgsTexto[j], "fecha") + "</span></div>";
                         cont += "<hr style='border:5px solid #ccc;clear:both;width:60%;'/>";
                     }
                 }
@@ -581,7 +639,7 @@ function IniciarAsociarCargo() {
                     '<p>' + GetValor(imgsTexto[j], "descripcion") + '</p>';                
                 if (crearApartados) {
                     if (j == imgsTexto.length - 1) {
-                        cont += "<div class='firma-hist'><span>" + GetValor(imgsTexto[j], "nombre") + ", </span><span>" + GetValor(imgsTexto[j], "fecha") + "</span></div>";
+                        cont += "<div class='firma-hist'><span>" + GetValor(imgsTexto[j], "nombre") + (GetValor(xmlDoc0, "cargo") ? "(" + GetValor(xmlDoc0, "cargo") + ")" : "") + ", </span><span>" + GetValor(imgsTexto[j], "fecha") + "</span></div>";
                         cont += "<hr style='border:5px solid #ccc;clear:both;width:60%;'/>";
                     }
                     persona_ii = persona_i;
@@ -944,12 +1002,8 @@ function IniciarAsociarCargo() {
             }
         }
 
-        function CargarPersonasAp() {
-            CargarCatalogo('ap_personas', function () { CambioPantalla('lista-ap_personas', 'lista-aportaciones'); }, { buscar: document.getElementById('buscar-per').value });
-        }
-
-        function SeleccionarConceptoPagar(objeto,clave_concepto) {
-            $.post(url + 'logic/controlador.aspx' + '?op=ValidarAgregarPagar&seccion=aportaciones&concepto=' + clave_concepto, function (xmlDoc) {
+        function SeleccionarConceptoPagar(objeto, clave_concepto) {
+            $.post(url + 'logic/controlador.aspx' + '?op=ValidarAgregarPagar&seccion=aportaciones&concepto=' + clave_concepto + "&domicilio=" + document.getElementById("w-datos-persona").getAttribute("domicilio_sel"), function (xmlDoc) {
                 if (GetValor(xmlDoc, "validacion") == 'CONTINUAR') {
                     if ($(objeto).hasClass("seleccionado")) {
                         $(objeto).removeClass("seleccionado");
@@ -966,15 +1020,19 @@ function IniciarAsociarCargo() {
                 }              
             });            
         }
-
+        var conceptospagar = [];
         function CalcularAportacion() {
             var items = $("#lista-aportaciones div.seleccionado span.t-1");
             var cuenta = 0;
+            conceptospagar = [];
+            var percio = 0;
             for (var i = 0; i < items.length; i++) {
-                cuenta += parseFloat(items[i].getAttribute("precio"));
+                precio = parseFloat(items[i].getAttribute("precio"));
+                cuenta += precio;
+                conceptospagar.push(items[i].getAttribute("concepto")+","+precio);
             }            
             var btn = document.getElementById("aportacion");
-            btn.innerHTML = "Total Aportar $ " + cuenta;   
+            btn.innerHTML = "Total Aportar " + MoneyFormat(cuenta);   
             
         }
 
@@ -996,7 +1054,7 @@ function IniciarAsociarCargo() {
             if (callback) callback();
         }
 
-        function PantallaMostrar(catalogo,tagName,no_post,callback){
+        function PantallaMostrar(catalogo,tagName,no_post,callback,_pvisible){
             var pants = document.getElementsByTagName(tagName);
             if (!no_post) {
                 CargarCatalogo(catalogo);
@@ -1005,6 +1063,7 @@ function IniciarAsociarCargo() {
                 pants[i].style.display = "none";
             }
             var obj = document.getElementById(catalogo);
+            if (_pvisible) window.pvisible=document.getElementById(_pvisible);
             if (callback) callback();
             obj.style.display = "block";
         }
@@ -1056,31 +1115,12 @@ function IniciarAsociarCargo() {
                     lista.appendChild(ObtenerItem(cat_, items[n]));
                 }  
                 if(callback)
-                    callback();
+                    callback(xmlDoc);
             });
         }
 
-        function ToggleBusquedaAportar(obj) {
-            if (obj.hide == 1) {
-                PonerAportar(obj);               
-            } else {
-                obj.innerHTML = 'Aportar';
-                CambioPantalla('b-f-aportaciones', 'btn-aportar');
-                CargarAportaciones(true);
-                obj.hide = 1;
-            }
-        }
-        function PonerAportar(obj) {
-            obj.innerHTML = 'Buscar';
-            obj.hide = 0;
-            document.getElementById('buscar-ap-fecha').value = "";
-            CambioPantalla('btn-aportar', 'b-f-aportaciones');
-            CargarAportaciones();
-        }
-
         function CargarAportaciones(esBusquedaF) {
-            document.getElementById("aportacion").innerHTML = "Aportar";
-            var residente_sel = document.getElementById('w-datos-persona').getAttribute('residente_sel');    
+            document.getElementById("aportacion").innerHTML = "Aportar";   
             var fechas = document.getElementById('buscar-ap-fecha').value.split("-");
             var datos = {};               
             if (esBusquedaF) { datos["esBusquedaF"] = 1;}
@@ -1090,9 +1130,7 @@ function IniciarAsociarCargo() {
             if (fechas[1] && fechas[1].length > 0) {
                 datos["fecha2"] = fechas[1];
             }
-            if (residente_sel) {
-                datos["residente_sel"] = residente_sel;
-            }
+            datos["domicilio_sel"] = document.getElementById('w-datos-persona').getAttribute('domicilio_sel');
             CargarCatalogo('aportaciones', function () { }, datos);
         }
 
@@ -1238,24 +1276,60 @@ function IniciarEditarActividad(nuevo, clave) {
     }   
 }
 
-function IniciarEditarPago(nuevo, clave) {
+function IniciarEditarPago(nuevo, clave, tipo_erog) {
     document.getElementById("c-e-regen_egrepro").innerHTML = "";
     var datos = document.getElementById("in-planpresupuestal").params;
+    document.getElementById("c-e-regen_" + tipo_erog).innerHTML = "";
     if (nuevo) {
-        document.getElementById('in-regen_egrepro').params = document.getElementById("in-planpresupuestal").params;
-        IAgregarCosto('c-e-regen_egrepro');
-        IniciarEditar(true, 'regen_egrepro', 2);
+        document.getElementById('in-regen_' + tipo_erog).params = (tipo_erog == "egrepro" ? document.getElementById("in-planpresupuestal").params : document.getElementById("clave-tiposgastos-OPP").params);
+        IAgregarCosto('c-e-regen_' + tipo_erog );
+        IniciarEditar(true, 'regen_' + tipo_erog , 2);
     } else {
         datos["clave_pago"] = clave;
-        var control = IAgregarCosto('c-e-regen_egrepro');
-        IniciarEditar(false, 'regen_egrepro', 2, { b: 'p-edicion-regen_egrepro', a: 'lista-regen_egrepro' }, datos, function (xmlDoc) {
+        var control = IAgregarCosto('c-e-regen_' + tipo_erog );
+        IniciarEditar(false, 'regen_' + tipo_erog , 2, { b: 'p-edicion-regen_' + tipo_erog , a: 'lista-regen_' + tipo_erog }, datos, function (xmlDoc) {
             control.setAttribute("indice", GetValor(xmlDoc, "clave"));
-            control.setAttribute("catalogo", 'regen_egrepro');
+            control.setAttribute("catalogo", 'regen_' + tipo_erog );
             control.setAttribute("claveItem", clave);
             control.imagen.src = url + '/' + GetValor(xmlDoc, "path") + "?v=" + Math.random();
             control.texto.value = GetValor(xmlDoc, "concepto");
             control.texto2.value = GetValor(xmlDoc, "importe");
         });
+    }
+}
+
+function GuardarComprobante(boton, catalogo, callback, subitemCatalogo) {
+    var datos = $("#frm-edit-" + catalogo).serializeArray();
+    PonerEspera(boton, catalogo);
+    var inDatos = document.getElementById("in-" + catalogo);
+    var claveItem = (inDatos.params ? inDatos.params : inDatos.value);
+    if (document.getElementById("c-e-" + catalogo)) {
+        try {
+            var imagenes = document.getElementById("c-e-" + catalogo).getElementsByTagName("table");
+            var imagenesCambio = [];
+            var textosCambio = [];
+            for (var i = 0; i < imagenes.length; i++) {
+                if (imagenes[i].getAttribute("cambioImagen") == "true") {
+                    imagenesCambio.push(imagenes[i]);
+                } else if (imagenes[i].getAttribute("cambioTexto") == "true") {
+                    textosCambio.push(imagenes[i]);
+                }
+            }
+            if (imagenesCambio.length > 0) {
+                GuardarUnaImagenTexto(imagenesCambio, textosCambio, 0, callback, claveItem, catalogo, true);
+            } else if (textosCambio.length > 0) {
+                GuardarUnTexto(textosCambio, 0, callback, claveItem, catalogo, subitemCatalogo, true);
+            } else {
+                QuitarEspera();
+                if (callback) callback(claveItem);
+            }
+        } catch (e) {
+            QuitarEspera(claveItem);
+            alert(e.message);
+        }
+    } else {
+        QuitarEspera();
+        if (callback) callback(claveItem);
     }
 }
 
@@ -1408,7 +1482,19 @@ function ObtenerItem(catalogo, item) {
             itemli.innerHTML =
                 '<span class="t-1">' + GetValor(item, "concepto") + '</span>' +
                 '<span class="t-2">' + GetValor(item, "fecha") + '</span>' +
-                '<span class="t-3 style="float:right;">$ ' + GetValor(item, "importe") + '</span><hr class="clearn"/>' +
+            '<span class="t-3 style="float:right;">' + MoneyFormat(parseFloat(GetValor(item, "importe"))) + '</span><hr class="clearn"/>' +
+                '<button class="edit-btn" clave_funcion="2" control="ed-pp-' + itemli.indice + '" id="ed-pp-' + itemli.indice + '" style="display:none;"  onclick="IniciarEditarPago(false,' + itemli.indice + ');" ><img  src="img/edit.png" /></button>' +
+                '<button class="edit-btn" clave_funcion="2" control="del-pp-' + itemli.indice + '" id="del-pp-' + itemli.indice + '" style="display:none;"  onclick="IniciarEliminar(this,\'' + catalogo + '\',' + itemli.indice + ',{ b: \'lista-' + catalogo + '\', a: \'p-edicion-' + catalogo + '\' },true);" ><img  src="img/del.png" /></button>';
+            break;
+        case "regen_tiposgastos":
+            itemli.indice = GetValor(item, "clave");
+            itemli.onclick = function () {
+
+            }
+            itemli.innerHTML =
+                '<span class="t-1">' + GetValor(item, "concepto") + '</span>' +
+                '<span class="t-2" style="width:50%;">' + GetValor(item, "fecha") + '</span>' +
+            '<span class="t-3" style="float:right;text-align:right;width:35%;">' + MoneyFormat(parseFloat(GetValor(item, "importe"))) + '</span><hr class="clearn"/>' +
                 '<button class="edit-btn" clave_funcion="2" control="ed-pp-' + itemli.indice + '" id="ed-pp-' + itemli.indice + '" style="display:none;"  onclick="IniciarEditarPago(false,' + itemli.indice + ');" ><img  src="img/edit.png" /></button>' +
                 '<button class="edit-btn" clave_funcion="2" control="del-pp-' + itemli.indice + '" id="del-pp-' + itemli.indice + '" style="display:none;"  onclick="IniciarEliminar(this,\'' + catalogo + '\',' + itemli.indice + ',{ b: \'lista-' + catalogo + '\', a: \'p-edicion-' + catalogo + '\' },true);" ><img  src="img/del.png" /></button>';
             break;
@@ -1424,8 +1510,8 @@ function ObtenerItem(catalogo, item) {
                 }, { proyecto: this.proyecto, actividad: this.indice, tipo_erog: 2 });
             }
             itemli.innerHTML = '<span class="t-1">' + GetValor(item, "descripcion") + '</span>' +
-                '<span class="t-2n" style="font-size:small;">PRESUPUESTADO: <br/>$ ' + GetValor(item, "presup") + '</span>' +
-                '<span class="t-3n" style="font-size:small;">INVERTIDO: <br/>$ ' + GetValor(item, "invertido") + '</span>'+
+                '<span class="t-2n" style="font-size:small;">PRESUPUESTADO: <br/>' + MoneyFormat(parseFloat(GetValor(item, "presup"))) + '</span>' +
+                '<span class="t-3n" style="font-size:small;">INVERTIDO: <br/>' + MoneyFormat(parseFloat(GetValor(item, "invertido"))) + '</span>'+
                 '<button class="edit-btn" clave_funcion="2" control="ed-pp-' + itemli.indice + '" id="ed-pp-' + itemli.indice + '" style="display:none;"  onclick="IniciarEditarActividad(false,' + itemli.indice + ');" ><img  src="img/edit.png" /></button>' +
                 '<button class="edit-btn" clave_funcion="2" control="del-pp-' + itemli.indice + '" id="del-pp-' + itemli.indice + '" style="display:none;"  onclick="IniciarEliminar(this,\'' + catalogo + '\',' + itemli.indice + ',{ b: \'lista-' + catalogo + '\', a: \'p-edicion-' + catalogo + '\' },true);" ><img  src="img/del.png" /></button>';
             break;
@@ -1467,7 +1553,7 @@ function ObtenerItem(catalogo, item) {
         case "domiciliosconceptosini":
             var registrado = GetValor(item, "registrado");
             itemli.innerHTML =
-                '<span class="t-1">' + GetValor(item, "nombre") + '</span><span class="t-3">$ ' + GetValor(item, "monto") + '</span><input type="checkbox" name="concepto" value="' + GetValor(item, "clave") + '" ' + (registrado ? 'checked="checked"' : '') + ' />';
+                '<span class="t-1">' + GetValor(item, "nombre") + '</span><span class="t-3">' + MoneyFormat(parseFloat(GetValor(item, "monto"))) + '</span><input type="checkbox" name="concepto" value="' + GetValor(item, "clave") + '" ' + (registrado ? 'checked="checked"' : '') + ' />';
             break;
         case "ap_domicilios2":
             var domicilio = GetValor(item, "clave");                
@@ -1524,21 +1610,19 @@ function ObtenerItem(catalogo, item) {
             itemli.setAttribute("config",GetValor(item, 'config'));
             itemli.innerHTML = '<button  class="aceptar" onclick="VerInforme(' + GetValor(item, 'clave') + ',this.parentNode.getAttribute(\'config\'));">' + GetValor(item,'descripcion') + '</button>';
             break;
-        case "ap_personas":                    
+        case "ap_domicilios3":                    
             itemli.innerHTML =
-                '<span class="t-1" style="display:inline-block;width:90% !important;">' + GetValor(item, "residente") + '</span>' +
-                '<span class="t-3" style="float:left;width:90% !important;"> ' + GetValor(item, "domicilio") + '</span><hr class="clearn"/>';                    
+                '<span class="t-1" style="display:inline-block;width:90% !important;">' + GetValor(item, "domicilio") + '</span>' +
+                '<span class="t-3" style="float:left;width:90% !important;"> ' + GetValor(item, "titular") + '</span><hr class="clearn"/>';                    
             itemli.onclick = function () {
                 var str = this.innerHTML;
-                var residente_sel = GetValor(item, "clave");
+                var domicilio_sel = GetValor(item, "clave");
                 var datosp = document.getElementById("w-datos-persona");
-                datosp.setAttribute("residente_sel", residente_sel);
+                datosp.setAttribute("domicilio_sel", domicilio_sel);
                 datosp.innerHTML = str;
-                datosp.parentNode.style.display = "block";
-                CambioPantalla('lista-aportaciones', 'lista-ap_personas');
+                CambioPantalla('lista-aportaciones', 'lista-ap_domicilios3');
                 document.getElementById('buscar-ap-fecha').value = "";
-                PonerAportar(document.getElementById("toggle-aportaciones"));
-                CargarAportaciones();
+                CargarAportaciones(true);
             }
             break;
         case "aportaciones":
@@ -1546,8 +1630,8 @@ function ObtenerItem(catalogo, item) {
             if (leyenda == "PENDIENTE") {       
                 itemli.innerHTML =
                     '<div class="' + GetValor(item, "leyenda") + '" onclick="SeleccionarConceptoPagar(this,' + GetValor(item, "clave_concepto") + ');">'+
-                    '<span class="t-1" precio="' + GetValor(item, "monto") + '">' + GetValor(item, "concepto") + '</span>' +
-                    '<span class="t-3 ' + GetValor(item, "leyenda") + '" style="float:right;">' + GetValor(item, "leyenda") + ' <br/>$ ' + GetValor(item, "monto") + '</span><hr class="clearn"/>' +
+                    '<span class="t-1" concepto="' + GetValor(item, "clave_concepto") + '" precio="' + GetValor(item, "monto") + '">' + GetValor(item, "concepto") + '</span>' +
+                    '<span class="t-3 ' + GetValor(item, "leyenda") + '" style="float:right;">' + GetValor(item, "leyenda") + ' <br/>' + MoneyFormat(parseFloat(GetValor(item, "monto"))) + '</span><hr class="clearn"/>' +
                     '</div>';
             } else {
                 var folio = GetValor(item, "folio");
@@ -1558,8 +1642,8 @@ function ObtenerItem(catalogo, item) {
                 itemli.innerHTML =
                     '<div class="' + GetValor(item, "leyenda") + '">'+
                     '<span class="t-1">' + GetValor(item, "concepto") + (residente ? ":" + residente : "") + '</span>'+
-                    '<span class="t-2">Tipo de pago: ' + GetValor(item, "tipoPago") + '<br/>Recibió:' + GetValor(item, "recibio") +  '<br/>Canceló:' + GetValor(item, "cancelo") + '<br /> Folio:' + folio + '<br/>' + GetValor(item, "fecha") + '</span>' +
-                    '<span class="t-3" style="float:right;"><b>' + GetValor(item, "leyenda") + '</b> <br/>$ ' + GetValor(item, "monto") + '</span><hr class="clearn"/>' +
+                    '<span class="t-6v" style="margin-left:10px;">Tipo de pago: ' + GetValor(item, "tipoPago") + '<br /> Folio:' + folio + '<br/>' + GetValor(item, "fecha") + '</span>' +
+                    '<span class="t-3" style="float:right;"><b>' + leyenda + '</b> <br/> ' + MoneyFormat(parseFloat(GetValor(item, "monto"))) + '<br/><img src="img/goodpay.png"/></span><hr class="clearn"/>' +
                     '</div>';
             }
             break;
@@ -1578,7 +1662,9 @@ function ObtenerItem(catalogo, item) {
             var indice = GetValor(item, "indice");
             itemli.clave = indice;
             itemli.onclick = function () {
-                Mostrar('lista-' + catalogo, 'p-regen_' + catalogo, catalogo, this.indice);
+                var clave = this.clave;
+                document.getElementById("clave-tiposgastos-OPP").params = { clave: clave, tipo_erog: 1 };
+                CargarCatalogo('regen_tiposgastos', function () {CambioPantalla('lista-regen_tiposgastos','lista-tiposgastos')}, {clave:clave,tipo_erog:1});
             }
             itemli.innerHTML =
                 '<span class="t-1" >' + GetValor(item, "titulo") + '</span>' +
@@ -1596,17 +1682,17 @@ function ObtenerItem(catalogo, item) {
                 }, [{ name: "clave", value: this.clave }]);
             }
             itemli.innerHTML =
-                '<span class="t-1" >' + GetValor(item, "titulo") + '</span>' +
-                '<span class="t-2n" style="font-size:small;">PRESUPUESTADO: <br/>$ ' + GetValor(item, "presup") + '</span>' +
-                '<span class="t-3n" style="font-size:small;">INVERTIDO: <br/>$ ' + GetValor(item, "invertido") + '</span>';     
+                '<span class="t-1" style="padding-bottom:10px;">' + GetValor(item, "titulo") + '</span>' +
+            '<span class="t-2n" style="font-size:small;">PRESUPUESTADO: <br/>' + MoneyFormat(parseFloat(GetValor(item, "presup"))) + '</span>' +
+            '<span class="t-3n" style="font-size:small;">INVERTIDO: <br/>' + MoneyFormat(parseFloat(GetValor(item, "invertido"))) + '</span>';     
             break;
         case "comunicados":
         case "solicitudes":
             itemli.onclick = function () { Mostrar('lista-' + catalogo, 'detalle-' + catalogo, catalogo, GetValor(item, "clave")); }
             itemli.innerHTML = '<span class="t-1" >' + GetValor(item, "titulo") + '</span>' +
-                '<span class="t-2">' + GetValor(item, "nombre") + '</span>' +
-                '<span class="t-3n">' + GetValor(item, "fecha1") + '</span>'+
-                '<span class="aux-1">' + GetValor(item, "alias") + '</span>';
+                '<span class="aux-1" style="float:left;clear:left;width:40%;">' + GetValor(item, "alias") + '</span>'+
+                '<span class="t-3n" style="float:right;text-align:right;clear:right;width:40%;">' + GetValor(item, "estado") + '</span>' +
+                '<span class="t-3n"  style="float:left;clear:left;width:40%;">' + GetValor(item, "fecha1") + '</span>';
             break;
         case "directorio":
             itemli.setAttribute("nombre",GetValor(item, "nombre"));
@@ -1664,6 +1750,23 @@ function ObtenerItem(catalogo, item) {
     }
     return itemli;
 }
+
+function MoneyFormat(num) {
+    return '$' + num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+}
+
+function LimpiarClases(id,like) {
+    var clase = document.getElementById(id).getAttribute("class");
+    if(clase){
+        var clases = clase.split(" ");
+        for (var i = 0; i < clases.length;i++){
+            if (clases[i].indexOf(like) > -1) {
+                $("#" + id).removeClass(clases[i]);
+            }
+        }
+    }    
+}
+
 
 var CalendarioR={};
 function CargarCalendarioR(clave) {
@@ -1766,6 +1869,12 @@ function GuardarConcepto() {
             }
         }
 
+function MostrarAportaciones(xmlDoc) {
+    if (xmlDoc.getElementsByTagName('Table').length == 1) {
+        document.getElementById("lista-ap_domicilios3").getElementsByTagName("li")[0].onclick();        
+    }
+}
+
         function LimpiarForm(catalogo) {
             document.getElementById('frm-edit-' + catalogo).reset();
             var wrap = document.getElementById('c-e-' + catalogo);
@@ -1815,41 +1924,7 @@ function GuardarConcepto() {
             });            
         }
 
-        function GuardarComprobante(boton, catalogo, callback, subitemCatalogo) {
-            var datos = $("#frm-edit-" + catalogo).serializeArray();
-            PonerEspera(boton, catalogo);
-            var inDatos = document.getElementById("in-" + catalogo);
-            var claveItem = (inDatos.params ? inDatos.params : inDatos.value);
-            if (document.getElementById("c-e-" + catalogo)) {
-                try {
-                    var imagenes = document.getElementById("c-e-" + catalogo).getElementsByTagName("table");
-                    var imagenesCambio = [];
-                    var textosCambio = [];
-                    for (var i = 0; i < imagenes.length; i++) {
-                        if (imagenes[i].getAttribute("cambioImagen") == "true"){
-                            imagenesCambio.push(imagenes[i]);
-                        } else if (imagenes[i].getAttribute("cambioTexto") == "true") {
-                            textosCambio.push(imagenes[i]);
-                        }
-                    }
-                    if (imagenesCambio.length > 0) {
-                        GuardarUnaImagenTexto(imagenesCambio, textosCambio, 0, callback, claveItem, catalogo,true);
-                    } else if (textosCambio.length > 0) {
-                        GuardarUnTexto(textosCambio, 0, callback, claveItem, catalogo, subitemCatalogo,true);
-                    } else {
-                        QuitarEspera();
-                        if (callback) callback(claveItem);
-                    }
-                } catch (e) {
-                    QuitarEspera(claveItem);
-                    alert(e.message);
-                }
-            } else {
-                QuitarEspera();
-                if (callback) callback(claveItem);
-            }
-        }
-
+        
         function PonerEspera(elemento,catalogo) {
             var fs = document.getElementById('frm-edit-' + catalogo);
             var img = document.createElement("img");

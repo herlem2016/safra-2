@@ -2,6 +2,7 @@
 button {
     cursor: pointer;
 }
+fieldset{border:0px;}
 
 .login {
     height: 100% !important;
@@ -164,6 +165,19 @@ button {
 .titulo span{padding-top:5px;display:inline-block;}
 
 ul.lista {list-style:none;width:95%;margin-left:auto;margin-right:auto;padding:0px;}
+ul.listaP {list-style:none;width:100%;margin:0px;padding:0px;}
+ul.listaP li{border:0px;}
+ul.listaP li > div {border-width:1px 0px 1px 0px;border-style:none;padding-left: 45px;background-color: #fff;background-position: left 5px center;background-size: 40px;background-repeat: no-repeat;padding-top:15px;padding-bottom:15px;margin-bottom:15px;}
+ul.listaP li > div span.t-1{font-size:0.95em;}
+ul.listaP li > div span.t-3{font-family:Verdana;font-weight:bolder;display:inline;float:right;margin-right:20px;text-align:right;}
+ul.listaP li div.PENDIENTE{background-image: url(../img/pendiente.png);border-color:#4a1919;}
+ul.listaP li div.PENDIENTE span.t-3{color:#4a1919;}
+ul.listaP li div.PAGADO{background-image: url(../img/payok.png);border-color:green;}
+ul.listaP li div.PAGADO span.t-3{color:green}
+ul.listaP li div.PAGADO span.t-3 img{width:22px;margin-left:auto;margin-right:auto;display:block;margin-top:4px;}
+ul.listaP li div.CANCELADO{background-image: url(../img/cancelado.png);border-color:#901010;}
+ul.listaP li div.CANCELADO span.t-3{color:#901010}
+ul.listaP .seleccionado{background-color:#F57301;}
     ul.lista .itemg {
         width: 100%;
         float: left;
@@ -176,7 +190,7 @@ ul.lista {list-style:none;width:95%;margin-left:auto;margin-right:auto;padding:0
         width: 100%;
         float: left;
         box-shadow: inset 0px 1px 0px 0px #ffffff;
-        padding-top: 20px;
+        padding-top: 8px;
         padding-bottom: 20px;
         margin: 0px;
     }
@@ -356,11 +370,11 @@ ul.lista .item span.t-1 b{
 
 
 
-ul.lista .item span.t-2 {
+.item span.t-6v {
     display: block;
     width: 65%;
     float: left;
-    font-size: 11px;
+    font-size: small;
     font-weight: normal;
     color: #666;
     margin-top: 5px;
@@ -415,19 +429,19 @@ span.t-1 {
 
 span.t-2 {
     display: block;
-    width: 65%;
     float: left;
-    font-size: 11px;
+    font-size: small;
     font-weight: normal;
     color: #333;
     margin-top: 5px;
     padding: 5px;
-    width:90%;word-wrap:break-word;
+    width:90%;
+    word-wrap:break-word;
 }
 
 span.t-2n {
     display: block;
-    width: 35%;
+    width: 45%;
     float: left;
     font-size: 11px;
     font-weight: normal;
@@ -441,7 +455,6 @@ span.t-3 {
     font-size: 11px;
     color: #00556b;
     font-weight: normal;
-    width:90%;
     word-wrap:break-word;
 }
 
@@ -550,6 +563,8 @@ ul.seleccionable li {
     cursor: pointer;
     clear:both;
 }
+
+ul.seleccionable li:active {background-color:#5fd5fb;}
 
 ul.lista-files {
     list-style: none;
@@ -954,10 +969,11 @@ table.lista-files {
     color: #ff0027 !important;
 }
 
-.pantalla-2, .pantalla-3, .pantalla-4, .scrollable, .scrollable-2 {
+.pantalla-2, .pantalla-3, .pantalla-4, .scrollable, .scrollable-2,.pantalla-21, .pantalla-31 {
     overflow: auto;
     clear: both;
     margin: 0px;
+    overflow-x: hidden;
 }
 
 .espera {background-color:#fff !important;color:#fff !important;}
@@ -977,7 +993,6 @@ div.firma-hist{color:#666;font-size:11px;text-align:right;font-family:verdana;fo
     display: inline;
     width: auto;
     margin-right: 25px;
-    margin-top: 10px;
 }
 button.con-btn{
     cursor: pointer;
@@ -991,20 +1006,22 @@ button.con-btn{
 .btn-apl button{width:100%;position:absolute;top:0px;left:0px;z-index:+1;}
 .btn-apl >img{width:100%;position:absolute;top:0px;left:0px;}
 
-div.PAGADO{background:url(../img/goodpay.png) no-repeat;background-size:30px;background-position-x:right 5px;background-position-y:center;}
-div.PAGADO .t-3{color:#168904 !important;}
-div.CANCELADO .t-3{color:#e53131 !important;font-weight:normal !important;}
-div.CANCELADO .t-3 b{font-weight:normal;}
-div.PENDIENTE{padding-top:15px;padding-bottom:15px;}
-div.PENDIENTE .t-3{color:#cf09cd !important;}
 ul.lista li .t-1m{display:inline-block !important;width:60% !important;}
 ul.lista li .t-2{margin-top:0px;}
 
 .datos-bd{padding:15px;background-color:#fff;color:#666;}
-.datos-bd button{position:absolute;right:3px;top:30%;padding: 10px;border-radius: 5px;font-weight: bold;border:0px;color: #8a8a8a;background-color: #000;}
+button.cerrar-datos-p{
+    float: right;
+    padding:5px;
+    border-radius: 5px;
+    font-weight: bold;
+    border: 0px;
+    color: #8a8a8a;
+    background-color: #000;
+}
 
-.tabs-down, div.agregar button, .menu button, .btn2,button.aceptar {
-    width: 100%;
+.tabs-down, div.agregar button, .menu button, .btn2, button.aceptar {
+    width: 98%;
     text-align: left;
     box-shadow: inset 0px 1px 0px 0px #ffffff;
     background: linear-gradient(to bottom, #f9f9f9 5%, #e9e9e9 100%);
@@ -1019,6 +1036,10 @@ ul.lista li .t-2{margin-top:0px;}
     padding: 6px 24px;
     text-decoration: none;
     text-shadow: 0px 1px 0px #ffffff;
+}
+.tabs-down {
+    margin-left:1%;
+    padding: 0px;
 }
 
     button.aceptar:hover,div.agregar button:hover, .menu button:hover, .btn2:hover {
@@ -1068,7 +1089,7 @@ div.agregar button, .menu button{text-align:center;}
 
 .detalle-w {
     padding: 20px;
-    font-size: 1.2em;
+    font-size: 1em;
 }
 
     .detalle-w span.t-1 {
@@ -1076,10 +1097,17 @@ div.agregar button, .menu button{text-align:center;}
     }
 
     .detalle-w span.t-2 {
+        font-size: 0.95em;
+    }
+    .detalle-w span.t-3 {
         font-size: 1em;
     }
 
     .detalle-w p {
         margin-top: 0px;
-        font-size: 1em;
+        font-size: 0.95em;
+        clear:both;
     }
+    .detalle-w .t-41{font-size:small;color:#666;display: block;clear: both;}
+
+    input[type=checkbox]{width:auto;display:inline;}
