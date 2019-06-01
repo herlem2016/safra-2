@@ -564,8 +564,8 @@ function IniciarAsociarCargo() {
                     pantalla.setAttribute("clave", clave);
                     cont =
                         '<span class="t-1">' + GetValor(xmlDoc, "concepto") + '</span>' +
-                        '<span class="t-2">' + GetValor(xmlDoc, "importe") + ' (' + GetValor(xmlDoc, "cargo") + ')</span>' +
-                        '<span class="t-3">' + GetValor(xmlDoc, "fecha") + '</span>' +
+                        '<span class="t-3">' + MoneyFormat(parseFloat(GetValor(xmlDoc, "importe"))) +'</span>' +
+                        '<span class="t-2">' + GetValor(xmlDoc, "fecha") + '</span>' +
                         '<span class="t-4">' + GetValor(xmlDoc, "responsable") + "(" + GetValor(xmlDoc, "cargo") + ")" + '</span>';
                     cont += PintarImagenesTexto(xmlDoc0);
                     document.getElementById("wrap-detalle-" + catalogo).innerHTML = cont;
