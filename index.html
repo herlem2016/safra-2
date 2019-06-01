@@ -41,9 +41,9 @@
     <script src="cordova.js"></script>
     <script src="jquery-1.11.3.min.js"></script>    
     <script>
-         var url = "http://safra.softronel.com.mx/";
+         //var url = "http://safra.softronel.com.mx/";
         //var url = "http://192.168.0.101:82/";
-       //var url = "http://localhost:61157/";
+       var url = "http://localhost:61157/";
         $.support.cors = true;        
     </script>
     <link href="jqueryui/jquery-ui.min.css" rel="stylesheet" />
@@ -194,13 +194,13 @@
         <section class="pantalla usuarios" id="usuarios">
             <div class="lista" id="lista-usuarios">
                 <div class="titulo">usuarios</div>
-                <div class="busqueda"><input placeholder="Buscar" /></div>
+                <div class="busqueda"><input placeholder="Buscar"  onkeypress="if (ValidarEnter(event)) { CargarCatalogo('usuarios', undefined, { buscar: this.value });}"/></div>
                 <div class="agregar" id="edicion-usuarios" style="display:none;"><button clave_funcion="5" control="edicion-usuarios" onclick="IniciarEditar(true,'usuarios',2);">Aregar usuario</button></div>
                 <ul class="lista seleccionable pantalla-3"></ul>
             </div>
 
             <div class="detalle" id="detalle-usuarios" style="display:none;">
-                <div class="titulo">usuarios<button class="regresar" onclick="Mostrar('detalle-usuarios', 'lista-usuarios'); "><img src="img/back.png"/></button></div>
+                <div class="titulo">Usuarios<button class="regresar" onclick="Mostrar('detalle-usuarios', 'lista-usuarios'); "><img src="img/back.png"/></button></div>
                 <div class="btns-up"><button class="edit-btn" clave_funcion="3" style="display:none;" control="edit-usu" id="edit-usu" onclick="IniciarEditar(false,'usuarios');"><img src="img/edit.png" /></button><hr class="clearn" /></div>
                 <div class="pantalla-3" id="wrap-detalle-usuarios"></div>
             </div>
@@ -341,17 +341,17 @@
             </div>
         </section>
 
-        <section class="pantalla directorio" id="inmuebles">
-            <div class="lista" id="lista-inmuebles">
-                <div class="titulo">Inmuebles</div>
-                <div class="busqueda"><input placeholder="Buscar" /></div>
+        <section class="pantalla" id="inmuebles">
+            <div class="lista" id="lista-inmuebles" redim="redim-inmuebles">
+                <div class="titulo"><span>Inmuebles</span><button class="buscar-min" onclick="MostrarBuscar('b-inm','inmuebles','redim-inmuebles');"><img src="img/buscar.png" /></button><hr class="clearn" /></div>
+                <div class="busqueda" id="b-inm" style="display:none;"><input placeholder="Buscar" onkeypress="if(ValidarEnter(event)){CargarCatalogo('inmuebles', undefined, { buscar: this.value });}"/></div>
                 <div class="agregar" id="edicion-inmuebles" style="display:none;"><button clave_funcion="2" control="edicion-inmuebles" onclick="IniciarEditar(true,'inmuebles',2);">Agregar inmueble</button></div>
-                <ul class="lista seleccionable pantalla-3"></ul>
+                <ul class="lista seleccionable pantalla-2" id="redim-inmuebles" classToggle="pantalla-2,pantalla-21" hide="b-inm"></ul>
             </div>
             <div class="edicion" style="display:none;" id="p-edicion-inmuebles">
                 <form onsubmit="return false;" id="frm-edit-inmuebles">
                     <fieldset>
-                        <div class="titulo">Agregar inmueble<button class="regresar" id="cancelar-edit-inmuebles" onclick="Mostrar('p-edicion-inmuebles','lista-inmuebles');"><img src="img/back.png"/></button><hr class="clearn"/></div>
+                        <div class="titulo"><span>Agregar inmueble</span><button class="regresar" id="cancelar-edit-inmuebles" onclick="Mostrar('p-edicion-inmuebles','lista-inmuebles');"><img src="img/back.png"/></button><hr class="clearn"/></div>
                         <div class="pantalla-3">
                             <input name="esNuevo" type="hidden" id="op-inmuebles" />
                             <input name="clave" type="hidden" id="clave-inmuebles" />
@@ -363,40 +363,38 @@
                 </form>
             </div>
             <div class="edicion" style="display:none;" id="p-regen_inmuebles">
-                <div class="titulo">Calendario de reservaciones<button class="regresar" id="cancelar-edit-erogacion" onclick="CambioPantalla('lista-inmuebles','p-regen_inmuebles');"><img src="img/back.png"/></button></div>
-                <div>
-                    <div class="leyenda" style="margin-bottom:30px;margin-top:50px;">
-                        <input type="hidden" id="inmueble" />
-                        <p>
-                            En el calendario aparecen marcadas las fechas donde hay horarios reservados.<br/><br />
+                <div class="titulo"><span>Calendario de reservaciones</span><button class="regresar" id="cancelar-edit-erogacion" onclick="CambioPantalla('lista-inmuebles','p-regen_inmuebles');"><img src="img/back.png"/></button></div>
+                <div class="pantalla-2">
+                    <div class="leyenda" style="margin:5px;">
+                        <input type="hidden" id="inmueble"/>
+                        <p style="margin-top:0px;padding:10px;">
                             Seleccione la fecha de su interés para reservar un horario disponible.
                         </p>
                     </div>
-                    <div id="calendario-ev-inm"></div>
+                    <div id="calendario-ev-inm" style="font-size:0.9em;"></div>
                 </div>                
             </div>
             <div class="lista" id="lista-reservaciones"  style="display:none;" >
-                <div class="titulo">Reservaciones del día<button class="regresar" onclick="CambioPantalla( 'p-regen_inmuebles','lista-reservaciones'); "><img src="img/back.png"/></button></div>
-                <div class="busqueda"><input placeholder="Buscar" /></div>
+                <div class="titulo"><span>Reservaciones del día</span><button class="regresar" onclick="CalendarioR.yaConsulto = false;$('#calendario-ev-inm').datepicker('refresh');CambioPantalla( 'p-regen_inmuebles','lista-reservaciones'); "><img src="img/back.png"/></button></div>                
                 <input type="hidden" id="fecha-res" />
                 <input type="hidden" id="mes-res" />
                 <input type="hidden" id="anio-res" />
                 <input type="hidden" id="inmueble-res" />
                 <div class="agregar" ><button onclick="IniciarEditar(true, 'reservaciones', 2, undefined, undefined, function () { document.getElementById('fecha_reservada').value = document.getElementById('fecha-res').value; document.getElementById('ed-res-inmueble').value = document.getElementById('inmueble').value;});">Agregar Reservación</button></div>
-                <ul class="lista seleccionable pantalla-3" ></ul>
+                <ul class="lista seleccionable pantalla-21" ></ul>
             </div>
 
             <div class="detalle" id="detalle-reservaciones" style="display:none;">
                 <div class="titulo">Detalle de reservación<button class="regresar" onclick="CambioPantalla( 'lista-reservaciones','detalle-reservaciones'); "><img src="img/back.png"/></button></div>
                 <div class="btns-up"><button class="edit-btn" clave_funcion="3" style="display:none;" control="edit-rese-3" id="edit-rese-3" onclick="IniciarEditar(false,'reservaciones');"><img src="img/edit.png" /></button><button style="display:none;" onclick="IniciarEliminar(this,'reservaciones');" clave_funcion="4" control="del-rese-4" id="del-rese-4" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>
-                <div class="pantalla-3" id="wrap-detalle-reservaciones"></div>
+                <div class="pantalla-21" id="wrap-detalle-reservaciones"></div>
             </div>
 
             <div class="edicion" style="display:none;" id="p-edicion-reservaciones">
+                <div class="titulo">Editar reservación<button class="regresar" id="cancelar-edit-reservaciones" onclick="Mostrar('p-edicion-reservaciones','lista-reservaciones');"><img src="img/back.png" /></button><hr class="clearn" /></div>
                 <form onsubmit="return false;" id="frm-edit-reservaciones">
-                    <fieldset>
-                        <div class="titulo">Editar reservación<button class="regresar" id="cancelar-edit-reservaciones" onclick="Mostrar('p-edicion-reservaciones','lista-reservaciones');"><img src="img/back.png"/></button><hr class="clearn"/></div>
-                        <div class="pantalla-3">
+                    <fieldset>                        
+                        <div class="pantalla-2">
                             <input name="esNuevo" type="hidden" id="op-reservaciones" />
                             <input name="clave" type="hidden" id="clave-reservaciones" />
                             <input name="inmueble" type="hidden" id="ed-res-inmueble" />
@@ -413,16 +411,16 @@
         </section>
 
         <section class="pantalla directorio" id="directorio">
-            <div class="lista" id="lista-directorio">
-                <div class="titulo">Directorio</div>
-                <div class="busqueda"><input placeholder="Buscar" /></div>
-                <div class="agregar" id="edicion-directorio" style="display:none;"><button clave_funcion="1" control="edicion-directorio" onclick="IniciarEditarDirectorio(true);">Aregar contácto</button></div>
-                <ul class="lista seleccionable pantalla-3"></ul>
+            <div class="lista" id="lista-directorio" redim="redim-directorio">
+                <div class="titulo"><span>Directorio</span><button class="buscar-min" onclick="MostrarBuscar('b-dir','directorio','redim-directorio');"><img src="img/buscar.png" /></button><hr class="clearn" /></div>
+                <div class="busqueda" id="b-dir" style="display:none;" ><input placeholder="Buscar" onkeypress="if(ValidarEnter(event)){CargarCatalogo('directorio', undefined, { buscar: this.value });}"/></div>
+                <div class="agregar" id="edicion-directorio" style="display:none;padding:5px;"><button clave_funcion="1" control="edicion-directorio" onclick="IniciarEditarDirectorio(true);">Aregar contácto</button></div>
+                <ul class="lista seleccionable pantalla-2" id="redim-directorio" classToggle="pantalla-2,pantalla-21" hide="b-dir"></ul>
             </div>
-            <div class="edicion pantalla-3" style="display:none;" id="p-edicion-directorio">
+            <div class="edicion" style="display:none;" id="p-edicion-directorio">
                 <div class="titulo">Edición de contácto <button class="regresar" onclick="Mostrar('p-edicion-directorio','lista-directorio');"><img src="img/back.png"/></button><hr class="clearn"/></div>
                 <form onsubmit="return false;" id="frm-edit-directorio">
-                <fieldset>
+                <fieldset class="pantalla-3">
                     <input type="hidden" id="op-directorio" name="esNuevo" />
                     <input type="hidden" id="indice-directorio" name="indice" />
                     <label>Nombre</label><input name="nombre" maxlength="99"/>
@@ -436,27 +434,27 @@
         </section>
 
         <section class="pantalla comunicados" id="comunicados">
-            <div class="lista" id="lista-comunicados">
-                <div class="titulo">Comunicados</div>          
-                <div class="busqueda"><input placeholder="Buscar" /></div>
+            <div class="lista" id="lista-comunicados" redim="redim-comunicados">
+                <div class="titulo"><span>Comunicados</span><button class="buscar-min" onclick="MostrarBuscar('b-com','directorio','redim-directorio');"><img src="img/buscar.png" /></button><hr class="clearn" /></div>          
+                <div class="busqueda" id="b-com" style="display:none;"><input placeholder="Buscar" /></div>
                 <div class="agregar" id="edicion-comunicados" style="display:none;"><button clave_funcion="5" control="edicion-comunicados" onclick="IniciarEditar(true,'comunicados');">Aregar comunicado</button></div>
-                <ul class="lista seleccionable pantalla-3"></ul>
+                <ul class="lista seleccionable pantalla-3" id="redim-comunicados" classToggle="pantalla-2,pantalla-21" hide="b-com"></ul>
             </div>
             
             <div class="detalle" id="detalle-comunicados" style="display:none;">
                 <div class="titulo">Comunicados<button class="regresar" onclick="Mostrar('detalle-comunicados', 'lista-comunicados'); "><img src="img/back.png"/></button></div>
-                <div class="btns-up"><button class="edit-btn" clave_funcion="3" style="display:none;" control="edit-com-3" id="edit-com-3" onclick="IniciarEditar(false,'comunicados');" ><img src="img/edit.png" /></button><button style="display:none;" onclick="IniciarEliminar(this,'comunicados');" clave_funcion="4" control="del-com-4" id="del-com-4" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>
-                <div class="pantalla-3" id="wrap-detalle-comunicados"></div>
+                <div class="btns-up" id="edit-com" style="display:none;" ><button class="edit-btn" clave_funcion="3" control="edit-com" onclick="IniciarEditar(false,'comunicados');" ><img src="img/edit.png" /></button><button onclick="IniciarEliminar(this,'comunicados');" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>
+                <div class="detalle-w pantalla-3" id="wrap-detalle-comunicados"></div>
             </div>
 
             <div class="edicion " style="display:none;" id="p-edicion-comunicados" >
                 <div class="titulo">Edición de comunicados <button class="regresar" id="cancelar-edit-comunicados"><img src="img/back.png"/></button><hr class="clearn"/></div>    
-                <form class="pantalla-3" id="frm-edit-comunicados" onsubmit="return false;">
+                <form class="pantalla-2" id="frm-edit-comunicados" onsubmit="return false;">
                     <fieldset style="border:0px;">
                         <label>Título</label><input name="titulo" />
                         <input name="esNuevo" type="hidden" id="op-comunicados" />
                         <input name="clave" type="hidden" id="clave-comunicados" />
-                        <label>Descripción</label><textarea style="height:180px;" name="descripcion"></textarea>
+                        <label>Descripción</label><textarea style="height:180px;" name="descripcion" id="desc-com"></textarea>
                         <label>Imagenes y descripción<hr class="clearn" /></label>
                         <div id="c-e-comunicados"></div>
                         <div><button class="adjuntar-btn" style="width:100px;" onclick="IAgregarImagenTexto('c-e-comunicados');"><img src="img/attach.png" /><span class="texto-discreto">Agregar</span></button><hr class="clearn" /></div>
@@ -468,48 +466,11 @@
 
         <section class="pantalla notificaciones" id="notificaciones">
             
-            <div class="lista" id="lista-notificaciones">
-                <div class="titulo">Notificaciones</div>            
-                <div class="busqueda"><input placeholder="Buscar" /></div>
-                <div class="agregar" id="edicion-notificaciones" style="display:none;"><button clave_funcion="6" control="edicion-notificaciones" onclick="IniciarEditarNotificaciones();">Configurar notificaciones</button></div>
-                <ul class="lista seleccionable pantalla-3">
-                    <li class="item" onclick="Mostrar('lista-notificaciones','detalle-notificaciones');">
-                        <span class="t-1">Junta general</span>                    
-                        <span class="t-2">Juan Rodolfo Jimenez Gomez Lara Vazquez(Administración)</span>                    
-                        <span class="t-3">publicado:<br /> 11-ene-2018 9:25 pm</span>                    
-                    </li>
-                    <li class="item">
-                        <span class="t-1">Junta general</span>                    
-                        <span class="t-2">Juan Rodolfo Jimenez Gomez</span>                    
-                        <span class="t-3">11-ene-2018</span>                    
-                    </li>
-                    <li class="item">
-                        <span class="t-1">Junta general</span>                    
-                        <span class="t-2">Juan Rodolfo Jimenez Gomez</span>                    
-                        <span class="t-3">11-ene-2018</span>                    
-                    </li>
-                    <li class="item">
-                        <span class="t-1">Junta general</span>                    
-                        <span class="t-2">Juan Rodolfo Jimenez Gomez</span>                    
-                        <span class="t-3">11-ene-2018</span>                    
-                    </li>
-                    <li class="item">
-                        <span class="t-1">Junta general</span>                    
-                        <span class="t-2">Juan Rodolfo Jimenez Gomez</span>                    
-                        <span class="t-3">11-ene-2018</span>                    
-                    </li>
-                </ul>
-            </div>
-            <div class="detalle" id="detalle-notificaciones" style="display:none;">
-                <div class="titulo">Notificación <button class="regresar" onclick="Mostrar('detalle-notificaciones','lista-notificaciones');"><img src="img/back.png"/></button></div>  
-                <div class="pantalla-3">
-                    <div class="btns-up"><button class="edit-btn" clave_funcion="6" style="display:none;" control="edit-not-6" id="edit-not-6" onclick="IniciarConfigurarNotificaciones();"><img src="img/edit.png" /></button><button style="display:none;" onclick="IniciarEliminarNotificacion();" clave_funcion="7" control="del-notif-7" id="del-notif-7" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>
-                    <span class="t-1">Nuevo cumunicado</span>                    
-                    <span class="t-2">Administracion-Presidente</span>                    
-                    <span class="t-3">11-ene-2018</span>                    
-                    <span class="t-4">Administración envió un comunicado.</span>                                        
-                </div>
-             </div>
+            <div class="lista" id="lista-notificaciones" >
+                <div class="titulo"><span>Notificaciones</span><button class="buscar-min" onclick="MostrarBuscar('b-noti', 'notificaciones', 'redim-notificaciones');"><img src="img/buscar.png" /></button><hr class="clearn" /></div>            
+                <div class="busqueda" id="b-noti" style="display:none;"><input placeholder="Buscar" onkeypress="if (ValidarEnter(event)) { CargarCatalogo('notificaciones', undefined, { buscar: this.value});}"/></div>                
+                <ul class="lista seleccionable pantalla-2" classToggle="pantalla-2,pantalla-21" id="redim-notificaciones" hide="b-noti"></ul>
+            </div>            
             <div class="configuracion" style="display:none;" id="p-edicion-notificaciones">
                 <div class="titulo">Edición de comunicados <button class="regresar" id="cancelar-edit-notificaciones"><img src="img/back.png"/></button><hr class="clearn"/></div>    
                 <div class="pantalla-3" >
@@ -524,27 +485,27 @@
         <section class="pantalla productosservicios" id="serviciosproductos">
 
             <div class="buscador" id="buscador-prodserv">
-                <div class="titulo">Productos y Servicios</div>      
-                <img class="logo-frac" src="img/Titan_Company_Logo.png" />      
+                <div class="titulo">Productos y Servicios</div> 
+                <div class="agregar" id="edicion-prodserv" style="display:none;"><button clave_funcion="5" control="edicion-prodserv" onclick="IniciarEditar(true, 'prodserv', undefined, {b:'p-edicion-prodserv',a:'buscador-prodserv'});">Aregar Negocio</button></div>
+                <img class="logo-frac logo" />      
                 <div class="busqueda"><input placeholder="Buscar" id="btn-buscar-ps" style="padding:10px;width: 90% !important;text-align: center;"/></div> 
                 <p>Encuentra servicios y productos que ofrecen dentro del fracciomaniento</p>
             </div>
 
             <div class="lista" id="lista-prodserv" style="display:none;">
-                <div class="titulo"><button class="regresar" onclick="Mostrar('lista-prodserv','buscador-prodserv');"><img src="img/back.png"/></button>Productos y Servicios</div>   
-                <div class="agregar" id="edicion-prodserv" style="display:none;"><button clave_funcion="5" control="edicion-prodserv" onclick="IniciarEditar(true,'prodserv');">Aregar Negocio</button></div>
-                <ul class="lista seleccionable pantalla-3"></ul>
+                <div class="titulo"><button class="regresar" onclick="Mostrar('lista-prodserv','buscador-prodserv');"><img src="img/back.png"/></button>Productos y Servicios</div>                   
+                <ul class="lista seleccionable pantalla-2"></ul>
             </div>
             <div class="detalle" id="detalle-prodserv" style="display:none;">
                 <div class="titulo">Productos y Servicios <button class="regresar" onclick="Mostrar('detalle-prodserv','lista-prodserv');"><img src="img/back.png"/></button></div>
                 <div class="btns-up"><button class="edit-btn" clave_funcion="3" style="display:none;" control="edit-prodserv-3" id="edit-prodserv-3" onclick="IniciarEditar(false,'prodserv');" ><img src="img/edit.png" /></button><button style="display:none;" onclick="IniciarEliminar(this,'prodserv');" clave_funcion="4" control="del-prodserv-4" id="del-prodserv-4" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>
-                <div class="check-activacion"><label class="etiqueta">Publicar</label><label class="switch"><input type="checkbox" id="activar-negocio" onchange="ActivarNegocio(this);" /><span class="slider round"></span></label><hr class="clearn" /></div>
+                <div class="check-activacion" id="check-negocio"><label class="etiqueta">Publicar</label><label class="switch"><input type="checkbox" id="activar-negocio" onchange="ActivarNegocio(this);" /><span class="slider round"></span></label><hr class="clearn" /></div>
                 <div class="pantalla-3" id="wrap-detalle-prodserv"></div>
              </div>
             
             <div class="edicion" style="display:none;" id="p-edicion-prodserv">
-                <div class="titulo">Edite los datos de su negocio <button class="regresar" id="cancelar-edit-prodserv"><img src="img/back.png"/></button><hr class="clearn"/></div>
-                <form class="pantalla-3" id="frm-edit-prodserv" onsubmit="return false;">
+                <div class="titulo">Edite los datos de su Negocio <button class="regresar" id="cancelar-edit-prodserv"><img src="img/back.png"/></button><hr class="clearn"/></div>
+                <form class="pantalla-2" id="frm-edit-prodserv" onsubmit="return false;">
                     <fieldset style="border:0px;">
                         <label>Nombre de su negocio</label><input name="titulo" />
                         <input name="esNuevo" type="hidden" id="op-prodserv" />
@@ -701,15 +662,16 @@
 
         <section class="pantalla transparencia" id="transparencia">  
             <div class="lista" id="lista-transparencia">
-                <div class="titulo">Transparencia</div>
-                <div class="busqueda"><input placeholder="Buscar" /></div>                
-                <ul class="lista seleccionable pantalla-3"></ul>             
+                <div class="titulo">Transparencia</div>                
+                <ul class="lista seleccionable pantalla-2"></ul>             
             </div>
                          
             <div class="detalle" id="detalle-transparencia" style="display:none;">
-                <div class="titulo">Resultados<button class="buscar" id="toggle-aportaciones" onclick="CambioPantalla('lista-transparencia','detalle-transparencia'); "><img src="img/back.png"/></button></div>                
-                <div style="width:90%;margin:auto;overflow:hidden;"><canvas id="graf-transparencia"></canvas></div>
-                <table id="table-resultados-tr"></table>
+                <div class="titulo"><span>Resultados</span><button class="buscar" id="toggle-aportaciones" onclick="CambioPantalla('lista-transparencia','detalle-transparencia'); "><img src="img/back.png"/></button></div>                
+                <div class="pantalla-2">
+                    <div style="width:90%;margin:auto;overflow:hidden;" id="graf-transparencia"></div>
+                    <table id="table-resultados-tr" class="color resultados"></table>
+                </div>
             </div>
         </section>
                 
@@ -768,7 +730,7 @@
                     <ul class="lista seleccionable pantalla-3 color" ></ul>
                 </div>
 
-                <div class="lista" id="lista-planpresupuestal">
+                <div class="lista" id="lista-planpresupuestal" style="display:none;">
                     <div class="titulo">Plan Presupuestal<button class="regresar" id="cancelar-edit-egrepro" onclick="CambioPantalla('lista-egrepro','lista-planpresupuestal')"><img src="img/back.png"/></button><hr class="clearn"/></div>
                     <input name="clave" type="hidden" id="clave-egrepro-OPP" />
                     <div id="proy-act"></div>
@@ -826,16 +788,16 @@
         </section>
 
         <section class="pantalla encuestas" id="encuestas">
-            <div class="lista" id="lista-encuestas">
-                <div class="titulo">Encuestas</div>            
-                <div class="busqueda"><input placeholder="Buscar" /></div>
-                <div class="agregar" id="edicion-encuestas"  style="display:none;" ><button clave_funcion="2" control="edicion-encuestas"  onclick="IniciarEditar(true, 'encuestas', 1, { a: 'lista-encuestas', b: 'p-edicion-encuestas' });" >Agregar encuesta</button></div>      
-                <ul class="lista seleccionable pantalla-3" ></ul>
+            <div class="lista" id="lista-encuestas" redim="redim-encuestas">
+                <div class="titulo"><span>Encuestas</span><button class="buscar-min" onclick="MostrarBuscar('b-enc', 'encuestas', 'redim-encuestas');"><img src="img/buscar.png" /></button><hr class="clearn" /></div>            
+                <div class="busqueda" id="b-enc" style="display:none;"><input placeholder="Buscar" onkeypress="if(ValidarEnter(event)){CargarCatalogo('encuestas', undefined, { buscar: this.value });}"/></div>
+                <div class="agregar" id="edicion-encuestas" style="display:none;padding:5px;" ><button clave_funcion="2" control="edicion-encuestas" onclick="IniciarEditar(true, 'encuestas', 1, { a: 'lista-encuestas', b: 'p-edicion-encuestas' });" >Agregar encuesta</button></div>      
+                <ul class="lista seleccionable pantalla-2" id="redim-encuestas" classToggle="pantalla-2,pantalla-31" hide="b-enc"></ul>
             </div>
                          
             <div class="edicion" style="display:none;" id="p-edicion-encuestas">
                 <div class="titulo">Editar encuesta <button class="regresar" id="cancelar-edit-encuestas"><img src="img/back.png"/></button></div>
-                <form class="pantalla-3" id="frm-edit-encuestas" onsubmit="return false;">
+                <form class="pantalla-2" id="frm-edit-encuestas" onsubmit="return false;">
                     <fieldset style="border:0px;">
                         <input name="esNuevo" type="hidden" id="op-encuestas" />
                         <input name="clave" type="hidden" id="enc-clave" />

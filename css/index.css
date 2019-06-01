@@ -564,7 +564,6 @@ ul.seleccionable li {
     clear:both;
 }
 
-ul.seleccionable li:active {background-color:#5fd5fb;}
 
 ul.lista-files {
     list-style: none;
@@ -1111,3 +1110,5 @@ div.agregar button, .menu button{text-align:center;}
     .detalle-w .t-41{font-size:small;color:#666;display: block;clear: both;}
 
     input[type=checkbox]{width:auto;display:inline;}
+
+    .resultados{font-size:small;}
