@@ -558,6 +558,18 @@ function IniciarAsociarCargo() {
                     '<div class="t-2"><b>Observaciones: </b><p>' + GetValor(xmlDoc, "observaciones") + '</p></div>' +                    
                     '</div>';
                     break;
+                case "regen_egrepro":
+                case "regen_tiposgastos":
+                    var pantalla = document.getElementById("detalle-" + catalogo);
+                    pantalla.setAttribute("clave", clave);
+                    cont =
+                        '<span class="t-1">' + GetValor(xmlDoc, "concepto") + '</span>' +
+                        '<span class="t-2">' + GetValor(xmlDoc, "importe") + ' (' + GetValor(xmlDoc, "cargo") + ')</span>' +
+                        '<span class="t-3">' + GetValor(xmlDoc, "fecha") + '</span>' +
+                        '<span class="t-4">' + GetValor(xmlDoc, "responsable") + "(" + GetValor(xmlDoc, "cargo") + ")" + '</span>';
+                    cont += PintarImagenesTexto(xmlDoc0);
+                    document.getElementById("wrap-detalle-" + catalogo).innerHTML = cont;
+                    ; break;
                 case "tiposgastos":
                 case "egrepro":
                     var control = IAgregarCosto('c-e-regen_' + catalogo);
@@ -1475,26 +1487,17 @@ function ObtenerItem(catalogo, item) {
             itemli.innerHTML = '<span class="t-1m">' + GetValor(item, "descripcion") + '</span><div class="btn-apl">' + (GetValor(item, "resuelto") == "true" ? '<button onclick="QuitarVoBoActividad(' + indice + ',' + proyecto + ');" style="padding:7px;display:none;" clave_funcion="5" id="qav-' + indice + '" control="qav-' + indice + '" ><img src="img/del.png" /></button><img src="img/ok.png" />':'<button onclick="RegistrarVoBoActividad(' + indice + ',' + proyecto + ');" style="padding:7px;display:none;" clave_funcion="5" id="av-' + indice + '" control="av-' + indice + '" ><img src="img/ok.png" /></button><img src="img/pendiente.png" />') + "</div>";
             break;
         case "regen_egrepro":
-            itemli.indice = GetValor(item, "clave");
-            itemli.onclick = function () {
-
-            }
-            itemli.innerHTML =
-                '<span class="t-1">' + GetValor(item, "concepto") + '</span>' +
-                '<span class="t-2">' + GetValor(item, "fecha") + '</span>' +
-                '<span class="t-3 style="float:right;">' + MoneyFormat(parseFloat(GetValor(item, "importe"))) + '</span><hr class="clearn"/>';               
-            break;
         case "regen_tiposgastos":
             itemli.indice = GetValor(item, "clave");
             itemli.onclick = function () {
-
+                Mostrar('lista-' + catalogo, 'detalle-' + catalogo, catalogo, this.indice);
             }
             itemli.innerHTML =
                 '<span class="t-1">' + GetValor(item, "concepto") + '</span>' +
                 '<span class="t-2" style="width:50%;">' + GetValor(item, "fecha") + '</span>' +
                 '<span class="t-3" style="float:right;text-align:right;width:35%;">' + MoneyFormat(parseFloat(GetValor(item, "importe"))) + '</span><hr class="clearn"/>';
-               
-            break;
+
+            break;        
         case "planpresupuestal":
             itemli.proyecto = GetValor(item, "proyecto");
             itemli.indice = GetValor(item, "indice");

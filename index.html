@@ -727,6 +727,11 @@
                     <div class="agregar" id="edicion-tiposgastos" style="display:none;"><button clave_funcion="2" control="edicion-tiposgastos" onclick="IniciarEditarPago(true,undefined,'tiposgastos');">Registrar gasto</button></div>
                     <ul class="lista seleccionable pantalla-3 color"></ul>
                 </div>
+                <div class="detalle" id="detalle-regen_tiposgastos" style="display:none;">
+                    <div class="titulo">Detalle de Domicilio<button class="regresar" onclick="Mostrar('detalle-regen_tiposgastos', 'lista-regen_tiposgastos'); "><img src="img/back.png" /></button></div>
+                    <div class="btns-up" id="del-r-tg" style="display:none;"><button class="edit-btn" onclick="IniciarEditar(false,'regen_tiposgastos');"><img src="img/edit.png" /></button><button onclick="CancelarAportacion(this,'regen_tiposgastos');" clave_funcion="2" control="del-r-tg" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>
+                    <div class="detalle-w pantalla-3" id="wrap-detalle-regen_tiposgastos"></div>
+                </div>
                 <div class="edicion" style="display:none;" id="p-edicion-tiposgastos">
                     <form onsubmit="return false;" id="frm-edit-tiposgastos">
                         <fieldset>
@@ -791,6 +796,11 @@
                     <div class="titulo">Registro de Gastos<button class="regresar" onclick="CambioPantalla('lista-planpresupuestal','lista-regen_egrepro');"><img src="img/back.png"/></button><hr class="clearn"/></div>
                     <div class="agregar" id="edicion-egrepro" style="display:none;"><button clave_funcion="2" control="edicion-egrepro" onclick="IniciarEditarPago(true,undefined,'egrepro');">Registrar gasto</button></div>                                        
                     <ul class="lista seleccionable pantalla-3 color"></ul>                    
+                </div>
+                <div class="detalle" id="detalle-regen_egrepro" style="display:none;">
+                    <div class="titulo">Detalle de Domicilio<button class="regresar" onclick="Mostrar('detalle-regen_egrepro', 'lista-regen_egrepro'); "><img src="img/back.png" /></button></div>
+                    <div class="btns-up" id="del-r-eg" style="display:none;"><button class="edit-btn" onclick="IniciarEditar(false,'regen_egrepro');"><img src="img/edit.png" /></button><button onclick="CancelarAportacion(this,'regen_egrepro');" clave_funcion="2" control="del-r-eg" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>
+                    <div class="detalle-w pantalla-3" id="wrap-detalle-regen_egrepro"></div>
                 </div>
 
                 <div class="edicion" style="display:none;" id="p-edicion-regen_egrepro">
