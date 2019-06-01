@@ -1482,9 +1482,7 @@ function ObtenerItem(catalogo, item) {
             itemli.innerHTML =
                 '<span class="t-1">' + GetValor(item, "concepto") + '</span>' +
                 '<span class="t-2">' + GetValor(item, "fecha") + '</span>' +
-            '<span class="t-3 style="float:right;">' + MoneyFormat(parseFloat(GetValor(item, "importe"))) + '</span><hr class="clearn"/>' +
-                '<button class="edit-btn" clave_funcion="2" control="ed-pp-' + itemli.indice + '" id="ed-pp-' + itemli.indice + '" style="display:none;"  onclick="IniciarEditarPago(false,' + itemli.indice + ');" ><img  src="img/edit.png" /></button>' +
-                '<button class="edit-btn" clave_funcion="2" control="del-pp-' + itemli.indice + '" id="del-pp-' + itemli.indice + '" style="display:none;"  onclick="IniciarEliminar(this,\'' + catalogo + '\',' + itemli.indice + ',{ b: \'lista-' + catalogo + '\', a: \'p-edicion-' + catalogo + '\' },true);" ><img  src="img/del.png" /></button>';
+                '<span class="t-3 style="float:right;">' + MoneyFormat(parseFloat(GetValor(item, "importe"))) + '</span><hr class="clearn"/>';               
             break;
         case "regen_tiposgastos":
             itemli.indice = GetValor(item, "clave");
@@ -1494,9 +1492,8 @@ function ObtenerItem(catalogo, item) {
             itemli.innerHTML =
                 '<span class="t-1">' + GetValor(item, "concepto") + '</span>' +
                 '<span class="t-2" style="width:50%;">' + GetValor(item, "fecha") + '</span>' +
-            '<span class="t-3" style="float:right;text-align:right;width:35%;">' + MoneyFormat(parseFloat(GetValor(item, "importe"))) + '</span><hr class="clearn"/>' +
-                '<button class="edit-btn" clave_funcion="2" control="ed-pp-' + itemli.indice + '" id="ed-pp-' + itemli.indice + '" style="display:none;"  onclick="IniciarEditarPago(false,' + itemli.indice + ');" ><img  src="img/edit.png" /></button>' +
-                '<button class="edit-btn" clave_funcion="2" control="del-pp-' + itemli.indice + '" id="del-pp-' + itemli.indice + '" style="display:none;"  onclick="IniciarEliminar(this,\'' + catalogo + '\',' + itemli.indice + ',{ b: \'lista-' + catalogo + '\', a: \'p-edicion-' + catalogo + '\' },true);" ><img  src="img/del.png" /></button>';
+                '<span class="t-3" style="float:right;text-align:right;width:35%;">' + MoneyFormat(parseFloat(GetValor(item, "importe"))) + '</span><hr class="clearn"/>';
+               
             break;
         case "planpresupuestal":
             itemli.proyecto = GetValor(item, "proyecto");
@@ -1512,7 +1509,7 @@ function ObtenerItem(catalogo, item) {
             itemli.innerHTML = '<span class="t-1">' + GetValor(item, "descripcion") + '</span>' +
                 '<span class="t-2n" style="font-size:small;">PRESUPUESTADO: <br/>' + MoneyFormat(parseFloat(GetValor(item, "presup"))) + '</span>' +
                 '<span class="t-3n" style="font-size:small;">INVERTIDO: <br/>' + MoneyFormat(parseFloat(GetValor(item, "invertido"))) + '</span>'+
-                '<button class="edit-btn" clave_funcion="2" control="ed-pp-' + itemli.indice + '" id="ed-pp-' + itemli.indice + '" style="display:none;"  onclick="IniciarEditarActividad(false,' + itemli.indice + ');" ><img  src="img/edit.png" /></button>' +
+                '<button class="edit-btn" clave_funcion="2" control="ed-pp-' + itemli.indice + '" id="ed-pp-' + itemli.indice + '" style="display:none;clear:left;"  onclick="IniciarEditarActividad(false,' + itemli.indice + ');" ><img  src="img/edit.png" /></button>' +
                 '<button class="edit-btn" clave_funcion="2" control="del-pp-' + itemli.indice + '" id="del-pp-' + itemli.indice + '" style="display:none;"  onclick="IniciarEliminar(this,\'' + catalogo + '\',' + itemli.indice + ',{ b: \'lista-' + catalogo + '\', a: \'p-edicion-' + catalogo + '\' },true);" ><img  src="img/del.png" /></button>';
             break;
         case "proyectos":
@@ -1682,7 +1679,7 @@ function ObtenerItem(catalogo, item) {
                 }, [{ name: "clave", value: this.clave }]);
             }
             itemli.innerHTML =
-                '<span class="t-1" style="padding-bottom:10px;">' + GetValor(item, "titulo") + '</span>' +
+            '<span class="t-1" style="padding-bottom:10px;">' + GetValor(item, "titulo") + '</span>' +
             '<span class="t-2n" style="font-size:small;">PRESUPUESTADO: <br/>' + MoneyFormat(parseFloat(GetValor(item, "presup"))) + '</span>' +
             '<span class="t-3n" style="font-size:small;">INVERTIDO: <br/>' + MoneyFormat(parseFloat(GetValor(item, "invertido"))) + '</span>';     
             break;
