@@ -307,32 +307,14 @@
             </div>
             <div id="solicitudes_seg">
                 <div class="lista" id="lista-solicitudes_seg">
-                    <div class="titulo">Incidentes de seguridad</div>
-                    <div class="busqueda"><input placeholder="Buscar" /></div>
-                    <div class="agregar"><button onclick="IniciarEditar(true,'solicitudes_seg');">Reportar</button></div>
-                    <ul class="lista seleccionable pantalla-3"></ul>
+                    <div class="titulo"><span>Incidentes reportados</span><button class="buscar-min" onclick="MostrarBuscar('b-sol', 'solicitudes_seg', 'redim-solicitudes_seg',undefined,undefined,undefined,{no_seg: true});"><img src="img/buscar.png" /></button><hr class="clearn" /></div>
+                    <div class="busqueda" id="b-sol" style="display:none;"><input id="in-b-sol" placeholder="Buscar" onkeypress="if (ValidarEnter(event)) { CargarCatalogo('solicitudes_seg', undefined, { buscar: this.value, no_seg: false});}" /></div>                    
+                    <ul class="lista seleccionable pantalla-21" id="redim-solicitudes_seg" classToggle="pantalla-21,pantalla-3"></ul>
                 </div>
 
-                <div class="detalle" id="detalle-solicitudes_seg" style="display:none;">
-                    <div class="titulo">Detalle de asunto<button class="regresar" onclick="Mostrar('detalle-solicitudes_seg', 'lista-solicitudes_seg'); "><img src="img/back.png" /></button></div>
-                    <div class="pantalla-3" id="wrap-detalle-solicitudes_seg"></div>
-                </div>
-
-                <div class="edicion " style="display:none;" id="p-edicion-solicitudes_seg">
-                    <div class="titulo">Edición de Reporte <button class="regresar" id="cancelar-edit-solicitudes_seg"><img src="img/back.png" /></button><hr class="clearn" /></div>
-                    <form class="pantalla-3" id="frm-edit-solicitudes_seg" onsubmit="return false;">
-                        <fieldset style="border:0px;">
-                            <input type="hidden" name="tipo_asunto" value="6"/>
-                            <label>Asunto</label><input name="titulo" />
-                            <input name="esNuevo" type="hidden" id="op-solicitudes_seg" />
-                            <input name="clave" type="hidden" id="clave-solicitudes_seg" />
-                            <label>Detalle</label><textarea style="height:180px;" name="descripcion"></textarea>
-                            <label><hr class="clearn" /></label>
-                            <div id="c-e-solicitudes_seg"></div>
-                            <div><button class="adjuntar-btn" style="width:100px;" onclick="IAgregarImagenTexto('c-e-solicitudes_seg');"><img src="img/attach.png" /><span class="texto-discreto">Agregar</span></button><hr class="clearn" /></div>
-                            <button class="aceptar" style="margin-top:30px;margin-bottom:50px;" onclick="Guardar(this,'solicitudes_seg', function () { LimpiarForm('solicitudes_seg');CargarCatalogo(catalogo);Mostrar('p-edicion-solicitudes_seg','lista-solicitudes_seg');});">Aceptar</button>
-                        </fieldset>
-                    </form>
+                <div id="detalle-solicitudes_seg" style="display:none;">
+                    <div class="titulo"><span>Detalle de asunto</span><button class="regresar" onclick="CargarCatalogo('solicitudes_seg', function () { CambioPantalla('lista-solicitudes_seg','detalle-solicitudes_seg');},{ buscar: document.getElementById('in-b-sol').value, no_seg: false}); "><img src="img/back.png" /></button></div>
+                    <div class="pantalla-21 detalle-w" id="wrap-detalle-solicitudes_seg"></div>
                 </div>
             </div>
             <div style="height:32px;" tabs="visitas,solicitudes_seg" class="tabs-down">

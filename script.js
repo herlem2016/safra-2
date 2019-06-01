@@ -587,17 +587,18 @@ function IniciarAsociarCargo() {
                     cont += PintarImagenesTexto(xmlDoc0);
                     document.getElementById("wrap-detalle-" + catalogo).innerHTML = cont;
                     ; break;
+                case "solicitudes_seg":
                 case "solicitudes":
                     var pantalla = document.getElementById("detalle-" + catalogo);
                     pantalla.setAttribute("clave", clave);
                     cont =                    
                         '<span class="t-1">' + GetValor(xmlDoc, "titulo") + '</span>' +
-                    '<span class="t-2">' + GetValor(xmlDoc, "nombre") + (GetValor(xmlDoc, "cargo")?' (' + GetValor(xmlDoc, "cargo") + ')</span>':"") +
+                        '<span class="t-2">' + GetValor(xmlDoc, "nombre") + (GetValor(xmlDoc, "cargo")?' (' + GetValor(xmlDoc, "cargo") + ')</span>':"") +
                         '<span class="t-3" style="width:90%;clear:both;font-size:0.85em;">' + GetValor(xmlDoc, "fecha") + '</span>' +
                         '<span class="t-2"><i>' + GetValor(xmlDoc, "descripcion") + '</i></span>';
                     cont += PintarImagenesTexto(xmlDoc0, true);
                     document.getElementById("wrap-detalle-" + catalogo).innerHTML = cont;
-                    var contenedor = document.getElementById("wrap-detalle-solicitudes");
+                    var contenedor = document.getElementById("wrap-detalle-" + catalogo);
                     var control=IAgregarImagenTexto(contenedor, 1, true,true);
                     var btn = document.createElement("div");                    
                     btn.className = "agregar btn-normal";
@@ -606,11 +607,11 @@ function IniciarAsociarCargo() {
                     btn.clave = clave;
                     btn.onclick = function () {
                         var clave = this.clave;
-                        var contenedor = document.getElementById("wrap-detalle-solicitudes");
-                        PonerEspera(this, 'solicitudes');
+                        var contenedor = document.getElementById("wrap-detalle-" + catalogo);
+                        PonerEspera(this, catalogo);
                         GuardarUnTexto(contenedor.getElementsByTagName("table"), 0, function () {
-                            Mostrar('detalle-solicitudes', 'detalle-solicitudes', 'solicitudes', clave);
-                        }, clave, 'solicitudes');
+                            Mostrar('detalle-' + catalogo, 'detalle-' + catalogo, catalogo, clave);
+                        }, clave, catalogo);
                     }
                     ; break;
                 case "prodserv":
@@ -1695,6 +1696,7 @@ function ObtenerItem(catalogo, item) {
             '<span class="t-3n" style="font-size:small;">INVERTIDO: <br/>' + MoneyFormat(parseFloat(GetValor(item, "invertido"))) + '</span>';     
             break;
         case "comunicados":
+        case "solicitudes_seg":
         case "solicitudes":
             itemli.onclick = function () { Mostrar('lista-' + catalogo, 'detalle-' + catalogo, catalogo, GetValor(item, "clave")); }
             itemli.innerHTML = '<span class="t-1" >' + GetValor(item, "titulo") + '</span>' +
