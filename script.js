@@ -231,10 +231,7 @@ function RegistrarNotificaciones() {
                 } else if (data.modulo == 2) {
                     ActivarTimbre_();
                 }
-            }, function (msg) {
-                alert(msg.notification.title);
-                cordova.plugins.notification.badge.set(0);
-             });
+            });
         }
     } catch (e){ }
 }
