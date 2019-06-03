@@ -1980,7 +1980,6 @@ function MostrarAportaciones(xmlDoc) {
                 }
                 options.params = datos;
                 options.chunkedMode = false;
-                alert(1);
                 var ruta = url + 'logic/controlador.aspx?op=GuardarArchivo&seccion=' + (es_comprobante ? catalogo : 'Generico') + '&' + (imagenes[i].getAttribute("indice") ? "&indice=" + imagenes[i].getAttribute("indice") : "");
                 ft.upload(imagen.src, ruta, function (r) {                    
                     imagenes[i].setAttribute("indice", GetValor(r.response, "clave"));
