@@ -12,10 +12,8 @@ $(document).ajaxSuccess(function (event, xhr, settings,data) {
 });
 
 function IniciarApp() {
-    EstablecerDimensiones();
     document.getElementById("main").style.display = "none";
     if (window.localStorage.getItem("codigoActivacion")) {
-        EstablecerLogo();
         if (window.localStorage.getItem("email_")) {
             IniciarSesion();            
         } else {
@@ -27,6 +25,7 @@ function IniciarApp() {
 }
 
 function InicializarApp() {
+    EstablecerDimensiones();
     document.getElementById("btn-buscar-ps").onkeypress = function (ev) {
         if (ValidarEnter(ev)) {
             BuscarProdServ(ev.target);
@@ -35,6 +34,7 @@ function InicializarApp() {
     RegistrarNotificaciones();    
     var tabInicioPag = document.getElementById("tab-inicio-pagos");
     TabMostrar(tabInicioPag, tabInicioPag.parentNode, 'tab-pcorriente', 'tiposgastos');   
+    EstablecerLogo();
 }
 
 function EstablecerDimensiones() {
