@@ -12,6 +12,7 @@ $(document).ajaxSuccess(function (event, xhr, settings,data) {
 });
 
 function IniciarApp() {
+    InicializarApp();
     document.getElementById("main").style.display = "none";
     if (window.localStorage.getItem("codigoActivacion")) {
         if (window.localStorage.getItem("email_")) {
@@ -25,15 +26,7 @@ function IniciarApp() {
 }
 
 function InicializarApp() {
-    EstablecerDimensiones();
-    document.getElementById("btn-buscar-ps").onkeypress = function (ev) {
-        if (ValidarEnter(ev)) {
-            BuscarProdServ(ev.target);
-        }
-    }
-    RegistrarNotificaciones();    
-    var tabInicioPag = document.getElementById("tab-inicio-pagos");
-    TabMostrar(tabInicioPag, tabInicioPag.parentNode, 'tab-pcorriente', 'tiposgastos');   
+    EstablecerDimensiones();         
     EstablecerLogo();
 }
 
@@ -109,15 +102,15 @@ function ActivarAplicacion(objeto) {
             var estatus = GetValor(xmlDoc, "estatus");
             if (estatus == 1) {
                 window.localStorage.setItem("codigoActivacion", GetValor(xmlDoc, "codigoActivacion"));
-                window.localStorage.setItem("srclogo ", GetValor(xmlDoc, "srclogo"));                
-                InicializarApp();
+                window.localStorage.setItem("srclogo ", GetValor(xmlDoc, "srclogo")); 
+                InicializarApp(); 
                 document.getElementById("main").style.display = "block";
                 PantallaMostrar("reg-usuario", "section", true);
             } else {
                 if (GetValor(xmlDoc, "codigoActivacion") && estatus == 0) {
                     alert("Su comite de administración tiene un proceso pendiente, consulte a su administrador.");
                 } else {
-                    alert("Lo sentimos, no se encontró la clave de activación, verifique.");
+                    alert(GetValor(xmlDoc,"mensaje"));
                 }
             }
         });
@@ -127,9 +120,13 @@ function ActivarAplicacion(objeto) {
 }
 
 function EstablecerLogo() {
+    var urllogo = url + "/img/logotime.png";
+    if (window.localStorage.getItem("codigoActivacion")) {
+        urllogo = url + "/src-img/fraccionamientos/_" + window.localStorage.getItem("codigoActivacion") + "/logo.png";
+    }
     var imgs = $("img.logo");
     for (var i = 0; i < imgs.length; i++) {
-        imgs[i].setAttribute("src", url + "/src-img/fraccionamientos/_" + window.localStorage.getItem("codigoActivacion")+"/logo.png");
+        imgs[i].setAttribute("src", urllogo);
     }
 }
 
@@ -164,23 +161,19 @@ function IniciarSesion(frm) {
     } else {
         datos = [{ name: "email", value: window.localStorage.getItem("email_") }, { name: "contrasena", value: window.localStorage.getItem("contrasena_") }];
     }
-    $.post(url + 'logic/controlador.aspx?op=IniciarSesion&seccion=seguridad', datos, function (xmlDoc) {
-        if (GetValor(xmlDoc, "estatus") == 1) {
-            RegistrarVariables(datos, xmlDoc);
-            document.getElementById("main").style.display = "block";
-            InicializarApp();
-            PantallaMostrar("home", "section", true);
-        } else {
-            alert(GetValor(xmlDoc, "mensaje"));
-        }
-    });
+    IniciarSesion_back(function () {
+        document.getElementById("main").style.display = "block";
+        PantallaMostrar("home", "section", true);
+    },datos);    
 }
 
 
-function IniciarSesion_back(callback) {
-    var datos = [{ name: "email", value: window.localStorage.getItem("email_") }, { name: "contrasena", value: window.localStorage.getItem("contrasena_") }];
+function IniciarSesion_back(callback, datos) {
+    if (!datos) {
+        datos = [{ name: "email", value: window.localStorage.getItem("email_") }, { name: "contrasena", value: window.localStorage.getItem("contrasena_") }];
+    }    
     $.post(url + 'logic/controlador.aspx?op=IniciarSesion&seccion=seguridad', datos, function (xmlDoc) {
-        if (GetValor(xmlDoc, "estatus") == 1) {
+        if (GetValor(xmlDoc, "estatus") == 1){
             RegistrarVariables(datos, xmlDoc);
             if (callback) callback();
         } else {
