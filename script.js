@@ -163,6 +163,7 @@ function IniciarSesion(frm) {
         datos = [{ name: "email", value: window.localStorage.getItem("email_") }, { name: "contrasena", value: window.localStorage.getItem("contrasena_") }];
     }
     IniciarSesion_back(function () {
+        RegistrarNotificaciones();
         document.getElementById("main").style.display = "block";
         PantallaMostrar("home", "section", true);
     },datos);    
