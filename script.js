@@ -185,6 +185,8 @@ function IniciarSesion_back(callback, datos) {
 }
 
 function RegistrarVariables(datos,xmlDoc) {
+    window.localStorage.setItem("usuario_", GetValor(xmlDoc, "clave"));
+    window.localStorage.setItem("fracc_", GetValor(xmlDoc, "fraccionamiento")); 
     window.localStorage.setItem("email_", datos[0].value);
     window.localStorage.setItem("contrasena_", datos[1].value);
     window.localStorage.setItem("domicilio", GetValor(xmlDoc, "domicilio"));
@@ -409,7 +411,7 @@ function ContinuarPagando() {
         }
         if (tipopago == 1) {
             if (win) win.close();
-            var win = window.open(url + 'logic/controlador.aspx?op=PresentarPagador&c=' + conceptospagar.join("|") + "&d=" + dom_sel, "_system", "location=yes");            
+            var win = window.open(url + 'logic/controlador.aspx?op=PresentarPagador&c=' + conceptospagar.join("|") + "&d=" + dom_sel + "&fracc=" + window.localStorage.getItem("fracc_") + "&usuario=" + window.localStorage.getItem("usuario_"), "_system", "location=yes");            
             consultasPago = 0;
             window.setInterval(function () {
                 consultasPago++;
