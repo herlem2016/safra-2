@@ -201,7 +201,7 @@
 
             <div class="detalle" id="detalle-usuarios" style="display:none;">
                 <div class="titulo">Usuarios<button class="regresar" onclick="Mostrar('detalle-usuarios', 'lista-usuarios'); "><img src="img/back.png"/></button></div>
-                <div class="btns-up"><button class="edit-btn" clave_funcion="3" style="display:none;" control="edit-usu" id="edit-usu" onclick="IniciarEditar(false,'usuarios');"><img src="img/edit.png" /></button><hr class="clearn" /></div>
+                <div class="btns-up"><button class="edit-btn" clave_funcion="5" style="display:none;" control="edit-usu" id="edit-usu" onclick="IniciarEditar(false,'usuarios');"><img src="img/edit.png" /></button><hr class="clearn" /></div>
                 <div class="pantalla-3" id="wrap-detalle-usuarios"></div>
             </div>
 
@@ -226,7 +226,7 @@
             <div class="lista" id="lista-cargos" style="display:none;">
                 <div class="titulo">Cargos <button class="regresar" onclick="Mostrar('lista-cargosacciones', 'lista-cargos'); "><img src="img/back.png"/></button></div>
                 <div id="UnUsuario"></div>
-                <div class="agregar" id="edicion-cargos" style="display:none;"><button clave_funcion="5" control="edicion-cargos" onclick="IniciarEditar(true,'cargos',2);">Aregar cargo</button></div>
+                <div class="agregar" id="edicion-cargos" style="display:none;"><button clave_funcion="2" control="edicion-cargos" onclick="IniciarEditar(true,'cargos',2);">Aregar cargo</button></div>
                 <ul class="lista seleccionable pantalla-2"></ul>
             </div>
 
@@ -234,7 +234,7 @@
                 <form onsubmit="return false" method="post" id="frm-edit-cargosacciones">
                     <fieldset>
                         <div class="titulo">Cargos y acciones<button class="regresar" onclick="Mostrar('lista-cargosacciones', 'lista-cargos'); "><img src="img/back.png"/></button></div>
-                        <div class="btns-up"><button class="edit-btn" clave_funcion="3" style="display:none;" control="edit-ca-3" id="edit-ca-3" onclick="IniciarEditar(false, 'cargos', 2, {a:'lista-cargosacciones',b:'p-edicion-cargos'},document.getElementById('clavecargo').value);"><img src="img/edit.png" /></button><button style="display:none;" onclick="IniciarEliminar(this,'cargos',document.getElementById('clavecargo').value);"  control="del-ca-4" id="del-ca-4" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>
+                        <div class="btns-up"><button class="edit-btn" clave_funcion="2" style="display:none;" control="edit-ca-3" id="edit-ca-3" onclick="IniciarEditar(false, 'cargos', 2, {a:'lista-cargosacciones',b:'p-edicion-cargos'},document.getElementById('clavecargo').value);"><img src="img/edit.png" /></button><button style="display:none;" onclick="IniciarEliminar(this,'cargos',document.getElementById('clavecargo').value);"  control="del-ca-4" id="del-ca-4" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>
                         <div id="UnCargoEd"></div>
                         <div><input style="float:right;" type="checkbox" onchange="ToggleChecks(this,'lista-ulacciones');"/></div>
                         <input type="hidden" name="clavecargo" id="clavecargo"/>
@@ -272,13 +272,13 @@
                 <div class="lista" id="lista-vigilancia.BuscarDomicilio" style="display:none;">
                     <div class="titulo">Seleccione domicilio<button class="regresar" onclick="CambioPantalla('lista-vigilancia', 'lista-vigilancia.BuscarDomicilio'); "><img src="img/back.png"/></button></div>
                     <div class="busqueda"><input placeholder="Buscar domicilio" onkeypress="if(ValidarEnter(event)){CargarCatalogo('vigilancia.BuscarDomicilio', undefined, { buscar: this.value });}"/></div>
-                    <div class="agregar" id="edicion-vigilancia" style="display:none;"><button clave_funcion="5" control="edicion-vigilancia" onclick="document.getElementById('clave-vigilancia').value = '';">SIN domicilio</button></div>
+                    <div class="agregar" id="edicion-vigilancia" style="display:none;"><button clave_funcion="1" control="edicion-vigilancia" onclick="document.getElementById('clave-vigilancia').value = '';">SIN domicilio</button></div>
                     <ul class="lista seleccionable pantalla-3"></ul>
                 </div>
 
                 <div class="detalle" id="detalle-vigilancia" style="display:none;">
                     <div class="titulo">Visitas<button class="regresar" onclick="Mostrar('detalle-vigilancia', 'lista-vigilancia'); "><img src="img/back.png"/></button></div>
-                    <div class="btns-up"><button class="edit-btn" clave_funcion="3" style="display:none;" control="edit-com-3" id="edit-com-3" onclick="IniciarEditar(false,'vigilancia');"><img src="img/edit.png" /></button><button style="display:none;" onclick="IniciarEliminar(this,'vigilancia');" clave_funcion="4" control="del-com-4" id="del-com-4" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>
+                    <div class="btns-up"><button class="edit-btn" clave_funcion="1" style="display:none;" control="edit-com-3" id="edit-com-3" onclick="IniciarEditar(false,'vigilancia');"><img src="img/edit.png" /></button><button style="display:none;" onclick="IniciarEliminar(this,'vigilancia');" clave_funcion="3" control="del-com-4" id="del-com-4" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>
                     <div class="pantalla-3" id="wrap-detalle-vigilancia"></div>
                 </div>
 
@@ -327,7 +327,7 @@
             <div class="lista" id="lista-inmuebles" redim="redim-inmuebles">
                 <div class="titulo"><span>Inmuebles</span><button class="buscar-min" onclick="MostrarBuscar('b-inm','inmuebles','redim-inmuebles');"><img src="img/buscar.png" /></button><hr class="clearn" /></div>
                 <div class="busqueda" id="b-inm" style="display:none;"><input placeholder="Buscar" onkeypress="if(ValidarEnter(event)){CargarCatalogo('inmuebles', undefined, { buscar: this.value });}"/></div>
-                <div class="agregar" id="edicion-inmuebles" style="display:none;"><button clave_funcion="2" control="edicion-inmuebles" onclick="IniciarEditar(true,'inmuebles',2);">Agregar inmueble</button></div>
+                <div class="agregar" id="edicion-inmuebles" style="display:none;"><button clave_funcion="7" control="edicion-inmuebles" onclick="IniciarEditar(true,'inmuebles',2);">Agregar inmueble</button></div>
                 <ul class="lista seleccionable pantalla-2" id="redim-inmuebles" classToggle="pantalla-2,pantalla-21" hide="b-inm"></ul>
             </div>
             <div class="edicion" style="display:none;" id="p-edicion-inmuebles">
@@ -368,7 +368,7 @@
 
             <div class="detalle" id="detalle-reservaciones" style="display:none;">
                 <div class="titulo">Detalle de reservación<button class="regresar" onclick="CambioPantalla( 'lista-reservaciones','detalle-reservaciones'); "><img src="img/back.png"/></button></div>
-                <div class="btns-up"><button class="edit-btn" clave_funcion="3" style="display:none;" control="edit-rese-3" id="edit-rese-3" onclick="IniciarEditar(false,'reservaciones');"><img src="img/edit.png" /></button><button style="display:none;" onclick="IniciarEliminar(this,'reservaciones');" clave_funcion="4" control="del-rese-4" id="del-rese-4" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>
+                <div class="btns-up"><button class="edit-btn" clave_funcion="7" style="display:none;" control="edit-rese-3" id="edit-rese-3" onclick="IniciarEditar(false,'reservaciones');"><img src="img/edit.png" /></button><button style="display:none;" onclick="IniciarEliminar(this,'reservaciones');" clave_funcion="7" control="del-rese-4" id="del-rese-4" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>
                 <div class="pantalla-21" id="wrap-detalle-reservaciones"></div>
             </div>
 
@@ -396,7 +396,7 @@
             <div class="lista" id="lista-directorio" redim="redim-directorio">
                 <div class="titulo"><span>Directorio</span><button class="buscar-min" onclick="MostrarBuscar('b-dir','directorio','redim-directorio');"><img src="img/buscar.png" /></button><hr class="clearn" /></div>
                 <div class="busqueda" id="b-dir" style="display:none;" ><input placeholder="Buscar" onkeypress="if(ValidarEnter(event)){CargarCatalogo('directorio', undefined, { buscar: this.value });}"/></div>
-                <div class="agregar" id="edicion-directorio" style="display:none;padding:5px;"><button clave_funcion="1" control="edicion-directorio" onclick="IniciarEditarDirectorio(true);">Aregar contácto</button></div>
+                <div class="agregar" id="edicion-directorio" style="display:none;padding:5px;"><button clave_funcion="2" control="edicion-directorio" onclick="IniciarEditarDirectorio(true);">Aregar contácto</button></div>
                 <ul class="lista seleccionable pantalla-2" id="redim-directorio" classToggle="pantalla-2,pantalla-21" hide="b-dir"></ul>
             </div>
             <div class="edicion" style="display:none;" id="p-edicion-directorio">
@@ -419,13 +419,13 @@
             <div class="lista" id="lista-comunicados" redim="redim-comunicados">
                 <div class="titulo"><span>Comunicados</span><button class="buscar-min" onclick="MostrarBuscar('b-com','directorio','redim-directorio');"><img src="img/buscar.png" /></button><hr class="clearn" /></div>          
                 <div class="busqueda" id="b-com" style="display:none;"><input placeholder="Buscar" /></div>
-                <div class="agregar" id="edicion-comunicados" style="display:none;"><button clave_funcion="5" control="edicion-comunicados" onclick="IniciarEditar(true,'comunicados');">Aregar comunicado</button></div>
+                <div class="agregar" id="edicion-comunicados" style="display:none;"><button clave_funcion="2" control="edicion-comunicados" onclick="IniciarEditar(true,'comunicados');">Aregar comunicado</button></div>
                 <ul class="lista seleccionable pantalla-3" id="redim-comunicados" classToggle="pantalla-2,pantalla-21" hide="b-com"></ul>
             </div>
             
             <div class="detalle" id="detalle-comunicados" style="display:none;">
                 <div class="titulo">Comunicados<button class="regresar" onclick="Mostrar('detalle-comunicados', 'lista-comunicados'); "><img src="img/back.png"/></button></div>
-                <div class="btns-up" id="edit-com" style="display:none;" ><button class="edit-btn" clave_funcion="3" control="edit-com" onclick="IniciarEditar(false,'comunicados');" ><img src="img/edit.png" /></button><button onclick="IniciarEliminar(this,'comunicados');" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>
+                <div class="btns-up" id="edit-com" style="display:none;" ><button class="edit-btn" clave_funcion="2" control="edit-com" onclick="IniciarEditar(false,'comunicados');" ><img src="img/edit.png" /></button><button onclick="IniciarEliminar(this,'comunicados');" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>
                 <div class="detalle-w pantalla-3" id="wrap-detalle-comunicados"></div>
             </div>
 
@@ -468,7 +468,7 @@
 
             <div class="buscador" id="buscador-prodserv">
                 <div class="titulo">Productos y Servicios</div> 
-                <div class="agregar" id="edicion-prodserv" style="display:none;"><button clave_funcion="5" control="edicion-prodserv" onclick="IniciarEditar(true, 'prodserv', undefined, {b:'p-edicion-prodserv',a:'buscador-prodserv'});">Aregar Negocio</button></div>
+                <div class="agregar" id="edicion-prodserv" style="display:none;"><button clave_funcion="6" control="edicion-prodserv" onclick="IniciarEditar(true, 'prodserv', undefined, {b:'p-edicion-prodserv',a:'buscador-prodserv'});">Aregar Negocio</button></div>
                 <img class="logo-frac logo" />      
                 <div class="busqueda"><input placeholder="Buscar" id="btn-buscar-ps" style="padding:10px;width: 90% !important;text-align: center;" onkeypress="if (ValidarEnter(event)) {BuscarProdServ(this);}"/></div> 
                 <p>Encuentra servicios y productos que ofrecen dentro del fracciomaniento</p>
@@ -480,7 +480,7 @@
             </div>
             <div class="detalle" id="detalle-prodserv" style="display:none;">
                 <div class="titulo">Productos y Servicios <button class="regresar" onclick="Mostrar('detalle-prodserv','lista-prodserv');"><img src="img/back.png"/></button></div>
-                <div class="btns-up"><button class="edit-btn" clave_funcion="3" style="display:none;" control="edit-prodserv-3" id="edit-prodserv-3" onclick="IniciarEditar(false,'prodserv');" ><img src="img/edit.png" /></button><button style="display:none;" onclick="IniciarEliminar(this,'prodserv');" clave_funcion="4" control="del-prodserv-4" id="del-prodserv-4" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>
+                <div class="btns-up"><button class="edit-btn" clave_funcion="6" style="display:none;" control="edit-prodserv-3" id="edit-prodserv-3" onclick="IniciarEditar(false,'prodserv');" ><img src="img/edit.png" /></button><button style="display:none;" onclick="IniciarEliminar(this,'prodserv');" clave_funcion="6" control="del-prodserv-4" id="del-prodserv-4" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>
                 <div class="check-activacion" id="check-negocio"><label class="etiqueta">Publicar</label><label class="switch"><input type="checkbox" id="activar-negocio" onchange="ActivarNegocio(this);" /><span class="slider round"></span></label><hr class="clearn" /></div>
                 <div class="pantalla-3" id="wrap-detalle-prodserv"></div>
              </div>
@@ -541,7 +541,7 @@
                 <div class="titulo"><span>Seleccione domicilio</span><button class="buscar-min" onclick="MostrarBuscar('buscar-per', 'ap_domicilios3', 'redim-ap_domicilios3');"><img src="img/buscar.png" /></button><hr class="clearn" /></div>
                 <div class="busqueda" style="display:none;" id="buscar-per" ><input placeholder="Buscar" onkeypress="if(ValidarEnter(event)){CargarCatalogo('ap_domicilios3', undefined, { buscar: this.value });}" /></div>
                 <div id="edicion-aportaciones" style="display:none;">
-                    <button class="del-btn" clave_funcion="2" control="edicion-aportaciones" style="float:left;clear:left;margin-left:25px;" onclick="CambioPantalla('p-edicion-aportaciones', 'lista-ap_domicilios3');"><img src="img/edit.png" /></button>
+                    <button class="del-btn" clave_funcion="3" control="edicion-aportaciones" style="float:left;clear:left;margin-left:25px;" onclick="CambioPantalla('p-edicion-aportaciones', 'lista-ap_domicilios3');"><img src="img/edit.png" /></button>
                 </div>
                 <ul class="lista seleccionable pantalla-2" id="redim-ap_domicilios3" classToggle="pantalla-2,pantalla-21" hide="buscar-per"></ul>
             </div>   
@@ -560,7 +560,7 @@
                        
             <div class="detalle" id="detalle-aportaciones" style="display:none;">
                 <div class="titulo">Detalle de aportación<button class="regresar" onclick="Mostrar('detalle-aportaciones', 'lista-aportaciones'); "><img src="img/back.png"/></button></div>
-                <div class="btns-up" id="del-ap-4"  style="display:none;"><button onclick="CancelarAportacion(this,'aportaciones');" clave_funcion="2" control="del-ap-4" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>
+                <div class="btns-up" id="del-ap-4"  style="display:none;"><button onclick="CancelarAportacion(this,'aportaciones');" clave_funcion="3" control="del-ap-4" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>
                 <div class="pantalla-3" id="wrap-detalle-aportaciones"></div>
             </div>
             <div class="edicion" style="display:none;" id="p-edicion-aportaciones">
@@ -573,12 +573,12 @@
             <div class="lista" id="lista-ap_conceptos" style="display:none;" redim="redim-ap_conceptos">
                 <div class="titulo">Conceptos<button class="regresar" onclick="CambioPantalla('p-edicion-aportaciones', 'lista-ap_conceptos');" id="b-conc"><img src="img/back.png"/></button><button class="buscar-min" onclick="MostrarBuscar('b-ap_con', 'ap_conceptos', 'redim-ap_conceptos', 'pantalla-2', 'pantalla-21');"><img src="img/buscar.png" /></button><hr class="clearn"/></div>
                 <div class="busqueda" id="b-ap_con" style="display:none;"><input placeholder="Buscar" onkeypress="if(ValidarEnter(event)){CargarCatalogo('ap_conceptos', undefined, { buscar: this.value });}" /></div>
-                <div class="agregar" id="edicion-ap_conceptos" style="display:none;"><button clave_funcion="2" control="edicion-ap_conceptos" onclick="IniciarEditar(true,'ap_conceptos',2);">Agregar concepto</button></div>
+                <div class="agregar" id="edicion-ap_conceptos" style="display:none;"><button clave_funcion="3" control="edicion-ap_conceptos" onclick="IniciarEditar(true,'ap_conceptos',2);">Agregar concepto</button></div>
                 <ul class="lista seleccionable pantalla-2" id="redim-ap_conceptos" classToggle="pantalla-2, pantalla-31" hide="b-ap_con"></ul>
             </div>
             <div class="detalle" id="detalle-ap_conceptos" style="display:none;" redim="wrap-detalle-ap_conceptos">
                 <div class="titulo">Detalle de conceptos<button class="regresar" onclick="Mostrar('detalle-ap_conceptos', 'lista-ap_conceptos'); "><img src="img/back.png"/></button></div>
-                <div class="btns-up" id="del-con-4" style="display:none;"><button class="edit-btn" onclick="IniciarEditar(false,'ap_conceptos');"><img src="img/edit.png" /></button><button onclick="IniciarEliminar(this,'ap_conceptos');" clave_funcion="2" control="del-con-4" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>
+                <div class="btns-up" id="del-con-4" style="display:none;"><button class="edit-btn" onclick="IniciarEditar(false,'ap_conceptos');"><img src="img/edit.png" /></button><button onclick="IniciarEliminar(this,'ap_conceptos');" clave_funcion="3" control="del-con-4" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>
                 <div class="pantalla-21 detalle-w" id="wrap-detalle-ap_conceptos" classToggle="pantalla-31, pantalla-3"></div>
             </div>
             <div class="edicion" style="display:none;" id="p-edicion-ap_conceptos">
@@ -600,12 +600,12 @@
             <div class="lista" id="lista-ap_domicilios" style="display:none;" redim="redim-ap_domicilios">
                 <div class="titulo">Lista de Domicilios<button class="regresar" onclick="CambioPantalla('p-edicion-aportaciones', 'lista-ap_domicilios');"><img src="img/back.png"/></button><button class="buscar-min" onclick="MostrarBuscar('b-ap_dom', 'ap_domicilios', 'redim-ap_domicilios', 'pantalla-2', 'pantalla-21');"><img src="img/buscar.png" /></button><hr class="clearn" /></div>
                 <div class="busqueda" id="b-ap_dom" style="display:none;"><input placeholder="Buscar" onkeypress="if(ValidarEnter(event)){CargarCatalogo('ap_domicilios', undefined, { buscar: this.value });}" /></div>
-                <div class="agregar" id="edicion-ap_domicilios" style="display:none;"><button clave_funcion="2" control="edicion-ap_domicilios" onclick="IniciarEditar(true,'ap_domicilios',2);">Agregar Domicilio</button></div>
+                <div class="agregar" id="edicion-ap_domicilios" style="display:none;"><button clave_funcion="3" control="edicion-ap_domicilios" onclick="IniciarEditar(true,'ap_domicilios',2);">Agregar Domicilio</button></div>
                 <ul class="lista seleccionable pantalla-2" id="redim-ap_domicilios" classToggle="pantalla-2, pantalla-31" hide="b-ap_dom"></ul>
             </div>
             <div class="detalle" id="detalle-ap_domicilios" style="display:none;">
                 <div class="titulo">Detalle de Domicilio<button class="regresar" onclick="Mostrar('detalle-ap_domicilios', 'lista-ap_domicilios'); "><img src="img/back.png"/></button></div>
-                <div class="btns-up" id="del-dom-4" style="display:none;"><button class="edit-btn" onclick="IniciarEditar(false,'ap_domicilios');"><img src="img/edit.png" /></button><button onclick="CancelarAportacion(this,'ap_domicilios');" clave_funcion="2" control="del-dom-4" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>
+                <div class="btns-up" id="del-dom-4" style="display:none;"><button class="edit-btn" onclick="IniciarEditar(false,'ap_domicilios');"><img src="img/edit.png" /></button><button onclick="CancelarAportacion(this,'ap_domicilios');" clave_funcion="3" control="del-dom-4" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>
                 <div class="detalle-w pantalla-3" id="wrap-detalle-ap_domicilios"></div>
             </div>
             <div class="edicion" style="display:none;" id="p-edicion-ap_domicilios">
@@ -662,18 +662,18 @@
                 <div class="lista" id="lista-tiposgastos" redim="redim-tiposgastos">
                     <div class="titulo"><span>Rubros para gastos</span><button class="buscar-min" onclick="MostrarBuscar('b-tg', 'tiposgastos', 'redim-tiposgastos');"><img src="img/buscar.png" /></button><hr class="clearn" /></div>
                     <div class="busqueda" id="b-tg" style="display:none;"><input placeholder="Buscar" /></div>
-                    <div class="agregar" id="edicion-erogacion" style="display:none;"><button clave_funcion="2" control="edicion-erogacion" onclick="IniciarEditar(true,'tiposgastos',2);">Agregar rubro de gastos</button></div>
+                    <div class="agregar" id="edicion-erogacion" style="display:none;"><button clave_funcion="3" control="edicion-erogacion" onclick="IniciarEditar(true,'tiposgastos',2);">Agregar rubro de gastos</button></div>
                     <ul class="lista seleccionable pantalla-21" id="redim-tiposgastos" classToggle="pantalla-21, pantalla-3" hide="b-tg"></ul>
                 </div>  
                 <div class="edicion" style="display:none;" id="lista-regen_tiposgastos">
                     <input name="clave" type="hidden" id="clave-tiposgastos-OPP" />
                     <div class="titulo">Gastos registrados<button class="regresar" onclick="CambioPantalla('lista-tiposgastos','lista-regen_tiposgastos');"><img src="img/back.png" /></button><hr class="clearn" /></div>
-                    <div class="agregar" id="edicion-tiposgastos" style="display:none;"><button clave_funcion="2" control="edicion-tiposgastos" onclick="IniciarEditarPago(true,undefined,'tiposgastos');">Registrar gasto</button></div>
+                    <div class="agregar" id="edicion-tiposgastos" style="display:none;"><button clave_funcion="3" control="edicion-tiposgastos" onclick="IniciarEditarPago(true,undefined,'tiposgastos');">Registrar gasto</button></div>
                     <ul class="lista seleccionable pantalla-3 color"></ul>
                 </div>
                 <div class="detalle" id="detalle-regen_tiposgastos" style="display:none;">
                     <div class="titulo">Detalle de Domicilio<button class="regresar" onclick="Mostrar('detalle-regen_tiposgastos', 'lista-regen_tiposgastos'); "><img src="img/back.png" /></button></div>
-                    <div class="btns-up" id="del-r-tg" style="display:none;"><button class="edit-btn" onclick="IniciarEditar(false,'regen_tiposgastos');"><img src="img/edit.png" /></button><button onclick="CancelarAportacion(this,'regen_tiposgastos');" clave_funcion="2" control="del-r-tg" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>
+                    <div class="btns-up" id="del-r-tg" style="display:none;"><button class="edit-btn" onclick="IniciarEditar(false,'regen_tiposgastos');"><img src="img/edit.png" /></button><button onclick="CancelarAportacion(this,'regen_tiposgastos');" clave_funcion="3" control="del-r-tg" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>
                     <div class="detalle-w pantalla-3" id="wrap-detalle-regen_tiposgastos"></div>
                 </div>
                 <div class="edicion" style="display:none;" id="p-edicion-tiposgastos">
@@ -716,7 +716,7 @@
                     <div class="titulo">Plan Presupuestal<button class="regresar" id="cancelar-edit-egrepro" onclick="CambioPantalla('lista-egrepro','lista-planpresupuestal')"><img src="img/back.png"/></button><hr class="clearn"/></div>
                     <input name="clave" type="hidden" id="clave-egrepro-OPP" />
                     <div id="proy-act"></div>
-                    <div class="agregar" id="edicion-preP" style="display:none;"><button clave_funcion="2" control="edicion-preP" onclick="IniciarEditarActividad(true);">Agregar actividad</button></div>                                        
+                    <div class="agregar" id="edicion-preP" style="display:none;"><button clave_funcion="3" control="edicion-preP" onclick="IniciarEditarActividad(true);">Agregar actividad</button></div>                                        
                     <ul class="lista seleccionable pantalla-3 color"></ul>
                 </div>
 
@@ -738,12 +738,12 @@
 
                 <div class="edicion" style="display:none;" id="lista-regen_egrepro">
                     <div class="titulo">Registro de Gastos<button class="regresar" onclick="CambioPantalla('lista-planpresupuestal','lista-regen_egrepro');"><img src="img/back.png"/></button><hr class="clearn"/></div>
-                    <div class="agregar" id="edicion-egrepro" style="display:none;"><button clave_funcion="2" control="edicion-egrepro" onclick="IniciarEditarPago(true,undefined,'egrepro');">Registrar gasto</button></div>                                        
+                    <div class="agregar" id="edicion-egrepro" style="display:none;"><button clave_funcion="3" control="edicion-egrepro" onclick="IniciarEditarPago(true,undefined,'egrepro');">Registrar gasto</button></div>                                        
                     <ul class="lista seleccionable pantalla-3 color"></ul>                    
                 </div>
                 <div class="detalle" id="detalle-regen_egrepro" style="display:none;">
                     <div class="titulo">Detalle de Domicilio<button class="regresar" onclick="Mostrar('detalle-regen_egrepro', 'lista-regen_egrepro'); "><img src="img/back.png" /></button></div>
-                    <div class="btns-up" id="del-r-eg" style="display:none;"><button class="edit-btn" onclick="IniciarEditar(false,'regen_egrepro');"><img src="img/edit.png" /></button><button onclick="CancelarAportacion(this,'regen_egrepro');" clave_funcion="2" control="del-r-eg" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>
+                    <div class="btns-up" id="del-r-eg" style="display:none;"><button class="edit-btn" onclick="IniciarEditar(false,'regen_egrepro');"><img src="img/edit.png" /></button><button onclick="CancelarAportacion(this,'regen_egrepro');" clave_funcion="3" control="del-r-eg" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>
                     <div class="detalle-w pantalla-3" id="wrap-detalle-regen_egrepro"></div>
                 </div>
 
@@ -825,13 +825,13 @@
                 <div class="lista" id="lista-pro_propuestas" redim="redim-pro_propuestas">
                     <div class="titulo"><span>Iniciativas</span><button class="buscar-min" onclick="MostrarBuscar('b-prop','pro_propuestas','redim-pro_propuestas','pantalla-21','pantalla-3');"><img src="img/buscar.png"/></button><hr class="clearn"/></div>            
                     <div class="busqueda" id="b-prop" style="display:none;"><input placeholder="Buscar" onkeypress="if(ValidarEnter(event)){CargarCatalogo('pro_propuestas', undefined, { buscar: this.value });}"/></div>
-                    <div class="agregar" id="edicion-pro_propuesta" ><button clave_funcion="2" control="edicion-pro_propuesta" onclick="IniciarEditar(true, 'pro_propuestas');" >Registrar propuesta</button></div>                    
+                    <div class="agregar" id="edicion-pro_propuesta" ><button clave_funcion="6" control="edicion-pro_propuesta" onclick="IniciarEditar(true, 'pro_propuestas');" >Registrar propuesta</button></div>                    
                     <ul class="lista seleccionable pantalla-21" id="redim-pro_propuestas" classToggle="pantalla-21,pantalla-3" hide="b-prop"></ul>
                 </div>
 
                 <div class="detalle" id="detalle-pro_propuestas" style="display:none;">
                     <div class="titulo"><span>Propuesta</span><button class="regresar" onclick="Mostrar('detalle-pro_propuestas', 'lista-pro_propuestas'); "><img src="img/back.png"/></button><hr class="clearn"/></div>
-                    <div class="btns-up" id="edit-pro_p" style="display:none;"><button class="edit-btn" clave_funcion="3" control="edit-pro_p" onclick="IniciarEditar(false,'pro_propuestas');"><img src="img/edit.png" /></button><button onclick="IniciarEliminar(this,'pro_propuestas');" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>
+                    <div class="btns-up" id="edit-pro_p" style="display:none;"><button class="edit-btn" clave_funcion="6" control="edit-pro_p" onclick="IniciarEditar(false,'pro_propuestas');"><img src="img/edit.png" /></button><button onclick="IniciarEliminar(this,'pro_propuestas');" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>
                     <div class="detalle-w pantalla-3">
                         <input name="clave" type="hidden" id="clave-pro_propuesta" />
                         <div id="wrap-detalle-pro_propuestas"></div>

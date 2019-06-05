@@ -120,12 +120,13 @@ function ActivarAplicacion(objeto) {
 }
 
 function EstablecerLogo() {
-    var urllogo = url + "/img/logotime.png";
+    var urllogo = url + "img/logotime.png";
     if (window.localStorage.getItem("codigoActivacion")) {
         urllogo = url + "/src-img/fraccionamientos/_" + window.localStorage.getItem("codigoActivacion") + "/logo.png";
     }
     var imgs = $("img.logo");
     for (var i = 0; i < imgs.length; i++) {
+        imgs[i].onerror = function () { this.src = url + "img/logotime.png"; }
         imgs[i].setAttribute("src", urllogo);
     }
 }
@@ -527,9 +528,9 @@ function IniciarAsociarCargo() {
                     '<span class="t-3"><b>Domicilio: </b>' + GetValor(xmlDoc, "domicilio") + '</span>' +
                     (cargo?
                     '<span class="t-2"><b>Cargo: </b>' + GetValor(xmlDoc, "cargo") + '</span>' +
-                    '<button clave_funcion="2" id="cargo-usu" control="cargo-usu" class="btn2" style="display:none;" onclick="RemoverCargoUsuario(' + clave + ',' + clave_cargo + ');">Remover Cargo</button>' 
+                    '<button clave_funcion="5" id="cargo-usu" control="cargo-usu" class="btn2" style="display:none;" onclick="RemoverCargoUsuario(' + clave + ',' + clave_cargo + ');">Remover Cargo</button>' 
                     :
-                    '<button clave_funcion="2" id="cargo-usu-a" control="cargo-usu-a" class="btn2" style="display:none;" onclick="IniciarAsociarCargo();">Asociar Cargo</button>' 
+                    '<button clave_funcion="5" id="cargo-usu-a" control="cargo-usu-a" class="btn2" style="display:none;" onclick="IniciarAsociarCargo();">Asociar Cargo</button>' 
                     )+
                     '<span><button class="btn2">Suspender AV(Alerta Vecinal) 3 días</button></span>' +
                     '<span><button class="btn2">Bloquear cuenta</button></span>' +
@@ -1511,8 +1512,8 @@ function ObtenerItem(catalogo, item) {
             itemli.innerHTML = '<span class="t-1">' + GetValor(item, "descripcion") + '</span>' +
                 '<span class="t-2n" style="font-size:small;">PRESUPUESTADO: <br/>' + MoneyFormat(parseFloat(GetValor(item, "presup"))) + '</span>' +
                 '<span class="t-3n" style="font-size:small;">INVERTIDO: <br/>' + MoneyFormat(parseFloat(GetValor(item, "invertido"))) + '</span>'+
-                '<button class="edit-btn" clave_funcion="2" control="ed-pp-' + itemli.indice + '" id="ed-pp-' + itemli.indice + '" style="display:none;clear:left;"  onclick="IniciarEditarActividad(false,' + itemli.indice + ');" ><img  src="img/edit.png" /></button>' +
-                '<button class="edit-btn" clave_funcion="2" control="del-pp-' + itemli.indice + '" id="del-pp-' + itemli.indice + '" style="display:none;"  onclick="IniciarEliminar(this,\'' + catalogo + '\',' + itemli.indice + ',{ b: \'lista-' + catalogo + '\', a: \'p-edicion-' + catalogo + '\' },true);" ><img  src="img/del.png" /></button>';
+                '<button class="edit-btn" clave_funcion="3" control="ed-pp-' + itemli.indice + '" id="ed-pp-' + itemli.indice + '" style="display:none;clear:left;"  onclick="IniciarEditarActividad(false,' + itemli.indice + ');" ><img  src="img/edit.png" /></button>' +
+                '<button class="edit-btn" clave_funcion="3" control="del-pp-' + itemli.indice + '" id="del-pp-' + itemli.indice + '" style="display:none;"  onclick="IniciarEliminar(this,\'' + catalogo + '\',' + itemli.indice + ',{ b: \'lista-' + catalogo + '\', a: \'p-edicion-' + catalogo + '\' },true);" ><img  src="img/del.png" /></button>';
             break;
         case "proyectos":
             itemli.className = "itemg";
@@ -2092,7 +2093,7 @@ function MostrarAportaciones(xmlDoc) {
                 var item = document.createElement("table");
                 item.className = "lista-files";               
                 item.innerHTML = '<tbody>' +
-                    '<tr> <td style="width:90%">' + (solotexto ? '' : '<img src="img/upload.png" onclick="IAdjuntarImagenes(this);" />') + '</td> ' + (ocultarBtnElim ? '' : '<td style="width:10%" rowspan="2" class="del"><button onclick="QuitarEIT(this' + (solotexto ? ",1" : '') + ');" class="del-btn"><img src="img/del.png" /></button>') + '</td></tr >' +
+                    '<tr> <td style="width:90%">' + (solotexto ? '' : '<img src="img/upload.png" /><input type="file" />') + '</td> ' + (ocultarBtnElim ? '' : '<td style="width:10%" rowspan="2" class="del"><button onclick="QuitarEIT(this' + (solotexto ? ",1" : '') + ');" class="del-btn"><img src="img/del.png" /></button>') + '</td></tr >' +
                     '<tr><td ' + (solotexto ? 'rowspan="2"' : '') + ' ><textarea maxlength="200" onchange="this.parentNode.parentNode.parentNode.parentNode.setAttribute(\'cambioTexto\',\'true\');"></textarea></td></tr>' +
                     '</tbody>';
                 item.imagen=item.getElementsByTagName("img")[0];
