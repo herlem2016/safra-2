@@ -9,7 +9,7 @@
   </author>
   <platform name="android">
     <resource-file src="google-services.json" target="google-services.json" />
-  <resource-file src="res/raw/timbre.mp3" target="timbre.mp3" />
+  <resource-file src="timbre.mp3" target="res/raw/timbre.mp3" />
 </platform>
   <preference name='phonegap-version' value='cli-7.1.0' />
   <preference name='pgb-builder-version' value='2' />
