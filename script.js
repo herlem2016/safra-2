@@ -279,7 +279,7 @@ function ActivarAlarma_(contenidovoz) {
     var alarmaVoz = document.getElementById("alarma-v");
     var alarma = document.getElementById("alarma-s");
     alarmaVoz.setAttribute("src", contenidovoz);
-    alarma.setAttribute("src", "audios/alerta2.mp3");
+    alarma.setAttribute("src", url + "audios/alerta2.mp3");
     alarmaVoz.play();
     alarma.play();
     alarma.volume = 0.7;
