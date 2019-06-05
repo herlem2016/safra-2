@@ -9,7 +9,8 @@
   </author>
   <platform name="android">
     <resource-file src="google-services.json" target="google-services.json" />
-</platform>  
+</platform>
+  <resource-file src="timbre.mp3" target="timbre.mp3" />
   <preference name='phonegap-version' value='cli-7.1.0' />
   <preference name='pgb-builder-version' value='2' />
   <plugin name="cordova-plugin-fcm-with-dependecy-updated" />  
