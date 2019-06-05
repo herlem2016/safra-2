@@ -2093,7 +2093,7 @@ function MostrarAportaciones(xmlDoc) {
                 var item = document.createElement("table");
                 item.className = "lista-files";               
                 item.innerHTML = '<tbody>' +
-                    '<tr> <td style="width:90%">' + (solotexto ? '' : '<img src="img/upload.png" /><input type="file" />') + '</td> ' + (ocultarBtnElim ? '' : '<td style="width:10%" rowspan="2" class="del"><button onclick="QuitarEIT(this' + (solotexto ? ",1" : '') + ');" class="del-btn"><img src="img/del.png" /></button>') + '</td></tr >' +
+                    '<tr> <td style="width:90%">' + (solotexto ? '' : '<img src="img/upload.png" onclick="IAdjuntarImagenes(this);" />') + '</td> ' + (ocultarBtnElim ? '' : '<td style="width:10%" rowspan="2" class="del"><button onclick="QuitarEIT(this' + (solotexto ? ",1" : '') + ');" class="del-btn"><img src="img/del.png" /></button>') + '</td></tr >' +
                     '<tr><td ' + (solotexto ? 'rowspan="2"' : '') + ' ><textarea maxlength="200" onchange="this.parentNode.parentNode.parentNode.parentNode.setAttribute(\'cambioTexto\',\'true\');"></textarea></td></tr>' +
                     '</tbody>';
                 item.imagen=item.getElementsByTagName("img")[0];
