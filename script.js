@@ -247,14 +247,15 @@ function RegistrarNotificaciones() {
                 i_subs = 0;
                 i_unsubs = 0;
                 UnSuscribir(1);                                     
-                FCMPlugin.onNotification(function (data) {
-                    cordova.plugins.notification.badge.increase(1, function () { });
-                    if (data.modulo == 1) {
-                        ActivarAlarma_(data.contenidovoz);
-                    } else if (data.modulo == 2) {
-                        ActivarTimbre_();
-                    }
-                });
+                
+            });
+            FCMPlugin.onNotification(function (data) {
+                cordova.plugins.notification.badge.increase(1, function () { });
+                if (data.modulo == 1) {
+                    ActivarAlarma_(data.contenidovoz);
+                } else if (data.modulo == 2) {
+                    ActivarTimbre_();
+                }
             });
         }
     } catch (e){ }
