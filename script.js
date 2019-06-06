@@ -210,28 +210,23 @@ function CerrarSesion() {
 }
 
 var i_unsubs = 0;
-function UnSuscribir() {
-    if (i_unsubs < 9) {
-        i_unsubs++;
-        FCMPlugin.unsubscribeFromTopic('FRA_' + window.localStorage.getItem("codigoActivacion") + "-fun_" + i_unsubs, function () {
-            UnSuscribir(); alert("ok:" + i_unsubs);
-        }, function () {
-            UnSuscribir(); alert("no:" + i_unsubs);
+function UnSuscribir() {   
+    i_unsubs++;
+    FCMPlugin.unsubscribeFromTopic('FRA_' + window.localStorage.getItem("codigoActivacion") + "-fun_" + i_unsubs, function () {
+        if (i_unsubs < 9) {
+            UnSuscribir();
+        } else {
+            Suscribir();
         }
-        );
-    } else {
-        Suscribir();
-    }
+    });   
 }
 
 var i_subs = 0, l_s = 0,fs;
 function Suscribir() {
-    alert("sub:" +l_s);
     if (i_subs < l_s) {
+        alert('FRA_' + window.localStorage.getItem("codigoActivacion") + "-fun_" + GetValor(fs[i_subs], "clave_funcion"));
         FCMPlugin.subscribeToTopic('FRA_' + window.localStorage.getItem("codigoActivacion") + "-fun_" + GetValor(fs[i_subs], "clave_funcion"), function () {
-            if (i_subs < l_s) { Suscribir(GetValor(fs[i_subs++], "clave_funcion")); alert("ok:" + i_subs);}
-        }, function () {
-            if (i_subs < l_s) { Suscribir(GetValor(fs[i_subs++], "clave_funcion")); alert("no:" + i_subs); }
+            if (i_subs < l_s) { Suscribir(GetValor(fs[i_subs++], "clave_funcion"));}
         });
     } else {
         FCMPlugin.subscribeToTopic('FRA_' + window.localStorage.getItem("codigoActivacion"));
@@ -247,7 +242,6 @@ function RegistrarNotificaciones() {
                 l_s = fs.length;
                 i_subs = 0;
                 i_unsubs = 0;
-                alert('fun');
                 UnSuscribir();                                     
                 
             });
