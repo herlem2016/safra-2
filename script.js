@@ -224,13 +224,9 @@ function UnSuscribir() {
 var i_subs = 0, l_s = 0,fs;
 function Suscribir() {
     if (i_subs < l_s) {
-        alert('FRA_' + window.localStorage.getItem("codigoActivacion") + "-fun_" + GetValor(fs[i_subs], "clave_funcion"));
         FCMPlugin.subscribeToTopic('FRA_' + window.localStorage.getItem("codigoActivacion") + "-fun_" + GetValor(fs[i_subs], "clave_funcion"), function () {
             if (i_subs < l_s) { Suscribir(GetValor(fs[i_subs++], "clave_funcion"));}
         });
-    } else {
-        FCMPlugin.subscribeToTopic('FRA_' + window.localStorage.getItem("codigoActivacion"));
-        FCMPlugin.subscribeToTopic('FRA_' + window.localStorage.getItem("codigoActivacion") + "-dom_" + window.localStorage.getItem("domicilio"));
     }
 }
 
@@ -242,9 +238,10 @@ function RegistrarNotificaciones() {
                 l_s = fs.length;
                 i_subs = 0;
                 i_unsubs = 0;
-                UnSuscribir();                                     
-                
+                UnSuscribir(); 
             });
+            FCMPlugin.subscribeToTopic('FRA_' + window.localStorage.getItem("codigoActivacion"));
+            FCMPlugin.subscribeToTopic('FRA_' + window.localStorage.getItem("codigoActivacion") + "-dom_" + window.localStorage.getItem("domicilio"));
             FCMPlugin.onNotification(function (data) {
                 cordova.plugins.notification.badge.increase(1, function () { });
                 if (data.modulo == 1) {
