@@ -224,6 +224,8 @@ function UnSuscribir() {
 var i_subs = 0, l_s = 0,fs;
 function Suscribir() {
     if (i_subs < l_s) {
+        var topic = 'FRA_' + window.localStorage.getItem("codigoActivacion") + "-fun_" + GetValor(fs[i_subs], "clave_funcion");
+        alert(topic);
         FCMPlugin.subscribeToTopic('FRA_' + window.localStorage.getItem("codigoActivacion") + "-fun_" + GetValor(fs[i_subs], "clave_funcion"), function () {
             if (i_subs < l_s) { Suscribir(GetValor(fs[i_subs++], "clave_funcion"));}
         });
