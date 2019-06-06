@@ -214,9 +214,9 @@ function UnSuscribir() {
     if (i_unsubs < 9) {
         i_unsubs++;
         FCMPlugin.unsubscribeFromTopic('FRA_' + window.localStorage.getItem("codigoActivacion") + "-fun_" + i_unsubs, function () {
-            UnSuscribir();
+            UnSuscribir(); alert("ok:" + i_unsubs);
         }, function () {
-            UnSuscribir();
+            UnSuscribir(); alert("no:" + i_unsubs);
         }
         );
     } else {
@@ -246,7 +246,8 @@ function RegistrarNotificaciones() {
                 l_s = fs.length;
                 i_subs = 0;
                 i_unsubs = 0;
-                UnSuscribir(1);                                     
+                alert('fun');
+                UnSuscribir();                                     
                 
             });
             FCMPlugin.onNotification(function (data) {
