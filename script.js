@@ -228,7 +228,7 @@ var i_subs = 0, l_s = 0,fs;
 function Suscribir() {
     alert("sub:" +l_s);
     if (i_subs < l_s) {
-        FCMPlugin.subscribeToTopic('FRA_' + window.localStorage.getItem("codigoActivacion") + "-fun_" + GetValor(funciones[i_subs], "clave_funcion"), function () {
+        FCMPlugin.subscribeToTopic('FRA_' + window.localStorage.getItem("codigoActivacion") + "-fun_" + GetValor(fs[i_subs], "clave_funcion"), function () {
             if (i_subs < l_s) { Suscribir(GetValor(fs[i_subs++], "clave_funcion")); alert("ok:" + i_subs);}
         }, function () {
             if (i_subs < l_s) { Suscribir(GetValor(fs[i_subs++], "clave_funcion")); alert("no:" + i_subs); }
