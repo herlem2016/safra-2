@@ -209,25 +209,52 @@ function CerrarSesion() {
     });
 }
 
+var i_unsubs = 0;
+function UnSuscribir() {
+    if (i_unsubs < 9) {
+        i_unsubs++;
+        FCMPlugin.unsubscribeFromTopic('FRA_' + window.localStorage.getItem("codigoActivacion") + "-fun_" + i_unsubs, function () {
+            UnSuscribir();
+        }, function () {
+            UnSuscribir();
+        }
+        );
+    } else {
+        Suscribir();
+    }
+}
+
+var i_subs = 0, l_s = 0,fs;
+function Suscribir() {
+    if (i_subs < l_s) {
+        FCMPlugin.subscribeToTopic('FRA_' + window.localStorage.getItem("codigoActivacion") + "-fun_" + GetValor(funciones[i_subs], "clave_funcion"), function () {
+            if (i_subs < l_s) { Suscribir(GetValor(fs[i_subs++], "clave_funcion")); }
+        }, function () {
+            if (i_subs < l_s) { Suscribir(GetValor(fs[i_subs++], "clave_funcion")); }
+        });
+    } else {
+        FCMPlugin.subscribeToTopic('FRA_' + window.localStorage.getItem("codigoActivacion"));
+        FCMPlugin.subscribeToTopic('FRA_' + window.localStorage.getItem("codigoActivacion") + "-dom_" + window.localStorage.getItem("domicilio"));
+    }
+}
 
 function RegistrarNotificaciones() {
     try {
         if (window.localStorage.getItem("email_")) {
-            ConsultarEsVigilante(function (xmlDoc) {
-                try {
-                    window.localStorage.setItem("es_vigilancia", GetValor(xmlDoc, "es_vigilancia") == 'true');
-                    FCMPlugin.subscribeToTopic('FRA_' + window.localStorage.getItem("codigoActivacion") + "-fun_1");
-                } catch (e){ }
-            });
-            FCMPlugin.subscribeToTopic('FRA_' + window.localStorage.getItem("codigoActivacion"));
-            FCMPlugin.subscribeToTopic('FRA_' + window.localStorage.getItem("codigoActivacion") + "-dom_" + window.localStorage.getItem("domicilio"));
-            FCMPlugin.onNotification(function (data) {
-                cordova.plugins.notification.badge.increase(1, function () { });
-                if (data.modulo == 1) {
-                    ActivarAlarma_(data.contenidovoz);
-                } else if (data.modulo == 2) {
-                    ActivarTimbre_();
-                }
+            $.post(url + 'logic/controlador.aspx' + '?op=ObtenerFuncionesHabilitadas&seccion=seguridad&funciones=6', function (xmlDoc) {
+                fs = xmlDoc.getElementsByTagName("Table");
+                l_s = fs.length;
+                i_subs = 0;
+                i_unsubs = 0;
+                UnSuscribir(1);                                     
+                FCMPlugin.onNotification(function (data) {
+                    cordova.plugins.notification.badge.increase(1, function () { });
+                    if (data.modulo == 1) {
+                        ActivarAlarma_(data.contenidovoz);
+                    } else if (data.modulo == 2) {
+                        ActivarTimbre_();
+                    }
+                });
             });
         }
     } catch (e){ }
@@ -1644,7 +1671,7 @@ function ObtenerItem(catalogo, item) {
                 var residente = GetValor(item, "residente"); 
                 itemli.innerHTML =
                     '<div class="' + GetValor(item, "leyenda") + '">'+
-                    '<span class="t-1">' + GetValor(item, "concepto") + (residente ? ":" + residente : "") + '</span>'+
+                    '<span class="t-1">' + GetValor(item, "concepto") + '</span>'+
                     '<span class="t-6v" style="margin-left:10px;">Tipo de pago: ' + GetValor(item, "tipoPago") + '<br /> Folio:' + folio + '<br/>' + GetValor(item, "fecha") + '</span>' +
                     '<span class="t-3" style="float:right;"><b>' + leyenda + '</b> <br/> ' + MoneyFormat(parseFloat(GetValor(item, "monto"))) + '<br/><img src="img/goodpay.png"/></span><hr class="clearn"/>' +
                     '</div>';
@@ -1690,6 +1717,13 @@ function ObtenerItem(catalogo, item) {
             '<span class="t-3n" style="font-size:small;">INVERTIDO: <br/>' + MoneyFormat(parseFloat(GetValor(item, "invertido"))) + '</span>';     
             break;
         case "comunicados":
+            itemli.onclick = function () { Mostrar('lista-' + catalogo, 'detalle-' + catalogo, catalogo, GetValor(item, "clave")); }
+            itemli.innerHTML = '<span class="t-1" >' + GetValor(item, "titulo") + '</span>' +
+                '<span class="aux-1" style="float:left;clear:left;width:40%;">' + GetValor(item, "alias") + '</span>' +
+                '<span class="t-3n" style="float:right;text-align:right;clear:right;width:40%;">' + GetValor(item, "estado") + '</span>' +
+                '<span class="t-3n"  style="float:left;clear:left;width:40%;">' + GetValor(item, "fecha1") + '</span>';
+            break;
+
         case "solicitudes_seg":
         case "solicitudes":
             itemli.onclick = function () { Mostrar('lista-' + catalogo, 'detalle-' + catalogo, catalogo, GetValor(item, "clave")); }
