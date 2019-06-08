@@ -174,7 +174,7 @@ function IniciarSesion_back(callback, datos) {
     if (!datos) {
         datos = [{ name: "email", value: window.localStorage.getItem("email_") }, { name: "contrasena", value: window.localStorage.getItem("contrasena_") }];
     }    
-    $.post(url + 'logic/controlador.aspx?op=IniciarSesion&seccion=seguridad', datos, function (xmlDoc) {
+    $.post(url + 'logic/controlador.aspx?op=IniciarSesion&seccion=seguridad&fraccionamiento=' + window.localStorage.getItem("codigoActivacion"), datos, function (xmlDoc) {
         if (GetValor(xmlDoc, "estatus") == 1){
             RegistrarVariables(datos, xmlDoc);
             if (callback) callback();
