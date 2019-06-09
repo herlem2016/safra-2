@@ -162,8 +162,12 @@ function IniciarSesion(frm) {
     } else {
         datos = [{ name: "email", value: window.localStorage.getItem("email_") }, { name: "contrasena", value: window.localStorage.getItem("contrasena_") }];
     }
-    IniciarSesion_back(function () {
-        RegistrarNotificaciones();
+    IniciarSesion_back(function (xmlDoc) {
+        if (GetValor(xmlDoc, "bloqueado")) {
+            RemoverNotificaciones();
+        } else {
+            RegistrarNotificaciones();
+        }        
         document.getElementById("main").style.display = "block";
         PantallaMostrar("home", "section", true);
     },datos);    
@@ -177,7 +181,7 @@ function IniciarSesion_back(callback, datos) {
     $.post(url + 'logic/controlador.aspx?op=IniciarSesion&seccion=seguridad&fraccionamiento=' + window.localStorage.getItem("codigoActivacion"), datos, function (xmlDoc) {
         if (GetValor(xmlDoc, "estatus") == 1){
             RegistrarVariables(datos, xmlDoc);
-            if (callback) callback();
+            if (callback) callback(xmlDoc);
         } else {
             alert(GetValor(xmlDoc, "mensaje"));
         }
@@ -209,10 +213,26 @@ function CerrarSesion() {
     });
 }
 
+
+var i_unsubs_r = 0;
+function RemoverNotificaciones() {
+    i_unsubs_r++;
+    FCMPlugin.unsubscribeFromTopic('FRA_1_' + window.localStorage.getItem("codigoActivacion") + "-fun_" + i_unsubs_r, function () {
+        if (i_unsubs_r < 9){
+            RemoverNotificaciones();
+        } else {
+            FCMPlugin.unsubscribeFromTopic('FRA_1_' + window.localStorage.getItem("codigoActivacion"));
+            FCMPlugin.unsubscribeFromTopic('FRA_1_' + window.localStorage.getItem("codigoActivacion") + "-dom_" + window.localStorage.getItem("domicilio"));
+        }
+    });
+}
+
+
+
 var i_unsubs = 0;
 function UnSuscribir() {   
     i_unsubs++;
-    FCMPlugin.unsubscribeFromTopic('FRA_' + window.localStorage.getItem("codigoActivacion") + "-fun_" + i_unsubs, function () {
+    FCMPlugin.unsubscribeFromTopic('FRA_1_' + window.localStorage.getItem("codigoActivacion") + "-fun_" + i_unsubs, function () {
         if (i_unsubs < 9) {
             UnSuscribir();
         } else {
@@ -224,7 +244,7 @@ function UnSuscribir() {
 var i_subs = 0, l_s = 0,fs;
 function Suscribir() {
     if (i_subs < l_s) {
-        FCMPlugin.subscribeToTopic('FRA_' + window.localStorage.getItem("codigoActivacion") + "-fun_" + GetValor(fs[i_subs], "clave_funcion"), function () {
+        FCMPlugin.subscribeToTopic('FRA_1_' + window.localStorage.getItem("codigoActivacion") + "-fun_" + GetValor(fs[i_subs], "clave_funcion"), function () {
             if (i_subs < l_s) { Suscribir(GetValor(fs[i_subs++], "clave_funcion"));}
         });
     }
@@ -240,8 +260,8 @@ function RegistrarNotificaciones() {
                 i_unsubs = 0;
                 UnSuscribir(); 
             });
-            FCMPlugin.subscribeToTopic('FRA_' + window.localStorage.getItem("codigoActivacion"));
-            FCMPlugin.subscribeToTopic('FRA_' + window.localStorage.getItem("codigoActivacion") + "-dom_" + window.localStorage.getItem("domicilio"));
+            FCMPlugin.subscribeToTopic('FRA_1_' + window.localStorage.getItem("codigoActivacion"));
+            FCMPlugin.subscribeToTopic('FRA_1_' + window.localStorage.getItem("codigoActivacion") + "-dom_" + window.localStorage.getItem("domicilio"));
             FCMPlugin.onNotification(function (data) {
                 cordova.plugins.notification.badge.increase(1, function () { });
                 if (data.modulo == 1) {
