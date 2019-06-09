@@ -163,7 +163,7 @@ function IniciarSesion(frm) {
         datos = [{ name: "email", value: window.localStorage.getItem("email_") }, { name: "contrasena", value: window.localStorage.getItem("contrasena_") }];
     }
     IniciarSesion_back(function (xmlDoc) {
-        if (GetValor(xmlDoc, "bloqueado")) {
+        if (GetValor(xmlDoc, "BloquearNotificaciones")) {
             RemoverNotificaciones();
         } else {
             RegistrarNotificaciones();
@@ -578,6 +578,7 @@ function IniciarAsociarCargo() {
                     )+
                     '<span><button class="btn2">Suspender AV(Alerta Vecinal) 3 días</button></span>' +
                     '<span><button class="btn2">Bloquear cuenta</button></span>' +
+                    '<span><button class="btn2" onclick="BloquearNotificaciones(' + clave + ')">Bloquear notificaciones</button></span>' +
                     '<button class="btn2">Cerrar Sesión Usuario</button></div>';
                 document.getElementById("wrap-detalle-" + catalogo).innerHTML = cont;
                 ; break;
@@ -667,7 +668,13 @@ function IniciarAsociarCargo() {
 
                     ; break;
             }
-        }
+}
+
+function BloquearNotificaciones(clave_usuario) {
+    $.post(url + 'logic/controlador.aspx' + '?op=BloquearNotificaciones&seccion=usuarios',function (xmlDoc) {
+        alert(GetValor(xmlDoc,"mensaje"));
+    });
+}
 
         function PintarImagenesTexto(xmlDoc0, crearApartados) {
             var persona_i, persona_ii;
