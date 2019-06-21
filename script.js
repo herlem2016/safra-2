@@ -2,16 +2,21 @@
 window.onresize = function () {
     //EstablecerDimensiones();
 }
-
+var TSI;
 $(document).ajaxSuccess(function (event, xhr, settings,data) {
-    if (GetValor(xhr.responseXML, "mensaje").indexOf("sesion_inactiva")>0){
+    if (GetValor(xhr.responseXML, "mensaje").indexOf("sesion_inactiva") > 0) {
         IniciarSesion_back(function () {
             $.ajax(settings);
         });
+    } else {
+        try { window.clearInterval(TSI); } catch (e) { }
+        TSI = window.setTimeout(function(){
+            PantallaMostrar("comunicados", "section");
+        }, 60*10*1000);
     }
 });
 
-function IniciarApp() {
+function IniciarApp(){
     InicializarApp();
     document.getElementById("main").style.display = "none";
     if (window.localStorage.getItem("codigoActivacion")) {
@@ -25,7 +30,7 @@ function IniciarApp() {
     }
 }
 
-function InicializarApp() {
+function InicializarApp(){
     EstablecerDimensiones();         
     EstablecerLogo();
 }
@@ -123,6 +128,9 @@ function EstablecerLogo() {
     var urllogo = url + "img/logotime.png";
     if (window.localStorage.getItem("codigoActivacion")) {
         urllogo = url + "/src-img/fraccionamientos/_" + window.localStorage.getItem("codigoActivacion") + "/logo.png";
+        var portada = document.getElementById("portada");
+        portada.onerror = function () { this.src = url + "img/portadatime.jpg"; }
+        portada.src = url + "/src-img/fraccionamientos/_" + window.localStorage.getItem("codigoActivacion") + "/portada.png";
     }
     var imgs = $("img.logo");
     for (var i = 0; i < imgs.length; i++) {
@@ -1748,7 +1756,8 @@ function ObtenerItem(catalogo, item) {
         case "solicitudes_seg":
         case "solicitudes":
             itemli.onclick = function () { Mostrar('lista-' + catalogo, 'detalle-' + catalogo, catalogo, GetValor(item, "clave")); }
-            itemli.innerHTML = '<span class="t-1" >' + GetValor(item, "titulo") + '</span>' +
+            itemli.innerHTML =                
+                '<span class="t-1" >' + GetValor(item, "titulo") + '</span>' +
                 '<span class="aux-1" style="float:left;clear:left;width:40%;">' + GetValor(item, "alias") + '</span>'+
                 '<span class="t-3n" style="float:right;text-align:right;clear:right;width:40%;">' + GetValor(item, "estado") + '</span>' +
                 '<span class="t-3n"  style="float:left;clear:left;width:40%;">' + GetValor(item, "fecha1") + '</span>';

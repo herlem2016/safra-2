@@ -35,16 +35,19 @@
         .link-o{display:block;text-align:center;color:#2c5878;padding-bottom:30px;}
         a{cursor:pointer;}
         #lista-ulacciones input[type=checkbox]{float:right;margin-right:40px;}
+        div.head img.portada{width: 100%;}
+        div.head img.logo {width: 22%;margin: auto;margin-top: auto;margin-bottom: auto;display: block;margin-top: -100px;margin-bottom: 40px;border-radius: 20px;}
     </style>
     <link href="css/index.css" rel="stylesheet" />
     <style id="css-sizes"></style>
     <script src="cordova.js"></script>
     <script src="jquery-1.11.3.min.js"></script>    
     <script>
-         var url = "http://safra.softronel.com.mx/";
+         //var url = "http://safra.softronel.com.mx/";
         //var url = "http://192.168.0.101:82/";
-        //var url = "http://localhost:61157/";
-        $.support.cors = true;        
+        var url = "http://localhost:61157/";
+        $.support.cors = true;  
+        
     </script>
     <link href="jqueryui/jquery-ui.min.css" rel="stylesheet" />
     <script src="jqueryui/jquery-ui.min.js"></script>
@@ -120,6 +123,7 @@
         <section class="pantalla home" id="home" style="display:none;background-color:#dbdbdb">
             <ul class="menu">
                 <!--<li class="alarma">Alarma Vecinal</li>-->
+                <li><button onclick="PantallaMostrar('comunicados','section');" class="ok"><img src="img/homec.png" />Inicio</button></li>
                 <li><button onclick="PantallaMostrar('proyectos', 'section', true, function () {var tabInicioPro = document.getElementById('tab-inicio-pro');TabMostrar(tabInicioPro, tabInicioPro.parentNode, 'pro_propuestas','pro_propuestas');});" class="ok"><img src="img/proyectos.png"/>Iniciativas</button></li>
                 <li><button onclick="PantallaMostrar('aportaciones', 'section', true, function () { CargarCatalogo('ap_domicilios3', function (xmlDoc) { MostrarAportaciones(xmlDoc);});},'lista-ap_domicilios3');" class="ok"><img src="img/aportaciones.png"/>Aportaciones</button></li>
                 <li><button onclick="PantallaMostrar('solicitudes', 'section', true, function () { CargarCatalogo('solicitudes', function () { LlenarSelect(url + 'logic/controlador.aspx?op=ObtenerClasificacion&seccion=Generico&clave=6&exc=6', 's-tipossolicitudatencion', undefined, 'indice', 'descripcion'); },{no_seg:true});});" class="ok"><img src="img/solmtto.png"/>Atención a Residentes</button></li>
@@ -127,8 +131,7 @@
                 <li><button onclick="PantallaMostrar('transparencia','section');" class="ok"><img src="img/reportes.png"/>Transparencia</button></li>
                 <li><button onclick="PantallaMostrar('encuestas','section');" class="ok"><img src="img/encuestas.png"/>Encuestas</button></li>
                 <li><button onclick="PantallaMostrar('serviciosproductos','section',true);" class="ok"><img src="img/serviciosproductos.png"/>Negocios</button></li>
-                <li><button onclick="PantallaMostrar('directorio','section');" class="ok"><img src="img/directorio.png"/>Directorio</button></li>
-                <li><button onclick="PantallaMostrar('comunicados','section');" class="ok"><img src="img/comunicados.png" />Comunicados</button></li>
+                <li><button onclick="PantallaMostrar('directorio','section');" class="ok"><img src="img/directorio.png"/>Directorio</button></li>                
                 <li><button onclick="PantallaMostrar('inmuebles','section');" class="ok"><img src="img/reservation.png"/>Reservaciones</button></li>
                 <li><button onclick="PantallaMostrar('notificaciones','section');" class="ok"><img src="img/notificaciones.png" />Notificaciones</button></li>
                 <li><button onclick="PantallaMostrar('usuarios','section');" class="ok"><img src="img/users.png" />Usuarios</button></li>
@@ -420,7 +423,10 @@
                 <div class="titulo"><span>Comunicados</span><button class="buscar-min" onclick="MostrarBuscar('b-com','comunicados','redim-comunicados');"><img src="img/buscar.png" /></button><hr class="clearn" /></div>          
                 <div class="busqueda" id="b-com" style="display:none;"><input placeholder="Buscar" /></div>
                 <div class="agregar" id="edicion-comunicados" style="display:none;"><button clave_funcion="2" control="edicion-comunicados" onclick="IniciarEditar(true,'comunicados');">Aregar comunicado</button></div>
-                <ul class="lista seleccionable pantalla-3" id="redim-comunicados" classToggle="pantalla-2,pantalla-21" hide="b-com"></ul>
+                <div id="redim-comunicados" class="pantalla-2" classToggle="pantalla-2,pantalla-21" hide="b-com">
+                    <div class="head"><img id="portada" class="portada" /><img class="logo" /></div>
+                    <ul class="lista seleccionable"></ul>
+                </div>
             </div>
             
             <div class="detalle" id="detalle-comunicados" style="display:none;">
