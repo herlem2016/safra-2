@@ -361,7 +361,7 @@ ul.lista .item span.t-1 {
     padding-top: 5px;
     color:#333;
     font-weight:bold;
-    font-size:13px;
+    font-size:1em;
 }
 
 ul.lista .item span.t-1 b{
@@ -853,10 +853,12 @@ table.graficas td {
 
 .graf-pie {
     text-align: center;
-    width:70%;
-    clear:both;
+    width:50%;
+    float:right;
     margin:auto;
+    margin-top:16px;
 }
+.img-pro{float:left;margin-left:1%;margin-top:10px;width:45%;border:7px solid #eee;max-height: 150px;border: 7px solid #eee;border-radius: 50px;max-width: 40%;}
 
 table.desglose {
     margin-top: 20px;
@@ -947,6 +949,7 @@ table.transparente tr {
 
 table.lista-files {
     text-align: center;
+    margin-top:25px;
 }
 
     table.lista-files img {
@@ -975,6 +978,13 @@ table.lista-files {
     overflow-x: hidden;
 }
 
+.btns-in{padding-top:15px;}
+.btns-in button{float:left;margin-left:50px;padding-left:30px;padding-right:30px;box-shadow:1px;border:0px;color:#888;background-color:#eee;padding-bottom:5px;line-height:14px;border-radius:20px;padding-top:10px;}
+.btns-in button + button{float:right;margin-right:50px;}
+table.pagos{}
+table.pagos th{padding:20px;font-size:1em;color: #053960;background-color: #56b1ff;font-weight:bolder;}
+table.pagos td{border-bottom:1px solid #f2f2f2;color:#666;padding-top:20px;padding-bottom:20px;font-size:15px;line-height:1.2em;background-color:#fff;padding:10px;}
+
 .espera {background-color:#fff !important;color:#fff !important;}
 .espera img{margin:-12px auto 0px auto;height:100px;position:relative;}
 .pantalla-3 p {padding:5px;width:90%;word-wrap:break-word; font-size:13px;color:#333;clear:both;display:block;}
@@ -984,8 +994,10 @@ button.centrado30{margin:auto;width:30%;padding:3px;display:block;clear:both;mar
 div.item-enc td label{display:block;cursor:pointer;}
 
 .alarma{}
+.nota-principal{width:100%;padding-top:20px;padding-bottom:20px;background-color:#fff;margin-bottom:20px;border-radius:5px;padding-left:2%;}
+div.firma-hist{color:#0f4d5a;font-size:11px;text-align:center;font-family:calibri;font-size:12px;margin-top:25px;}
+div.firma-hist span{display:inline-block;}
 
-div.firma-hist{color:#666;font-size:11px;text-align:right;font-family:verdana;font-size:12px;}
 .aux-1 {
     color: #779b64;
     float: right;
@@ -1105,7 +1117,11 @@ div.agregar button, .menu button{text-align:center;}
     .detalle-w p {
         margin-top: 0px;
         font-size: 0.95em;
-        clear:both;
+        clear: both;
+        background: #fff;
+        padding: 10px;
+        border-radius: 20px;
+        margin-bottom: 5px;
     }
     .detalle-w .t-41{font-size:small;color:#666;display: block;clear: both;}
 
