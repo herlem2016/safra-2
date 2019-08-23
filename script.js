@@ -5,6 +5,7 @@ window.ondeviceready=function(){
 window.onresize = function () {
     //EstablecerDimensiones();
 }
+<<<<<<< HEAD
 var TSI;
 $(document).ajaxSuccess(function (event, xhr, settings,data) {
     if (GetValor(xhr.responseXML, "mensaje").indexOf("sesion_inactiva") > 0) {
@@ -16,6 +17,21 @@ $(document).ajaxSuccess(function (event, xhr, settings,data) {
         }, 60*5*1000);
     }
 });
+=======
+//var TSI;
+//$(document).ajaxSuccess(function (event, xhr, settings,data) {
+//    if (GetValor(xhr.responseXML, "mensaje").indexOf("sesion_inactiva") > 0) {
+//        IniciarSesion_back(function () {
+//            $.ajax(settings);
+//        });
+//    } else {
+//        try { window.clearInterval(TSI); } catch (e) { }
+//        TSI = window.setTimeout(function(){
+//            PantallaMostrar("comunicados", "section");
+//        }, 60*10*1000);
+//    }
+//});
+>>>>>>> 45849804634b368cde159b84765f0cad7fb193f8
 
 function IniciarApp() {
     document.getElementById("frmRegUsuario").reset();
@@ -185,7 +201,11 @@ function IniciarSesion(frm) {
             RegistrarNotificaciones();
         }        
         document.getElementById("main").style.display = "block";
+<<<<<<< HEAD
         if (GetValor(xmlDoc, "es_resp_fracc") == "true" || GetValor(xmlDoc, "ya_verifico") == "true" || GetValor(xmlDoc, "es_adminivo") == "true") {
+=======
+        if (GetValor(xmlDoc, "es_resp_fracc") == "true" || GetValor(xmlDoc, "ya_verifico") == "true") {
+>>>>>>> 45849804634b368cde159b84765f0cad7fb193f8
             IntercambioVisual("menu","menu-vig");
             PantallaMostrar("home", "section", true);
         }else if(GetValor(xmlDoc, "es_vigilancia") == "true") {
@@ -2011,6 +2031,26 @@ function ObtenerItem(catalogo, item) {
             var pagado = GetValor(item, "pagado");
             var folio = GetValor(item, "folio");
             if (pagado == "true"){
+<<<<<<< HEAD
+=======
+                itemli.innerHTML =
+                    '<div class="PAGADO" >' +
+                    '<span class="t-1">Reservación a nombre de: ' + GetValor(item, "a_nombre") + '</span>' +
+                    '<span class="t-6v" style="margin-left:10px;"> Folio:' + folio + '<br/>' + GetValor(item, "fecha_reg") + '</span>' +
+                    '<span class="t-3" style="float:right;"><b>PAGADO</b> <br/>' + MoneyFormat(parseFloat(GetValor(item, "pago_neg"))) + '<br/></span><hr class="clearn"/>' +
+                    '<div class="btns-in"><button onclick="VerSolicitudRes(' + folio + ');">Ver Solicitud</button><button onclick="VerPagosRes(' + folio + ');">Ver Pagos</button><hr class="clearn"/></div></div>';                
+            } else {
+                itemli.innerHTML =
+                    '<div class="PENDIENTE" >' +
+                    '<span class="t-1" concepto="' + GetValor(item, "clave_concepto") + '" precio="' + GetValor(item, "pago_neg") + '" style="width:60%;float:left;">Reservación a nombre de: ' + GetValor(item, "a_nombre") + '</span>' +
+                    '<span class="t-3 PENDIENTE" style="float:right;width:30%;">' + GetValor(item, "leyenda") + "<br/><b style='color:#666'>" + MoneyFormat(parseFloat(GetValor(item, "a_cuenta"))) + "</b> de " + MoneyFormat(parseFloat(GetValor(item, "pago_neg"))) + '</span><hr class="clearn"/>' +
+                    '<div class="btns-in"><button onclick="VerSolicitudRes(' + folio + ');">Ver Solicitud</button><button onclick="VerPagosRes(' + folio + ');">Ver Pagos</button><hr class="clearn"/></div></div>';
+            }
+            break;
+        case "aportaciones":
+            var leyenda = GetValor(item, "leyenda");
+            if (leyenda == "PENDIENTE") {       
+>>>>>>> 45849804634b368cde159b84765f0cad7fb193f8
                 itemli.innerHTML =
                     '<div class="PAGADO" >' +
                     '<span class="t-1">Reservación a nombre de: ' + GetValor(item, "a_nombre") + '</span>' +
@@ -2226,6 +2266,7 @@ function ObtenerItem(catalogo, item) {
     return itemli;
 }
 
+<<<<<<< HEAD
 function AsociarConceptosD(clave) {
     document.getElementById("clave-asig_concepto").value = clave;
     CargaConceptosD(clave, function () {
@@ -2366,6 +2407,10 @@ function MostrarAdelanto() {
 
 function VerSolicitudRes(folio) {
     ObtenerCuentaReservaciones(undefined, false, {a:'lista-aportaciones_res',b:'lista-solicitudes_res'}, folio,true);
+=======
+function VerSolicitudRes(folio) {
+    ObtenerCuentaReservaciones(undefined, false, {a:'lista-aportaciones_res',b:'lista-solicitudes_res'}, folio);
+>>>>>>> 45849804634b368cde159b84765f0cad7fb193f8
 }
 
 function VerPagosRes(folio) {
@@ -2389,7 +2434,11 @@ function VerPagosRes(folio) {
     });    
 }
 
+<<<<<<< HEAD
 function ObtenerCuentaReservaciones(usuario, desesion, intercambio, solicitud, lectura) {
+=======
+function ObtenerCuentaReservaciones(usuario, desesion, intercambio, solicitud) {
+>>>>>>> 45849804634b368cde159b84765f0cad7fb193f8
     $.post(url + 'logic/controlador.aspx' + '?op=ObtenercuentaReservaciones&seccion=reservaciones', { usuario: usuario, desesion: desesion, solicitud: solicitud }, function (xmlDoc) {
         document.getElementById("op-aportaciones_res").value = false;
         var reservaciones = xmlDoc.getElementsByTagName("Table");
@@ -2413,11 +2462,14 @@ function ObtenerCuentaReservaciones(usuario, desesion, intercambio, solicitud, l
         document.getElementById("total-res").value = GetValor(resumen, "total");
         document.getElementById("usuario-res").value = GetValor(resumen,"usuario");
         listado.appendChild(tr);
+<<<<<<< HEAD
         if (lectura) {
             document.getElementById("frm-reservar").style.display = "none";
         } else {
             document.getElementById("frm-reservar").style.display = "block";
         }
+=======
+>>>>>>> 45849804634b368cde159b84765f0cad7fb193f8
         if (intercambio) {
             var btnBack = document.getElementById("reg-res");
             btnBack.setAttribute("intA",intercambio.b);
@@ -2441,9 +2493,13 @@ function GenerarSolicitudRes() {
 }
 
 function MoneyFormat(num) {
+<<<<<<< HEAD
     try {
         return '$' + parseFloat(num).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
     } catch (e){return '-' }
+=======
+    return '$' + parseFloat(num).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+>>>>>>> 45849804634b368cde159b84765f0cad7fb193f8
 }
 
 function LimpiarClases(id,like) {
