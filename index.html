@@ -37,25 +37,16 @@
         #lista-ulacciones input[type=checkbox]{float:right;margin-right:40px;}
         div.head img.portada{width: 100%;}
         div.head img.logo {width: 22%;float:right;position:relative;z-index:+1;margin-right:10%;display: block;margin-top: -100px;margin-bottom: 40px;border-radius: 20px;}
-<<<<<<< HEAD
         #lista-aportaciones div.agregar button{padding:6px 0px 6px 0px;}
-=======
->>>>>>> 45849804634b368cde159b84765f0cad7fb193f8
     </style>
     <link href="css/index.css" rel="stylesheet" />
     <style id="css-sizes"></style>
     <script src="cordova.js"></script>
     <script src="jquery-1.11.3.min.js"></script>    
     <script>
-<<<<<<< HEAD
-         //var url = "http://132.148.29.114:81/";
-        //var url = "http://192.168.0.101:82/";
-        var url = "http://localhost:61157/";
-=======
-         var url = "http://realtoledo.safra.softronel.com.mx/";
+         var url = "http://realtoledo.safra.com.mx/";
         //var url = "http://192.168.0.101:82/";
         //var url = "http://localhost:61157/";
->>>>>>> 45849804634b368cde159b84765f0cad7fb193f8
         $.support.cors = true;
         
     </script>
@@ -79,11 +70,7 @@
                         En este momento, solicitamos que llenes un formaulario con tus datos para crear tu usuario y actualizar tu información.
                     </p>
                 </div>
-<<<<<<< HEAD
                 <input placeholder="Codigo de activación" style="width:80%;display:none;margin:auto;margin-top:50px;" name="codigoactivacion" id="codigoactivacion" value="NTc="/>
-=======
-                <input placeholder="Codigo de activación"  style="width:80%;display:none;margin:auto;margin-top:50px;" name="codigoactivacion" id="codigoactivacion" value="NTc="/>
->>>>>>> 45849804634b368cde159b84765f0cad7fb193f8
                 <button class="btn2" style="width:40%;display:block;margin:auto;margin-top:20px;text-align:center;" onclick="ActivarAplicacion();">Continuar</button>
             </div>
             <span class="copyright" style="padding-top:50px;">Powered by &#x24B8;softronel , Desarrollo de Tecnología</span>
@@ -93,11 +80,7 @@
     <section class="pantalla activacion" id="no-activacion" style="display:none;z-index:1000;">
         <form id="frmInfoActivacion" onsubmit="return false;" class="edicion">
             <div>
-<<<<<<< HEAD
                 <h2><i style="color:#ff6a00">Real Toledo Unido AC</i><br/> ¡Ya has creado tu usuario!</h2>
-=======
-                <h2><i style="color:#ff6a00">Real Toledo Unido AC</i><br /> ¡Ya has creado tu usuario!</h2>
->>>>>>> 45849804634b368cde159b84765f0cad7fb193f8
                 <div class="leyenda">
                     <p style="text-align:left;">
                        Ahora que ya tienes tu usuario, acude a las oficinas de Real Toledo Unido AC, con un comprobante de propietario para activar tu servicio. 
@@ -105,11 +88,7 @@
                     </p>
                 </div>
             </div>
-<<<<<<< HEAD
             <span class="copyright" style="padding-top:50px;">Powered by &#x24B8;softronel, Desarrollo de Tecnología</span>
-=======
-            <span class="copyright" style="padding-top:50px;">Powered by &#x24B8;softronel , Desarrollo de Tecnología</span>
->>>>>>> 45849804634b368cde159b84765f0cad7fb193f8
         </form>
     </section>
 
@@ -186,33 +165,19 @@
                 <ul class="menu" style="display:none;" id="menu">
                     <!--<li class="alarma">Alarma Vecinal</li>-->
                     <li><button onclick="PantallaMostrar('comunicados','section');" class="ok"><img src="img/homec.png" />Inicio</button></li>
-<<<<<<< HEAD
                     <li><button onclick="PantallaMostrar('proyectos', 'section', true, function () {var tabInicioPro = document.getElementById('tab-inicio-pro');TabMostrar(tabInicioPro, tabInicioPro.parentNode, 'pro_ejecucion', 'proyectos');});" class="ok"><img src="img/proyectos.png" />Proyectos</button></li>
                     <li><button onclick="PantallaMostrar('aportaciones', 'section', true, function () { CargarCatalogo('ap_domicilios3', function (xmlDoc) { MostrarAportaciones(xmlDoc);});},'lista-ap_domicilios3');" class="ok"><img src="img/aportaciones.png" />Pagos</button></li>
-=======
-                    <li><button onclick="PantallaMostrar('proyectos', 'section', true, function () {var tabInicioPro = document.getElementById('tab-inicio-pro');TabMostrar(tabInicioPro, tabInicioPro.parentNode, 'pro_ejecucion', 'proyectos');});" class="ok"><img src="img/proyectos.png" />Iniciativas</button></li>
-                    <li><button onclick="PantallaMostrar('aportaciones', 'section', true, function () { CargarCatalogo('ap_domicilios3', function (xmlDoc) { MostrarAportaciones(xmlDoc);});},'lista-ap_domicilios3');" class="ok"><img src="img/aportaciones.png" />Aportaciones</button></li>
->>>>>>> 45849804634b368cde159b84765f0cad7fb193f8
                     <li><button onclick="PantallaMostrar('solicitudes', 'section', true, function () { CargarCatalogo('solicitudes', function () { LlenarSelect(url + 'logic/controlador.aspx?op=ObtenerClasificacion&seccion=Generico&clave=6&exc=6', 's-tipossolicitudatencion', undefined, 'indice', 'descripcion'); },{no_seg:true});});" class="ok"><img src="img/solmtto.png" />Atención a Residentes</button></li>
                     <li><button onclick="PantallaMostrar('erogaciones','section',true,function(){var tabInicioPag = document.getElementById('tab-inicio-pagos');TabMostrar(tabInicioPag, tabInicioPag.parentNode, 'tab-pcorriente', 'tiposgastos'); });" class="ok"><img src="img/erogaciones.png" />Gastos</button></li>
                     <li><button onclick="PantallaMostrar('transparencia','section');" class="ok"><img src="img/reportes.png" />Transparencia</button></li>
                     <li><button onclick="PantallaMostrar('encuestas','section');" class="ok"><img src="img/encuestas.png" />Encuestas</button></li>
                     <li><button onclick="PantallaMostrar('serviciosproductos','section',true);" class="ok"><img src="img/serviciosproductos.png" />Negocios</button></li>
-<<<<<<< HEAD
                     <li><button onclick="PantallaMostrar('directorio','section');" class="ok"><img src="img/directorio.png" />Agenda</button></li>
                     <li><button onclick="PantallaMostrar('inmuebles', 'section', true, function () { var tabInicio = document.getElementById('tab-inicio-inmuebles'); TabMostrar(tabInicio, tabInicio.parentNode, 'tab-inmuebles', 'inmuebles'); });" class="ok"><img src="img/reservation.png" />Reservaciones</button></li>
                     <li><button onclick="PantallaMostrar('notificaciones','section');" class="ok"><img src="img/notificaciones.png" />Actividad</button></li>
                     <li><button onclick="PantallaMostrar('usuarios','section');" class="ok"><img src="img/config.png" />Configuración</button></li>
                     <li><button onclick="PantallaMostrar('vigilancia', 'section', false, function () { var tabInicioVig = document.getElementById('tab-inicio-vig'); TabMostrar(tabInicioVig, tabInicioVig.parentNode, 'visitas', 'vigilancia', function () { }); });" class="ok"><img src="img/vigilancia.png" />Seguridad</button></li>
                     <li><button onclick="window.open('reglamento_interno.pdf','_blank');" class="ok"><img src="img/docs.png" />Reglamento Interno</button></li>
-=======
-                    <li><button onclick="PantallaMostrar('directorio','section');" class="ok"><img src="img/directorio.png" />Directorio</button></li>
-                    <li><button onclick="PantallaMostrar('inmuebles','section',true,function () {var tabInicio = document.getElementById('tab-inicio-inmuebles');TabMostrar(tabInicio, tabInicio.parentNode, 'inmuebles', 'inmuebles');});" class="ok"><img src="img/reservation.png" />Reservaciones</button></li>
-                    <li><button onclick="PantallaMostrar('notificaciones','section');" class="ok"><img src="img/notificaciones.png" />Actividad</button></li>
-                    <li><button onclick="PantallaMostrar('usuarios','section');" class="ok"><img src="img/config.png" />Configuración</button></li>
-                    <li><button onclick="PantallaMostrar('vigilancia', 'section', false, function () { var tabInicioVig = document.getElementById('tab-inicio-vig'); TabMostrar(tabInicioVig, tabInicioVig.parentNode, 'visitas', 'vigilancia', function () { }); });" class="ok"><img src="img/vigilancia.png" />Seguridad</button></li>
-                    <li><button onclick="PantallaMostrar('docs','section');" class="ok"><img src="img/docs.png" />Documentos</button></li>
->>>>>>> 45849804634b368cde159b84765f0cad7fb193f8
                     <li><button onclick="ActivarAlarma();" class="ok"><img src="img/alertav.png" />Activar</button></li>
                 </ul>
                 <ul class="menu" style="display:none;"  id="menu-vig">
@@ -221,11 +186,7 @@
                     <li><button onclick="PantallaMostrar('directorio','section');" class="ok"><img src="img/directorio.png" />Directorio</button></li>
                     <li><button onclick="PantallaMostrar('notificaciones','section');" class="ok"><img src="img/notificaciones.png" />Actividad</button></li>
                     <li><button onclick="PantallaMostrar('vigilancia', 'section', false, function () { var tabInicioVig = document.getElementById('tab-inicio-vig'); TabMostrar(tabInicioVig, tabInicioVig.parentNode, 'visitas', 'vigilancia', function () { }); });" class="ok"><img src="img/vigilancia.png" />Seguridad</button></li>
-<<<<<<< HEAD
                     <li><button onclick="window.open('reglamento_interno.pdf','_blank');" class="ok"><img src="img/docs.png" />Reglamento Interno</button></li>
-=======
-                    <li><button onclick="PantallaMostrar('docs','section');" class="ok"><img src="img/docs.png" />Documentos</button></li>
->>>>>>> 45849804634b368cde159b84765f0cad7fb193f8
                 </ul>
             </div>
         </section>
@@ -287,11 +248,7 @@
         <section class="pantalla usuarios" id="usuarios">
 
             <div class="edicion" id="p-edicion-config">                
-<<<<<<< HEAD
                 <button class="aceptar" style="margin-top:20px;" onclick="CargarCatalogo('ap_domicilios', function(){CambioPantalla('lista-ap_domicilios','p-edicion-config');});">Domicilios</button>
-=======
-                <button class="aceptar" style="margin-top:20px;" onclick=" CargarCatalogo('ap_domicilios', function(){CambioPantalla('lista-ap_domicilios','p-edicion-config');});">Domicilios</button>
->>>>>>> 45849804634b368cde159b84765f0cad7fb193f8
                 <button class="aceptar" style="margin-top:20px;" onclick="CargarCatalogo('usuarios', function () { CambioPantalla('lista-usuarios','p-edicion-config'); });">Usuarios</button>
                 <button class="aceptar" style="margin-top:20px;" onclick="CargarCatalogo('cargos', function () { CambioPantalla('lista-cargos','p-edicion-config'); });">Editar permisos</button>
                 <button class="aceptar" style="margin-top:20px;" onclick="CambioPantalla('config-general','p-edicion-config');">Configuraciones generales</button>
@@ -304,7 +261,6 @@
                         <label>Número máximo de Solicitudes en Atención a Residentes</label><input name="max-sol-at-res" value="3"/>
                     </div>
                 </fieldset>
-<<<<<<< HEAD
                 <form id="carga-pagos" onsubmit="return false;" target="consola_2" method="post" enctype="multipart/form-data" action="/logic/controlador.aspx?op=CargaMasivaCuotas&seccion=aportaciones">
                     <fieldset style="border:1px solid #218ab3;padding:20px 0px 20px 0px;border-radius:10px;margin-top:25px;">
                         <div class="edicion">
@@ -315,8 +271,6 @@
                     </fieldset>
                 </form>
                 <iframe name="consola_2" id="consola_2" style="display:none;"></iframe>
-=======
->>>>>>> 45849804634b368cde159b84765f0cad7fb193f8
             </div>
 
             <div class="lista" id="lista-ap_domicilios" style="display:none;" redim="redim-ap_domicilios">
@@ -518,7 +472,6 @@
         <section class="pantalla" id="inmuebles">
             <div id="tab-inmuebles">
                 <div class="lista" id="lista-inmuebles" redim="redim-inmuebles">
-<<<<<<< HEAD
                     <div class="titulo"><span>Reservación de Inmuebles</span><hr class="clearn" /></div>
                     <div class="busqueda" id="b-inm" style="display:none;"><input placeholder="Buscar" onkeypress="if(ValidarEnter(event)){CargarCatalogo('inmuebles', undefined, { buscar: this.value });}" /></div>                    
                     <div class="agregar" id="edicion-inmuebles" style="display:none;"><button clave_funcion="7" control="edicion-inmuebles" onclick="IniciarEditar(true,'inmuebles',2);">Agregar inmueble</button></div>
@@ -527,12 +480,6 @@
                         <button class="btn-item" onclick="CargarCatalogo('solicitudes_res', function(){CambioPantalla('lista-solicitudes_res','lista-inmuebles')});">Ver Solicitudes</button>
                         <hr class="clearn" />
                     </div>
-=======
-                    <div class="titulo"><span>Reservación de Inmuebles</span><button class="regresar" onclick="CargarCatalogo('ap__usuarios', function(){CambioPantalla('lista-ap__usuarios', 'lista-inmuebles'); });">Confirmar</button><button class="buscar-min" onclick="CargarCatalogo('solicitudes_res', function(){CambioPantalla('lista-solicitudes_res','lista-inmuebles')});"><img src="img/buscar.png" /></button><hr class="clearn" /></div>
-                    <div class="busqueda" id="b-inm" style="display:none;"><input placeholder="Buscar" onkeypress="if(ValidarEnter(event)){CargarCatalogo('inmuebles', undefined, { buscar: this.value });}" /></div>
-                    <div class="agregar" id="edicion-inmuebles" style="display:none;"><button clave_funcion="7" control="edicion-inmuebles" onclick="IniciarEditar(true,'inmuebles',2);">Agregar inmueble</button></div>
-
->>>>>>> 45849804634b368cde159b84765f0cad7fb193f8
                     <ul class="lista seleccionable pantalla-5" id="redim-inmuebles" classToggle="pantalla-5,pantalla-51" hide="b-inm"></ul>
                 </div>
 
@@ -548,7 +495,6 @@
                     <div class="listaP seleccionable pantalla-2" id="redim-pagos_res" classToggle="pantalla-2,pantalla-21" hide="buscar-per">
                         <table class="transparente pagos" style="text-align:center;"><thead><tr><th>Fecha de abono</th><th>Total</th><th>Abono</th><th>Restante</th></tr></thead><tbody id="listado-pagos_res"></tbody></table>
                         <button class='aceptar' style="margin-top:25px;" onclick="RealizarPagoRes();">Realizar pago</button>
-<<<<<<< HEAD
                     </div>
                 </div>
 
@@ -581,39 +527,6 @@
                     </div>
                 </div>
 
-=======
-                    </div>
-                </div>
-
-                <div class="edicion" style="display:none;" id="p-edicion-inmuebles">
-                    <form onsubmit="return false;" id="frm-edit-inmuebles">
-                        <fieldset>
-                            <div class="titulo"><span>Agregar inmueble</span><button class="regresar" id="cancelar-edit-inmuebles" onclick="Mostrar('p-edicion-inmuebles','lista-inmuebles');"><img src="img/back.png" /></button><hr class="clearn" /></div>
-                            <div class="pantalla-3">
-                                <input name="esNuevo" type="hidden" id="op-inmuebles" />
-                                <input name="clave" type="hidden" id="clave-inmuebles" />
-                                <label>Inmueble</label><input name="titulo" id="in-titulo" />
-                                <label>Cuota por hora</label><input name="cuotah" id="cuotah" onkeypress="return SoloNumeros(event,'.');" />
-                                <label>Describa los usos que tendrá el inmueble</label><textarea maxlength="300" style="height:100px;" name="descripcion" id="in-descripcion"></textarea>
-                                <button class="aceptar" style="margin-top:20px;" onclick="Guardar(this,'inmuebles', function () { LimpiarForm('inmuebles');CargarCatalogo(catalogo);Mostrar('p-edicion-inmuebles','lista-inmuebles');});">Guardar</button>
-                            </div>
-                        </fieldset>
-                    </form>
-                </div>
-                <div class="edicion" style="display:none;" id="p-regen_inmuebles">
-                    <div class="titulo"><span>Calendario de reservaciones</span><button class="regresar" id="cancelar-edit-erogacion" onclick="CambioPantalla('lista-inmuebles','p-regen_inmuebles');"><img src="img/back.png" /></button></div>
-                    <div class="pantalla-2">
-                        <div class="leyenda" style="margin:5px;">
-                            <input type="hidden" id="inmueble" />
-                            <p style="margin-top:0px;padding:10px;">
-                                Seleccione la fecha de su interés para reservar un horario disponible.
-                            </p>
-                        </div>
-                        <div id="calendario-ev-inm" style="font-size:0.9em;"></div>
-                    </div>
-                </div>
-
->>>>>>> 45849804634b368cde159b84765f0cad7fb193f8
                 <div class="lista" id="lista-ap__usuarios" style="display:none;" redim="redim-ap__usuarios">
                     <div class="titulo"><span>Seleccione usuario</span><button class="buscar-min" onclick="MostrarBuscar('buscar-usu', 'ap__usuarios', 'redim-ap__usuarios');"><img src="img/buscar.png" /></button><button class="regresar" id="cancelar-edit-erogacion" onclick="CambioPantalla('lista-inmuebles','lista-ap__usuarios');"><img src="img/back.png" /></button><hr class="clearn" /></div>
                     <div class="busqueda" style="display:none;" id="buscar-usu"><input placeholder="Buscar" onkeypress="if(ValidarEnter(event)){CargarCatalogo('ap__usuarios', undefined, { buscar: this.value });}" /></div>
@@ -639,19 +552,14 @@
                 </div>
 
                 <div class="lista" id="lista-reservaciones" style="display:none;">
-<<<<<<< HEAD
                     <div class="titulo"><span>Reservaciones del día</span><button class="regresar" onclick="CalendarioR.yaConsulto = false;$('#calendario-ev-inm').datepicker('refresh');CambioPantalla( 'p-regen_inmuebles','lista-reservaciones'); "><img src="img/back.png" /></button><button class="btn-item" onclick="MostrarPagarREservacion();">Confirmar</button></div>
                     <div id="ap-datos-dom" style="position:relative;padding:0px;" class="datos-bd">
                         <div id="w-datos-dom" class="item"></div>
                     </div>
-=======
-                    <div class="titulo"><span>Reservaciones del día</span><button class="regresar" onclick="CalendarioR.yaConsulto = false;$('#calendario-ev-inm').datepicker('refresh');CambioPantalla( 'p-regen_inmuebles','lista-reservaciones'); "><img src="img/back.png" /></button><button class="buscar-min" onclick="MostrarPagarREservacion();">Confirmar</button></div>
->>>>>>> 45849804634b368cde159b84765f0cad7fb193f8
                     <input type="hidden" id="fecha-res" />
                     <input type="hidden" id="mes-res" />
                     <input type="hidden" id="anio-res" />
                     <input type="hidden" id="inmueble-res" />
-<<<<<<< HEAD
                     <div class="agregar"><button onclick="AgregarReservaciones();">Agregar Reservación</button></div>
                     <ul class="lista seleccionable pantalla-3"></ul>
                 </div>
@@ -660,10 +568,6 @@
                     <div class="titulo">Seleccionar Domicilio<button class="regresar" onclick="IntercambioVisual('lista-reservaciones','lista-ap_domicilios_sr');"><img src="img/back.png" /></button><hr class="clearn" /></div>
                     <div class="busqueda"><input placeholder="Buscar" id="b-dom-r" onkeypress="if (ValidarEnter(event)) { CargaDomiciliosS('lista-ap_domicilios_sr','lista-reservaciones');}" /></div>
                     <ul class="wrap-lista pantalla-5"></ul>
-=======
-                    <div class="agregar"><button onclick="IniciarEditar(true, 'reservaciones', 2, undefined, undefined, function () { document.getElementById('fecha_reservada').value = document.getElementById('fecha-res').value; document.getElementById('ed-res-inmueble').value = document.getElementById('inmueble').value;});">Agregar Reservación</button></div>
-                    <ul class="lista seleccionable pantalla-21"></ul>
->>>>>>> 45849804634b368cde159b84765f0cad7fb193f8
                 </div>
 
                 <div class="detalle" id="detalle-reservaciones" style="display:none;">
@@ -680,10 +584,7 @@
                                 <input name="esNuevo" type="hidden" id="op-reservaciones" />
                                 <input name="clave" type="hidden" id="clave-reservaciones" />
                                 <input name="inmueble" type="hidden" id="ed-res-inmueble" />
-<<<<<<< HEAD
                                 <input name="domicilio" type="hidden" id="ed-res-dom" />
-=======
->>>>>>> 45849804634b368cde159b84765f0cad7fb193f8
                                 <label>Fecha para reservada</label><input name="fecha_reservada" readonly="readonly" id="fecha_reservada" />
                                 <label>Hora de inicio</label><input name="inicio" id="res-inicio" placeholder="HH:MM" />
                                 <label>Hora que finaliza</label><input name="fin" id="res-fin" placeholder="HH:MM" />
@@ -701,7 +602,6 @@
                     <div class="agregar" id="edicion-talleres" style="display:none;"><button clave_funcion="2" control="edicion-talleres" onclick="IniciarEditar(true,'talleres');">Agregar Taller</button></div>
                     <ul class="lista seleccionable pantalla-21" id="redim-talleres" classToggle="pantalla-21,pantalla-31" hide="b-tall"></ul>
                 </div>
-<<<<<<< HEAD
 
                 <div class="detalle" id="detalle-talleres" style="display:none;">
                     <div class="titulo">Información de Taller<button class="regresar" onclick="Mostrar('detalle-talleres', 'lista-talleres'); "><img src="img/back.png" /></button></div>
@@ -709,15 +609,6 @@
                     <div class="detalle-w pantalla-3" id="wrap-detalle-talleres"></div>
                 </div>
 
-=======
-
-                <div class="detalle" id="detalle-talleres" style="display:none;">
-                    <div class="titulo">Información de Taller<button class="regresar" onclick="Mostrar('detalle-talleres', 'lista-talleres'); "><img src="img/back.png" /></button></div>
-                    <div class="btns-up" id="edit-tall" style="display:none;"><button class="edit-btn" clave_funcion="2" control="edit-tall" onclick="IniciarEditar(false,'talleres');"><img src="img/edit.png" /></button><button onclick="IniciarEliminar(this,'talleres');" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>
-                    <div class="detalle-w pantalla-3" id="wrap-detalle-talleres"></div>
-                </div>
-
->>>>>>> 45849804634b368cde159b84765f0cad7fb193f8
                 <div class="edicion " style="display:none;" id="p-edicion-talleres">
                     <div class="titulo">Edición de Talleres <button class="regresar" id="cancelar-edit-talleres"><img src="img/back.png" /></button><hr class="clearn" /></div>
                     <form class="pantalla-2" id="frm-edit-talleres" onsubmit="return false;">
@@ -952,47 +843,16 @@
                 <form onsubmit="return false;" id="frm-edit-ap_conceptos">
                     <fieldset>
                         <div class="pantalla-3">
-<<<<<<< HEAD
                             <input name="esNuevo" type="hidden" id="op-ap_conceptos" />
                             <input name="clave" type="hidden" id="clave-ap_conceptos" />
                             <input maxlength="200" name="concepto" placeholder="Ingrese concepto extraordinario" id="con-nombre" />
                             <label>Cantidad</label><input maxlength="300" name="monto" id="con-monto" onkeypress="return SoloNumeros(event,'.');" value="0.00" />
-=======
-                            <input name="esNuevo" type="hidden" id="op-ap_conceptos" />    
-                            <input name="clave" type="hidden" id="clave-ap_conceptos" /> 
-                            <label><input type="radio" name="tipocuota" value="1" onchange="document.getElementById('cuota-extra').setAttribute('disabled','disabled');document.getElementById('cuota-men').removeAttribute('disabled');"/>Concepto de cuota mensual</label>
-                            <fieldset id="cuota-men" style="border:1px solid #218ab3;padding:20px 0px 20px 0px;border-radius:10px;margin-top:25px;" disabled="disabled">
-                                <select name="mes" style="width:97%;margin:auto;margin-bottom:5px;" onchange="document.getElementById('con-mes').value = this.selectedIndex;">
-                                    <option value="0">Seleccione</option>
-                                    <option value="ENERO">Enero</option>
-                                    <option value="FEBRERO">Febrero</option>
-                                    <option value="MARZO">Marzo</option>
-                                    <option value="ABRIL">Abril</option>
-                                    <option value="MAYO">Mayo</option>
-                                    <option value="JUNIO">Junio</option>
-                                    <option value="JULIO">Julio</option>
-                                    <option value="AGOSTO">Agosto</option>
-                                    <option value="SEPTIEMBRE">Septiembre</option>
-                                    <option value="OCTUBRE">Octubre</option>
-                                    <option value="NOVIEMBRE">Noviembre</option>
-                                    <option value="DICIEMBRE">Diciembre</option>
-                                </select>
-                                <input maxlength="10" name="mes-indice" id="con-mes" type="hidden"/>
-                                <input maxlength="10" name="anio" id="con-anio" onkeypress="return SoloNumeros(event);" value="2019" />
-                            </fieldset>
-                            <label><input type="radio" name="tipocuota" value="2" onchange="document.getElementById('cuota-extra').removeAttribute('disabled');document.getElementById('cuota-men').setAttribute('disabled','disabled');" />Concepto de cuota extraordinaria</label>
-                            <fieldset id="cuota-extra" style="border:1px solid #218ab3;padding:20px 0px 20px 0px;border-radius:10px;margin-top:25px;" disabled="disabled">                                
-                                <input maxlength="200" name="concepto" placeholder="Ingrese concepto extraordinario"/>
-                            </fieldset>
-                            <label>Cantidad</label><input maxlength="300" name="monto" id="con-monto" onkeypress="return SoloNumeros(event,'.');" value="235.00" />
->>>>>>> 45849804634b368cde159b84765f0cad7fb193f8
                             <label>Descripción</label><textarea maxlength="300" name="descripcion" id="con-descripcion" value=".."></textarea>
                             <button class="aceptar" style="margin-top:20px;" onclick="GuardarItem(this,'ap_conceptos');">Guardar Concepto</button>
                         </div>
                     </fieldset>
                 </form>
             </div>
-<<<<<<< HEAD
 
             <div class="edicion" style="display:none;" id="p-edicion-asig_conceptos">
                 <div class="titulo">Asignación de concepto<button class="regresar" id="cancelar-edit-asig_conceptos" onclick="IntercambioVisual('lista-ap_conceptos','p-edicion-asig_conceptos');"><img src="img/back.png" /></button><hr class="clearn" /></div>
@@ -1034,25 +894,6 @@
                 <div class="busqueda"><input placeholder="Buscar" id="b-ap_dom2" onkeypress="if(ValidarEnter(event)){CargarCatalogo('ap_conceptos.mz_s', undefined, { buscar: this.value });}" /></div>
                 <ul class="wrap-lista pantalla-2"></ul>
                 <div class="abajo agregar"><button onclick="IntercambioVisual('p-edicion-asig_conceptos','lista-ap_mz_s');">Regresar</button></div>
-=======
-            
-            <div class="lista" id="lista-ap_domicilios2" style="display:none;" redim="redim-ap_domicilios2">
-                <div class="titulo">Lista de Domicilios<button class="regresar" onclick="CambioPantalla('p-edicion-aportaciones', 'lista-ap_domicilios2');"><img src="img/back.png"/></button><button class="buscar-min" onclick="MostrarBuscar('b-ap_dom2', 'ap_domicilios2', 'redim-ap_domicilios2', 'pantalla-2', 'pantalla-21');"><img src="img/buscar.png" /></button><hr class="clearn" /></div>
-                <div class="busqueda" id="b-ap_dom2" style="display:none;"><input placeholder="Buscar" id="b-ap_dom2" onkeypress="if(ValidarEnter(event)){CargarCatalogo('ap_domicilios2', undefined, { buscar: this.value });}" /></div>                    
-                <ul class="lista seleccionable pantalla-2" id="redim-ap_domicilios2" classToggle="pantalla-2, pantalla-21" hide="b-ap_dom2"></ul>
-            </div>
-            <div class="pantalla" style="display:none;position:relative;top:0px;" id="lista-domiciliosconceptosini">
-                <div class="titulo"><span>Captura inicial</span><button class="regresar" onclick="Mostrar('lista-domiciliosconceptosini', 'lista-ap_domicilios2'); "><img src="img/back.png" /></button></div>                        
-                <form onsubmit="return false" method="post" id="frm-edit-domiciliosconceptosini">
-                    <fieldset>                        
-                        <div id="UnDomicilioEd" class="selec" style="width:75%;"></div>
-                        <div><input style="float:right;margin-top:-20px;margin-right:30px;" type="checkbox" onchange="ToggleChecks(this,'lista-domiciliosconceptosini');"/></div>
-                        <input type="hidden" name="clavedomicilio" id="clavedomicilio"/>
-                        <ul class="lista scrollable-2" id="lista-ulacciones"></ul>                        
-                    </fieldset>
-                </form>
-                <div style="position:absolute;bottom:0px;border-top:1px solid #2c5878;background:#e7e7e7;width:100%;"><button class="aceptar" style="margin-top:10px;margin-bottom:5px;width: unset;" onclick="Guardar(this, 'domiciliosconceptosini', function () { LimpiarForm('domiciliosconceptosini'); CargarCatalogo(catalogo, function(){},{clave:document.getElementById('clavedomicilio').value});});">Guardar pendientes</button></div>
->>>>>>> 45849804634b368cde159b84765f0cad7fb193f8
             </div>
             <div class="lista" id="lista-ap_seg_s" style="display:none;">
                 <div class="busqueda"><input placeholder="Buscar" id="b-ap_dom2" onkeypress="if(ValidarEnter(event)){CargarCatalogo('ap_conceptos.seg_s', undefined, { buscar: this.value });}" /></div>
