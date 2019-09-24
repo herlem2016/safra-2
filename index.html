@@ -44,9 +44,10 @@
     <script src="cordova.js"></script>
     <script src="jquery-1.11.3.min.js"></script>    
     <script>
-         var url = "http://realtoledo.safra.softronel.com.mx/";
+         var url = "http://132.148.29.114:81/";
         //var url = "http://192.168.0.101:82/";
         //var url = "http://localhost:61157/";
+        var urlLocal = "http://132.148.29.114:50068";
         $.support.cors = true;
         
     </script>
@@ -210,8 +211,8 @@
                         Gracias Por utilizar SAFRA!
                     </p>
                     <span class='logo-centrado'><img src="img/Titan_Company_Logo.png" /></span>
-                    <span class='campo'><label>Nombre del condominio o fraccionamiento</label><span>Fraccionamiento Amores de Don Juan</span></span>
-                    <span class='campo'><label>Domicilio</label>Zempoala Hidalgo</span>
+                    <span class='campo'><label>Nombre del condominio o fraccionamiento</label><span></span></span>
+                    <span class='campo'><label></label></span>
                 </div>
                 <div class="lista pantalla-3" id="lista-safra">
                     <div class="titulo">Licencias adquiridas</div>
@@ -252,6 +253,7 @@
                 <button class="aceptar" style="margin-top:20px;" onclick="CargarCatalogo('usuarios', function () { CambioPantalla('lista-usuarios','p-edicion-config'); });">Usuarios</button>
                 <button class="aceptar" style="margin-top:20px;" onclick="CargarCatalogo('cargos', function () { CambioPantalla('lista-cargos','p-edicion-config'); });">Editar permisos</button>
                 <button class="aceptar" style="margin-top:20px;" onclick="CambioPantalla('config-general','p-edicion-config');">Configuraciones generales</button>
+                <button class="aceptar" style="margin-top:20px;" onclick="EjecutarRestriccionTags(true);">Ejecutar restricción de TAG's</button>
             </div>
 
             <div class="lista" id="config-general" style="display:none;" >
@@ -292,14 +294,42 @@
                             <input name="esNuevo" type="hidden" id="op-ap_domicilios" />
                             <input name="clave" type="hidden" id="clave-ap_domicilios" />
                             <label>Titular</label><input name="titular" id="dom-titular" />
+                            <label>Fecha de entrega</label><input name="fecha_entrega" id="fecha_entrega" placeholder="dd/mm/aaa" />
                             <label>Domicilio</label><input name="calle" id="dom-calle" placeholder="Calle" />
                             <div class="nos_dom"><input name="numero" id="dom-numero" placeholder="Número" style="margin-left:0px;" /><input name="no_interior" id="dom-no_int" placeholder="No. Int." /><input name="mz" id="dom-mz" placeholder="Mz" /><input name="lt" id="dom-lt" placeholder="Lt." /></div>
+                            <label>Segmento</label><input name="seg" id="seg-dom" />
+                            <label>E-mail</label><input name="email" id="email-dom" /> 
                             <button class="aceptar" style="margin-top:20px;" onclick="GuardarItem(this,'ap_domicilios');">Guardar domicilio</button>
                         </div>
                     </fieldset>
                 </form>
             </div>
-
+            
+            <div class="lista" id="lista-tags" style="display:none;">
+                <div class="titulo">Tags del domicilio<button class="regresar" onclick="CambioPantalla('detalle-ap_domicilios', 'lista-tags');"><img src="img/back.png" /></button><hr class="clearn" /></div>
+                <div class="agregar" id="edicion-tags"><button clave_funcion="5" control="edicion-tags" onclick="IniciarEditar(true, 'tags', 2, undefined, undefined, function () {document.getElementById('d-vehi').value= document.getElementById('detalle-ap_domicilios').getAttribute('clave');});">Agregar tag</button></div>
+                <ul class="lista seleccionable pantalla-21"></ul>
+            </div>
+            <div class="edicion" style="display:none;" id="p-edicion-tags">
+                <form onsubmit="return false;" id="frm-edit-tags">
+                    <fieldset>
+                        <div class="titulo">Editar Vehículo<button class="regresar" id="cancelar-edit-tags" onclick="CambioPantalla('lista-tags','p-edicion-tags');"><img src="img/back.png" /></button><hr class="clearn" /></div>
+                        <div class="pantalla-3">
+                            <input name="esNuevo" type="hidden" id="op-tags" />
+                            <input name="clave" type="hidden" id="clave-tags" />
+                            <input name="d" type="hidden" id="d-vehi" />
+                            <label>Nombre de usuario de TAG</label><input name="usuario_vehi" id="usuario-vehi" placeholder="Usuario del tag" />
+                            <label>Id de usuario en controladora</label><input name="id_usuario_disp" id="id_usuario_disp" placeholder="Id de usuario de controladora" />
+                            <label>Número de Tag</label><input name="no_tag" id="tag-vehi" placeholder="TAG" />
+                            <label>Descripción</label><textarea name="descripcion" id="desc-vehi"></textarea>
+                            <label>Marbete</label><input name="marbete" id="marb-vehi" placeholder="Marbete" />
+                            <label>Placas</label><input name="placas" id="placas-vehi" placeholder="PLACAS" />
+                            <button class="aceptar" style="margin-top:20px;" onclick="GuardarItem(this, 'tags', undefined, { d: document.getElementById('detalle-ap_domicilios').getAttribute('clave') }, function () { EjecutarRestriccionTags(false,document.getElementById('detalle-ap_domicilios').getAttribute('clave')); });">Guardar</button>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+            
             <div class="lista" id="lista-usuarios" style="display:none;">
                 <div class="titulo">Usuarios<button class="regresar" onclick="CambioPantalla('p-edicion-config', 'lista-usuarios');"><img src="img/back.png" /></button><hr class="clearn" /></div>
                 <div class="busqueda"><input placeholder="Buscar" onkeypress="if (ValidarEnter(event)) { CargarCatalogo('usuarios', undefined, { buscar: this.value });}"/></div>
@@ -881,22 +911,22 @@
                 </form>
             </div>
             <div class="lista" id="lista-ap_domicilios_s" style="display:none;">
-                <div class="busqueda"><input placeholder="Buscar" id="b-ap_dom2" onkeypress="if(ValidarEnter(event)){S_AsignarConceptos('lista-ap_domicilios_s','dom_s',1,{ buscar: this.value });}" /></div>
+                <div class="busqueda"><input placeholder="Buscar" onkeypress="if(ValidarEnter(event)){S_AsignarConceptos('lista-ap_domicilios_s','dom_s',1,{ buscar: this.value });}" /></div>
                 <ul class="wrap-lista pantalla-21"></ul>
                 <div class="abajo agregar"><button onclick="IntercambioVisual('p-edicion-asig_conceptos','lista-ap_domicilios_s');">Regresar</button></div>
             </div>
             <div class="lista" id="lista-ap_calles_s" style="display:none;">
-                <div class="busqueda"><input placeholder="Buscar" id="b-ap_dom2" onkeypress="if(ValidarEnter(event)){CargarCatalogo('ap_conceptos.calles_s', undefined, { buscar: this.value });}" /></div>
+                <div class="busqueda"><input placeholder="Buscar" onkeypress="if(ValidarEnter(event)){CargarCatalogo('ap_conceptos.calles_s', undefined, { buscar: this.value });}" /></div>
                 <ul class="wrap-lista pantalla-2"></ul>
                 <div class="abajo agregar"><button onclick="IntercambioVisual('p-edicion-asig_conceptos','lista-ap_calles_s');">Regresar</button></div>
             </div>
             <div class="lista" id="lista-ap_mz_s" style="display:none;">
-                <div class="busqueda"><input placeholder="Buscar" id="b-ap_dom2" onkeypress="if(ValidarEnter(event)){CargarCatalogo('ap_conceptos.mz_s', undefined, { buscar: this.value });}" /></div>
+                <div class="busqueda"><input placeholder="Buscar" onkeypress="if(ValidarEnter(event)){CargarCatalogo('ap_conceptos.mz_s', undefined, { buscar: this.value });}" /></div>
                 <ul class="wrap-lista pantalla-2"></ul>
                 <div class="abajo agregar"><button onclick="IntercambioVisual('p-edicion-asig_conceptos','lista-ap_mz_s');">Regresar</button></div>
             </div>
             <div class="lista" id="lista-ap_seg_s" style="display:none;">
-                <div class="busqueda"><input placeholder="Buscar" id="b-ap_dom2" onkeypress="if(ValidarEnter(event)){CargarCatalogo('ap_conceptos.seg_s', undefined, { buscar: this.value });}" /></div>
+                <div class="busqueda"><input placeholder="Buscar" onkeypress="if(ValidarEnter(event)){CargarCatalogo('ap_conceptos.seg_s', undefined, { buscar: this.value });}" /></div>
                 <ul class="wrap-lista pantalla-2"></ul>
                 <div class="abajo agregar"><button onclick="IntercambioVisual('p-edicion-asig_conceptos','lista-ap_seg_s');">Regresar</button></div>
             </div>
@@ -907,8 +937,8 @@
 
                 <div class="lista" id="lista-ap_domicilios2" style="display:none;" redim="redim-ap_domicilios2">
                     <div class="titulo">Lista de Domicilios<button class="regresar" onclick="CambioPantalla('p-edicion-aportaciones', 'lista-ap_domicilios2');"><img src="img/back.png" /></button><button class="buscar-min" onclick="MostrarBuscar('b-ap_dom2', 'ap_domicilios2', 'redim-ap_domicilios2', 'pantalla-2', 'pantalla-21');"><img src="img/buscar.png" /></button><hr class="clearn" /></div>
-                    <div class="busqueda" id="b-ap_dom2" style="display:none;"><input placeholder="Buscar" id="b-ap_dom2" onkeypress="if(ValidarEnter(event)){CargarCatalogo('ap_domicilios2', undefined, { buscar: this.value });}" /></div>
-                    <ul class="lista seleccionable pantalla-2" id="redim-ap_domicilios2" classToggle="pantalla-2, pantalla-21" hide="b-ap_dom2"></ul>
+                    <div class="busqueda" id="b-ap_dom2" style="display:none;"><input placeholder="Buscar" onkeypress="if(ValidarEnter(event)){CargarCatalogo('ap_domicilios2', undefined, { buscar: this.value });}" /></div>
+                    <ul class="lista seleccionable pantalla-21" id="redim-ap_domicilios2" classToggle="pantalla-21, pantalla-21" hide="b-ap_dom2"></ul>
                 </div>
                 <div class="pantalla" style="display:none;position:relative;top:0px;" id="lista-domiciliosconceptosini">
                     <div class="titulo"><span>Conciliaciones iniciales</span><button class="regresar" onclick="Mostrar('lista-domiciliosconceptosini', 'lista-ap_domicilios2'); "><img src="img/back.png" /></button></div>

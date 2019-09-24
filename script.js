@@ -538,8 +538,8 @@ function CerrarPago(event,ventana) {
     }
 }
 
-function GuardarItem(obj,catalogo,detalle){
-        Guardar(obj, catalogo, function (claveItem) {
+function GuardarItem(obj, catalogo, detalle, datos, callback) {
+    Guardar(obj, catalogo, function (claveItem) {
         LimpiarForm(catalogo);
         CargarCatalogo(catalogo, function () {
             if (detalle) {
@@ -547,7 +547,8 @@ function GuardarItem(obj,catalogo,detalle){
             } else {
                 CambioPantalla('lista-' + catalogo, 'p-edicion-' + catalogo);
             }
-        });
+        }, datos);
+        if (callback) { callback(claveItem, datos); }
     });
 }
 
@@ -568,7 +569,30 @@ function IniciarAsociarCargo() {
     CargarCatalogo("cargos");
 }
 
-        function PintarItem(catalogo, clave, xmlDoc0){
+
+function AgregarProrroga(check, domicilio, fecha_negociada) {
+    $.post(url + 'logic/controlador.aspx?op=AgregarProrroga&seccion=ap_domicilios&domicilio=' + domicilio, { fecha_negociada: fecha_negociada }, function (xmlDoc) {
+        check.checked = (GetValor(xmlDoc, "es_activo") == "true");
+        if (GetValor(xmlDoc, "estatus") == "1") {
+            EjecutarRestriccionTags(false, domicilio);
+        } else {
+            alert(GetValor(xmlDoc, "mensaje"));
+        }
+    });
+}
+
+function ActivarTag(check, domicilio) {
+    $.post(url + 'logic/controlador.aspx?op=ActivarTag&seccion=ap_domicilios&domicilio=' + domicilio + '&poner=' + check.checked, function (xmlDoc) {
+        check.checked = (GetValor(xmlDoc, "es_activo") == "true");
+        if (GetValor(xmlDoc, "estatus") == "1") {
+            EjecutarRestriccionTags(false, domicilio);
+        } else {
+            alert(GetValor(xmlDoc, "mensaje"));
+        }
+    });
+}
+
+function PintarItem(catalogo, clave, xmlDoc0) {
             var cont = "", imgsTexto;
             var xmlDoc = xmlDoc0.getElementsByTagName("Table")[0];
             switch (catalogo) {
@@ -622,7 +646,9 @@ function IniciarAsociarCargo() {
                         '<span class="t-41"><b>Registró: </b>' + GetValor(xmlDoc, "usuario_registro") + ', ' + GetValor(xmlDoc, "fecha_alta") + '</span>' +
                         '<span class="t-41"><b>Modificaciones iniciales: </b>' + GetValor(xmlDoc, "insercionesini") + '</span>' +
                         (GetValor(xmlDoc, "usuario_modifico") ? '<span class="t-41"><b>Última modificación:</b>' + GetValor(xmlDoc, "usuario_modifico") + ',' + GetValor(xmlDoc, "fecha_modifico") + '</span>' : "") +
-                        '<span class="t-2">' + GetValor(xmlDoc, "descripcion") + '</span>';
+                        '<span class="t-2">' + GetValor(xmlDoc, "descripcion") + '</span>' +
+                        '<div class="check-activacion" id="check-tag-d-' + clave + '"><label class="etiqueta" style="font-weight:bolder;font-size:1.3em;margin-top:10px;width:50%;">Prorroga</label><input style="float:left;width:30%;padding:5px;border:1px solid #999;margin-top:10px;" placeholder="Fecha negociada" id="fecha_negociada_tag" value="' + GetValor(xmlDoc, "fecha_prorroga") + '" onkeypress="if(ValidarEnter(event)){AgregarProrroga(document.getElementById(\'check-tag\'),' + clave + ',document.getElementById(\'fecha_negociada_tag\').value);}" /><label class="switch" style="float:right;"><input id="check-tag" type="checkbox" ' + (GetValor(xmlDoc, "es_activo") == "true" ? "checked=checked" : "") + ' onchange="ActivarTag(this,' + clave + ');" /><span class="slider round"></span></label><hr class="clearn" /></div>' +
+                        '<button class="btn-item" style="margin-top:20px;padding:5px 15px 5px 15px;float:left;margin-left:10px;" onclick="VerTags(' + clave + ');">Ver TAGs</button>';                       
                     document.getElementById("wrap-detalle-" + catalogo).innerHTML = cont;
                     ; break;
                 case "ap_conceptos":
@@ -776,6 +802,53 @@ function RealizarPagoRes() {
     }
 }
 
+
+function XmlToStr(xmlNode) {
+    try {
+        // Gecko- and Webkit-based browsers (Firefox, Chrome), Opera.
+        return (new XMLSerializer()).serializeToString(xmlNode);
+    }
+    catch (e) {
+        try {
+            // Internet Explorer.
+            return xmlNode.xml;
+        }
+        catch (e) {
+            //Other browsers without XML Serializer
+            alert('Xmlserializer not supported');
+        }
+    }
+    return false;
+}
+
+function EjecutarRestriccionTags(general, domicilio) {
+    $.post(url + 'logic/controlador.aspx?op=ObtenerEstatusDomicilios&seccion=ap_domicilios&general=' + general + (domicilio ? '&domicilio=' + domicilio : ""), function (xmlDoc) {
+        $.ajax({
+            url: urlLocal + '/controlador.aspx?op=ProcesarRestriccionTags&seccion=ap_domicilios',
+            data: XmlToStr(xmlDoc),
+            type: 'POST',
+            contentType: "text/xml",
+            dataType: "xml",
+            success: function (xmlDocR) {
+                //if (GetValor(xmlDocR, "estatus") == "1") {
+                //} else {
+                alert(GetValor(xmlDocR, "mensaje"));
+                //}                
+            }, error: function (xhr, ajaxOptions, thrownError) {
+                console.log(xhr.status);
+                console.log(thrownError);
+            }
+        });
+    });
+}
+
+function VerTags(domicilio) {
+    CargarCatalogo("tags", function () {
+        CambioPantalla('lista-tags', 'detalle-ap_domicilios');
+    }, { d: domicilio });
+}
+
+
 function AsociarDomiciliosPropietario(){
     var usuario = document.getElementById("detalle-usuarios").getAttribute("clave");
     document.getElementById("usuario-prop").innerHTML = document.getElementById("usu-" + usuario).innerHTML;
@@ -860,11 +933,14 @@ function BloquearNotificaciones(clave_usuario) {
             var xmlDoc = xmlDoc0.getElementsByTagName("Table")[0];
             var frm = document.getElementById("frm-edit-" + catalogo);
             switch (catalogo) {
+                case "tags":
+                    CargarDatosFrmMap(xmlDoc, { indice: 'clave-tags', descripcion: 'desc-vehi', domicilio: 'd-vehi', placas: 'placas-vehi', no_tag: 'tag-vehi', marbete: 'marb-vehi', nombre_usuario: 'usuario-vehi', id_usuario_disp: 'id_usuario_disp' });
+                    break;
                 case "reservaciones":
                     CargarDatosFrmMap(xmlDoc, { indice: 'clave-reservaciones', descripcion: 'res-descripcion', inicio: 'res-inicio', fin: 'res-fin', fecha_reservada: 'fecha_reservada', inmueble:'ed-res-inmueble'});
                     break;
                 case "ap_domicilios":
-                    CargarDatosFrmMap(xmlDoc, { clave: 'clave-ap_domicilios', calle: 'dom-calle', titular: 'dom-titular',manzana:'dom-mz',lote:'dom-lt',numero:'dom-numero',no_interior:'dom-no_int' });
+                    CargarDatosFrmMap(xmlDoc, { clave: 'clave-ap_domicilios', calle: 'dom-calle', titular: 'dom-titular', manzana: 'dom-mz', lote: 'dom-lt', numero: 'dom-numero', no_interior: 'dom-no_int', fecha_entrega: 'fecha_entrega', segmento: 'seg-dom', email: 'email-dom' });
                     break;
                 case "ap_conceptos":
                     CargarDatosFrmMap(xmlDoc, { clave: 'clave-ap_conceptos', nombre: 'con-nombre', descripcion: 'con-descripcion',monto:'con-monto' });
@@ -1225,10 +1301,14 @@ function BloquearNotificaciones(clave_usuario) {
                 if (this.conceptospagar.length > 0 || this.mesespagar.length > 0) {
                     var redimAp = document.getElementById("redim-aportaciones");
                     redimAp.btnAplicar = this;
-                    redimAp.innerHTML ="<li class='resumen'><div style='background:transparent;padding:0px;margin:0px;'><label>Tipo de pago:</label><select id='s_tipo_p' style='width:60%;margin-bottom:5px;margin-right:10px;' name='tipopago' onchange='if(this.selectedIndex==1){var inF=this.parentNode.getElementsByTagName(\"input\")[1];inF.parentNode.style.display=\"block\";}else{this.parentNode.getElementsByTagName(\"input\")[1].parentNode.style.display=\"none\";ObtenerTicket(undefined,this.parentNode.parentNode.parentNode.btnAplicar,document.getElementById(\"ticket\"),this.options[this.selectedIndex].value);}'><option value='11'>EFECTIVO</option><option value='10'>DEPOSITO</option></select><span>Compuesto</span><input type='checkbox' name='es_compuesto' id='es_compuesto' value='true'/>" +
-                        "<div style='display:none;'><label>Fecha de pago:</label><input type='text' name='fecha_pago' placeholder='dd/mm/aaaa' onkeypress='if(ValidarEnter(event)){var inF=this.parentNode.getElementsByTagName(\"input\")[1];ObtenerTicket(inF.value,this.parentNode.parentNode.parentNode.parentNode.btnAplicar,document.getElementById(\"ticket\"),\"DEPOSITO\");}return SoloNumeros(event,\"\/\");' /></div></div>" +
+                    redimAp.innerHTML = "<li class='resumen'><div style='background:transparent;padding:0px;margin:0px;'><label>Tipo de pago:</label><select id='s_tipo_p' style='width:60%;margin-bottom:5px;margin-right:10px;' name='tipopago' onchange='if(this.selectedIndex==1){var inF=this.parentNode.getElementsByTagName(\"input\")[1];inF.parentNode.style.display=\"block\";}else{this.parentNode.getElementsByTagName(\"input\")[1].parentNode.style.display=\"none\";ObtenerTicket(undefined,this.parentNode.parentNode.parentNode.btnAplicar,document.getElementById(\"ticket\"),this.options[this.selectedIndex].value);}'><option value='11'>EFECTIVO</option><option value='10'>DEPOSITO</option></select><span>Compuesto</span><input type='checkbox' name='es_compuesto' id='es_compuesto' value='true'/>" +
+                        "<div style='display:none;'><br/><label>Fecha de pago:</label><input type='text' name='fecha_pago' placeholder='dd/mm/aaaa' onkeypress='if(ValidarEnter(event)){var inF=this.parentNode.getElementsByTagName(\"input\")[1];ObtenerTicket(inF.value,this.parentNode.parentNode.parentNode.parentNode.btnAplicar,document.getElementById(\"ticket\"),\"DEPOSITO\");}return SoloNumeros(event,\"\/\");'  style='margin-right:30px;'/><br/><br/> Capture comprobante: <div id='wrap-detalle-DepositosBancoR' style=''></div></div><br/> </div>" +
                         "<fieldset class='gafet-p' style='border:1px solid #999;border-radius:10px;margin-bottom:12px;text-align:center;font-weight:bold;font-size:0.9em;'><legend>Gallardetes</legend><div><input id='gafetes-p' type='text' style='width: 90%;padding: 5px;border:1px solid #aaa;text-align:center;font-size:1.1em;' placeholder='#gallardete1:placas,#gallardete2:placas2,...'/></div><div id='tipo_gafete'><span style='margin-left:15px;'>Mensual</span><input checked='checked' type='radio' value='1' name='tipo_gafete' /><span style='margin-left:15px;'>Semestral</span><input type='radio' value='2' name='tipo_gafete' /><span style='margin-left:15px;'>Anual</span><input type='radio' value='3' name='tipo_gafete'/></div></fieldset>" +
                         "<div style='background:transparent;padding:0px;margin:0px;' id='ticket'></div></li>";
+
+                    var contenedor = document.getElementById("wrap-detalle-DepositosBancoR");
+                    var control = IAgregarImagenTexto(contenedor, undefined, undefined, true);
+
                     var sl = redimAp.getElementsByTagName("select")[0];                   
                     ObtenerTicket(undefined, this, document.getElementById("ticket"), sl.options[sl.selectedIndex].value);
 
@@ -1306,6 +1386,8 @@ function ObtenerTicket(fecha, btnAplicar, dom, tipo_pago) {
                 var num;
                 var gallardetes = document.getElementById("gafetes-p").value;
                 var no_g = gallardetes.split(",");
+                var sl = document.getElementById("redim-aportaciones").getElementsByTagName("select")[0];
+                var tipo_pago = sl.options[sl.selectedIndex].value;
                 var tipoGafetes = $("#tipo_gafete input[name='tipo_gafete']:checked").val();
                 if (document.getElementById("es_compuesto").checked && (num = window.prompt("Ingrese numeración[1,2,..]")).trim().length > 0 || !document.getElementById("es_compuesto").checked) {
                     $.post(url + 'logic/controlador.aspx' + '?op=PagarTicket&seccion=aportaciones' + (this.conceptospagar.length > 0 ? '&conceptos=' + this.conceptospagar.join(",") : '') + (this.mesespagar.length > 0 ? "&meses=" + this.mesespagar.join(",") : '') + "&domicilio=" + document.getElementById("w-datos-persona").getAttribute("domicilio_sel") + (fecha ? "&fecha_pago=" + fecha : "") + "&tipopago=" + tipo_pago + "&es_compuesto=" + document.getElementById("es_compuesto").checked + "&parte=" + num + "&gafetes=" + gallardetes + "&tipo_g=" +  tipoGafetes, $($(redimAp).find("form")[0]).serializeArray(), function (xmlDoc1) {
@@ -1313,6 +1395,9 @@ function ObtenerTicket(fecha, btnAplicar, dom, tipo_pago) {
                         if (GetValor(xmlDoc1, "estatus") == 1) {
                             ImprimirReciboCuotas(GetValor(xmlDoc1, "recibo"), GetValor(xmlDoc1, "folio"), GetValor(xmlDoc1, "domicilio"));
                             CargarAportaciones();
+                            try { GuardarImagenesTextos(GetValor(xmlDoc1, "domicilio") + "00" + GetValor(xmlDoc1, "folio"), "wrap-detalle-DepositosBancoR", "DepositosBancoR"); } catch (e) { }
+                            try { EnviarReciboEmail(null, GetValor(xmlDoc1, "folio"), false); } catch (e) { }
+                            try { EjecutarRestriccionTags(false, document.getElementById("w-datos-persona").getAttribute("domicilio_sel")); } catch (e) { }
                         }
                     });
                 } else {
@@ -1326,6 +1411,33 @@ function ObtenerTicket(fecha, btnAplicar, dom, tipo_pago) {
         }
     });
 }
+
+
+function GuardarImagenesTextos(claveItem, contenedor, catalogo, callback, subitemCatalogo) {
+    try {
+        var imagenes = document.getElementById(contenedor).getElementsByTagName("table");
+        var imagenesCambio = [];
+        var textosCambio = [];
+        for (var i = 0; i < imagenes.length; i++) {
+            if (imagenes[i].getAttribute("cambioImagen") == "true") {
+                imagenesCambio.push(imagenes[i]);
+            } else if (imagenes[i].getAttribute("cambioTexto") == "true") {
+                textosCambio.push(imagenes[i]);
+            }
+        }
+        if (imagenesCambio.length > 0) {
+            GuardarUnaImagenTexto(imagenesCambio, textosCambio, 0, callback, claveItem, catalogo);
+        } else if (textosCambio.length > 0) {
+            GuardarUnTexto(textosCambio, 0, callback, claveItem, catalogo, subitemCatalogo);
+        } else {
+            if (callback) callback(claveItem);
+        }
+    } catch (e) {
+        alert(e.message);
+    }
+
+}
+
 
 function ImprimirReciboCuotas(recibo,folio,domicilio) {
     window.open(url + 'logic/controlador.aspx?op=GenerarRecibo&seccion=aportaciones&domicilio=' + domicilio + '&recibo=' + recibo +"&folio=" + folio,'_blank','width:800,height:600');
@@ -1470,12 +1582,12 @@ function SeleccionarTodoP() {
             }, datos);
         }
 
-        function VerInforme(clave,config,pdf) {
+        function VerInforme(clave,config,pdf,xls) {
             var fecha1 = document.getElementById("i-fecha1").value;
             var fecha2 = document.getElementById("i-fecha2").value;
             if (fecha1.trim().length > 0 && fecha2.trim().length > 0) {
-                if (pdf) {
-                    window.open(url + 'logic/controlador.aspx' + '?op=ObtenerInforme&seccion=transparencia&pdf=' + pdf + '&tabla=1&clave=' + clave + "&fecha1=" + fecha1 + "&fecha2=" + fecha2);
+                if (pdf || xls) {
+                    window.open(url + 'logic/controlador.aspx' + '?op=ObtenerInforme&seccion=transparencia' + (xls?'&xls=' + xls:'') + (pdf?'&pdf=' + pdf:'') + '&tabla=1&clave=' + clave + "&fecha1=" + fecha1 + "&fecha2=" + fecha2);
                 } else {
                     CambioPantalla("detalle-transparencia", "lista-transparencia");
                     document.getElementById("table-resultados-tr").innerHTML = "";
@@ -1841,6 +1953,23 @@ function ObtenerItem(catalogo, item) {
             var proyecto = GetValor(item, "proyecto");
             itemli.innerHTML = '<span class="t-1m">' + GetValor(item, "descripcion") + '</span><div class="btn-apl">' + (GetValor(item, "resuelto") == "true" ? '<button onclick="QuitarVoBoActividad(' + indice + ',' + proyecto + ');" style="padding:7px;display:none;" clave_funcion="5" id="qav-' + indice + '" control="qav-' + indice + '" ><img src="img/del.png" /></button><img src="img/ok.png" />':'<button onclick="RegistrarVoBoActividad(' + indice + ',' + proyecto + ');" style="padding:7px;display:none;" clave_funcion="5" id="av-' + indice + '" control="av-' + indice + '" ><img src="img/ok.png" /></button><img src="img/pendiente.png" />') + "</div>";
             break;
+        case "tags":
+            var indice = GetValor(item, "indice");
+            itemli.clave = indice;
+            itemli.onclick = function () {
+                document.getElementById("vehi-" + this.clave).style.display = "block";
+            }
+            itemli.innerHTML =
+                '<span class="t-1" ><i style="color:#777;font-weight:normal">Usuario:</i>' + GetValor(item, "nombre_usuario") + '</span>' +
+                '<span class="t-1" ><i style="color:#777;font-weight:normal">Id de usuario en controladora:</i>' + GetValor(item, "id_usuario_disp") + '</span>' +
+                '<span class="t-1" >' + GetValor(item, "descripcion") + '</span>' +
+                '<span class="t-1" ><i style="color:#777;font-weight:normal">TAG:</i>' + GetValor(item, "no_tag") + '</span>' +
+                (GetValor(item, "placas").trim().length > 0 ?
+                    '<span class="t-1" ><i style="color:#777;font-weight:normal">Marbete:</i>' + GetValor(item, "marbete") + '</span>' +
+                    '<span class="t-1" ><i style="color:#777;font-weight:normal">Placas</i>:' + GetValor(item, "placas") + '</span>' : "") +
+                '<div id="vehi-' + indice + '" style="display:none;"><button class="edit-btn" onclick="IniciarEditar(false, \'' + catalogo + '\', 2, { a: \'lista-' + catalogo + '\', b: \'p-edicion-' + catalogo + '\'},{d:document.getElementById(\'detalle-ap_domicilios\').getAttribute(\'clave\'),claveItem:' + indice + '});" ><img  src="img/edit.png" /></button>' +
+                '<button class="edit-btn" onclick="IniciarEliminar(this,\'' + catalogo + '\',' + indice + ',{ b: \'lista-' + catalogo + '\', a: \'p-edicion-' + catalogo + '\' },true,{d:document.getElementById(\'detalle-ap_domicilios\').getAttribute(\'clave\')});" ><img  src="img/del.png" /></button>';
+            break;
         case "regen_egrepro":
         case "regen_tiposgastos":
             itemli.indice = GetValor(item, "clave");
@@ -1989,7 +2118,8 @@ function ObtenerItem(catalogo, item) {
         case "transparencia":
             itemli.setAttribute("config",GetValor(item, 'config'));
             itemli.setAttribute("pdf", GetValor(item, 'pdf'));
-            itemli.innerHTML = '<button  class="aceptar" onclick="VerInforme(' + GetValor(item, 'clave') + ',this.parentNode.getAttribute(\'config\'),this.parentNode.getAttribute(\'pdf\'));">' + GetValor(item,'descripcion') + '</button>';
+            itemli.setAttribute("xls", GetValor(item, 'xls'));
+            itemli.innerHTML = '<button  class="aceptar" onclick="VerInforme(' + GetValor(item, 'clave') + ',this.parentNode.getAttribute(\'config\'),this.parentNode.getAttribute(\'pdf\'),this.parentNode.getAttribute(\'xls\'));">' + GetValor(item,'descripcion') + '</button>';
             break;
         case "ap_domicilios3":   
             var clave = GetValor(item, "clave");
@@ -2002,6 +2132,12 @@ function ObtenerItem(catalogo, item) {
                 var datosp = document.getElementById("w-datos-persona");
                 datosp.setAttribute("domicilio_sel", domicilio_sel);
                 datosp.innerHTML = str;
+                var t3 = $(datosp).find(".t-3")[0];
+                var a = document.createElement("a");
+                a.style = "float:right;color:#333;text-decoration:underline;font-weight:bold;";
+                a.innerHTML = "Ver Historial de Pagos";
+                a.onclick = function () { window.open(url + 'logic/controlador.aspx?op=ObtenerInforme&seccion=transparencia&xls=true&tabla=1&clave=12&p1=' + domicilio_sel + '&fecha1=01/01/1900&fecha2=01/01/1900'); } 
+                t3.appendChild(a);
                 CambioPantalla('lista-aportaciones', 'lista-ap_domicilios3');
                 document.getElementById('buscar-ap-fecha').value = "";
                 CargarAportaciones(true);
@@ -2056,6 +2192,19 @@ function ObtenerItem(catalogo, item) {
                             }
                         }
                         this.getElementsByTagName("div")[0].appendChild(cancelar);
+
+
+                        if (this.tipo_pago == "10") {
+                            btnCR = document.createElement("button");
+                            btnCR.innerHTML = "Comprobante";
+                            btnCR.className = "aceptar";
+                            btnCR.style = "width:auto;display:inline-block;float:left;font-size:0.8em;margin-left:2%;margin-top:15px;";
+                            btnCR.title = "Ver recibo";
+                            btnCR.folio = this.folio;
+                            btnCR.domicilio = this.domicilio;
+                            btnCR.onclick = function (ev) { window.open(url + "/logic/controlador.aspx?op=VerAdjuntoDeposito&seccion=aportaciones&domicilio=" + this.domicilio + "&folio=" + this.folio); }
+                            this.getElementsByTagName("div")[0].appendChild(btnCR);
+                        }
 
                         var btnCR = document.createElement("button");
                         btnCR.innerHTML = "Reemplazar recibo";
