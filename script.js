@@ -289,7 +289,6 @@ function RegistrarNotificaciones() {
             FCMPlugin.onNotification(function (data) {
                 cordova.plugins.notification.badge.increase(1, function () { });
                 if (data.modulo == 1) {
-					alert(data.contenidovoz);
                     ActivarAlarma_(data.contenidovoz);
                 } else if (data.modulo == 2) {
                     ActivarTimbre_();
