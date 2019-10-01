@@ -538,15 +538,7 @@ function CerrarPago(event,ventana) {
     }
 }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 function GuardarItem(obj,catalogo,detalle,datos,callback){
-=======
-function GuardarItem(obj, catalogo, detalle, datos, callback) {
->>>>>>> 7fb57b987e0ff14bcac042c30bc9824735ac7e73
-=======
-function GuardarItem(obj, catalogo, detalle, datos, callback) {
->>>>>>> 7fb57b987e0ff14bcac042c30bc9824735ac7e73
     Guardar(obj, catalogo, function (claveItem) {
         LimpiarForm(catalogo);
         CargarCatalogo(catalogo, function () {
@@ -556,15 +548,7 @@ function GuardarItem(obj, catalogo, detalle, datos, callback) {
                 CambioPantalla('lista-' + catalogo, 'p-edicion-' + catalogo);
             }
         }, datos);
-<<<<<<< HEAD
-<<<<<<< HEAD
         if(callback){ callback(claveItem,datos);}
-=======
-        if (callback) { callback(claveItem, datos); }
->>>>>>> 7fb57b987e0ff14bcac042c30bc9824735ac7e73
-=======
-        if (callback) { callback(claveItem, datos); }
->>>>>>> 7fb57b987e0ff14bcac042c30bc9824735ac7e73
     });
 }
 
@@ -585,40 +569,18 @@ function IniciarAsociarCargo() {
     CargarCatalogo("cargos");
 }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 function AgregarProrroga(check, domicilio, fecha_negociada) {
     $.post(url + 'logic/controlador.aspx?op=AgregarProrroga&seccion=ap_domicilios&domicilio=' + domicilio,{ fecha_negociada: fecha_negociada }, function (xmlDoc) {                    
-=======
-
-function AgregarProrroga(check, domicilio, fecha_negociada) {
-    $.post(url + 'logic/controlador.aspx?op=AgregarProrroga&seccion=ap_domicilios&domicilio=' + domicilio, { fecha_negociada: fecha_negociada }, function (xmlDoc) {
->>>>>>> 7fb57b987e0ff14bcac042c30bc9824735ac7e73
-=======
-
-function AgregarProrroga(check, domicilio, fecha_negociada) {
-    $.post(url + 'logic/controlador.aspx?op=AgregarProrroga&seccion=ap_domicilios&domicilio=' + domicilio, { fecha_negociada: fecha_negociada }, function (xmlDoc) {
->>>>>>> 7fb57b987e0ff14bcac042c30bc9824735ac7e73
         check.checked = (GetValor(xmlDoc, "es_activo") == "true");
         if (GetValor(xmlDoc, "estatus") == "1") {
             EjecutarRestriccionTags(false, domicilio);
         } else {
             alert(GetValor(xmlDoc, "mensaje"));
-<<<<<<< HEAD
-<<<<<<< HEAD
         }  
-=======
-        }
->>>>>>> 7fb57b987e0ff14bcac042c30bc9824735ac7e73
-=======
-        }
->>>>>>> 7fb57b987e0ff14bcac042c30bc9824735ac7e73
     });
 }
 
 function ActivarTag(check, domicilio) {
-<<<<<<< HEAD
-<<<<<<< HEAD
     $.post(url + 'logic/controlador.aspx?op=ActivarTag&seccion=ap_domicilios&domicilio=' + domicilio + '&poner=' + check.checked,function (xmlDoc) {
         check.checked = (GetValor(xmlDoc, "es_activo") == "true");
         if (GetValor(xmlDoc, "estatus") == "1") {
@@ -626,26 +588,10 @@ function ActivarTag(check, domicilio) {
         } else {
             alert(GetValor(xmlDoc, "mensaje"));
         }        
-=======
-=======
->>>>>>> 7fb57b987e0ff14bcac042c30bc9824735ac7e73
-    $.post(url + 'logic/controlador.aspx?op=ActivarTag&seccion=ap_domicilios&domicilio=' + domicilio + '&poner=' + check.checked, function (xmlDoc) {
-        check.checked = (GetValor(xmlDoc, "es_activo") == "true");
-        if (GetValor(xmlDoc, "estatus") == "1") {
-            EjecutarRestriccionTags(false, domicilio);
-        } else {
-            alert(GetValor(xmlDoc, "mensaje"));
-        }
-<<<<<<< HEAD
->>>>>>> 7fb57b987e0ff14bcac042c30bc9824735ac7e73
-=======
->>>>>>> 7fb57b987e0ff14bcac042c30bc9824735ac7e73
     });
 }
 
 function PintarItem(catalogo, clave, xmlDoc0) {
-<<<<<<< HEAD
-<<<<<<< HEAD
     var cont = "", imgsTexto;
     var xmlDoc = xmlDoc0.getElementsByTagName("Table")[0];
     switch (catalogo) {
@@ -833,197 +779,6 @@ function PintarItem(catalogo, clave, xmlDoc0) {
             document.getElementById("wrap-detalle-" + catalogo).innerHTML = cont;
             ; break;                
         case "notificaciones":
-=======
-=======
->>>>>>> 7fb57b987e0ff14bcac042c30bc9824735ac7e73
-            var cont = "", imgsTexto;
-            var xmlDoc = xmlDoc0.getElementsByTagName("Table")[0];
-            switch (catalogo) {
-                case "reservaciones":
-                    cont =
-                        '<span class="t-2">' + GetValor(xmlDoc, "descripcion") + '</span>' +
-                        '<span class="t-3">' + GetValor(xmlDoc, "fecha") + '</span>';
-                    document.getElementById("wrap-detalle-" + catalogo).innerHTML = cont;
-                    ; break;
-                case "proyectos":
-                    var pantalla= document.getElementById("detalle-" + catalogo);
-                    pantalla.setAttribute("clave", clave);
-                    document.getElementById("clave-proyectos").value = clave;
-                    cont =
-                        '<span class="t-3">' + GetValor(xmlDoc, "fecha") + '</span>' +
-                        '<span class="t-1">' + GetValor(xmlDoc, "titulo") + '</span>' +
-                        '<span class="t-2">' + GetValor(xmlDoc, "descripcion") + '</span>';
-                    cont += PintarImagenesTexto(xmlDoc0);
-                    document.getElementById("wrap-detalle-" + catalogo).innerHTML = cont;
-                    ; break;
-                case "pro_propuestas":
-                    var voto = GetValor(xmlDoc, "voto");
-                    document.getElementById("votos-pp").disabled = (voto ? true : false);
-                    if (voto == 1) {
-                        document.getElementById("voto-p-no").className = "v-p-no";
-                        document.getElementById("voto-p-si").className = "v-p-si";
-                    } else if (voto == 2) {
-                        document.getElementById("voto-p-no").className = "v-p-si";
-                        document.getElementById("voto-p-si").className = "v-p-no";
-                    } else {
-                        document.getElementById("voto-p-no").removeAttribute("class");
-                        document.getElementById("voto-p-si").removeAttribute("class");
-                    }
-                    document.getElementById("edit-pro_p").style.display = (GetValor(xmlDoc, "realizo") && !GetValor(xmlDoc, "cuenta") ? "block" : "none");
-                    var pantalla = document.getElementById("detalle-" + catalogo);
-                    pantalla.setAttribute("clave", clave);
-                    document.getElementById("clave-pro_propuesta").value = clave;
-                    cont =
-                        '<span class="t-3">' + GetValor(xmlDoc, "fecha") + '</span>' +
-                        '<span class="t-1">' + GetValor(xmlDoc, "titulo") + '</span>' +
-                        '<span class="t-2">' + GetValor(xmlDoc, "descripcion") + '</span>';
-                    cont += PintarImagenesTexto(xmlDoc0);
-                    document.getElementById("wrap-detalle-" + catalogo).innerHTML = cont;
-                    ; break;
-                case "ap_domicilios":
-                    var pantalla = document.getElementById("detalle-" + catalogo);
-                    pantalla.setAttribute("clave", clave);
-                    cont =
-                        '<span class="t-1" style="font-size:0.85em;">' + GetValor(xmlDoc, "domicilio") + '</span>' +
-                        '<span class="t-2">' + GetValor(xmlDoc, "titular") + '</span>' + 
-                        '<span class="t-41"><b>Registró: </b>' + GetValor(xmlDoc, "usuario_registro") + ', ' + GetValor(xmlDoc, "fecha_alta") + '</span>' +
-                        '<span class="t-41"><b>Modificaciones iniciales: </b>' + GetValor(xmlDoc, "insercionesini") + '</span>' +
-                        (GetValor(xmlDoc, "usuario_modifico") ? '<span class="t-41"><b>Última modificación:</b>' + GetValor(xmlDoc, "usuario_modifico") + ',' + GetValor(xmlDoc, "fecha_modifico") + '</span>' : "") +
-                        '<span class="t-2">' + GetValor(xmlDoc, "descripcion") + '</span>' +
-                        '<div class="check-activacion" id="check-tag-d-' + clave + '"><label class="etiqueta" style="font-weight:bolder;font-size:1.3em;margin-top:10px;width:50%;">Prorroga</label><input style="float:left;width:30%;padding:5px;border:1px solid #999;margin-top:10px;" placeholder="Fecha negociada" id="fecha_negociada_tag" value="' + GetValor(xmlDoc, "fecha_prorroga") + '" onkeypress="if(ValidarEnter(event)){AgregarProrroga(document.getElementById(\'check-tag\'),' + clave + ',document.getElementById(\'fecha_negociada_tag\').value);}" /><label class="switch" style="float:right;"><input id="check-tag" type="checkbox" ' + (GetValor(xmlDoc, "es_activo") == "true" ? "checked=checked" : "") + ' onchange="ActivarTag(this,' + clave + ');" /><span class="slider round"></span></label><hr class="clearn" /></div>' +
-                        '<button class="btn-item" style="margin-top:20px;padding:5px 15px 5px 15px;float:left;margin-left:10px;" onclick="VerTags(' + clave + ');">Ver TAGs</button>';                       
-                    document.getElementById("wrap-detalle-" + catalogo).innerHTML = cont;
-                    ; break;
-                case "ap_conceptos":
-                    var pantalla = document.getElementById("detalle-" + catalogo);
-                    pantalla.setAttribute("clave", clave);
-                    cont =
-                        '<span class="t-1">' + GetValor(xmlDoc, "nombre") + '</span>' +
-                        '<span class="t-3">' + MoneyFormat(parseFloat(GetValor(xmlDoc, "monto"))) + '</span>' +
-                        '<span class="t-41"><b>Registró: </b>' + GetValor(xmlDoc, "usuario_registro") + ', ' + GetValor(xmlDoc, "fecha_alta") + '</span>' +
-                        (GetValor(xmlDoc, "usuario_modifico") ? '<span class="t-41"><b>Última modificación:</b>' + GetValor(xmlDoc, "usuario_modifico") + ',' + GetValor(xmlDoc, "fecha_modifico") + '</span>' : "") +
-                        '<span class="t-2">' + GetValor(xmlDoc, "descripcion") + '</span>';
-                        
-                    document.getElementById("wrap-detalle-" + catalogo).innerHTML = cont;
-                    ; break;
-                case "usuarios":
-                var pantalla = document.getElementById("detalle-" + catalogo);
-                pantalla.setAttribute("clave", clave);
-                var cargo = GetValor(xmlDoc, "cargo");
-                var clave_cargo = GetValor(xmlDoc, "clave_cargo");
-                var usuario = GetValor(xmlDoc, "usuario");
-                cont ='<div class="padd30 btnsm30" style="line-height:20px;">'+
-                    '<div id="usu-' + clave + '"><span class="t-1"><b>Nombre: </b>' + usuario + '</span>' +
-                    '<span class="t-3"><b>Domicilio: </b>' + GetValor(xmlDoc, "domicilio") + '</span></div>' +
-                    (cargo?
-                    '<span class="t-2"><b>Cargo: </b>' + GetValor(xmlDoc, "cargo") + '</span>' +
-                    '<button clave_funcion="5" id="cargo-usu" control="cargo-usu" class="btn2" style="display:none;" onclick="RemoverCargoUsuario(' + clave + ',' + clave_cargo + ');">Remover Cargo</button>' 
-                    :
-                    '<button clave_funcion="5" id="cargo-usu-a" control="cargo-usu-a" class="btn2" style="display:none;" onclick="IniciarAsociarCargo();">Asociar Cargo</button>' 
-                    )+
-                    '<span><button class="btn2">Suspender AV(Alerta Vecinal) 3 días</button></span>' +
-                    '<span><button class="btn2" onclick="AsociarDomiciliosPropietario();">Asociar domicilios del propietario</button></span>' +
-                    '<span><button class="btn2" onclick="IniciarEditar(false,\'usuarios\')">Editar cuenta</button></span>' +
-                    '<span><button class="btn2">Bloquear cuenta</button></span>' +
-                    '<span><button class="btn2" onclick="BloquearNotificaciones(' + clave + ')">Bloquear notificaciones</button></span>' +
-                    '<button class="btn2">Cerrar Sesión Usuario</button></div>';
-                document.getElementById("wrap-detalle-" + catalogo).innerHTML = cont;
-                ; break;
-                case "aportaciones":
-                    var obs = GetValor(xmlDoc, "observaciones");
-                    var residente = GetValor(xmlDoc, "residente"); 
-                    document.getElementById("wrap-detalle-aportaciones").innerHTML =
-                        '<div class="' + GetValor(xmlDoc, "leyenda") + '" style="padding:35px;font-size:13px;line-height:7px;">' +
-                    '<span class="t-3" style="font-size:15px;"><b>' + GetValor(xmlDoc, "leyenda") + '</b><p>' + MoneyFormat(parseFloat(GetValor(xmlDoc, "monto"))) + '</p></span><hr class="clearn"/>' +
-                     '<div class="t-1"><b>Concepto:</b><p>' + GetValor(xmlDoc, "concepto") + "</p><b>Fecha:</b><p>" + GetValor(xmlDoc, "fecha_registro") + "</p><br/><b>Residente:</b><p>" + residente + "</p><br/><b>Fecha de registro:</b><p>" + GetValor(xmlDoc, "fecha") + '</p></div>' +
-                    '<div class="t-2"><b>Tipo de pago: </b><p>' + GetValor(xmlDoc, "forma_pago") + '</p><br/><b>Recibió:</b><p>' + GetValor(xmlDoc, "recibio") + '</p><br/><b>Canceló:</b><p>' + GetValor(xmlDoc, "cancelo") + '</p><br/></div>' +
-                    '<div class="t-2"><b>Observaciones: </b><p>' + GetValor(xmlDoc, "observaciones") + '</p></div>' +                    
-                    '</div>';
-                    break;
-                case "regen_egrepro":
-                case "regen_tiposgastos":
-                    var pantalla = document.getElementById("detalle-" + catalogo);
-                    pantalla.setAttribute("clave", clave);
-                    cont =
-                        '<span class="t-1">' + GetValor(xmlDoc, "concepto") + '</span>' +
-                        '<span class="t-3">' + MoneyFormat(parseFloat(GetValor(xmlDoc, "importe"))) +'</span>' +
-                        '<span class="t-2">' + GetValor(xmlDoc, "fecha") + '</span>' +
-                        '<span class="t-4" style="text-align:left;">Responsable:' + GetValor(xmlDoc, "nombre") + "(" + GetValor(xmlDoc, "cargo") + ")" + '</span>';
-                    cont += PintarImagenesTexto(xmlDoc0);
-                    document.getElementById("wrap-detalle-" + catalogo).innerHTML = cont;
-                    ; break;
-                case "tiposgastos":
-                case "egrepro":
-                    var control = IAgregarCosto('c-e-regen_' + catalogo);
-                    document.getElementById("tgrupo-regen_" + catalogo).value = GetValor(xmlDoc,"titulo");
-                    document.getElementById("in-regen_" + catalogo).value = GetValor(xmlDoc, "indice");
-                    //ObtenerPagosClasificacion
-                    break;
-                case "talleres":
-                    var pantalla = document.getElementById("detalle-" + catalogo);
-                    pantalla.setAttribute("clave", clave);
-                    cont =
-                        '<span class="t-1">' + GetValor(xmlDoc, "titulo") + '</span>' +
-                        '<span class="t-2">' + GetValor(xmlDoc, "nombre") + '</span>' +
-                        '<span class="t-3">' + GetValor(xmlDoc, "fecha") + '</span>' +
-                        '<span class="t-4">' + GetValor(xmlDoc, "descripcion") + '</span>';
-                    cont += PintarImagenesTexto(xmlDoc0);
-                    document.getElementById("wrap-detalle-" + catalogo).innerHTML = cont;
-                    ; break;
-                case "comunicados":
-                    var pantalla = document.getElementById("detalle-" + catalogo);
-                    pantalla.setAttribute("clave", clave);
-                    cont =
-                        '<span class="t-1">' + GetValor(xmlDoc, "titulo") + '</span>' +
-                        '<span class="t-2">' + GetValor(xmlDoc, "nombre") + ' (' + GetValor(xmlDoc, "cargo") + ')</span>' +
-                        '<span class="t-3">' + GetValor(xmlDoc, "fecha") + '</span>' +
-                        '<span class="t-4">' + GetValor(xmlDoc, "mensaje") + '</span>';
-                    cont += PintarImagenesTexto(xmlDoc0);
-                    document.getElementById("wrap-detalle-" + catalogo).innerHTML = cont;
-                    ; break;
-                case "solicitudes_seg":
-                case "solicitudes":
-                    var pantalla = document.getElementById("detalle-" + catalogo);
-                    pantalla.setAttribute("clave", clave);
-                    cont =                    
-                        '<div class="nota-principal"><span class="t-1">' + GetValor(xmlDoc, "titulo") + '</span>' +
-                    '<span class="t-2">' + GetValor(xmlDoc, "nombre") + (GetValor(xmlDoc, "cargo") ? ' (' + GetValor(xmlDoc, "cargo") + ')' : "") +"</span>"+
-                        '<span class="t-3" style="width:90%;font-size:0.85em;">' + GetValor(xmlDoc, "fecha") + '</span>' +
-                        '<span class="t-2"><i>' + GetValor(xmlDoc, "descripcion") + '</i></span><hr class="clearn"/></div>';
-                    cont += PintarImagenesTexto(xmlDoc0, true);
-                    document.getElementById("wrap-detalle-" + catalogo).innerHTML = cont;
-                    var contenedor = document.getElementById("wrap-detalle-" + catalogo);
-                    var control=IAgregarImagenTexto(contenedor, 1, true,true);
-                    var btn = document.createElement("div");                    
-                    btn.className = "agregar btn-normal";
-                    btn.innerHTML = "<button>Responder</button>";
-                    contenedor.appendChild(btn);
-                    btn.clave = clave;
-                    btn.onclick = function () {
-                        var clave = this.clave;
-                        var contenedor = document.getElementById("wrap-detalle-" + catalogo);
-                        PonerEspera(this, catalogo);
-                        GuardarUnTexto(contenedor.getElementsByTagName("table"), 0, function () {
-                            Mostrar('detalle-' + catalogo, 'detalle-' + catalogo, catalogo, clave);
-                        }, clave, catalogo);
-                    }
-                    ; break;
-                case "prodserv":
-                    var pantalla = document.getElementById("detalle-" + catalogo);
-                    pantalla.setAttribute("clave", clave);
-                    var btn = document.getElementById("activar-negocio");
-                    btn.checked = (GetValor(xmlDoc, "activo")=="true");
-                    btn.value = clave;
-                    cont =                        
-                        '<span class="t-1">' + GetValor(xmlDoc, "NombreNegocio") + '</span>' +
-                        '<span class="t-2">Teléfono(s)' + GetValor(xmlDoc, "telefonos") + '</span>' +
-                        '<span class="t-3">Horario: ' + GetValor(xmlDoc, "horario") + '</span>' +
-                        '<span class="t-4">' + GetValor(xmlDoc, "mensaje") + '</span>';
-                    cont += PintarImagenesTexto(xmlDoc0);
-                    document.getElementById("wrap-detalle-" + catalogo).innerHTML = cont;
-                    ; break;                
-                case "notificaciones":
->>>>>>> 7fb57b987e0ff14bcac042c30bc9824735ac7e73
 
             ; break;
     }
@@ -1084,150 +839,6 @@ function RealizarPagoRes() {
         alert("Ingrese un valor válido.");
     }
 }
-
-function AsociarDomiciliosPropietario(){
-    var usuario = document.getElementById("detalle-usuarios").getAttribute("clave");
-    document.getElementById("usuario-prop").innerHTML = document.getElementById("usu-" + usuario).innerHTML;
-    CambioPantalla("lista-propdomicilios", "detalle-usuarios");
-    document.getElementById("claveusuario").value = usuario;
-    CargarCatalogo("propdomicilios", function () { }, { usuario: usuario });
-}
-
-function RealizarPagoRes() {
-    var folio = document.getElementById("lista-pagos_res").getAttribute("folio");
-    var abono = parseFloat(prompt("Ingrese la cantidad a registrar:"));
-    if (abono > 0.0) {
-        $.post(url + 'logic/controlador.aspx' + '?op=RealizarPagoRes&seccion=pagos_res', { solicitud: folio, abono: abono },function (xmlDoc) {
-            if (GetValor(xmlDoc, "estatus") == "1") {
-                VerPagosRes(folio);
-                CargarCatalogo("solicitudes_res");
-            } else {
-                alert(GetValor(xmlDoc,"mensaje"));
-            }
-        });
-    } else {
-        alert("Ingrese un valor válido.");
-    }
-}
-
-
-function XmlToStr(xmlNode) {
-    try {
-        // Gecko- and Webkit-based browsers (Firefox, Chrome), Opera.
-        return (new XMLSerializer()).serializeToString(xmlNode);
-    }
-    catch (e) {
-        try {
-            // Internet Explorer.
-            return xmlNode.xml;
-        }
-        catch (e) {
-            //Other browsers without XML Serializer
-            alert('Xmlserializer not supported');
-        }
-    }
-    return false;
-}
-
-function EjecutarRestriccionTags(general, domicilio) {
-    $.post(url + 'logic/controlador.aspx?op=ObtenerEstatusDomicilios&seccion=ap_domicilios&general=' + general + (domicilio ? '&domicilio=' + domicilio : ""), function (xmlDoc) {
-        $.ajax({
-            url: urlLocal + '/controlador.aspx?op=ProcesarRestriccionTags&seccion=ap_domicilios',
-            data: XmlToStr(xmlDoc),
-            type: 'POST',
-            contentType: "text/xml",
-            dataType: "xml",
-            success: function (xmlDocR) {
-                //if (GetValor(xmlDocR, "estatus") == "1") {
-                //} else {
-                alert(GetValor(xmlDocR, "mensaje"));
-                //}                
-            }, error: function (xhr, ajaxOptions, thrownError) {
-                console.log(xhr.status);
-                console.log(thrownError);
-            }
-        });
-    });
-}
-
-function VerTags(domicilio) {
-    CargarCatalogo("tags", function () {
-        CambioPantalla('lista-tags', 'detalle-ap_domicilios');
-    }, { d: domicilio });
-}
-
-
-function AsociarDomiciliosPropietario(){
-    var usuario = document.getElementById("detalle-usuarios").getAttribute("clave");
-    document.getElementById("usuario-prop").innerHTML = document.getElementById("usu-" + usuario).innerHTML;
-    CambioPantalla("lista-propdomicilios", "detalle-usuarios");
-    document.getElementById("claveusuario").value = usuario;
-    CargarCatalogo("propdomicilios", function () { }, { usuario: usuario });
-}
-
-function RealizarPagoRes() {
-    var folio = document.getElementById("lista-pagos_res").getAttribute("folio");
-    var abono = parseFloat(prompt("Ingrese la cantidad a registrar:"));
-    if (abono > 0.0) {
-        $.post(url + 'logic/controlador.aspx' + '?op=RealizarPagoRes&seccion=pagos_res', { solicitud: folio, abono: abono },function (xmlDoc) {
-            if (GetValor(xmlDoc, "estatus") == "1") {
-                VerPagosRes(folio);
-                CargarCatalogo("solicitudes_res");
-            } else {
-                alert(GetValor(xmlDoc,"mensaje"));
-            }
-        });
-    } else {
-        alert("Ingrese un valor válido.");
-    }
-}
-
-
-function XmlToStr(xmlNode) {
-    try {
-        // Gecko- and Webkit-based browsers (Firefox, Chrome), Opera.
-        return (new XMLSerializer()).serializeToString(xmlNode);
-    }
-    catch (e) {
-        try {
-            // Internet Explorer.
-            return xmlNode.xml;
-        }
-        catch (e) {
-            //Other browsers without XML Serializer
-            alert('Xmlserializer not supported');
-        }
-    }
-    return false;
-}
-
-function EjecutarRestriccionTags(general, domicilio) {
-    $.post(url + 'logic/controlador.aspx?op=ObtenerEstatusDomicilios&seccion=ap_domicilios&general=' + general + (domicilio ? '&domicilio=' + domicilio : ""), function (xmlDoc) {
-        $.ajax({
-            url: urlLocal + '/controlador.aspx?op=ProcesarRestriccionTags&seccion=ap_domicilios',
-            data: XmlToStr(xmlDoc),
-            type: 'POST',
-            contentType: "text/xml",
-            dataType: "xml",
-            success: function (xmlDocR) {
-                //if (GetValor(xmlDocR, "estatus") == "1") {
-                //} else {
-                alert(GetValor(xmlDocR, "mensaje"));
-                //}                
-            }, error: function (xhr, ajaxOptions, thrownError) {
-                console.log(xhr.status);
-                console.log(thrownError);
-            }
-        });
-    });
-}
-
-function VerTags(domicilio) {
-    CargarCatalogo("tags", function () {
-        CambioPantalla('lista-tags', 'detalle-ap_domicilios');
-    }, { d: domicilio });
-}
-
 
 function AsociarDomiciliosPropietario(){
     var usuario = document.getElementById("detalle-usuarios").getAttribute("clave");
@@ -1326,15 +937,7 @@ function VerTags(domicilio){
                     CargarDatosFrmMap(xmlDoc, { indice: 'clave-reservaciones', descripcion: 'res-descripcion', inicio: 'res-inicio', fin: 'res-fin', fecha_reservada: 'fecha_reservada', inmueble:'ed-res-inmueble'});
                     break;
                 case "ap_domicilios":
-<<<<<<< HEAD
-<<<<<<< HEAD
                     CargarDatosFrmMap(xmlDoc, { clave: 'clave-ap_domicilios', calle: 'dom-calle', titular: 'dom-titular',manzana:'dom-mz',lote:'dom-lt',numero:'dom-numero',no_interior:'dom-no_int',fecha_entrega:'fecha_entrega',segmento:'seg-dom',email:'email-dom' });
-=======
-                    CargarDatosFrmMap(xmlDoc, { clave: 'clave-ap_domicilios', calle: 'dom-calle', titular: 'dom-titular', manzana: 'dom-mz', lote: 'dom-lt', numero: 'dom-numero', no_interior: 'dom-no_int', fecha_entrega: 'fecha_entrega', segmento: 'seg-dom', email: 'email-dom' });
->>>>>>> 7fb57b987e0ff14bcac042c30bc9824735ac7e73
-=======
-                    CargarDatosFrmMap(xmlDoc, { clave: 'clave-ap_domicilios', calle: 'dom-calle', titular: 'dom-titular', manzana: 'dom-mz', lote: 'dom-lt', numero: 'dom-numero', no_interior: 'dom-no_int', fecha_entrega: 'fecha_entrega', segmento: 'seg-dom', email: 'email-dom' });
->>>>>>> 7fb57b987e0ff14bcac042c30bc9824735ac7e73
                     break;
                 case "ap_conceptos":
                     CargarDatosFrmMap(xmlDoc, { clave: 'clave-ap_conceptos', nombre: 'con-nombre', descripcion: 'con-descripcion',monto:'con-monto' });
@@ -1696,21 +1299,9 @@ function VerTags(domicilio){
                 if (this.conceptospagar.length > 0 || this.mesespagar.length > 0) {
                     var redimAp = document.getElementById("redim-aportaciones");
                     redimAp.btnAplicar = this;
-<<<<<<< HEAD
-<<<<<<< HEAD
                     redimAp.innerHTML ="<li class='resumen'><div style='background:transparent;padding:0px;margin:0px;'><label>Tipo de pago:</label><select id='s_tipo_p' style='width:60%;margin-bottom:5px;margin-right:10px;' name='tipopago' onchange='if(this.selectedIndex==1){var inF=this.parentNode.getElementsByTagName(\"input\")[1];inF.parentNode.style.display=\"block\";}else{this.parentNode.getElementsByTagName(\"input\")[1].parentNode.style.display=\"none\";ObtenerTicket(undefined,this.parentNode.parentNode.parentNode.btnAplicar,document.getElementById(\"ticket\"),this.options[this.selectedIndex].value);}'><option value='11'>EFECTIVO</option><option value='10'>DEPOSITO</option></select><span>Compuesto</span><input type='checkbox' name='es_compuesto' id='es_compuesto' value='true'/>" +
                         "<div style='display:none;'><br/><label>Fecha de pago:</label><input id='f_pago_d' type='text' name='fecha_pago' placeholder='dd/mm/aaaa' onkeypress='if(ValidarEnter(event)){var inF=document.getElementById(\"f_pago_d\");ObtenerTicket(inF.value,this.parentNode.parentNode.parentNode.parentNode.btnAplicar,document.getElementById(\"ticket\"),10);}return SoloNumeros(event,\"\/\");'  style='margin-right:30px;'/><br/><br/> Capture comprobante: <div id='wrap-detalle-DepositosBancoR' style=''></div></div><br/> </div>" +
                         "<fieldset class='gafet-p' style='display:none;border:1px solid #999;border-radius:10px;margin-bottom:12px;text-align:center;font-weight:bold;font-size:0.9em;'><legend>Gallardetes</legend><div><input id='gafetes-p' type='text' style='width: 90%;padding: 5px;border:1px solid #aaa;text-align:center;font-size:1.1em;' placeholder='#gallardete1:placas,#gallardete2:placas2,...'/></div><div id='tipo_gafete'><span style='margin-left:15px;'>Mensual</span><input checked='checked' type='radio' value='1' name='tipo_gafete' /><span style='margin-left:15px;'>Semestral</span><input type='radio' value='2' name='tipo_gafete' /><span style='margin-left:15px;'>Anual</span><input type='radio' value='3' name='tipo_gafete'/></div></fieldset>" +
-=======
-                    redimAp.innerHTML = "<li class='resumen'><div style='background:transparent;padding:0px;margin:0px;'><label>Tipo de pago:</label><select id='s_tipo_p' style='width:60%;margin-bottom:5px;margin-right:10px;' name='tipopago' onchange='if(this.selectedIndex==1){var inF=this.parentNode.getElementsByTagName(\"input\")[1];inF.parentNode.style.display=\"block\";}else{this.parentNode.getElementsByTagName(\"input\")[1].parentNode.style.display=\"none\";ObtenerTicket(undefined,this.parentNode.parentNode.parentNode.btnAplicar,document.getElementById(\"ticket\"),this.options[this.selectedIndex].value);}'><option value='11'>EFECTIVO</option><option value='10'>DEPOSITO</option></select><span>Compuesto</span><input type='checkbox' name='es_compuesto' id='es_compuesto' value='true'/>" +
-                        "<div style='display:none;'><br/><label>Fecha de pago:</label><input type='text' name='fecha_pago' placeholder='dd/mm/aaaa' onkeypress='if(ValidarEnter(event)){var inF=this.parentNode.getElementsByTagName(\"input\")[1];ObtenerTicket(inF.value,this.parentNode.parentNode.parentNode.parentNode.btnAplicar,document.getElementById(\"ticket\"),\"DEPOSITO\");}return SoloNumeros(event,\"\/\");'  style='margin-right:30px;'/><br/><br/> Capture comprobante: <div id='wrap-detalle-DepositosBancoR' style=''></div></div><br/> </div>" +
-                        "<fieldset class='gafet-p' style='border:1px solid #999;border-radius:10px;margin-bottom:12px;text-align:center;font-weight:bold;font-size:0.9em;'><legend>Gallardetes</legend><div><input id='gafetes-p' type='text' style='width: 90%;padding: 5px;border:1px solid #aaa;text-align:center;font-size:1.1em;' placeholder='#gallardete1:placas,#gallardete2:placas2,...'/></div><div id='tipo_gafete'><span style='margin-left:15px;'>Mensual</span><input checked='checked' type='radio' value='1' name='tipo_gafete' /><span style='margin-left:15px;'>Semestral</span><input type='radio' value='2' name='tipo_gafete' /><span style='margin-left:15px;'>Anual</span><input type='radio' value='3' name='tipo_gafete'/></div></fieldset>" +
->>>>>>> 7fb57b987e0ff14bcac042c30bc9824735ac7e73
-=======
-                    redimAp.innerHTML = "<li class='resumen'><div style='background:transparent;padding:0px;margin:0px;'><label>Tipo de pago:</label><select id='s_tipo_p' style='width:60%;margin-bottom:5px;margin-right:10px;' name='tipopago' onchange='if(this.selectedIndex==1){var inF=this.parentNode.getElementsByTagName(\"input\")[1];inF.parentNode.style.display=\"block\";}else{this.parentNode.getElementsByTagName(\"input\")[1].parentNode.style.display=\"none\";ObtenerTicket(undefined,this.parentNode.parentNode.parentNode.btnAplicar,document.getElementById(\"ticket\"),this.options[this.selectedIndex].value);}'><option value='11'>EFECTIVO</option><option value='10'>DEPOSITO</option></select><span>Compuesto</span><input type='checkbox' name='es_compuesto' id='es_compuesto' value='true'/>" +
-                        "<div style='display:none;'><br/><label>Fecha de pago:</label><input type='text' name='fecha_pago' placeholder='dd/mm/aaaa' onkeypress='if(ValidarEnter(event)){var inF=this.parentNode.getElementsByTagName(\"input\")[1];ObtenerTicket(inF.value,this.parentNode.parentNode.parentNode.parentNode.btnAplicar,document.getElementById(\"ticket\"),\"DEPOSITO\");}return SoloNumeros(event,\"\/\");'  style='margin-right:30px;'/><br/><br/> Capture comprobante: <div id='wrap-detalle-DepositosBancoR' style=''></div></div><br/> </div>" +
-                        "<fieldset class='gafet-p' style='border:1px solid #999;border-radius:10px;margin-bottom:12px;text-align:center;font-weight:bold;font-size:0.9em;'><legend>Gallardetes</legend><div><input id='gafetes-p' type='text' style='width: 90%;padding: 5px;border:1px solid #aaa;text-align:center;font-size:1.1em;' placeholder='#gallardete1:placas,#gallardete2:placas2,...'/></div><div id='tipo_gafete'><span style='margin-left:15px;'>Mensual</span><input checked='checked' type='radio' value='1' name='tipo_gafete' /><span style='margin-left:15px;'>Semestral</span><input type='radio' value='2' name='tipo_gafete' /><span style='margin-left:15px;'>Anual</span><input type='radio' value='3' name='tipo_gafete'/></div></fieldset>" +
->>>>>>> 7fb57b987e0ff14bcac042c30bc9824735ac7e73
                         "<div style='background:transparent;padding:0px;margin:0px;' id='ticket'></div></li>";
 
                     var contenedor = document.getElementById("wrap-detalle-DepositosBancoR");
@@ -1729,166 +1320,7 @@ function VerTags(domicilio){
                 }
             }
             btn.innerHTML = "Calcular";               
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> 7fb57b987e0ff14bcac042c30bc9824735ac7e73
         }
-
-function ObtenerTicket(fecha, btnAplicar, dom, tipo_pago) {
-    var redimAp = document.getElementById("redim-aportaciones");
-    btnAplicar.conceptos = this.conceptospagar;
-    btnAplicar.mesespagar = this.mesespagar;
-    var gallardetes = document.getElementById("gafetes-p").value;
-    var no_g = gallardetes.split(",");
-    var tipoGafetes = $("#tipo_gafete input[name='tipo_gafete']:checked").val();
-    $.post(url + 'logic/controlador.aspx' + '?op=GenerarTicket&seccion=aportaciones' + (this.conceptospagar.length > 0 ? '&conceptos=' + this.conceptospagar.join(",") : '') + (this.mesespagar.length > 0 ? "&meses=" + this.mesespagar.join(",") : '') + "&domicilio=" + document.getElementById("w-datos-persona").getAttribute("domicilio_sel") + (fecha ? "&fecha_pago=" + fecha : ""), {gafetes:gallardetes,tipo_g:tipoGafetes},function (xmlDoc) {
-        var sem = GetValor(xmlDoc, "sem"), ret = GetValor(xmlDoc, "ret"), norm = GetValor(xmlDoc, "norm"), a_cuenta = GetValor(xmlDoc, "a_cuenta"), p_conc = GetValor(xmlDoc, "p_conc"), cont_oc = GetValor(xmlDoc, "cont_oc");
-        if (GetValor(xmlDoc, "comp").length > 0) {
-            var d_comp = document.getElementById("es_compuesto");
-            d_comp.checked = true;
-            d_comp.disabled = true;            
-        }
-        dom.innerHTML =
-            "<table class='transparente' style='font-size:0.85em;font-family:verdana;'><thead><tr><th>Cantidad</th><th>Concepto</th><th>Importe</th></tr></thead>" +
-            (sem > 0 ? "<tr><td style='text-align:center;'>" + sem + "</td><td>Cuotas con descuento por adelanto<br/>(A partir del sexto mes)</td><td style='text-align:right;'>" + MoneyFormat(GetValor(xmlDoc, "p_sem")) + "</td></tr>" : "") +
-            (norm > 0 ? "<tr><td style='text-align:center;'>" + norm + "</td><td>Cuotas mensuales</td><td style='text-align:right;'>" + MoneyFormat(GetValor(xmlDoc, "p_norm")) + "</td></tr>" : "") +
-            (ret > 0 ? "<tr><td style='text-align:center;'>" + ret + "</td><td>Cuotas con mora</td><td style='text-align:right;'>" + MoneyFormat(GetValor(xmlDoc, "p_ret")) + "</td></tr>" : "") +
-            (cont_oc > 0 ? "<tr><td style='text-align:center;'>" + cont_oc + "</td><td>Otras cuotas</td><td style='text-align:right;'>" + MoneyFormat(GetValor(xmlDoc, "p_conc")) + "</td></tr>" : "") +
-            "<tr><td colspan=2 style='text-align:right;border-top:1px solid #333;'>Total:</td><td style='text-align:right;border-top:1px solid #333;'>" + MoneyFormat(GetValor(xmlDoc, "subtotal")) +
-            "</td></tr>" +
-            "<tr><td colspan=2 style='text-align:right;'>Tiene a cuenta:</td><td style='text-align:right;'>" + MoneyFormat(GetValor(xmlDoc, "a_cuenta")) + "</td></tr>" +
-            "<tr><td colspan=2 style='text-align:right;'>Total:</td><td style='text-align:right;'>" + MoneyFormat(GetValor(xmlDoc, "total")) + "</td></tr>" +
-            "</table>" +
-            "<form class='edicion compact' style='overflow-x:hidden;' onsubmit='return false;' ><div style='float:left;width:49%;overflow:hidden;'><label>Cantidad que recibe:</label><input type='text' name='recibe' id='recibe_p' placeholder='Cantidad que recibe' />" +
-            "<input type='hidden' name='total' value='" + GetValor(xmlDoc, "total") + "' />" +            
-            "<label>Deja a cuenta:</label><input type='text' name='deja_a_cuenta' id='deja_a_cuenta' placeholder='Ingrese monto' />" +
-            "</div><div style='float:right;width:49%;overflow:hidden;'><label>Cambio:</label><input type='text' readonly=readonly name='cambio' id='cambio_p' placeholder='Cambio' /><hr class='clearn'/>" +
-            "<label>Recibo No.:</label><input type='text' name='recibo' id='recibo_n' maxlength=5 placeholder='Ingrese no. recibo' /></div>" +
-            "<label>Persona que paga:</label><input type='text' name='pagador' placeholder='Persona que paga' id='pagador_p' />" +
-            "<button style='display:none;'></button><button class='aceptar' style='margin-top:0px;' name='pagar' id='btn_pagar_p'>Pagar</button></form></li>";
-        var in_recibe = $(dom).find("input[name='recibe']")[0];        
-        var btn_pagar = document.getElementById("btn_pagar_p");
-        btn_pagar.conceptospagar = btnAplicar.conceptos;
-        btn_pagar.mesespagar = btnAplicar.mesespagar;
-        in_recibe.v_t = parseFloat(GetValor(xmlDoc, "total"));
-        in_recibe.onblur = function (ev) {
-            var diferencia = parseFloat(this.value) - this.v_t;
-            try {
-                if (diferencia >= 0.00) {
-                    document.getElementById("cambio_p").value = MoneyFormat(diferencia);
-                } else {
-                    document.getElementById("cambio_p").value = "-E";
-                }
-                ev.stopPropagation();
-            } catch (e) { }; return SoloNumeros(event, '.');
-            //this.value = MoneyFormat(this.value);
-        }
-
-        in_recibe.onkeypress = function (ev) {
-            if (ValidarEnter(ev)) {
-                this.onblur();
-                document.getElementById("recibo_n").focus();
-            }
-        }
-
-        btn_pagar.onclick = function(){
-            if (confirm("Confirme que desea aplicar pago:")) {
-                var num;
-                var gallardetes = document.getElementById("gafetes-p").value;
-                var no_g = gallardetes.split(",");
-                var sl = document.getElementById("redim-aportaciones").getElementsByTagName("select")[0];
-                var tipo_pago = sl.options[sl.selectedIndex].value;
-                var tipoGafetes = $("#tipo_gafete input[name='tipo_gafete']:checked").val();
-                if (document.getElementById("es_compuesto").checked && (num = window.prompt("Ingrese numeración[1,2,..]")).trim().length > 0 || !document.getElementById("es_compuesto").checked) {
-                    $.post(url + 'logic/controlador.aspx' + '?op=PagarTicket&seccion=aportaciones' + (this.conceptospagar.length > 0 ? '&conceptos=' + this.conceptospagar.join(",") : '') + (this.mesespagar.length > 0 ? "&meses=" + this.mesespagar.join(",") : '') + "&domicilio=" + document.getElementById("w-datos-persona").getAttribute("domicilio_sel") + (fecha ? "&fecha_pago=" + fecha : "") + "&tipopago=" + tipo_pago + "&es_compuesto=" + document.getElementById("es_compuesto").checked + "&parte=" + num + "&gafetes=" + gallardetes + "&tipo_g=" +  tipoGafetes, $($(redimAp).find("form")[0]).serializeArray(), function (xmlDoc1) {
-                        alert(GetValor(xmlDoc1, "mensaje"));
-                        if (GetValor(xmlDoc1, "estatus") == 1) {
-                            ImprimirReciboCuotas(GetValor(xmlDoc1, "recibo"), GetValor(xmlDoc1, "folio"), GetValor(xmlDoc1, "domicilio"));
-                            CargarAportaciones();
-                            try { GuardarImagenesTextos(GetValor(xmlDoc1, "domicilio") + "00" + GetValor(xmlDoc1, "folio"), "wrap-detalle-DepositosBancoR", "DepositosBancoR"); } catch (e) { }
-                            try { EnviarReciboEmail(null, GetValor(xmlDoc1, "folio"), false); } catch (e) { }
-                            try { EjecutarRestriccionTags(false, document.getElementById("w-datos-persona").getAttribute("domicilio_sel")); } catch (e) { }
-                        }
-                    });
-                } else {
-                    alert("Debe ingresar un dato.");
-                }
-            }
-        }
-        btnAplicar.innerHTML = "Reiniciar";
-        btnAplicar.onclick = function (){
-            CargarAportaciones();
-        }
-    });
-}
-
-
-function GuardarImagenesTextos(claveItem, contenedor, catalogo, callback, subitemCatalogo) {
-    try {
-        var imagenes = document.getElementById(contenedor).getElementsByTagName("table");
-        var imagenesCambio = [];
-        var textosCambio = [];
-        for (var i = 0; i < imagenes.length; i++) {
-            if (imagenes[i].getAttribute("cambioImagen") == "true") {
-                imagenesCambio.push(imagenes[i]);
-            } else if (imagenes[i].getAttribute("cambioTexto") == "true") {
-                textosCambio.push(imagenes[i]);
-            }
-        }
-        if (imagenesCambio.length > 0) {
-            GuardarUnaImagenTexto(imagenesCambio, textosCambio, 0, callback, claveItem, catalogo);
-        } else if (textosCambio.length > 0) {
-            GuardarUnTexto(textosCambio, 0, callback, claveItem, catalogo, subitemCatalogo);
-        } else {
-            if (callback) callback(claveItem);
-        }
-    } catch (e) {
-        alert(e.message);
-    }
-
-}
-
-
-function ImprimirReciboCuotas(recibo,folio,domicilio) {
-    window.open(url + 'logic/controlador.aspx?op=GenerarRecibo&seccion=aportaciones&domicilio=' + domicilio + '&recibo=' + recibo +"&folio=" + folio,'_blank','width:800,height:600');
-}
-
-function RegistrarDepositoACuenta() {
-    try {
-        var monto = parseFloat(window.prompt("Ingrese monto a guardar"));
-        $.post(url + 'logic/controlador.aspx' + '?op=DepositarACuenta&seccion=aportaciones&monto=' + monto + "&domicilio=" + document.getElementById("w-datos-persona").getAttribute("domicilio_sel"), function (xmlDoc1) {
-            alert(GetValor(xmlDoc1, "mensaje"));
-            if (GetValor(xmlDoc1, "estatus") == 1) {
-                CargarAportaciones();
-            }
-        });        
-    } catch (e) { alert("Ingrse una cantidad válida");}
-}
-
-var togglePagos = undefined;
-function SeleccionarTodoP() {
-    var objeto;
-    var meses = $("#redim-aportaciones li>div");
-    var n = meses.length;
-    if (n > 0) {
-        for (var i = 0; i < n; i++) {
-            objeto = meses[i];
-            if ($(objeto).hasClass("PENDIENTE")) {
-                if (togglePagos) {
-                    $(objeto).removeClass("seleccionado");
-                } else {
-                    $(objeto).addClass("seleccionado");
-                }
-            }
-<<<<<<< HEAD
->>>>>>> 7fb57b987e0ff14bcac042c30bc9824735ac7e73
-        }
-        togglePagos = !togglePagos;
-        CalcularAportacion();
-    }
-}
 
 function ResetCPanel() {
     if (window.confirm("Confirme que desea reiniciar el dispositivo:")){
@@ -2017,9 +1449,6 @@ function SeleccionarTodoP() {
                 }
             }
         }
-=======
-        }
->>>>>>> 7fb57b987e0ff14bcac042c30bc9824735ac7e73
         togglePagos = !togglePagos;
         CalcularAportacion();
     }
@@ -2130,28 +1559,12 @@ function SeleccionarTodoP() {
             }, datos);
         }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
         function VerInforme(clave, config, pdf, xls) {
-=======
-        function VerInforme(clave,config,pdf,xls) {
->>>>>>> 7fb57b987e0ff14bcac042c30bc9824735ac7e73
-=======
-        function VerInforme(clave,config,pdf,xls) {
->>>>>>> 7fb57b987e0ff14bcac042c30bc9824735ac7e73
             var fecha1 = document.getElementById("i-fecha1").value;
             var fecha2 = document.getElementById("i-fecha2").value;
             if (fecha1.trim().length > 0 && fecha2.trim().length > 0) {
                 if (pdf || xls) {
-<<<<<<< HEAD
-<<<<<<< HEAD
                     window.open(url + 'logic/controlador.aspx' + '?op=ObtenerInforme&seccion=transparencia' + (xls ? '&xls=' + xls : '') + (pdf ? '&pdf=' + pdf : '') + '&tabla=1&clave=' + clave + "&fecha1=" + fecha1 + "&fecha2=" + fecha2);
-=======
-                    window.open(url + 'logic/controlador.aspx' + '?op=ObtenerInforme&seccion=transparencia' + (xls?'&xls=' + xls:'') + (pdf?'&pdf=' + pdf:'') + '&tabla=1&clave=' + clave + "&fecha1=" + fecha1 + "&fecha2=" + fecha2);
->>>>>>> 7fb57b987e0ff14bcac042c30bc9824735ac7e73
-=======
-                    window.open(url + 'logic/controlador.aspx' + '?op=ObtenerInforme&seccion=transparencia' + (xls?'&xls=' + xls:'') + (pdf?'&pdf=' + pdf:'') + '&tabla=1&clave=' + clave + "&fecha1=" + fecha1 + "&fecha2=" + fecha2);
->>>>>>> 7fb57b987e0ff14bcac042c30bc9824735ac7e73
                 } else {
                     CambioPantalla("detalle-transparencia", "lista-transparencia");
                     document.getElementById("table-resultados-tr").innerHTML = "";
@@ -2517,23 +1930,6 @@ function ObtenerItem(catalogo, item) {
             var proyecto = GetValor(item, "proyecto");
             itemli.innerHTML = '<span class="t-1m">' + GetValor(item, "descripcion") + '</span><div class="btn-apl">' + (GetValor(item, "resuelto") == "true" ? '<button onclick="QuitarVoBoActividad(' + indice + ',' + proyecto + ');" style="padding:7px;display:none;" clave_funcion="5" id="qav-' + indice + '" control="qav-' + indice + '" ><img src="img/del.png" /></button><img src="img/ok.png" />':'<button onclick="RegistrarVoBoActividad(' + indice + ',' + proyecto + ');" style="padding:7px;display:none;" clave_funcion="5" id="av-' + indice + '" control="av-' + indice + '" ><img src="img/ok.png" /></button><img src="img/pendiente.png" />') + "</div>";
             break;
-        case "tags":
-            var indice = GetValor(item, "indice");
-            itemli.clave = indice;
-            itemli.onclick = function () {
-                document.getElementById("vehi-" + this.clave).style.display = "block";
-            }
-            itemli.innerHTML =
-                '<span class="t-1" ><i style="color:#777;font-weight:normal">Usuario:</i>' + GetValor(item, "nombre_usuario") + '</span>' +
-                '<span class="t-1" ><i style="color:#777;font-weight:normal">Id de usuario en controladora:</i>' + GetValor(item, "id_usuario_disp") + '</span>' +
-                '<span class="t-1" >' + GetValor(item, "descripcion") + '</span>' +
-                '<span class="t-1" ><i style="color:#777;font-weight:normal">TAG:</i>' + GetValor(item, "no_tag") + '</span>' +
-                (GetValor(item, "placas").trim().length > 0 ?
-                    '<span class="t-1" ><i style="color:#777;font-weight:normal">Marbete:</i>' + GetValor(item, "marbete") + '</span>' +
-                    '<span class="t-1" ><i style="color:#777;font-weight:normal">Placas</i>:' + GetValor(item, "placas") + '</span>' : "") +
-                '<div id="vehi-' + indice + '" style="display:none;"><button class="edit-btn" onclick="IniciarEditar(false, \'' + catalogo + '\', 2, { a: \'lista-' + catalogo + '\', b: \'p-edicion-' + catalogo + '\'},{d:document.getElementById(\'detalle-ap_domicilios\').getAttribute(\'clave\'),claveItem:' + indice + '});" ><img  src="img/edit.png" /></button>' +
-                '<button class="edit-btn" onclick="IniciarEliminar(this,\'' + catalogo + '\',' + indice + ',{ b: \'lista-' + catalogo + '\', a: \'p-edicion-' + catalogo + '\' },true,{d:document.getElementById(\'detalle-ap_domicilios\').getAttribute(\'clave\')});" ><img  src="img/del.png" /></button>';
-            break;
         case "regen_egrepro":
         case "regen_tiposgastos":
             itemli.indice = GetValor(item, "clave");
@@ -2700,19 +2096,9 @@ function ObtenerItem(catalogo, item) {
                 var a = document.createElement("a");
                 a.style = "float:right;color:#333;text-decoration:underline;font-weight:bold;";
                 a.innerHTML = "Ver Historial de Pagos";
-<<<<<<< HEAD
-<<<<<<< HEAD
                 a.onclick = function () { window.open(url + 'logic/controlador.aspx?op=ObtenerInforme&seccion=transparencia&pdf=true&tabla=1&clave=13&p1=' + domicilio_sel + '&fecha1=01/01/1900&fecha2=01/01/1900'); }
                 t3.appendChild(a);
 
-=======
-                a.onclick = function () { window.open(url + 'logic/controlador.aspx?op=ObtenerInforme&seccion=transparencia&xls=true&tabla=1&clave=12&p1=' + domicilio_sel + '&fecha1=01/01/1900&fecha2=01/01/1900'); } 
-                t3.appendChild(a);
->>>>>>> 7fb57b987e0ff14bcac042c30bc9824735ac7e73
-=======
-                a.onclick = function () { window.open(url + 'logic/controlador.aspx?op=ObtenerInforme&seccion=transparencia&xls=true&tabla=1&clave=12&p1=' + domicilio_sel + '&fecha1=01/01/1900&fecha2=01/01/1900'); } 
-                t3.appendChild(a);
->>>>>>> 7fb57b987e0ff14bcac042c30bc9824735ac7e73
                 CambioPantalla('lista-aportaciones', 'lista-ap_domicilios3');
                 document.getElementById('buscar-ap-fecha').value = "";
                 CargarAportaciones(true);
@@ -2749,29 +2135,15 @@ function ObtenerItem(catalogo, item) {
                 
                 var residente = GetValor(item, "residente"); 
                 itemli.folio = folio;
-<<<<<<< HEAD
-<<<<<<< HEAD
                 itemli.tipo_pago = GetValor(item,"tipo_pago");
                 itemli.domicilio = GetValor(item, "domicilio");
-=======
->>>>>>> 7fb57b987e0ff14bcac042c30bc9824735ac7e73
-=======
->>>>>>> 7fb57b987e0ff14bcac042c30bc9824735ac7e73
                 itemli.onclick = function () {
                     if (folio.length > 0) {
                         this.onclick = function () { }
                         var cancelar = document.createElement("button");
                         cancelar.innerHTML = "Cancelar Pago";
                         cancelar.className = "aceptar";
-<<<<<<< HEAD
-<<<<<<< HEAD
                         cancelar.style = "width:auto;display:inline-block;float:right;font-size:0.8em;margin-right:5%;margin-top:15px;";
-=======
-                        cancelar.style = "width:30%;float:left;font-size:0.8em;margin-left:5%;margin-top:15px;";
->>>>>>> 7fb57b987e0ff14bcac042c30bc9824735ac7e73
-=======
-                        cancelar.style = "width:30%;float:left;font-size:0.8em;margin-left:5%;margin-top:15px;";
->>>>>>> 7fb57b987e0ff14bcac042c30bc9824735ac7e73
                         cancelar.folio = this.folio;
                         cancelar.onclick = function (ev) {
                             ev.stopPropagation();
@@ -2783,8 +2155,6 @@ function ObtenerItem(catalogo, item) {
                             }
                         }
                         this.getElementsByTagName("div")[0].appendChild(cancelar);
-<<<<<<< HEAD
-<<<<<<< HEAD
                         
                         var btnCR = document.createElement("button");
                         btnCR.innerHTML = "Enviar recibo";
@@ -2805,14 +2175,6 @@ function ObtenerItem(catalogo, item) {
                         btnCR.onclick = function (ev) { window.open("/logic/recibo.pdf?op=GenerarRecibo&seccion=aportaciones&recibo=&folio=" + this.folio + "&domicilio=" + this.domicilio);}
                         this.getElementsByTagName("div")[0].appendChild(btnCR);
                         
-=======
-
-
->>>>>>> 7fb57b987e0ff14bcac042c30bc9824735ac7e73
-=======
-
-
->>>>>>> 7fb57b987e0ff14bcac042c30bc9824735ac7e73
                         if (this.tipo_pago == "10") {
                             btnCR = document.createElement("button");
                             btnCR.innerHTML = "Comprobante";
@@ -2824,35 +2186,7 @@ function ObtenerItem(catalogo, item) {
                             btnCR.onclick = function (ev) { window.open(url + "/logic/controlador.aspx?op=VerAdjuntoDeposito&seccion=aportaciones&domicilio=" + this.domicilio + "&folio=" + this.folio); }
                             this.getElementsByTagName("div")[0].appendChild(btnCR);
                         }
-<<<<<<< HEAD
-<<<<<<< HEAD
                         
-=======
-=======
->>>>>>> 7fb57b987e0ff14bcac042c30bc9824735ac7e73
-
-                        var btnCR = document.createElement("button");
-                        btnCR.innerHTML = "Reemplazar recibo";
-                        btnCR.className = "aceptar";
-                        btnCR.style = "width:30%;float:right;font-size:0.8em;margin-right:5%;margin-top:15px;";
-                        btnCR.title = "Cancelar recibo por error de impresión, requiere recibo nuevo.";
-                        btnCR.folio = this.folio;
-                        btnCR.onclick = function (ev) {
-                            ev.stopPropagation();
-                            var recibo_nuevo = window.prompt("Ingrese el nuevo número de recibo:");
-                            if (window.confirm("Confirme que desea reemplazar/cancelar el folio:")) {
-                                $.post(url + 'logic/controlador.aspx?op=ReemplazarCancelarFolio&seccion=aportaciones&folio=' + this.folio, { recibo_nuevo: recibo_nuevo }, function (xmlDoc) {
-                                    alert(GetValor(xmlDoc,"mensaje"));
-                                    CargarAportaciones();
-                                });
-                            }
-                        }
-                        this.getElementsByTagName("div")[0].appendChild(btnCR);
-
-<<<<<<< HEAD
->>>>>>> 7fb57b987e0ff14bcac042c30bc9824735ac7e73
-=======
->>>>>>> 7fb57b987e0ff14bcac042c30bc9824735ac7e73
                         var hr = document.createElement("hr");
                         hr.className = "clearn";
                         this.getElementsByTagName("div")[0].appendChild(hr);
@@ -3023,8 +2357,6 @@ function ObtenerItem(catalogo, item) {
     return itemli;
 }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 function EnviarReciboEmail(ev, folio, con_carga) {
     try {
         ev.stopPropagation();
@@ -3040,10 +2372,6 @@ function EnviarReciboEmail(ev, folio, con_carga) {
     });
 }
 
-=======
->>>>>>> 7fb57b987e0ff14bcac042c30bc9824735ac7e73
-=======
->>>>>>> 7fb57b987e0ff14bcac042c30bc9824735ac7e73
 function AsociarConceptosD(clave) {
     document.getElementById("clave-asig_concepto").value = clave;
     CargaConceptosD(clave, function () {
