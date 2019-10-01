@@ -539,7 +539,11 @@ function CerrarPago(event,ventana) {
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 function GuardarItem(obj,catalogo,detalle,datos,callback){
+=======
+function GuardarItem(obj, catalogo, detalle, datos, callback) {
+>>>>>>> 7fb57b987e0ff14bcac042c30bc9824735ac7e73
 =======
 function GuardarItem(obj, catalogo, detalle, datos, callback) {
 >>>>>>> 7fb57b987e0ff14bcac042c30bc9824735ac7e73
@@ -553,7 +557,11 @@ function GuardarItem(obj, catalogo, detalle, datos, callback) {
             }
         }, datos);
 <<<<<<< HEAD
+<<<<<<< HEAD
         if(callback){ callback(claveItem,datos);}
+=======
+        if (callback) { callback(claveItem, datos); }
+>>>>>>> 7fb57b987e0ff14bcac042c30bc9824735ac7e73
 =======
         if (callback) { callback(claveItem, datos); }
 >>>>>>> 7fb57b987e0ff14bcac042c30bc9824735ac7e73
@@ -578,8 +586,14 @@ function IniciarAsociarCargo() {
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 function AgregarProrroga(check, domicilio, fecha_negociada) {
     $.post(url + 'logic/controlador.aspx?op=AgregarProrroga&seccion=ap_domicilios&domicilio=' + domicilio,{ fecha_negociada: fecha_negociada }, function (xmlDoc) {                    
+=======
+
+function AgregarProrroga(check, domicilio, fecha_negociada) {
+    $.post(url + 'logic/controlador.aspx?op=AgregarProrroga&seccion=ap_domicilios&domicilio=' + domicilio, { fecha_negociada: fecha_negociada }, function (xmlDoc) {
+>>>>>>> 7fb57b987e0ff14bcac042c30bc9824735ac7e73
 =======
 
 function AgregarProrroga(check, domicilio, fecha_negociada) {
@@ -591,7 +605,11 @@ function AgregarProrroga(check, domicilio, fecha_negociada) {
         } else {
             alert(GetValor(xmlDoc, "mensaje"));
 <<<<<<< HEAD
+<<<<<<< HEAD
         }  
+=======
+        }
+>>>>>>> 7fb57b987e0ff14bcac042c30bc9824735ac7e73
 =======
         }
 >>>>>>> 7fb57b987e0ff14bcac042c30bc9824735ac7e73
@@ -599,6 +617,7 @@ function AgregarProrroga(check, domicilio, fecha_negociada) {
 }
 
 function ActivarTag(check, domicilio) {
+<<<<<<< HEAD
 <<<<<<< HEAD
     $.post(url + 'logic/controlador.aspx?op=ActivarTag&seccion=ap_domicilios&domicilio=' + domicilio + '&poner=' + check.checked,function (xmlDoc) {
         check.checked = (GetValor(xmlDoc, "es_activo") == "true");
@@ -608,6 +627,8 @@ function ActivarTag(check, domicilio) {
             alert(GetValor(xmlDoc, "mensaje"));
         }        
 =======
+=======
+>>>>>>> 7fb57b987e0ff14bcac042c30bc9824735ac7e73
     $.post(url + 'logic/controlador.aspx?op=ActivarTag&seccion=ap_domicilios&domicilio=' + domicilio + '&poner=' + check.checked, function (xmlDoc) {
         check.checked = (GetValor(xmlDoc, "es_activo") == "true");
         if (GetValor(xmlDoc, "estatus") == "1") {
@@ -615,11 +636,15 @@ function ActivarTag(check, domicilio) {
         } else {
             alert(GetValor(xmlDoc, "mensaje"));
         }
+<<<<<<< HEAD
+>>>>>>> 7fb57b987e0ff14bcac042c30bc9824735ac7e73
+=======
 >>>>>>> 7fb57b987e0ff14bcac042c30bc9824735ac7e73
     });
 }
 
 function PintarItem(catalogo, clave, xmlDoc0) {
+<<<<<<< HEAD
 <<<<<<< HEAD
     var cont = "", imgsTexto;
     var xmlDoc = xmlDoc0.getElementsByTagName("Table")[0];
@@ -809,6 +834,8 @@ function PintarItem(catalogo, clave, xmlDoc0) {
             ; break;                
         case "notificaciones":
 =======
+=======
+>>>>>>> 7fb57b987e0ff14bcac042c30bc9824735ac7e73
             var cont = "", imgsTexto;
             var xmlDoc = xmlDoc0.getElementsByTagName("Table")[0];
             switch (catalogo) {
@@ -1138,6 +1165,78 @@ function AsociarDomiciliosPropietario(){
     CargarCatalogo("propdomicilios", function () { }, { usuario: usuario });
 }
 
+function RealizarPagoRes() {
+    var folio = document.getElementById("lista-pagos_res").getAttribute("folio");
+    var abono = parseFloat(prompt("Ingrese la cantidad a registrar:"));
+    if (abono > 0.0) {
+        $.post(url + 'logic/controlador.aspx' + '?op=RealizarPagoRes&seccion=pagos_res', { solicitud: folio, abono: abono },function (xmlDoc) {
+            if (GetValor(xmlDoc, "estatus") == "1") {
+                VerPagosRes(folio);
+                CargarCatalogo("solicitudes_res");
+            } else {
+                alert(GetValor(xmlDoc,"mensaje"));
+            }
+        });
+    } else {
+        alert("Ingrese un valor válido.");
+    }
+}
+
+
+function XmlToStr(xmlNode) {
+    try {
+        // Gecko- and Webkit-based browsers (Firefox, Chrome), Opera.
+        return (new XMLSerializer()).serializeToString(xmlNode);
+    }
+    catch (e) {
+        try {
+            // Internet Explorer.
+            return xmlNode.xml;
+        }
+        catch (e) {
+            //Other browsers without XML Serializer
+            alert('Xmlserializer not supported');
+        }
+    }
+    return false;
+}
+
+function EjecutarRestriccionTags(general, domicilio) {
+    $.post(url + 'logic/controlador.aspx?op=ObtenerEstatusDomicilios&seccion=ap_domicilios&general=' + general + (domicilio ? '&domicilio=' + domicilio : ""), function (xmlDoc) {
+        $.ajax({
+            url: urlLocal + '/controlador.aspx?op=ProcesarRestriccionTags&seccion=ap_domicilios',
+            data: XmlToStr(xmlDoc),
+            type: 'POST',
+            contentType: "text/xml",
+            dataType: "xml",
+            success: function (xmlDocR) {
+                //if (GetValor(xmlDocR, "estatus") == "1") {
+                //} else {
+                alert(GetValor(xmlDocR, "mensaje"));
+                //}                
+            }, error: function (xhr, ajaxOptions, thrownError) {
+                console.log(xhr.status);
+                console.log(thrownError);
+            }
+        });
+    });
+}
+
+function VerTags(domicilio) {
+    CargarCatalogo("tags", function () {
+        CambioPantalla('lista-tags', 'detalle-ap_domicilios');
+    }, { d: domicilio });
+}
+
+
+function AsociarDomiciliosPropietario(){
+    var usuario = document.getElementById("detalle-usuarios").getAttribute("clave");
+    document.getElementById("usuario-prop").innerHTML = document.getElementById("usu-" + usuario).innerHTML;
+    CambioPantalla("lista-propdomicilios", "detalle-usuarios");
+    document.getElementById("claveusuario").value = usuario;
+    CargarCatalogo("propdomicilios", function () { }, { usuario: usuario });
+}
+
 function BloquearNotificaciones(clave_usuario) {
     $.post(url + 'logic/controlador.aspx' + '?op=BloquearNotificaciones&seccion=usuarios',function (xmlDoc) {
         alert(GetValor(xmlDoc,"mensaje"));
@@ -1228,7 +1327,11 @@ function VerTags(domicilio){
                     break;
                 case "ap_domicilios":
 <<<<<<< HEAD
+<<<<<<< HEAD
                     CargarDatosFrmMap(xmlDoc, { clave: 'clave-ap_domicilios', calle: 'dom-calle', titular: 'dom-titular',manzana:'dom-mz',lote:'dom-lt',numero:'dom-numero',no_interior:'dom-no_int',fecha_entrega:'fecha_entrega',segmento:'seg-dom',email:'email-dom' });
+=======
+                    CargarDatosFrmMap(xmlDoc, { clave: 'clave-ap_domicilios', calle: 'dom-calle', titular: 'dom-titular', manzana: 'dom-mz', lote: 'dom-lt', numero: 'dom-numero', no_interior: 'dom-no_int', fecha_entrega: 'fecha_entrega', segmento: 'seg-dom', email: 'email-dom' });
+>>>>>>> 7fb57b987e0ff14bcac042c30bc9824735ac7e73
 =======
                     CargarDatosFrmMap(xmlDoc, { clave: 'clave-ap_domicilios', calle: 'dom-calle', titular: 'dom-titular', manzana: 'dom-mz', lote: 'dom-lt', numero: 'dom-numero', no_interior: 'dom-no_int', fecha_entrega: 'fecha_entrega', segmento: 'seg-dom', email: 'email-dom' });
 >>>>>>> 7fb57b987e0ff14bcac042c30bc9824735ac7e73
@@ -1594,9 +1697,15 @@ function VerTags(domicilio){
                     var redimAp = document.getElementById("redim-aportaciones");
                     redimAp.btnAplicar = this;
 <<<<<<< HEAD
+<<<<<<< HEAD
                     redimAp.innerHTML ="<li class='resumen'><div style='background:transparent;padding:0px;margin:0px;'><label>Tipo de pago:</label><select id='s_tipo_p' style='width:60%;margin-bottom:5px;margin-right:10px;' name='tipopago' onchange='if(this.selectedIndex==1){var inF=this.parentNode.getElementsByTagName(\"input\")[1];inF.parentNode.style.display=\"block\";}else{this.parentNode.getElementsByTagName(\"input\")[1].parentNode.style.display=\"none\";ObtenerTicket(undefined,this.parentNode.parentNode.parentNode.btnAplicar,document.getElementById(\"ticket\"),this.options[this.selectedIndex].value);}'><option value='11'>EFECTIVO</option><option value='10'>DEPOSITO</option></select><span>Compuesto</span><input type='checkbox' name='es_compuesto' id='es_compuesto' value='true'/>" +
                         "<div style='display:none;'><br/><label>Fecha de pago:</label><input id='f_pago_d' type='text' name='fecha_pago' placeholder='dd/mm/aaaa' onkeypress='if(ValidarEnter(event)){var inF=document.getElementById(\"f_pago_d\");ObtenerTicket(inF.value,this.parentNode.parentNode.parentNode.parentNode.btnAplicar,document.getElementById(\"ticket\"),10);}return SoloNumeros(event,\"\/\");'  style='margin-right:30px;'/><br/><br/> Capture comprobante: <div id='wrap-detalle-DepositosBancoR' style=''></div></div><br/> </div>" +
                         "<fieldset class='gafet-p' style='display:none;border:1px solid #999;border-radius:10px;margin-bottom:12px;text-align:center;font-weight:bold;font-size:0.9em;'><legend>Gallardetes</legend><div><input id='gafetes-p' type='text' style='width: 90%;padding: 5px;border:1px solid #aaa;text-align:center;font-size:1.1em;' placeholder='#gallardete1:placas,#gallardete2:placas2,...'/></div><div id='tipo_gafete'><span style='margin-left:15px;'>Mensual</span><input checked='checked' type='radio' value='1' name='tipo_gafete' /><span style='margin-left:15px;'>Semestral</span><input type='radio' value='2' name='tipo_gafete' /><span style='margin-left:15px;'>Anual</span><input type='radio' value='3' name='tipo_gafete'/></div></fieldset>" +
+=======
+                    redimAp.innerHTML = "<li class='resumen'><div style='background:transparent;padding:0px;margin:0px;'><label>Tipo de pago:</label><select id='s_tipo_p' style='width:60%;margin-bottom:5px;margin-right:10px;' name='tipopago' onchange='if(this.selectedIndex==1){var inF=this.parentNode.getElementsByTagName(\"input\")[1];inF.parentNode.style.display=\"block\";}else{this.parentNode.getElementsByTagName(\"input\")[1].parentNode.style.display=\"none\";ObtenerTicket(undefined,this.parentNode.parentNode.parentNode.btnAplicar,document.getElementById(\"ticket\"),this.options[this.selectedIndex].value);}'><option value='11'>EFECTIVO</option><option value='10'>DEPOSITO</option></select><span>Compuesto</span><input type='checkbox' name='es_compuesto' id='es_compuesto' value='true'/>" +
+                        "<div style='display:none;'><br/><label>Fecha de pago:</label><input type='text' name='fecha_pago' placeholder='dd/mm/aaaa' onkeypress='if(ValidarEnter(event)){var inF=this.parentNode.getElementsByTagName(\"input\")[1];ObtenerTicket(inF.value,this.parentNode.parentNode.parentNode.parentNode.btnAplicar,document.getElementById(\"ticket\"),\"DEPOSITO\");}return SoloNumeros(event,\"\/\");'  style='margin-right:30px;'/><br/><br/> Capture comprobante: <div id='wrap-detalle-DepositosBancoR' style=''></div></div><br/> </div>" +
+                        "<fieldset class='gafet-p' style='border:1px solid #999;border-radius:10px;margin-bottom:12px;text-align:center;font-weight:bold;font-size:0.9em;'><legend>Gallardetes</legend><div><input id='gafetes-p' type='text' style='width: 90%;padding: 5px;border:1px solid #aaa;text-align:center;font-size:1.1em;' placeholder='#gallardete1:placas,#gallardete2:placas2,...'/></div><div id='tipo_gafete'><span style='margin-left:15px;'>Mensual</span><input checked='checked' type='radio' value='1' name='tipo_gafete' /><span style='margin-left:15px;'>Semestral</span><input type='radio' value='2' name='tipo_gafete' /><span style='margin-left:15px;'>Anual</span><input type='radio' value='3' name='tipo_gafete'/></div></fieldset>" +
+>>>>>>> 7fb57b987e0ff14bcac042c30bc9824735ac7e73
 =======
                     redimAp.innerHTML = "<li class='resumen'><div style='background:transparent;padding:0px;margin:0px;'><label>Tipo de pago:</label><select id='s_tipo_p' style='width:60%;margin-bottom:5px;margin-right:10px;' name='tipopago' onchange='if(this.selectedIndex==1){var inF=this.parentNode.getElementsByTagName(\"input\")[1];inF.parentNode.style.display=\"block\";}else{this.parentNode.getElementsByTagName(\"input\")[1].parentNode.style.display=\"none\";ObtenerTicket(undefined,this.parentNode.parentNode.parentNode.btnAplicar,document.getElementById(\"ticket\"),this.options[this.selectedIndex].value);}'><option value='11'>EFECTIVO</option><option value='10'>DEPOSITO</option></select><span>Compuesto</span><input type='checkbox' name='es_compuesto' id='es_compuesto' value='true'/>" +
                         "<div style='display:none;'><br/><label>Fecha de pago:</label><input type='text' name='fecha_pago' placeholder='dd/mm/aaaa' onkeypress='if(ValidarEnter(event)){var inF=this.parentNode.getElementsByTagName(\"input\")[1];ObtenerTicket(inF.value,this.parentNode.parentNode.parentNode.parentNode.btnAplicar,document.getElementById(\"ticket\"),\"DEPOSITO\");}return SoloNumeros(event,\"\/\");'  style='margin-right:30px;'/><br/><br/> Capture comprobante: <div id='wrap-detalle-DepositosBancoR' style=''></div></div><br/> </div>" +
@@ -1621,7 +1730,10 @@ function VerTags(domicilio){
             }
             btn.innerHTML = "Calcular";               
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 7fb57b987e0ff14bcac042c30bc9824735ac7e73
         }
 
 function ObtenerTicket(fecha, btnAplicar, dom, tipo_pago) {
@@ -1770,6 +1882,7 @@ function SeleccionarTodoP() {
                     $(objeto).addClass("seleccionado");
                 }
             }
+<<<<<<< HEAD
 >>>>>>> 7fb57b987e0ff14bcac042c30bc9824735ac7e73
         }
         togglePagos = !togglePagos;
@@ -1904,6 +2017,9 @@ function SeleccionarTodoP() {
                 }
             }
         }
+=======
+        }
+>>>>>>> 7fb57b987e0ff14bcac042c30bc9824735ac7e73
         togglePagos = !togglePagos;
         CalcularAportacion();
     }
@@ -2015,7 +2131,11 @@ function SeleccionarTodoP() {
         }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         function VerInforme(clave, config, pdf, xls) {
+=======
+        function VerInforme(clave,config,pdf,xls) {
+>>>>>>> 7fb57b987e0ff14bcac042c30bc9824735ac7e73
 =======
         function VerInforme(clave,config,pdf,xls) {
 >>>>>>> 7fb57b987e0ff14bcac042c30bc9824735ac7e73
@@ -2024,7 +2144,11 @@ function SeleccionarTodoP() {
             if (fecha1.trim().length > 0 && fecha2.trim().length > 0) {
                 if (pdf || xls) {
 <<<<<<< HEAD
+<<<<<<< HEAD
                     window.open(url + 'logic/controlador.aspx' + '?op=ObtenerInforme&seccion=transparencia' + (xls ? '&xls=' + xls : '') + (pdf ? '&pdf=' + pdf : '') + '&tabla=1&clave=' + clave + "&fecha1=" + fecha1 + "&fecha2=" + fecha2);
+=======
+                    window.open(url + 'logic/controlador.aspx' + '?op=ObtenerInforme&seccion=transparencia' + (xls?'&xls=' + xls:'') + (pdf?'&pdf=' + pdf:'') + '&tabla=1&clave=' + clave + "&fecha1=" + fecha1 + "&fecha2=" + fecha2);
+>>>>>>> 7fb57b987e0ff14bcac042c30bc9824735ac7e73
 =======
                     window.open(url + 'logic/controlador.aspx' + '?op=ObtenerInforme&seccion=transparencia' + (xls?'&xls=' + xls:'') + (pdf?'&pdf=' + pdf:'') + '&tabla=1&clave=' + clave + "&fecha1=" + fecha1 + "&fecha2=" + fecha2);
 >>>>>>> 7fb57b987e0ff14bcac042c30bc9824735ac7e73
@@ -2577,9 +2701,14 @@ function ObtenerItem(catalogo, item) {
                 a.style = "float:right;color:#333;text-decoration:underline;font-weight:bold;";
                 a.innerHTML = "Ver Historial de Pagos";
 <<<<<<< HEAD
+<<<<<<< HEAD
                 a.onclick = function () { window.open(url + 'logic/controlador.aspx?op=ObtenerInforme&seccion=transparencia&pdf=true&tabla=1&clave=13&p1=' + domicilio_sel + '&fecha1=01/01/1900&fecha2=01/01/1900'); }
                 t3.appendChild(a);
 
+=======
+                a.onclick = function () { window.open(url + 'logic/controlador.aspx?op=ObtenerInforme&seccion=transparencia&xls=true&tabla=1&clave=12&p1=' + domicilio_sel + '&fecha1=01/01/1900&fecha2=01/01/1900'); } 
+                t3.appendChild(a);
+>>>>>>> 7fb57b987e0ff14bcac042c30bc9824735ac7e73
 =======
                 a.onclick = function () { window.open(url + 'logic/controlador.aspx?op=ObtenerInforme&seccion=transparencia&xls=true&tabla=1&clave=12&p1=' + domicilio_sel + '&fecha1=01/01/1900&fecha2=01/01/1900'); } 
                 t3.appendChild(a);
@@ -2621,8 +2750,11 @@ function ObtenerItem(catalogo, item) {
                 var residente = GetValor(item, "residente"); 
                 itemli.folio = folio;
 <<<<<<< HEAD
+<<<<<<< HEAD
                 itemli.tipo_pago = GetValor(item,"tipo_pago");
                 itemli.domicilio = GetValor(item, "domicilio");
+=======
+>>>>>>> 7fb57b987e0ff14bcac042c30bc9824735ac7e73
 =======
 >>>>>>> 7fb57b987e0ff14bcac042c30bc9824735ac7e73
                 itemli.onclick = function () {
@@ -2632,7 +2764,11 @@ function ObtenerItem(catalogo, item) {
                         cancelar.innerHTML = "Cancelar Pago";
                         cancelar.className = "aceptar";
 <<<<<<< HEAD
+<<<<<<< HEAD
                         cancelar.style = "width:auto;display:inline-block;float:right;font-size:0.8em;margin-right:5%;margin-top:15px;";
+=======
+                        cancelar.style = "width:30%;float:left;font-size:0.8em;margin-left:5%;margin-top:15px;";
+>>>>>>> 7fb57b987e0ff14bcac042c30bc9824735ac7e73
 =======
                         cancelar.style = "width:30%;float:left;font-size:0.8em;margin-left:5%;margin-top:15px;";
 >>>>>>> 7fb57b987e0ff14bcac042c30bc9824735ac7e73
@@ -2647,6 +2783,7 @@ function ObtenerItem(catalogo, item) {
                             }
                         }
                         this.getElementsByTagName("div")[0].appendChild(cancelar);
+<<<<<<< HEAD
 <<<<<<< HEAD
                         
                         var btnCR = document.createElement("button");
@@ -2672,6 +2809,10 @@ function ObtenerItem(catalogo, item) {
 
 
 >>>>>>> 7fb57b987e0ff14bcac042c30bc9824735ac7e73
+=======
+
+
+>>>>>>> 7fb57b987e0ff14bcac042c30bc9824735ac7e73
                         if (this.tipo_pago == "10") {
                             btnCR = document.createElement("button");
                             btnCR.innerHTML = "Comprobante";
@@ -2684,8 +2825,11 @@ function ObtenerItem(catalogo, item) {
                             this.getElementsByTagName("div")[0].appendChild(btnCR);
                         }
 <<<<<<< HEAD
+<<<<<<< HEAD
                         
 =======
+=======
+>>>>>>> 7fb57b987e0ff14bcac042c30bc9824735ac7e73
 
                         var btnCR = document.createElement("button");
                         btnCR.innerHTML = "Reemplazar recibo";
@@ -2705,6 +2849,9 @@ function ObtenerItem(catalogo, item) {
                         }
                         this.getElementsByTagName("div")[0].appendChild(btnCR);
 
+<<<<<<< HEAD
+>>>>>>> 7fb57b987e0ff14bcac042c30bc9824735ac7e73
+=======
 >>>>>>> 7fb57b987e0ff14bcac042c30bc9824735ac7e73
                         var hr = document.createElement("hr");
                         hr.className = "clearn";
@@ -2877,6 +3024,7 @@ function ObtenerItem(catalogo, item) {
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 function EnviarReciboEmail(ev, folio, con_carga) {
     try {
         ev.stopPropagation();
@@ -2892,6 +3040,8 @@ function EnviarReciboEmail(ev, folio, con_carga) {
     });
 }
 
+=======
+>>>>>>> 7fb57b987e0ff14bcac042c30bc9824735ac7e73
 =======
 >>>>>>> 7fb57b987e0ff14bcac042c30bc9824735ac7e73
 function AsociarConceptosD(clave) {
