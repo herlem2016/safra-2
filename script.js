@@ -120,7 +120,7 @@ function ActivarAplicacion(objeto) {
 
 function ObtenerDomiciliosCoincidentes(nombre) {
     if (!nombre) {
-        document.getElementById("t-apellidos").value + ' ' + nombre = document.getElementById("t-nombre").value;
+        nombre = document.getElementById("t-apellidos").value + ' ' + document.getElementById("t-nombre").value;
     }
     $.post(url + 'logic/controlador.aspx?op=ObtenerDomiciliosCoincidentes&seccion=ap_domicilios', { nombre: nombre, public:true }, function (xmlDoc) {
         var domicilios = xmlDoc.getElementsByTagName("Table");
