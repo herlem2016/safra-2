@@ -13,7 +13,7 @@
 </platform>
   <preference name='phonegap-version' value='cli-7.1.0' />
   <preference name='pgb-builder-version' value='2' />
-  <plugin name="cordova-plugin-fcm-with-dependecy-updated" />  
+  <plugin name="cordova-plugin-fcm-with-dependecy-updated" spec="~2.1.2" source="npm" />  
   <plugin name="cordova-plugin-inappbrowser" />  
   <gap:plugin name="cordova-plugin-whitelist" source="npm" />
   <plugin name="cordova-plugin-image-picker"  source="npm" />
