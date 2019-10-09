@@ -1,4 +1,6 @@
-﻿.inactivo *{color:#a5a5a5  !important;}
+﻿.file-link{padding:20px;background-color:#1fb9fe;color:#333;font-weight:bolder;display:block;margin-top:20px;margin-bottom:10px;}
+
+.inactivo *{color:#a5a5a5  !important;}
 button {
     cursor: pointer;
 }
@@ -164,7 +166,7 @@ fieldset{border:0px;}
 
 .titulo span{padding-top:5px;display:inline-block;}
 
-ul.lista {list-style:none;width:95%;margin-left:auto;margin-right:auto;padding:0px;}
+ul.lista {list-style:none;margin-left:auto;margin-right:auto;padding:0px;}
 ul.listaP {list-style:none;width:100%;margin:0px;padding:0px;}
 ul.listaP li{border:0px;}
 ul.listaP li > div {border: 1px solid #ddd;padding-left: 45px;background-color: #fff;background-position: left 5px center;background-size: 40px;background-repeat: no-repeat;padding-top:15px;padding-bottom:15px;margin-bottom:15px;}
@@ -188,14 +190,16 @@ ul li.resumen > div{border:0px;}
         padding-bottom: 5px;
         margin: 0px;
     }
-    ul.lista .item {
-        width: 100%;
-        float: left;
-        box-shadow: inset 0px 1px 0px 0px #ffffff;
-        padding-top: 8px;
-        padding-bottom: 20px;
-        margin: 0px;
-    }
+ul.lista .item {
+    width: 100%;
+    float: left;
+    box-shadow: inset 0px 1px 0px 0px #ffffff;
+    margin: 0px;
+    margin-bottom: 7px;
+    background-color: #fff;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #d2cbcb;
+}
 
     #p-edicion-asig_conceptos fieldset ul {padding:5px;list-style:none;}
     #p-edicion-asig_conceptos fieldset ul li{padding:5px;}
@@ -474,15 +478,17 @@ span.t-3n {
 }
 
 span.t-4 {
+    margin:auto;
     display: block;
     clear: both;
-    float: left;
-    font-size: 13px;
+    font-size: 0.95em;
     color: #060a0d;
     font-weight: normal;
     padding: 20px;
     text-align: justify;
     width:90%;word-wrap:break-word;
+    background-color:#fff;
+    margin-bottom:10px;
 }
 
 span.t-41 {
@@ -863,7 +869,7 @@ table.graficas td {
     margin:auto;
     margin-top:16px;
 }
-.img-pro{float:left;margin-left:1%;margin-top:10px;width:45%;border:7px solid #eee;max-height: 150px;border: 7px solid #eee;border-radius: 50px;max-width: 40%;}
+.img-pro{float:left;margin-left:0px;margin-top:0px;border:0px solid #eee;max-height: 150px;border-radius: 0px;width: 30%;}
 
 table.desglose {
     margin-top: 20px;
@@ -992,7 +998,7 @@ table.pagos td{border-bottom:1px solid #f2f2f2;color:#666;padding-top:20px;paddi
 
 .espera {background-color:#fff !important;color:#fff !important;}
 .espera img{margin:-12px auto 0px auto;height:100px;position:relative;}
-.pantalla-3 p {padding:5px;width:90%;word-wrap:break-word; font-size:13px;color:#333;clear:both;display:block;}
+.pantalla-3 p {padding:5px;word-wrap:break-word; font-size:13px;color:#333;clear:both;display:block;}
 
 button.centrado30{margin:auto;width:30%;padding:3px;display:block;clear:both;margin-top:10px;text-align:center;}
 .separado10{margin-top:10px;margin-bottom:10px}
@@ -1022,7 +1028,7 @@ button.con-btn{
 .btn-apl button{width:100%;position:absolute;top:0px;left:0px;z-index:+1;}
 .btn-apl >img{width:100%;position:absolute;top:0px;left:0px;}
 
-ul.lista li .t-1m{display:inline-block !important;width:60% !important;}
+ul.lista li .t-1m{display:inline-block !important;width:60% !important;padding-top: 15px;}
 ul.lista li .t-2{margin-top:0px;}
 
 .datos-bd{padding:15px;background-color:#fff;color:#666;}
@@ -1133,12 +1139,12 @@ div.agregar button, .menu button{text-align:center;}
     }
 
     .detalle-w p {
-        margin-top: 0px;
+        margin:auto;
+        margin-top: 10px;
         font-size: 0.95em;
         clear: both;
         background: #fff;
         padding: 10px;
-        border-radius: 20px;
         margin-bottom: 5px;
     }
     .detalle-w .t-41{font-size:small;color:#666;display: block;clear: both;}

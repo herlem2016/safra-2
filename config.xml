@@ -13,14 +13,15 @@
 </platform>
   <preference name='phonegap-version' value='cli-7.1.0' />
   <preference name='pgb-builder-version' value='2' />
-  <plugin name="cordova-plugin-fcm-with-dependecy-updated" spec="~2.1.2" source="npm" />  
-  <plugin name="cordova-plugin-inappbrowser" />  
+  <plugin name="cordova-plugin-fcm-with-dependecy-updated" spec="~2.1.2" source="npm" />   
+  <plugin name="cordova-plugin-inappbrowser" source="npm" version="1.0.1" />
   <gap:plugin name="cordova-plugin-whitelist" source="npm" />
   <plugin name="cordova-plugin-image-picker"  source="npm" />
   <plugin name="cordova-plugin-file-transfer" source="npm" />
   <gap:plugin name="cordova-plugin-x-socialsharing" source="npm" />
   <plugin name="cordova-plugin-badge"/>
   <content src="index.html" />
+  <allow-intent href="*" />
   <access origin="*" />
-  <allow-navigation href="*" />
+  <allow-navigation href="*" />  
 </widget>
