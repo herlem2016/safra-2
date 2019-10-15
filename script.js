@@ -566,7 +566,7 @@ function GuardarItem(obj,catalogo,detalle,datos,callback){
 
 function RegistrarVotoProP(voto) {
     $.post(url + 'logic/controlador.aspx' + '?op=RegistrarVotoProP&seccion=pro_propuestas' + '&voto=' + voto + "&clave=" + document.getElementById("clave-pro_propuesta").value, function (xmlDoc) {
-        if (GetValor(xmlDoc, "estatus")) {
+        if (GetValor(xmlDoc, "estatus")==1) {
             CargarCatalogo('pro_propuestas', function () {
                 CambioPantalla('lista-pro_propuestas', 'detalle-pro_propuestas');
             });
@@ -903,7 +903,7 @@ function PintarImagenesTexto(xmlDoc0, crearApartados) {
             cont += (GetValor(imgsTexto[j], "path") ? '<img class="file" src="' + url + '/' + GetValor(imgsTexto[j], "path") + "?v=" + Math.random() + '" />' : "") +
                 (GetValor(imgsTexto[j], "descripcion").length > 0 ? '<p>' + GetValor(imgsTexto[j], "descripcion") + '</p>' : '');                             
         } else {
-            cont += (GetValor(imgsTexto[j], "path") ? '<a class="file-link" href="javascript:window.open(\'' + url + '/' + GetValor(imgsTexto[j], "path") + "?v=" + Math.random() + '\',\'_system\')" >Documento' + extension + '</a>' : "") +
+            cont += (GetValor(imgsTexto[j], "path") ? '<a class="file-link" onclick="javascript:window.open(\'' + url + '/' + GetValor(imgsTexto[j], "path") + "?v=" + Math.random() + '\',\'_system\');" >Documento' + extension + '</a>' : "") +
                 (GetValor(imgsTexto[j], "descripcion").length > 0 ? '<p>' + GetValor(imgsTexto[j], "descripcion") + '</p>' : '');                             
         }        
     }
