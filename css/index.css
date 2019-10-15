@@ -870,7 +870,7 @@ table.graficas td {
     margin:auto;
     margin-top:16px;
 }
-.img-pro{float:left;margin-left:0px;margin-top:0px;border:0px solid #eee;max-height: 150px;border-radius: 0px;width: 30%;}
+.img-pro{border:0px solid #eee;max-height: 100%;border-radius: 0px;max-width: 100%;}
 
 table.desglose {
     margin-top: 20px;
