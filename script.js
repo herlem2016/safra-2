@@ -185,11 +185,11 @@ function IniciarSesion(frm) {
             RegistrarNotificaciones();
         }        
         document.getElementById("main").style.display = "block";
-        if (GetValor(xmlDoc, "es_resp_fracc") == "true" || GetValor(xmlDoc, "ya_verifico") == "true" || GetValor(xmlDoc, "es_adminivo") == "true") {
-            IntercambioVisual("menu","menu-vig");
-            PantallaMostrar("home", "section", true);
-        }else if(GetValor(xmlDoc, "es_vigilancia") == "true") {
+        if (GetValor(xmlDoc, "es_vigilancia") == "true") {
             IntercambioVisual("menu-vig", "menu");
+            PantallaMostrar("home", "section", true);
+        }else if (GetValor(xmlDoc, "es_resp_fracc") == "true" || GetValor(xmlDoc, "ya_verifico") == "true" || GetValor(xmlDoc, "es_adminivo") == "true") {
+            IntercambioVisual("menu","menu-vig");
             PantallaMostrar("home", "section", true);
         }else{
             PantallaMostrar("no-activacion", "section", true);
@@ -274,10 +274,16 @@ function Suscribir() {
     }
 }
 
+var _func_hab_=[];
 function RegistrarNotificaciones() {
     try {
         if (window.localStorage.getItem("email_")) {
             $.post(url + 'logic/controlador.aspx' + '?op=ObtenerFuncionesHabilitadas&seccion=seguridad&funciones=6', function (xmlDoc) {
+                _func_hab_ = [];
+                var funcionesRecibidas = xmlDoc.getElementsByTagName("Table");
+                for (var n = 0; n < funcionesRecibidas.length; n++) {
+                    _func_hab_.push(GetValor(funcionesRecibidas[n], "clave_funcion"));
+                }
                 fs = xmlDoc.getElementsByTagName("Table");
                 l_s = fs.length;
                 i_subs = 0;
@@ -292,10 +298,16 @@ function RegistrarNotificaciones() {
                     ActivarAlarma_(data.contenidovoz);
                 } else if (data.modulo == 2) {
                     ActivarTimbre_();
+                    var permitir = window.confirm("¿Permite la visita?");
+                    /*$.post(url + 'logic/controlador.aspx?op=PermitirVisita&seccion=vigilancia&permitir=' + permitir + '&clave=' + data.clave, function (xmlDoc) {
+                        alert(GetValor(xmlDoc, "mensaje"));
+                    });*/
+                } else {
+                    alert(data.message);
                 }
             });
         }
-    } catch (e){ }
+    } catch (e){}
 }
 
 function InsertarNotificacion(dato, modulo) {
@@ -646,7 +658,9 @@ function PintarItem(catalogo, clave, xmlDoc0) {
                 '<span class="t-41"><b>Modificaciones iniciales: </b>' + GetValor(xmlDoc, "insercionesini") + '</span>' +
                 (GetValor(xmlDoc, "usuario_modifico") ? '<span class="t-41"><b>Última modificación:</b>' + GetValor(xmlDoc, "usuario_modifico") + ',' + GetValor(xmlDoc, "fecha_modifico") + '</span>' : "") +
                 '<span class="t-2">' + GetValor(xmlDoc, "descripcion") + '</span>' +
-                '<div class="check-activacion" id="check-tag-d-' + clave + '"><label class="etiqueta" style="font-weight:bolder;font-size:1.3em;margin-top:10px;width:50%;">Prorroga</label><input style="float:left;width:30%;padding:5px;border:1px solid #999;margin-top:10px;" placeholder="Fecha negociada" id="fecha_negociada_tag" value="' + GetValor(xmlDoc, "fecha_prorroga") + '" onkeypress="if(ValidarEnter(event)){AgregarProrroga(document.getElementById(\'check-tag\'),' + clave + ',document.getElementById(\'fecha_negociada_tag\').value);}" /><label class="switch" style="float:right;"><input id="check-tag" type="checkbox" ' + (GetValor(xmlDoc, "es_activo") == "true" ?"checked=checked":"") + ' onchange="ActivarTag(this,' + clave + ');" /><span class="slider round"></span></label><hr class="clearn" /></div>' +
+                (_es_admin_?
+                '<div class="check-activacion" id="check-tag-d-' + clave + '"><label class="etiqueta" style="font-weight:bolder;font-size:1.3em;margin-top:10px;width:50%;">Prorroga</label><input style="float:left;width:30%;padding:5px;border:1px solid #999;margin-top:10px;" placeholder="Fecha negociada" id="fecha_negociada_tag" value="' + GetValor(xmlDoc, "fecha_prorroga") + '" onkeypress="if(ValidarEnter(event)){AgregarProrroga(document.getElementById(\'check-tag\'),' + clave + ',document.getElementById(\'fecha_negociada_tag\').value);}" /><label class="switch" style="float:right;"><input id="check-tag" type="checkbox" ' + (GetValor(xmlDoc, "es_activo") == "true" ? "checked=checked" : "") + ' onchange="ActivarTag(this,' + clave + ');" /><span class="slider round"></span></label><hr class="clearn" /></div>'
+                :"")+
                 '<button class="btn-item" style="margin-top:20px;padding:5px 15px 5px 15px;float:left;margin-left:10px;" onclick="VerTags(' + clave + ');">Ver TAGs</button>';                       
             document.getElementById("wrap-detalle-" + catalogo).innerHTML = cont;
             ; break;
@@ -1939,8 +1953,7 @@ function ObtenerItem(catalogo, item) {
             }
             itemli.innerHTML =
                 '<span class="t-1">' + GetValor(item, "domicilio") + '</span>'+
-                '<span class="t-2">PLACAS: ' + (GetValor(item, "placas").length>0?GetValor(item, "placas"):'----') + '</span>' +
-                (GetValor(item, "mora") == "true" ?'<span class="t-3">MORA</span>':'');
+                (GetValor(item, "activo") == "true" ?'<span class="t-3">ACTIVO</span>':'INACTIVO');
             break;
         case "vigilancia":
             itemli.indice = GetValor(item, "indice");
@@ -2156,10 +2169,10 @@ function ObtenerItem(catalogo, item) {
                 var a = document.createElement("a");
                 a.style = "float:right;color:#333;text-decoration:underline;font-weight:bold;";
                 a.innerHTML = "Ver Historial de Pagos";
-                a.onclick = function () { window.open(url + 'logic/controlador.aspx?op=ObtenerInforme&seccion=transparencia&pdf=true&tabla=1&clave=12&p1=' + domicilio_sel + '&fecha1=01/01/1900&fecha2=01/01/1900', "_system", "location=yes"); }
+                a.onclick = function () { window.open(url + 'logic/controlador.aspx?op=ObtenerInforme&seccion=transparencia&pdf=true&tabla=1&clave=13&p1=' + domicilio_sel + '&fecha1=01/01/1900&fecha2=01/01/1900', "_system", "location=yes"); }
                 t3.appendChild(a);
                 $.post(url + 'logic/controlador.aspx' + '?op=ValidarPagar&seccion=aportaciones', function (xmlDoc) {
-                    if (GetValor(xmlDoc, "admin_pago")) {
+                    if (GetValor(xmlDoc, "admin_pago")==1) {
                         _es_admin_ = true;
                         document.getElementById("control-pago").style.display = "block";
                     } else if (GetValor(xmlDoc, "residente")) {
@@ -2200,9 +2213,11 @@ function ObtenerItem(catalogo, item) {
                         '</div>';
             } else {
                 var folio = GetValor(item, "folio");
+                var clave_hist = GetValor(item, "clave_hist");
                 
                 var residente = GetValor(item, "residente"); 
                 itemli.folio = folio;
+                itemli.clave_hist = clave_hist;
                 itemli.tipo_pago = GetValor(item,"tipo_pago");
                 itemli.domicilio = GetValor(item, "domicilio");
                 itemli.onclick = function () {
@@ -2262,8 +2277,32 @@ function ObtenerItem(catalogo, item) {
                         hr.className = "clearn";
                         this.getElementsByTagName("div")[0].appendChild(hr);
 
-                    }else {
-                        alert("No puede editarse, corresponde a historial o conciliación.");                
+                    } else {
+                        var clave_hist = GetValor(item, "clave_hist");
+                        if (_func_hab_.indexOf("12") > 0) {
+                            var editar_hist = document.createElement("button");
+                            editar_hist.innerHTML = "Editar pago";
+                            editar_hist.className = "aceptar";
+                            editar_hist.style = "width:auto;display:inline-block;float:right;font-size:0.8em;margin-right:5%;margin-top:15px;";
+                            editar_hist.onclick = function (ev) {
+                                ev.stopPropagation();
+                                $.post(url + 'logic/controlador.aspx?op=ObtenerPagoHist&seccion=aportaciones&clave_hist=' + this.clave_hist, function (xmlDoc) {
+                                    var datohist = prompt("Capture dato correcto:", GetValor(xmlDoc, "dato_hist"));
+                                    if (datohist) {
+                                        $.post(url + 'logic/controlador.aspx?op=RegistrarPagoHist&seccion=aportaciones&clave_hist=' + GetValor(xmlDoc, "clave_hist"), function (xmlDoc1) {
+                                            if (GetValor(xmlDoc1, "estatus") == 1) {
+                                                CargarAportaciones();
+                                            } else {
+                                                alert(GetValor(xmlDoc1, "mensaje"));
+                                            }
+                                        });
+                                    }
+                                });
+                            }
+                            this.getElementsByTagName("div")[0].appendChild(editar_hist);
+                        } else {
+                            alert("No puede editarse, corresponde a historial o conciliación.");                
+                        }                        
                     }
                 } 
                 itemli.innerHTML =
@@ -2288,7 +2327,7 @@ function ObtenerItem(catalogo, item) {
             var indice = GetValor(item, "indice");
             itemli.clave = indice;
             itemli.onclick = function () {
-                document.getElementById("vehi-" + this.clave).style.display = "block";
+                try { document.getElementById("vehi-" + this.clave).style.display = "block"; } catch (e){ }
             }
             itemli.innerHTML =
                 '<fieldset ' + (GetValor(item, 'activo') == 'false' ?'class="inactivo" disabled=true':'') +'>'+
@@ -2298,10 +2337,11 @@ function ObtenerItem(catalogo, item) {
                 '<span class="t-1" ><i style="color:#777;font-weight:normal">TAG:</i>' + GetValor(item, "no_tag") + '</span>' +
                 (GetValor(item, "placas").trim().length>0?
                 '<span class="t-1" ><i style="color:#777;font-weight:normal">Marbete:</i>' + GetValor(item, "marbete") + '</span>' +
-                '<span class="t-1" ><i style="color:#777;font-weight:normal">Placas</i>:' + GetValor(item, "placas") + '</span>':"") +
+                '<span class="t-1" ><i style="color:#777;font-weight:normal">Placas</i>:' + GetValor(item, "placas") + '</span>' : "") +
+                (_func_hab_.indexOf("11")>0?
                 '<div id="vehi-' + indice + '" style="display:none;"><button class="edit-btn" onclick="IniciarEditar(false, \'' + catalogo + '\', 2, { a: \'lista-' + catalogo + '\', b: \'p-edicion-' + catalogo + '\'},{d:document.getElementById(\'detalle-ap_domicilios\').getAttribute(\'clave\'),claveItem:' + indice + '});" ><img  src="img/edit.png" /></button>' +
-            '<button class="edit-btn" onclick="IniciarEliminar(this,\'' + catalogo + '\',' + indice + ',{ b: \'lista-' + catalogo + '\', a: \'p-edicion-' + catalogo + '\' },true,{d:document.getElementById(\'detalle-ap_domicilios\').getAttribute(\'clave\')},function(){EjecutarRestriccionTags(false,document.getElementById(\'detalle-ap_domicilios\').getAttribute(\'clave\'));});" ><img  src="img/del.png" /></button>' +
-                '</fieldset>';
+                '<button class="edit-btn" onclick="IniciarEliminar(this,\'' + catalogo + '\',' + indice + ',{ b: \'lista-' + catalogo + '\', a: \'p-edicion-' + catalogo + '\' },true,{d:document.getElementById(\'detalle-ap_domicilios\').getAttribute(\'clave\')},function(){EjecutarRestriccionTags(false,document.getElementById(\'detalle-ap_domicilios\').getAttribute(\'clave\'));});" ><img  src="img/del.png" /></button>' +
+                '</div>':"")+'</fieldset>';
             break;
         case "tiposgastos":
             var indice = GetValor(item, "indice");

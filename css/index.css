@@ -197,7 +197,8 @@ ul.lista .item {
     margin: 0px;
     margin-bottom: 7px;
     background-color: #fff;
-    padding-bottom: 6px;
+    padding-bottom: 10px;
+    padding-top: 10px;
     border-bottom: 1px solid #d2cbcb;
 }
 
