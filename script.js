@@ -903,7 +903,7 @@ function PintarImagenesTexto(xmlDoc0, crearApartados) {
             cont += (GetValor(imgsTexto[j], "path") ? '<img class="file" src="' + url + '/' + GetValor(imgsTexto[j], "path") + "?v=" + Math.random() + '" />' : "") +
                 (GetValor(imgsTexto[j], "descripcion").length > 0 ? '<p>' + GetValor(imgsTexto[j], "descripcion") + '</p>' : '');                             
         } else {
-            cont += (GetValor(imgsTexto[j], "path") ? '<a class="file-link" href="' + url + '/' + GetValor(imgsTexto[j], "path") + "?v=" + Math.random() + '" target="_system">Documento' + extension + '</a>' : "") +
+            cont += (GetValor(imgsTexto[j], "path") ? '<a class="file-link" href="javascript:window.open(\'' + url + '/' + GetValor(imgsTexto[j], "path") + "?v=" + Math.random() + '\',\'_system\')" >Documento' + extension + '</a>' : "") +
                 (GetValor(imgsTexto[j], "descripcion").length > 0 ? '<p>' + GetValor(imgsTexto[j], "descripcion") + '</p>' : '');                             
         }        
     }
