@@ -771,7 +771,7 @@
         <section class="pantalla comunicados" id="comunicados">
             <div class="lista" id="lista-comunicados" redim="redim-comunicados">
                 <div class="titulo"><span>Comunicados</span><button class="buscar-min" onclick="MostrarBuscar('b-com','comunicados','redim-comunicados');"><img src="img/buscar.png" /></button><hr class="clearn" /></div>
-                <div class="busqueda" id="b-com" style="display:none;"><input placeholder="Buscar" /></div>
+                <div class="busqueda" id="b-com" style="display:none;"><input placeholder="Buscar"  onkeypress="if (ValidarEnter(event)) { CargarCatalogo('comunicados', undefined, { buscar: this.value});}" /></div>
                 <div class="agregar" id="edicion-comunicados" style="display:none;"><button clave_funcion="2" control="edicion-comunicados" onclick="IniciarEditar(true,'comunicados');">Agregar comunicado</button></div>
                 <div id="redim-comunicados" class="pantalla-2" classToggle="pantalla-2,pantalla-21" hide="b-com">
                     <div class="head"><img id="portada" class="portada" /><img class="logo" /></div>
