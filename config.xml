@@ -20,6 +20,7 @@
   <plugin name="cordova-plugin-file-transfer" source="npm" />
   <gap:plugin name="cordova-plugin-x-socialsharing" source="npm" />
   <plugin name="cordova-plugin-badge"/>
+  <plugin name="cordova-plugin-device"/>
   <content src="index.html" />
   <allow-intent href="*" />
   <access origin="*" />
