@@ -919,7 +919,7 @@ function AbrirDocumento(url,target) {
         downloadFile(url, nombreArch[nombreArch.length - 1], function (filenntry) {
             var localpath = filenntry.toURL();
             alert(localpath);
-            try { window.open(localpath, '_system'); } catch (e){ }
+            try { navigator.app.loadUrl(localpath, { openExternal: true }); } catch (e){ }
         }, function () { alert("Falló descarga de archivo."); })
     }
 }
