@@ -2525,9 +2525,9 @@ function downloadFile(url, filename, callback, callback_error) {
     } else {
         localpath = phoneGapPath + filename.substring(0, filename.indexOf("?"));
     }
-    alert(url);
+    alert(encodeURI(url));
     alert(localpath);
-    fileTransfer.download(url,
+    fileTransfer.download(encodeURI(url),
         cordova.file.externalApplicationStorageDirectory + 'recibo.pdf',
         function (theFile) {
             if (callback) callback(localpath);
