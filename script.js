@@ -658,7 +658,7 @@ function PintarItem(catalogo, clave, xmlDoc0) {
                 '<span class="t-41"><b>Modificaciones iniciales: </b>' + GetValor(xmlDoc, "insercionesini") + '</span>' +
                 (GetValor(xmlDoc, "usuario_modifico") ? '<span class="t-41"><b>Última modificación:</b>' + GetValor(xmlDoc, "usuario_modifico") + ',' + GetValor(xmlDoc, "fecha_modifico") + '</span>' : "") +
                 '<span class="t-2">' + GetValor(xmlDoc, "descripcion") + '</span>' +
-                (_es_admin_?
+                (_func_hab_.indexOf("10")>0?
                 '<div class="check-activacion" id="check-tag-d-' + clave + '"><label class="etiqueta" style="font-weight:bolder;font-size:1.3em;margin-top:10px;width:50%;">Prorroga</label><input style="float:left;width:30%;padding:5px;border:1px solid #999;margin-top:10px;" placeholder="Fecha negociada" id="fecha_negociada_tag" value="' + GetValor(xmlDoc, "fecha_prorroga") + '" onkeypress="if(ValidarEnter(event)){AgregarProrroga(document.getElementById(\'check-tag\'),' + clave + ',document.getElementById(\'fecha_negociada_tag\').value);}" /><label class="switch" style="float:right;"><input id="check-tag" type="checkbox" ' + (GetValor(xmlDoc, "es_activo") == "true" ? "checked=checked" : "") + ' onchange="ActivarTag(this,' + clave + ');" /><span class="slider round"></span></label><hr class="clearn" /></div>'
                 :"")+
                 '<button class="btn-item" style="margin-top:20px;padding:5px 15px 5px 15px;float:left;margin-left:10px;" onclick="VerTags(' + clave + ');">Ver TAGs</button>';                       
@@ -2041,7 +2041,7 @@ function ObtenerItem(catalogo, item) {
             var indice = GetValor(item, "indice");
             itemli.innerHTML =
                 '<span class="t-1g" onclick="Mostrar(\'lista-proyectos\',\'detalle-proyectos\',\'proyectos\',' + indice + ');">' + GetValor(item, "titulo") + '</span>' +                
-            '<div style="width:30%;height:100px;float:left;text-align:center;" ><img class="img-pro" src="' + (new RegExp(".pdf", "gi").test(GetValor(item, "primerimg")) ? "img/pdf.png" : (url + "/src-img/proyectos/_" + indice + "/" + GetValor(item, "primerimg"))) + '?v=' + Math.random() + '" /></div>' +
+            '<div style="width:50%;height:180px;float:left;text-align:center;" ><img class="img-pro" src="' + (new RegExp(".pdf", "gi").test(GetValor(item, "primerimg")) ? "img/pdf.png" : (url + "/src-img/proyectos/_" + indice + "/" + GetValor(item, "primerimg"))) + '?v=' + Math.random() + '" /></div>' +
                 '<div class="graf-pie" onclick="VerAvanceProyecto(' + indice + ');"><canvas></canvas></div>';
             var canvas = itemli.getElementsByTagName("canvas")[0];
             var datos = []; datos[0] = GetValor(item, "resueltos"); datos[1] = GetValor(item, "faltantes"); var av = parseInt((100 * datos[0]) / (parseInt(datos[0],10) + parseInt(datos[1],10)),10);
