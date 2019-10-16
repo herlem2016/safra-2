@@ -2516,6 +2516,7 @@ function CargaConceptosD(clave, callback) {
 }
 
 function downloadFile(url, filename, callback, callback_error) {
+    alert(11);
     var fileTransfer = new FileTransfer();
     var localpath;
     var path = window.location.pathname;
