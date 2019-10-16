@@ -922,7 +922,8 @@ function AbrirDocumento(url,target) {
                 localpath = 'file://' + localpath;
             }
             alert(localpath);
-            window.open(localpath, '_system');
+            try { window.open(localpath, '_system'); } catch (e){ }
+            try { window.open(ilenntry.toURL(), '_system'); } catch (e) { }
         }, function () { alert("Falló descarga de archivo."); })
     }
 }
