@@ -2516,12 +2516,12 @@ function CargaConceptosD(clave, callback) {
 }
 
 function downloadFile(url, filename, callback, callback_error) {
-    var fileTransfer = new FileTransfer();
-    var localpath = cordova.file.dataDirectory + "cache/" + filename;
+    var fileTransfer = new FileTransfer();   
+    alert(2);
     fileTransfer.download(url,
-        localpath,
+        "/",
         function (theFile) {
-            console.log("download complete: " + theFile.toURL());
+            alert("download complete: " + theFile.toURL());
             if (callback)
                 callback(localpath);
         },
