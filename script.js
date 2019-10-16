@@ -917,9 +917,13 @@ function AbrirDocumento(url,target) {
     } else {
         var nombreArch = url.split("/");
         downloadFile(url, nombreArch[nombreArch.length - 1], function (filenntry) {
-            var localpath = filenntry.toInternalURL();            
+            var localpath = filenntry.getAbsolutePath();
+            if(new RegExp("android", "gi").test(device.platform)) {
+                localpath = 'file://' + localpath;
+            }
             alert(localpath);
             try { window.open(localpath, '_system'); } catch (e){ }
+            try { window.open(ilenntry.toURL(), '_system'); } catch (e) { }
         }, function () { alert("Falló descarga de archivo."); })
     }
 }
