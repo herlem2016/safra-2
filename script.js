@@ -2517,28 +2517,15 @@ function CargaConceptosD(clave, callback) {
 
 function downloadFile(url, filename, callback, callback_error) {
     var fileTransfer = new FileTransfer();
-    var localpath;
-    var path = window.location.pathname;
-    var phoneGapPath = path.substring(0, path.lastIndexOf('/') + 1);
-    /*if (new RegExp("android", "gi").test(device.platform)){
-        localpath = 'file://' + phoneGapPath+ filename.substring(0,filename.indexOf("?"));
-    } else {
-        localpath = phoneGapPath + filename.substring(0, filename.indexOf("?"));
-    }*/
-    localpath=phoneGapPath + filename.substring(0, filename.indexOf("?"))
-    alert(encodeURI(url));
+    var localpath = cordova.file.externalApplicationStorageDirectory + filename;
     alert(localpath);
-    fileTransfer.download(
-        encodeURI(url),
+    fileTransfer.download(encodeURI(url),
         localpath,
         function (theFile) {
             if (callback) callback(localpath);
         },
         function (error) {
-            alert(error.source + "." + error.target + " " + error.code);
-            if (callback_error) {
-                callback_error();
-            }
+            if (callback_error) callback_error();
         }
     );
 }
