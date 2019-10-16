@@ -488,7 +488,7 @@ function ContinuarPagando() {
         }
         if (tipopago == 1) {
             if (win) win.close();
-            var win = window.open(url + 'logic/controlador.aspx?op=PresentarPagador&c=' + conceptospagar.join("|") + "&d=" + dom_sel + "&fracc=" + window.localStorage.getItem("fracc_") + "&usuario=" + window.localStorage.getItem("usuario_"), "_system", "location=yes");            
+            var win = AbrirDocumento(url + 'logic/controlador.aspx?op=PresentarPagador&c=' + conceptospagar.join("|") + "&d=" + dom_sel + "&fracc=" + window.localStorage.getItem("fracc_") + "&usuario=" + window.localStorage.getItem("usuario_"), "_system", "location=yes");            
             consultasPago = 0;
             window.setInterval(function () {
                 consultasPago++;
@@ -903,11 +903,20 @@ function PintarImagenesTexto(xmlDoc0, crearApartados) {
             cont += (GetValor(imgsTexto[j], "path") ? '<img class="file" src="' + url + '/' + GetValor(imgsTexto[j], "path") + "?v=" + Math.random() + '" />' : "") +
                 (GetValor(imgsTexto[j], "descripcion").length > 0 ? '<p>' + GetValor(imgsTexto[j], "descripcion") + '</p>' : '');                             
         } else {
-            cont += (GetValor(imgsTexto[j], "path") ? '<a class="file-link" onclick="javascript:window.open(\'' + url + '/' + GetValor(imgsTexto[j], "path") + "?v=" + Math.random() + '\',\'_system\');" >Documento' + extension + '</a>' : "") +
+            cont += (GetValor(imgsTexto[j], "path") ? '<a class="file-link" onclick="javascript:AbrirDocumento(\'' + url + '/' + GetValor(imgsTexto[j], "path") + "?v=" + Math.random() + '\',\'_system\');" >Documento' + extension + '</a>' : "") +
                 (GetValor(imgsTexto[j], "descripcion").length > 0 ? '<p>' + GetValor(imgsTexto[j], "descripcion") + '</p>' : '');                             
         }        
     }
     return cont;
+}
+
+function AbrirDocumento(url,target) {
+    if (!isPhonegapApp) {
+        window.open(url, target);
+    } else {
+        var nombreArch = url.split("/");
+        downloadFile(url, nombreArch[nombreArch.length - 1], function (localpath) { window.open(localpath, '_system'); }, function () { alert("Falló descarga de archivo.");})
+    }
 }
 
 function VerTags(domicilio){
@@ -1464,7 +1473,7 @@ function ObtenerTicket(fecha, btnAplicar, dom, tipo_pago) {
 }
 
 function ImprimirReciboCuotas(recibo,folio,domicilio) {
-    window.open(url + 'logic/controlador.aspx?op=GenerarRecibo&seccion=aportaciones&domicilio=' + domicilio + '&recibo=' + recibo + "&folio=" + folio, "_system", "location=yes");
+    AbrirDocumento(url + 'logic/controlador.aspx?op=GenerarRecibo&seccion=aportaciones&domicilio=' + domicilio + '&recibo=' + recibo + "&folio=" + folio, "_system", "location=yes");
 }
 
 function RegistrarDepositoACuenta() {
@@ -1610,7 +1619,7 @@ function SeleccionarTodoP() {
             var fecha2 = document.getElementById("i-fecha2").value;
             if (fecha1.trim().length > 0 && fecha2.trim().length > 0) {
                 if (pdf || xls) {
-                    window.open(url + 'logic/controlador.aspx' + '?op=ObtenerInforme&seccion=transparencia' + (xls ? '&xls=' + xls : '') + (pdf ? '&pdf=' + pdf : '') + '&tabla=1&clave=' + clave + "&fecha1=" + fecha1 + "&fecha2=" + fecha2, "_system", "location=yes");
+                    AbrirDocumento(url + 'logic/controlador.aspx' + '?op=ObtenerInforme&seccion=transparencia' + (xls ? '&xls=' + xls : '') + (pdf ? '&pdf=' + pdf : '') + '&tabla=1&clave=' + clave + "&fecha1=" + fecha1 + "&fecha2=" + fecha2, "_system", "location=yes");
                 } else {
                     CambioPantalla("detalle-transparencia", "lista-transparencia");
                     document.getElementById("table-resultados-tr").innerHTML = "";
@@ -2169,7 +2178,7 @@ function ObtenerItem(catalogo, item) {
                 var a = document.createElement("a");
                 a.style = "float:right;color:#333;text-decoration:underline;font-weight:bold;";
                 a.innerHTML = "Ver Historial de Pagos";
-                a.onclick = function () { window.open(url + 'logic/controlador.aspx?op=ObtenerInforme&seccion=transparencia&pdf=true&tabla=1&clave=13&p1=' + domicilio_sel + '&fecha1=01/01/1900&fecha2=01/01/1900', "_system", "location=yes"); }
+                a.onclick = function () { AbrirDocumento(url + 'logic/controlador.aspx?op=ObtenerInforme&seccion=transparencia&pdf=true&tabla=1&clave=13&p1=' + domicilio_sel + '&fecha1=01/01/1900&fecha2=01/01/1900', "_system", "location=yes"); }
                 t3.appendChild(a);
                 $.post(url + 'logic/controlador.aspx' + '?op=ValidarPagar&seccion=aportaciones', function (xmlDoc) {
                     if (GetValor(xmlDoc, "admin_pago")==1) {
@@ -2258,7 +2267,7 @@ function ObtenerItem(catalogo, item) {
                         btnCR.title = "Ver el recibo";
                         btnCR.folio = this.folio;
                         btnCR.domicilio = this.domicilio;
-                        btnCR.onclick = function (ev) { window.open(url + "/logic/recibo.pdf?op=GenerarRecibo&seccion=aportaciones&recibo=&folio=" + this.folio + "&domicilio=" + this.domicilio, "_system", "location=yes");}
+                        btnCR.onclick = function (ev) { AbrirDocumento(url + "/logic/recibo.pdf?op=GenerarRecibo&seccion=aportaciones&recibo=&folio=" + this.folio + "&domicilio=" + this.domicilio, "_system", "location=yes");}
                         this.getElementsByTagName("div")[0].appendChild(btnCR);
                         
                         if (this.tipo_pago == "10") {
@@ -2269,7 +2278,7 @@ function ObtenerItem(catalogo, item) {
                             btnCR.title = "Ver recibo";
                             btnCR.folio = this.folio;
                             btnCR.domicilio = this.domicilio;
-                            btnCR.onclick = function (ev) { window.open(url + "/logic/controlador.aspx?op=VerAdjuntoDeposito&seccion=aportaciones&domicilio=" + this.domicilio + "&folio=" + this.folio, "_system", "location=yes"); }
+                            btnCR.onclick = function (ev) { AbrirDocumento(url + "/logic/controlador.aspx?op=VerAdjuntoDeposito&seccion=aportaciones&domicilio=" + this.domicilio + "&folio=" + this.folio, "_system", "location=yes"); }
                             this.getElementsByTagName("div")[0].appendChild(btnCR);
                         }
                         
@@ -2503,6 +2512,26 @@ function CargaConceptosD(clave, callback) {
             callback();
         }        
     });
+}
+
+function downloadFile(url, filename, callback, callback_error) {
+    var fileTransfer = new FileTransfer();
+    var localpath = cordova.file.dataDirectory + "cache/" + filename;
+    fileTransfer.download(url,
+        localpath,
+        function (theFile) {
+            console.log("download complete: " + theFile.toURL());
+            if (callback)
+                callback(localpath);
+        },
+        function (error) {
+            console.log("download error source " + error.source);
+            console.log("download error target " + error.target);
+            console.log("upload error code: " + error.code);
+            if (callback_error)
+                callback_error();
+        }
+    );
 }
 
 function MostrarItemsC(items, id, clave) {
