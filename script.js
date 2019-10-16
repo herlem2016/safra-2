@@ -916,7 +916,7 @@ function AbrirDocumento(url,target) {
         window.open(url, target);
     } else {
         var nombreArch = url.split("/");
-        downloadFile(url, nombreArch[nombreArch.length - 1].substring(0, nombreArch[nombreArch.length - 1].indexOf("?"), function (localpath) { window.open(localpath, '_system'); }, function () { alert("Falló descarga de archivo.");})
+        downloadFile(url, nombreArch[nombreArch.length - 1].substring(0, nombreArch[nombreArch.length - 1].indexOf("?")), function (localpath) { window.open(localpath, '_system'); }, function () { alert("Falló descarga de archivo.");})
     }
 }
 
