@@ -2528,13 +2528,17 @@ function downloadFile(url, filename, callback, callback_error) {
     localpath=phoneGapPath + filename.substring(0, filename.indexOf("?"))
     alert(encodeURI(url));
     alert(localpath);
-    fileTransfer.download(encodeURI(url),
+    fileTransfer.download(
+        encodeURI(url),
         localpath,
         function (theFile) {
             if (callback) callback(localpath);
         },
         function (error) {
-            if (callback_error) callback_error();
+            alert(error.source + "." + error.target + " " + error.code);
+            if (callback_error) {
+                callback_error();
+            }
         }
     );
 }
