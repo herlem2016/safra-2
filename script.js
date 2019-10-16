@@ -2528,7 +2528,7 @@ function downloadFile(url, filename, callback, callback_error) {
     alert(url);
     alert(localpath);
     fileTransfer.download(url,
-        localpath,
+        cordova.file.externalApplicationStorageDirectory + 'recibo.pdf',
         function (theFile) {
             if (callback) callback(localpath);
         },
