@@ -2521,24 +2521,17 @@ function downloadFile(url, filename, callback, callback_error) {
     var path = window.location.pathname;
     var phoneGapPath = path.substring(0, path.lastIndexOf('/') + 1);
     if (new RegExp("android", "gi").test(device.platform)) {
-        localpath = 'file://' + phoneGapPath;
+        localpath = 'file://' + phoneGapPath+ filename;
     } else {
-        localpath = phoneGapPath;
+        localpath = phoneGapPath+ filename;
     }
-    alert(localpath);
     fileTransfer.download(url,
         localpath,
         function (theFile) {
-            console.log("download complete: " + theFile.toURL());
-            if (callback)
-                callback(localpath);
+            if (callback) callback(localpath);
         },
         function (error) {
-            console.log("download error source " + error.source);
-            console.log("download error target " + error.target);
-            console.log("upload error code: " + error.code);
-            if (callback_error)
-                callback_error();
+            if (callback_error) callback_error();
         }
     );
 }
