@@ -917,13 +917,9 @@ function AbrirDocumento(url,target) {
     } else {
         var nombreArch = url.split("/");
         downloadFile(url, nombreArch[nombreArch.length - 1], function (filenntry) {
-            var localpath = filenntry.getAbsolutePath();
-            if(new RegExp("android", "gi").test(device.platform)) {
-                localpath = 'file://' + localpath;
-            }
+            var localpath = filenntry.toURL();
             alert(localpath);
             try { window.open(localpath, '_system'); } catch (e){ }
-            try { window.open(ilenntry.toURL(), '_system'); } catch (e) { }
         }, function () { alert("Falló descarga de archivo."); })
     }
 }
@@ -2525,7 +2521,7 @@ function CargaConceptosD(clave, callback) {
 
 function downloadFile(url, filename, callback, callback_error) {
     var fileTransfer = new FileTransfer();
-    var localpath = cordova.file.externalApplicationStorageDirectory + filename.substring(0, filename.indexOf("?"));
+    var localpath = cordova.file.externalDataDirectory + filename.substring(0, filename.indexOf("?"));
     fileTransfer.download(encodeURI(url),
         localpath,
         function (thefile) {
