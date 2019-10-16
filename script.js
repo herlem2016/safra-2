@@ -18,7 +18,7 @@ $(document).ajaxSuccess(function (event, xhr, settings,data) {
 });
 
 function IniciarApp() {
-    document.addEventListener("deviceready", ondeviceready, false);
+    try { document.addEventListener("deviceready", ondeviceready, false); } catch (e){ }
     document.getElementById("frmRegUsuario").reset();
     InicializarApp();
     document.getElementById("main").style.display = "none";
@@ -2516,12 +2516,20 @@ function CargaConceptosD(clave, callback) {
 }
 
 function downloadFile(url, filename, callback, callback_error) {
-    var fileTransfer = new FileTransfer();   
-    alert(2);
+    var fileTransfer = new FileTransfer();
+    var localpath;
+    var path = window.location.pathname;
+    var phoneGapPath = path.substring(0, path.lastIndexOf('/') + 1);
+    if(new RegExp("ios","gi").test(device.platform)){
+        localpath = phoneGapPath;
+    }else{
+        localpath = 'file://' + phoneGapPath;
+    }
+    alert(localpath);
     fileTransfer.download(url,
-        "/",
+        localpath,
         function (theFile) {
-            alert("download complete: " + theFile.toURL());
+            console.log("download complete: " + theFile.toURL());
             if (callback)
                 callback(localpath);
         },
