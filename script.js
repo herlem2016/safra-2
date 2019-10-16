@@ -1,7 +1,6 @@
 ﻿var isPhonegapApp = false;
-window.ondeviceready=function(){
+var ondeviceready=function(){
     isPhonegapApp = true;
-    alert(1);
 }
 window.onresize = function () {
     //EstablecerDimensiones();
@@ -19,6 +18,7 @@ $(document).ajaxSuccess(function (event, xhr, settings,data) {
 });
 
 function IniciarApp() {
+    document.addEventListener("deviceready", onDeviceReady, false);
     document.getElementById("frmRegUsuario").reset();
     InicializarApp();
     document.getElementById("main").style.display = "none";
