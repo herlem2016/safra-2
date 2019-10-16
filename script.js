@@ -916,7 +916,7 @@ function AbrirDocumento(url,target) {
         window.open(url, target);
     } else {
         var nombreArch = url.split("/");
-        downloadFile(url, nombreArch[nombreArch.length - 1], function (filenntry) { window.open(filenntry.fullPath, '_system'); }, function () { alert("Falló descarga de archivo.");})
+        downloadFile(url, nombreArch[nombreArch.length - 1], function (filenntry) { alert(filenntry.fullPath);/*window.open(filenntry.fullPath, '_system');*/ }, function () { alert("Falló descarga de archivo.");})
     }
 }
 
