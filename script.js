@@ -916,7 +916,7 @@ function AbrirDocumento(url,target) {
         window.open(url, target);
     } else {
         var nombreArch = url.split("/");
-        downloadFile(url, nombreArch[nombreArch.length - 1], function (localpath) { window.open(localpath, '_system'); }, function () { alert("Falló descarga de archivo.");})
+        downloadFile(url, nombreArch[nombreArch.length - 1], function (filenntry) { window.open(filenntry.fullPath, '_system'); }, function () { alert("Falló descarga de archivo.");})
     }
 }
 
@@ -2518,13 +2518,10 @@ function CargaConceptosD(clave, callback) {
 function downloadFile(url, filename, callback, callback_error) {
     var fileTransfer = new FileTransfer();
     var localpath = cordova.file.externalApplicationStorageDirectory + filename.substring(0, filename.indexOf("?"));
-    alert(url);
-    alert(localpath);
     fileTransfer.download(encodeURI(url),
         localpath,
-        function (theFile) {
-            alert('ok');
-            if (callback) callback(localpath);
+        function (thefile) {
+            if (callback) callback(thefile);
         },
         function (error) {
             if (callback_error) callback_error();
