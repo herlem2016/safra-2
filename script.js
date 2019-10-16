@@ -917,10 +917,9 @@ function AbrirDocumento(url,target) {
     } else {
         var nombreArch = url.split("/");
         downloadFile(url, nombreArch[nombreArch.length - 1], function (filenntry) {
-            if (new RegExp("android", "gi").test(device.platform)) {
-                localpath = 'file://' + filenntry.fullPath;
-            } else {
-                localpath = filenntry.fullPath;
+            var localpath = filenntry.fullPath;
+            if(new RegExp("android", "gi").test(device.platform)) {
+                localpath = 'file://' + localpath;
             }
             alert(localpath);
             window.open(localpath, '_system');
