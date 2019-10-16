@@ -2520,15 +2520,16 @@ function downloadFile(url, filename, callback, callback_error) {
     var localpath;
     var path = window.location.pathname;
     var phoneGapPath = path.substring(0, path.lastIndexOf('/') + 1);
-    if (new RegExp("android", "gi").test(device.platform)){
+    /*if (new RegExp("android", "gi").test(device.platform)){
         localpath = 'file://' + phoneGapPath+ filename.substring(0,filename.indexOf("?"));
     } else {
         localpath = phoneGapPath + filename.substring(0, filename.indexOf("?"));
-    }
+    }*/
+    localpath=phoneGapPath + filename.substring(0, filename.indexOf("?"))
     alert(encodeURI(url));
     alert(localpath);
     fileTransfer.download(encodeURI(url),
-        cordova.file.externalApplicationStorageDirectory + 'recibo.pdf',
+        localpath,
         function (theFile) {
             if (callback) callback(localpath);
         },
