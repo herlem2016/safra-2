@@ -1,6 +1,7 @@
 ﻿var isPhonegapApp = false;
 window.ondeviceready=function(){
-    isPhonegapApp=true;
+    isPhonegapApp = true;
+    alert(1);
 }
 window.onresize = function () {
     //EstablecerDimensiones();
