@@ -18,7 +18,7 @@ $(document).ajaxSuccess(function (event, xhr, settings,data) {
 });
 
 function IniciarApp() {
-    document.addEventListener("deviceready", onDeviceReady, false);
+    document.addEventListener("deviceready", ondeviceready, false);
     document.getElementById("frmRegUsuario").reset();
     InicializarApp();
     document.getElementById("main").style.display = "none";
