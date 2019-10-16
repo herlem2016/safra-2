@@ -2523,6 +2523,7 @@ function downloadFile(url, filename, callback, callback_error) {
     fileTransfer.download(encodeURI(url),
         localpath,
         function (theFile) {
+            alert('ok');
             if (callback) callback(localpath);
         },
         function (error) {
