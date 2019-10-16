@@ -2041,7 +2041,7 @@ function ObtenerItem(catalogo, item) {
             var indice = GetValor(item, "indice");
             itemli.innerHTML =
                 '<span class="t-1g" onclick="Mostrar(\'lista-proyectos\',\'detalle-proyectos\',\'proyectos\',' + indice + ');">' + GetValor(item, "titulo") + '</span>' +                
-            '<div style="width:50%;height:180px;float:left;text-align:center;" ><img class="img-pro" src="' + (new RegExp(".pdf", "gi").test(GetValor(item, "primerimg")) ? "img/pdf.png" : (url + "/src-img/proyectos/_" + indice + "/" + GetValor(item, "primerimg"))) + '?v=' + Math.random() + '" /></div>' +
+                '<div onclick="Mostrar(\'lista-proyectos\',\'detalle-proyectos\',\'proyectos\',' + indice + ');" style="width:50%;height:180px;float:left;text-align:center;" ><img class="img-pro" src="' + (new RegExp(".pdf", "gi").test(GetValor(item, "primerimg")) ? "img/pdf.png" : (url + "/src-img/proyectos/_" + indice + "/" + GetValor(item, "primerimg"))) + '?v=' + Math.random() + '" /></div>' +
                 '<div class="graf-pie" onclick="VerAvanceProyecto(' + indice + ');"><canvas></canvas></div>';
             var canvas = itemli.getElementsByTagName("canvas")[0];
             var datos = []; datos[0] = GetValor(item, "resueltos"); datos[1] = GetValor(item, "faltantes"); var av = parseInt((100 * datos[0]) / (parseInt(datos[0],10) + parseInt(datos[1],10)),10);
@@ -2376,7 +2376,7 @@ function ObtenerItem(catalogo, item) {
             var clave = GetValor(item, "clave");
             itemli.onclick = function () { Mostrar('lista-' + catalogo, 'detalle-' + catalogo, catalogo, clave); }
             itemli.innerHTML =
-                '<div style="width:30%;height:100px;float:left;text-align:center;" ><img class="img-pro" src="' + (new RegExp(".pdf", "gi").test(GetValor(item, "primerimg")) ? "img/pdf.png" : (url + "/src-img/talleres/_" + clave + "/" + GetValor(item, "primerimg"))) + '?v=' + Math.random() + '" /></div>' +
+                '<div onclick="Mostrar(\'lista-proyectos\',\'detalle-talleres\',\'talleres\',' + clave + ');" style="width:30%;height:100px;float:left;text-align:center;" ><img class="img-pro" src="' + (new RegExp(".pdf", "gi").test(GetValor(item, "primerimg")) ? "img/pdf.png" : (url + "/src-img/talleres/_" + clave + "/" + GetValor(item, "primerimg"))) + '?v=' + Math.random() + '" /></div>' +
                 '<div style="width:65%;float:right;padding-top:15px;"><span class="t-1">' + GetValor(item, "titulo") + '</span>' +
                 '<span class="aux-1" style="float:left;clear:left;width:100%;">' + GetValor(item, "horario") + '</span>' +
                 '<span class="t-3n" style="float:right;text-align:right;clear:right;width:100%;">' + GetValor(item, "telefonos") + '</span>' +
@@ -2389,7 +2389,7 @@ function ObtenerItem(catalogo, item) {
             var clave = GetValor(item, "clave");
             itemli.onclick = function () { Mostrar('lista-' + catalogo, 'detalle-' + catalogo, catalogo, clave); }
             itemli.innerHTML =
-                '<div style="width:30%;height:100px;float:left;text-align:center;" ><img class="img-pro" src="' + (new RegExp(".pdf","gi").test(GetValor(item, "primerimg"))?"img/pdf.png": (url + "/src-img/comunicados/_" + clave + "/" + GetValor(item, "primerimg"))) + '?v=' + Math.random() + '" /></div>' +
+                '<div onclick="Mostrar(\'lista-proyectos\',\'detalle-comunicados\',\'comunicados\',' + clave + ');" style="width:30%;height:100px;float:left;text-align:center;" ><img class="img-pro" src="' + (new RegExp(".pdf","gi").test(GetValor(item, "primerimg"))?"img/pdf.png": (url + "/src-img/comunicados/_" + clave + "/" + GetValor(item, "primerimg"))) + '?v=' + Math.random() + '" /></div>' +
                 '<div style="width:65%;float:right;padding-top:15px;"><span class="t-1">' + GetValor(item, "titulo") + '</span>' +
                 '<span class="aux-1" style="float:left;clear:left;width:100%;">' + GetValor(item, "alias") + '</span>' +
                 '<span class="t-3n" style="float:right;text-align:right;clear:right;width:100%;">' + GetValor(item, "estado") + '</span>' +
