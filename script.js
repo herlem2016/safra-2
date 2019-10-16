@@ -916,7 +916,7 @@ function AbrirDocumento(url,target) {
         window.open(url, target);
     } else {
         var nombreArch = url.split("/");
-        downloadFile(url, nombreArch[nombreArch.length - 1].substring(0, nombreArch[nombreArch.length - 1].indexOf("?")), function (localpath) { window.open(localpath, '_system'); }, function () { alert("Falló descarga de archivo.");})
+        downloadFile(url, nombreArch[nombreArch.length - 1], function (localpath) { window.open(localpath, '_system'); }, function () { alert("Falló descarga de archivo.");})
     }
 }
 
@@ -2521,9 +2521,9 @@ function downloadFile(url, filename, callback, callback_error) {
     var path = window.location.pathname;
     var phoneGapPath = path.substring(0, path.lastIndexOf('/') + 1);
     if (new RegExp("android", "gi").test(device.platform)){
-        localpath = 'file://' + phoneGapPath+ filename);
+        localpath = 'file://' + phoneGapPath+ filename.substring(0,filename.indexOf("?"));
     } else {
-        localpath = phoneGapPath+ filename;
+        localpath = phoneGapPath + filename.substring(0, filename.indexOf("?"));
     }
     alert(url);
     alert(localpath);
