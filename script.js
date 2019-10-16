@@ -2520,11 +2520,13 @@ function downloadFile(url, filename, callback, callback_error) {
     var localpath;
     var path = window.location.pathname;
     var phoneGapPath = path.substring(0, path.lastIndexOf('/') + 1);
-    if (new RegExp("android", "gi").test(device.platform)) {
+    if (new RegExp("android", "gi").test(device.platform)){
+        alert('in');
         localpath = 'file://' + phoneGapPath+ filename;
     } else {
         localpath = phoneGapPath+ filename;
     }
+    alert(device.platform);
     fileTransfer.download(url,
         localpath,
         function (theFile) {
