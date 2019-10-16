@@ -2518,9 +2518,9 @@ function CargaConceptosD(clave, callback) {
 function downloadFile(url, filename, callback, callback_error) {
     alert(11);
     alert(window.location.pathname);
+    alert(device.platform);
     var fileTransfer = new FileTransfer();
     var localpath;
-    alert(device.platform);
     var path = window.location.pathname;
     var phoneGapPath = path.substring(0, path.lastIndexOf('/') + 1);
     if(new RegExp("ios","gi").test(device.platform)){
