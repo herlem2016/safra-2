@@ -2517,7 +2517,7 @@ function CargaConceptosD(clave, callback) {
 
 function downloadFile(url, filename, callback, callback_error) {
     var fileTransfer = new FileTransfer();
-    var localpath = cordova.file.documentsDirectory + filename.substring(0, filename.indexOf("?"));
+    var localpath = cordova.file.externalApplicationStorageDirectory + filename.substring(0, filename.indexOf("?"));
     alert(localpath);
     fileTransfer.download(encodeURI(url),
         localpath,
