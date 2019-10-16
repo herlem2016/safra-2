@@ -917,7 +917,7 @@ function AbrirDocumento(url,target) {
     } else {
         var nombreArch = url.split("/");
         downloadFile(url, nombreArch[nombreArch.length - 1], function (filenntry) {
-            var localpath = filenntry.fullPath;
+            var localpath = filenntry.toURL();
             if(new RegExp("android", "gi").test(device.platform)) {
                 localpath = 'file://' + localpath;
             }
