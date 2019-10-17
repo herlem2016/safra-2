@@ -911,14 +911,14 @@ function PintarImagenesTexto(xmlDoc0, crearApartados) {
     return cont;
 }
 
-function AbrirDocumento(url,target) {
+function AbrirDocumento(url, target) {
+    var nombreArch = url.split("?")[0];
+    nombreArch = nombreArch.split('/')[nombreArch.split("/").length - 1];
     if (!isPhonegapApp) {
         window.open(url, target);
     } else {
-        var nombreArch = url.split("/");
-        downloadFile(url, nombreArch[nombreArch.length - 1], function (filenntry) {
+        downloadFile(url,nombreArch, function (filenntry) {
             var localpath = filenntry.toURL();
-            alert(localpath);
             try {
                 cordova.plugins.fileOpener2.open(
                     localpath,
@@ -2536,7 +2536,7 @@ function CargaConceptosD(clave, callback) {
 
 function downloadFile(url, filename, callback, callback_error) {
     var fileTransfer = new FileTransfer();
-    var localpath = cordova.file.externalDataDirectory + filename.substring(0, filename.indexOf("?"));
+    var localpath = cordova.file.externalDataDirectory + filename;
     fileTransfer.download(encodeURI(url),
         localpath,
         function (thefile) {
