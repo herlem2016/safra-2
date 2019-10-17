@@ -919,7 +919,16 @@ function AbrirDocumento(url,target) {
         downloadFile(url, nombreArch[nombreArch.length - 1], function (filenntry) {
             var localpath = filenntry.toURL();
             alert(localpath);
-            try { navigator.app.loadUrl(localpath, { openExternal: true }); } catch (e){ }
+            try {
+                cordova.plugins.fileOpener2.open(
+                    localpath,
+                    'application/pdf',
+                    {
+                        error: function () { },
+                        success: function () { }
+                    }
+                );
+            } catch (e) { }
         }, function () { alert("Falló descarga de archivo."); })
     }
 }

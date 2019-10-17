@@ -22,6 +22,7 @@
   <plugin name="cordova-plugin-badge"/>
   <plugin name="cordova-plugin-device"/>
   <plugin name="cordova-plugin-file"/>
+  <plugin name="cordova-plugin-file-opener2"/>
   <content src="index.html" />
   <allow-intent href="*" />
   <access origin="*" />
