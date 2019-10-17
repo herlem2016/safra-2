@@ -489,7 +489,7 @@ function ContinuarPagando() {
         }
         if (tipopago == 1) {
             if (win) win.close();
-            var win = AbrirDocumento(url + 'logic/controlador.aspx?op=PresentarPagador&c=' + conceptospagar.join("|") + "&d=" + dom_sel + "&fracc=" + window.localStorage.getItem("fracc_") + "&usuario=" + window.localStorage.getItem("usuario_"), "_system", "location=yes");            
+            var win = AbrirDocumento(url + 'logic/controlador.aspx?op=PresentarPagador&c=' + conceptospagar.join("|") + "&d=" + dom_sel + "&fracc=" + window.localStorage.getItem("fracc_") + "&usuario=" + window.localStorage.getItem("usuario_"), "_system");            
             consultasPago = 0;
             window.setInterval(function () {
                 consultasPago++;
@@ -912,20 +912,17 @@ function PintarImagenesTexto(xmlDoc0, crearApartados) {
 }
 
 function AbrirDocumento(url, target, extension) {
-    var _ext = (extension ? extension : "pdf");
     var nombreArch = url.split("?")[0];
     nombreArch = nombreArch.split('/')[nombreArch.split("/").length - 1];
     if (!isPhonegapApp) {
         window.open(url, target);
     } else {
-        alert(url);
-        alert(_ext);
         downloadFile(url,nombreArch, function (filenntry) {
             var localpath = filenntry.toURL();
             try {
                 cordova.plugins.fileOpener2.open(
                     localpath,
-                    'application/' + _ext,
+                    (extension == "xlsx" ? "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" : (extension == "img" ? "image/png" : "application/pdf")),
                     {
                         error: function () { },
                         success: function () { }
@@ -1490,7 +1487,7 @@ function ObtenerTicket(fecha, btnAplicar, dom, tipo_pago) {
 }
 
 function ImprimirReciboCuotas(recibo,folio,domicilio) {
-    AbrirDocumento(url + 'logic/recibo.pdf?op=GenerarRecibo&seccion=aportaciones&domicilio=' + domicilio + '&recibo=' + recibo + "&folio=" + folio, "_system", "location=yes");
+    AbrirDocumento(url + 'logic/recibo.pdf?op=GenerarRecibo&seccion=aportaciones&domicilio=' + domicilio + '&recibo=' + recibo + "&folio=" + folio, "_system");
 }
 
 function RegistrarDepositoACuenta() {
@@ -2195,7 +2192,7 @@ function ObtenerItem(catalogo, item) {
                 var a = document.createElement("a");
                 a.style = "float:right;color:#333;text-decoration:underline;font-weight:bold;";
                 a.innerHTML = "Ver Historial de Pagos";
-                a.onclick = function () { AbrirDocumento(url + 'logic/documento.pdf?op=ObtenerInforme&seccion=transparencia&pdf=true&tabla=1&clave=13&p1=' + domicilio_sel + '&fecha1=01/01/1900&fecha2=01/01/1900', "_system", "location=yes"); }
+                a.onclick = function () { AbrirDocumento(url + 'logic/documento.pdf?op=ObtenerInforme&seccion=transparencia&pdf=true&tabla=1&clave=13&p1=' + domicilio_sel + '&fecha1=01/01/1900&fecha2=01/01/1900', "_system"); }
                 t3.appendChild(a);
                 $.post(url + 'logic/controlador.aspx' + '?op=ValidarPagar&seccion=aportaciones', function (xmlDoc) {
                     if (GetValor(xmlDoc, "admin_pago")==1) {
@@ -2287,7 +2284,7 @@ function ObtenerItem(catalogo, item) {
                         btnCR.title = "Ver el recibo";
                         btnCR.folio = this.folio;
                         btnCR.domicilio = this.domicilio;
-                        btnCR.onclick = function (ev) { AbrirDocumento(url + "/logic/recibo.pdf?op=GenerarRecibo&seccion=aportaciones&recibo=&folio=" + this.folio + "&domicilio=" + this.domicilio, "_system", "location=yes");}
+                        btnCR.onclick = function (ev) { AbrirDocumento(url + "/logic/recibo.pdf?op=GenerarRecibo&seccion=aportaciones&recibo=&folio=" + this.folio + "&domicilio=" + this.domicilio, "_system");}
                         this.getElementsByTagName("div")[0].appendChild(btnCR);
                         
                         if (this.tipo_pago == "10") {
@@ -2298,7 +2295,7 @@ function ObtenerItem(catalogo, item) {
                             btnCR.title = "Ver recibo";
                             btnCR.folio = this.folio;
                             btnCR.domicilio = this.domicilio;
-                            btnCR.onclick = function (ev) { AbrirDocumento(url + "/logic/controlador.aspx?op=VerAdjuntoDeposito&seccion=aportaciones&domicilio=" + this.domicilio + "&folio=" + this.folio, "_system", "location=yes"); }
+                            btnCR.onclick = function (ev) { AbrirDocumento(url + "/logic/controlador.aspx?op=VerAdjuntoDeposito&seccion=aportaciones&domicilio=" + this.domicilio + "&folio=" + this.folio, "_system","img"); }
                             this.getElementsByTagName("div")[0].appendChild(btnCR);
                         }
                         
