@@ -1487,7 +1487,7 @@ function ObtenerTicket(fecha, btnAplicar, dom, tipo_pago) {
 }
 
 function ImprimirReciboCuotas(recibo,folio,domicilio) {
-    AbrirDocumento(url + 'logic/controlador.aspx?op=GenerarRecibo&seccion=aportaciones&domicilio=' + domicilio + '&recibo=' + recibo + "&folio=" + folio, "_system", "location=yes");
+    AbrirDocumento(url + 'logic/recibo.pdf?op=GenerarRecibo&seccion=aportaciones&domicilio=' + domicilio + '&recibo=' + recibo + "&folio=" + folio, "_system", "location=yes");
 }
 
 function RegistrarDepositoACuenta() {
@@ -1633,7 +1633,7 @@ function SeleccionarTodoP() {
             var fecha2 = document.getElementById("i-fecha2").value;
             if (fecha1.trim().length > 0 && fecha2.trim().length > 0) {
                 if (pdf || xls) {
-                    AbrirDocumento(url + 'logic/controlador.aspx' + '?op=ObtenerInforme&seccion=transparencia' + (xls ? '&xls=' + xls : '') + (pdf ? '&pdf=' + pdf : '') + '&tabla=1&clave=' + clave + "&fecha1=" + fecha1 + "&fecha2=" + fecha2, "_system", "location=yes");
+                    AbrirDocumento(url + 'logic/documento.pdf' + '?op=ObtenerInforme&seccion=transparencia' + (xls ? '&xls=' + xls : '') + (pdf ? '&pdf=' + pdf : '') + '&tabla=1&clave=' + clave + "&fecha1=" + fecha1 + "&fecha2=" + fecha2, "_system", "location=yes");
                 } else {
                     CambioPantalla("detalle-transparencia", "lista-transparencia");
                     document.getElementById("table-resultados-tr").innerHTML = "";
@@ -2192,7 +2192,7 @@ function ObtenerItem(catalogo, item) {
                 var a = document.createElement("a");
                 a.style = "float:right;color:#333;text-decoration:underline;font-weight:bold;";
                 a.innerHTML = "Ver Historial de Pagos";
-                a.onclick = function () { AbrirDocumento(url + 'logic/controlador.aspx?op=ObtenerInforme&seccion=transparencia&pdf=true&tabla=1&clave=13&p1=' + domicilio_sel + '&fecha1=01/01/1900&fecha2=01/01/1900', "_system", "location=yes"); }
+                a.onclick = function () { AbrirDocumento(url + 'logic/documento.pdf?op=ObtenerInforme&seccion=transparencia&pdf=true&tabla=1&clave=13&p1=' + domicilio_sel + '&fecha1=01/01/1900&fecha2=01/01/1900', "_system", "location=yes"); }
                 t3.appendChild(a);
                 $.post(url + 'logic/controlador.aspx' + '?op=ValidarPagar&seccion=aportaciones', function (xmlDoc) {
                     if (GetValor(xmlDoc, "admin_pago")==1) {
@@ -2244,25 +2244,28 @@ function ObtenerItem(catalogo, item) {
                 itemli.tipo_pago = GetValor(item,"tipo_pago");
                 itemli.domicilio = GetValor(item, "domicilio");
                 itemli.onclick = function () {
+                    this.onclick = function () { }
                     if (folio.length > 0) {
                         
-                        this.onclick = function () { }
                         if (_es_admin_) {
-                            var cancelar = document.createElement("button");
-                            cancelar.innerHTML = "Cancelar Pago";
-                            cancelar.className = "aceptar";
-                            cancelar.style = "width:auto;display:inline-block;float:right;font-size:0.8em;margin-right:5%;margin-top:15px;";
-                            cancelar.folio = this.folio;
-                            cancelar.onclick = function (ev) {
-                                ev.stopPropagation();
-                                var observaciones = window.prompt("Ingrese el motivo de cancelación");
-                                if (window.confirm("Confirme que desea eliminar:")) {
-                                    $.post(url + 'logic/controlador.aspx?op=EliminarPago&seccion=aportaciones&folio=' + this.folio, { observaciones: observaciones }, function (xmlDoc) {
-                                        CargarAportaciones();
-                                    });
+
+                            if (_func_hab_.indexOf("14") > 0) {
+                                var cancelar = document.createElement("button");
+                                cancelar.innerHTML = "Cancelar Pago";
+                                cancelar.className = "aceptar";
+                                cancelar.style = "width:auto;display:inline-block;float:right;font-size:0.8em;margin-right:5%;margin-top:15px;";
+                                cancelar.folio = this.folio;
+                                cancelar.onclick = function (ev) {
+                                    ev.stopPropagation();
+                                    var observaciones = window.prompt("Ingrese el motivo de cancelación");
+                                    if (window.confirm("Confirme que desea eliminar:")) {
+                                        $.post(url + 'logic/controlador.aspx?op=EliminarPago&seccion=aportaciones&folio=' + this.folio, { observaciones: observaciones }, function (xmlDoc) {
+                                            CargarAportaciones();
+                                        });
+                                    }
                                 }
+                                this.getElementsByTagName("div")[0].appendChild(cancelar);
                             }
-                            this.getElementsByTagName("div")[0].appendChild(cancelar);
 
                             var btnCR = document.createElement("button");
                             btnCR.innerHTML = "Enviar recibo";
@@ -2323,6 +2326,9 @@ function ObtenerItem(catalogo, item) {
                                 });
                             }
                             this.getElementsByTagName("div")[0].appendChild(editar_hist);
+                            var hr = document.createElement("hr");
+                            hr.className = "clearn";
+                            this.getElementsByTagName("div")[0].appendChild(hr);
                         } else {
                             alert("No puede editarse, corresponde a historial o conciliación.");                
                         }                        
