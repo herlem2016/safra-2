@@ -911,7 +911,8 @@ function PintarImagenesTexto(xmlDoc0, crearApartados) {
     return cont;
 }
 
-function AbrirDocumento(url, target) {
+function AbrirDocumento(url, target, extension) {
+    var _ext = (extension ? extension : "pdf");
     var nombreArch = url.split("?")[0];
     nombreArch = nombreArch.split('/')[nombreArch.split("/").length - 1];
     if (!isPhonegapApp) {
@@ -922,7 +923,7 @@ function AbrirDocumento(url, target) {
             try {
                 cordova.plugins.fileOpener2.open(
                     localpath,
-                    'application/pdf',
+                    'application/' + _ext,
                     {
                         error: function () { },
                         success: function () { }
@@ -1633,7 +1634,7 @@ function SeleccionarTodoP() {
             var fecha2 = document.getElementById("i-fecha2").value;
             if (fecha1.trim().length > 0 && fecha2.trim().length > 0) {
                 if (pdf || xls) {
-                    AbrirDocumento(url + 'logic/documento.pdf' + '?op=ObtenerInforme&seccion=transparencia' + (xls ? '&xls=' + xls : '') + (pdf ? '&pdf=' + pdf : '') + '&tabla=1&clave=' + clave + "&fecha1=" + fecha1 + "&fecha2=" + fecha2, "_system", "location=yes");
+                    AbrirDocumento(url + 'logic/documento.'+(pdf?'pdf':'xlsx') + '?op=ObtenerInforme&seccion=transparencia' + (xls ? '&xls=' + xls : '') + (pdf ? '&pdf=' + pdf : '') + '&tabla=1&clave=' + clave + "&fecha1=" + fecha1 + "&fecha2=" + fecha2, "_system", pdf?'pdf':'xlsx');
                 } else {
                     CambioPantalla("detalle-transparencia", "lista-transparencia");
                     document.getElementById("table-resultados-tr").innerHTML = "";
