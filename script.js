@@ -918,6 +918,8 @@ function AbrirDocumento(url, target, extension) {
     if (!isPhonegapApp) {
         window.open(url, target);
     } else {
+        alert(url);
+        alert(_ext);
         downloadFile(url,nombreArch, function (filenntry) {
             var localpath = filenntry.toURL();
             try {
