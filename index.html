@@ -226,9 +226,6 @@
                 <li id="tipo-usuario"></li>
                 <li><i id="u-domicilio"></i></li>
                 <li><b id="u-fraccionamiento"></b></li>
-                <li><button class="share btn2" onclick="CompartirAplicacion()"><img src="img/share.png" title="Compartir" style="float:left;" /><span style="float:left;margin-top:5px;margin-left:10px;">Compartir aplicación</span></button><hr class="clearn" /></li>
-                <li><button class="btn2" onclick="PantallaMostrar('safra','section');ToogleOpcionesUsuario('opciones-usuario');">Cuenta SAFRA</button></li>
-                <hr />
                 <li><button class="btn2" onclick="CerrarSesion(); ToogleOpcionesUsuario('opciones-usuario');">Cerrar sesión</button></li>
             </ul>
         </div>
@@ -246,11 +243,11 @@
                     <li><button onclick="PantallaMostrar('encuestas','section');" class="ok"><img src="img/encuestas.png" />Encuestas</button></li>
                     <li><button onclick="PantallaMostrar('serviciosproductos','section',true);" class="ok"><img src="img/mampara-icon.png" />Mampara</button></li>
                     <li><button onclick="PantallaMostrar('directorio','section');" class="ok"><img src="img/directorio.png" />Agenda</button></li>
-                    <li><button onclick="PantallaMostrar('inmuebles','section',true,function () {var tabInicio = document.getElementById('tab-inicio-inmuebles');TabMostrar(tabInicio, tabInicio.parentNode, 'inmuebles', 'inmuebles');});" class="ok"><img src="img/reservation.png" />Reservaciones</button></li>
+                    <li><button onclick="PantallaMostrar('inmuebles','section')" class="ok"><img src="img/reservation.png" />Reservaciones</button></li>
                     <li><button onclick="PantallaMostrar('notificaciones','section');" class="ok"><img src="img/notificaciones.png" />Actividad</button></li>
                     <li><button onclick="PantallaMostrar('usuarios','section');" class="ok"><img src="img/config.png" />Configuración</button></li>
                     <li><button onclick="PantallaMostrar('vigilancia', 'section', false, function () { var tabInicioVig = document.getElementById('tab-inicio-vig'); TabMostrar(tabInicioVig, tabInicioVig.parentNode, 'visitas', 'vigilancia', function () { }); });" class="ok"><img src="img/vigilancia.png" />Seguridad</button></li>
-                    <li><button onclick="window.open('reglamento_interno.pdf','_blank');" class="ok"><img src="img/docs.png" />Reglamento Interno</button></li>
+                    <li><button onclick="window.open(url + 'reglamento_interno.pdf','_system');" class="ok"><img src="img/docs.png" />Reglamento Interno</button></li>
                     <li><button onclick="ActivarAlarma();" class="ok"><img src="img/alertav.png" />Activar</button></li>
                 </ul>
                 <ul class="menu" style="display:none;" id="menu-vig">
@@ -387,7 +384,7 @@
 
             <div class="lista" id="lista-tags" style="display:none;">
                 <div class="titulo">Tags del domicilio<button class="regresar" onclick="CambioPantalla('detalle-ap_domicilios', 'lista-tags');"><img src="img/back.png" /></button><hr class="clearn" /></div>                
-                <div class="agregar" id="edicion-tags"><button clave_funcion="5" control="edicion-tags" onclick="IniciarEditar(true, 'tags', 2, undefined, undefined, function () {document.getElementById('d-vehi').value= document.getElementById('detalle-ap_domicilios').getAttribute('clave');});">Agregar tag</button></div>
+                <div class="agregar" id="edicion-tags" style="display:none;"><button clave_funcion="11" control="edicion-tags" onclick="IniciarEditar(true, 'tags', 2, undefined, undefined, function () {document.getElementById('d-vehi').value= document.getElementById('detalle-ap_domicilios').getAttribute('clave');});">Agregar tag</button></div>
                 <ul class="lista seleccionable pantalla-21"></ul>
             </div>
             <div class="edicion" style="display:none;" id="p-edicion-tags">
@@ -580,131 +577,134 @@
         </section>
 
         <section class="pantalla" id="inmuebles">
-            <div id="tab-inmuebles">
-                <div class="lista" id="lista-inmuebles" redim="redim-inmuebles">
-                    <div class="titulo"><span>Reservación de Inmuebles</span><hr class="clearn" /></div>
-                    <div class="busqueda" id="b-inm" style="display:none;"><input placeholder="Buscar" onkeypress="if(ValidarEnter(event)){CargarCatalogo('inmuebles', undefined, { buscar: this.value });}" /></div>
-                    <div class="agregar" id="edicion-inmuebles" style="display:none;"><button clave_funcion="7" control="edicion-inmuebles" onclick="IniciarEditar(true,'inmuebles',2);">Agregar inmueble</button></div>
-                    <div style="font-size:0.9em;padding:7px;">
-                        <button class="btn-item" style="float:left;" onclick="CargarCatalogo('ap__usuarios', function(){CambioPantalla('lista-ap__usuarios', 'lista-inmuebles'); });">Confirmar Reservación</button>
-                        <button class="btn-item" onclick="CargarCatalogo('solicitudes_res', function(){CambioPantalla('lista-solicitudes_res','lista-inmuebles')});">Ver Solicitudes</button>
-                        <hr class="clearn" />
-                    </div>
-                    <ul class="lista seleccionable pantalla-5" id="redim-inmuebles" classToggle="pantalla-5,pantalla-51" hide="b-inm"></ul>
+            <!--<div id="tab-inmuebles">-->
+            <div class="lista" id="lista-inmuebles" redim="redim-inmuebles">
+                <div class="titulo"><span>Reservación de Inmuebles</span><hr class="clearn" /></div>
+                <div class="busqueda" id="b-inm" style="display:none;"><input placeholder="Buscar" onkeypress="if(ValidarEnter(event)){CargarCatalogo('inmuebles', undefined, { buscar: this.value });}" /></div>
+                <div class="agregar" id="edicion-inmuebles" style="display:none;"><button clave_funcion="7" control="edicion-inmuebles" onclick="IniciarEditar(true,'inmuebles',2);">Agregar inmueble</button></div>
+                <div style="font-size:0.9em;padding:7px;">
+                    <button class="btn-item" style="float:left;display:none;" clave_funcion="7" id="conf-reserv" control="conf-reserv" onclick="CargarCatalogo('ap__usuarios', function(){CambioPantalla('lista-ap__usuarios', 'lista-inmuebles'); });">Confirmar Reservación</button>
+                    <button class="btn-item" onclick="CargarCatalogo('solicitudes_res', function(){CambioPantalla('lista-solicitudes_res','lista-inmuebles')});">Ver Solicitudes</button>
+                    <hr class="clearn" />
                 </div>
+                <ul class="lista seleccionable pantalla-5" id="redim-inmuebles" classToggle="pantalla-5,pantalla-51" hide="b-inm"></ul>
+            </div>
 
-                <div id="lista-solicitudes_res" style="display:none;" redim="redim-solicitudes_res">
-                    <div class="titulo"><span>Solicitudes de Reservaciones</span><button class="buscar-min" onclick="MostrarBuscar('buscar-solicitud_res', 'solicitudes_res', 'redim-solicitudes_res');"><img src="img/buscar.png" /></button><button class="regresar" id="cancelar-edit-erogacion" onclick="CambioPantalla('lista-inmuebles','lista-solicitudes_res');"><img src="img/back.png" /></button><hr class="clearn" /></div>
-                    <div class="busqueda" style="display:none;" id="buscar-solicitud_res"><input placeholder="Buscar" onkeypress="if(ValidarEnter(event)){CargarCatalogo('solicitudes_res', undefined, { buscar: this.value });}" /></div>
-                    <ul class="listaP seleccionable pantalla-2" id="redim-solicitudes_res" classToggle="pantalla-2,pantalla-21" hide="buscar-per"></ul>
+            <div id="lista-solicitudes_res" style="display:none;" redim="redim-solicitudes_res">
+                <div class="titulo"><span>Solicitudes de Reservaciones</span><button class="buscar-min" onclick="MostrarBuscar('buscar-solicitud_res', 'solicitudes_res', 'redim-solicitudes_res');"><img src="img/buscar.png" /></button><button class="regresar" id="cancelar-edit-erogacion" onclick="CambioPantalla('lista-inmuebles','lista-solicitudes_res');"><img src="img/back.png" /></button><hr class="clearn" /></div>
+                <div class="busqueda" style="display:none;" id="buscar-solicitud_res"><input placeholder="Buscar" onkeypress="if(ValidarEnter(event)){CargarCatalogo('solicitudes_res', undefined, { buscar: this.value });}" /></div>
+                <ul class="listaP seleccionable pantalla-2" id="redim-solicitudes_res" classToggle="pantalla-2,pantalla-21" hide="buscar-per"></ul>
+            </div>
+
+            <div id="lista-pagos_res" style="display:none;" redim="redim-pagos_res">
+                <div class="titulo"><span>Pagos realizados</span><button class="regresar" id="cancelar-edit-erogacion" onclick="CambioPantalla('lista-solicitudes_res','lista-pagos_res');"><img src="img/back.png" /></button><hr class="clearn" /></div>
+                <div class="agregar" id="edicion-pago_res" style="display:none;"><button clave_funcion="7" control="edicion-pago_res" onclick="RegistrarPagoRes();">Registrar Pago</button></div>
+                <div class="listaP seleccionable pantalla-2" id="redim-pagos_res" classToggle="pantalla-2,pantalla-21" hide="buscar-per">
+                    <table class="transparente pagos" style="text-align:center;"><thead><tr><th>Fecha de abono</th><th>Total</th><th>Abono</th><th>Restante</th></tr></thead><tbody id="listado-pagos_res"></tbody></table>
+                    <button class='aceptar' style="margin-top:25px;" onclick="RealizarPagoRes();">Realizar pago</button>
                 </div>
+            </div>
 
-                <div id="lista-pagos_res" style="display:none;" redim="redim-pagos_res">
-                    <div class="titulo"><span>Pagos realizados</span><button class="regresar" id="cancelar-edit-erogacion" onclick="CambioPantalla('lista-solicitudes_res','lista-pagos_res');"><img src="img/back.png" /></button><hr class="clearn" /></div>
-                    <div class="agregar" id="edicion-pago_res" style="display:none;"><button clave_funcion="7" control="edicion-pago_res" onclick="RegistrarPagoRes();">Registrar Pago</button></div>
-                    <div class="listaP seleccionable pantalla-2" id="redim-pagos_res" classToggle="pantalla-2,pantalla-21" hide="buscar-per">
-                        <table class="transparente pagos" style="text-align:center;"><thead><tr><th>Fecha de abono</th><th>Total</th><th>Abono</th><th>Restante</th></tr></thead><tbody id="listado-pagos_res"></tbody></table>
-                        <button class='aceptar' style="margin-top:25px;" onclick="RealizarPagoRes();">Realizar pago</button>
-                    </div>
-                </div>
-
-                <div class="edicion" style="display:none;" id="p-edicion-inmuebles">
-                    <form onsubmit="return false;" id="frm-edit-inmuebles">
-                        <fieldset>
-                            <div class="titulo"><span>Agregar inmueble</span><button class="regresar" id="cancelar-edit-inmuebles" onclick="Mostrar('p-edicion-inmuebles','lista-inmuebles');"><img src="img/back.png" /></button><hr class="clearn" /></div>
-                            <div class="pantalla-3">
-                                <input name="esNuevo" type="hidden" id="op-inmuebles" />
-                                <input name="clave" type="hidden" id="clave-inmuebles" />
-                                <label>Inmueble</label><input name="titulo" id="in-titulo" />
-                                <label>Cuota por hora</label><input name="cuotah" id="cuotah" onkeypress="return SoloNumeros(event,'.');" />
-                                <label>Describa los usos que tendrá el inmueble</label><textarea maxlength="300" style="height:100px;" name="descripcion" id="in-descripcion"></textarea>
-                                <button class="aceptar" style="margin-top:20px;" onclick="Guardar(this,'inmuebles', function () { LimpiarForm('inmuebles');CargarCatalogo(catalogo);Mostrar('p-edicion-inmuebles','lista-inmuebles');});">Guardar</button>
-                            </div>
-                        </fieldset>
-                    </form>
-                </div>
-
-                <div class="edicion" style="display:none;" id="p-regen_inmuebles">
-                    <div class="titulo"><span>Calendario de reservaciones</span><button class="regresar" id="cancelar-edit-erogacion" onclick="CambioPantalla('lista-inmuebles','p-regen_inmuebles');"><img src="img/back.png" /></button></div>
-                    <div class="pantalla-2">
-                        <div class="leyenda" style="margin:5px;">
-                            <input type="hidden" id="inmueble" />
-                            <p style="margin-top:0px;padding:10px;">
-                                Seleccione la fecha de su interés para reservar un horario disponible.
-                            </p>
+            <div class="edicion" style="display:none;" id="p-edicion-inmuebles">
+                <form onsubmit="return false;" id="frm-edit-inmuebles">
+                    <fieldset>
+                        <div class="titulo"><span>Agregar inmueble</span><button class="regresar" id="cancelar-edit-inmuebles" onclick="Mostrar('p-edicion-inmuebles','lista-inmuebles');"><img src="img/back.png" /></button><hr class="clearn" /></div>
+                        <div class="pantalla-3">
+                            <input name="esNuevo" type="hidden" id="op-inmuebles" />
+                            <input name="clave" type="hidden" id="clave-inmuebles" />
+                            <label>Inmueble</label><input name="titulo" id="in-titulo" />
+                            <label>Cuota por hora</label><input name="cuotah" id="cuotah" onkeypress="return SoloNumeros(event,'.');" />
+                            <label>Describa los usos que tendrá el inmueble</label><textarea maxlength="300" style="height:100px;" name="descripcion" id="in-descripcion"></textarea>
+                            <button class="aceptar" style="margin-top:20px;" onclick="Guardar(this,'inmuebles', function () { LimpiarForm('inmuebles');CargarCatalogo(catalogo);Mostrar('p-edicion-inmuebles','lista-inmuebles');});">Guardar</button>
                         </div>
-                        <div id="calendario-ev-inm" style="font-size:0.9em;"></div>
+                    </fieldset>
+                </form>
+            </div>
+
+            <div class="edicion" style="display:none;" id="p-regen_inmuebles">
+                <div class="titulo"><span>Calendario de reservaciones</span><button class="regresar" id="cancelar-edit-erogacion" onclick="CambioPantalla('lista-inmuebles','p-regen_inmuebles');"><img src="img/back.png" /></button></div>
+                <div class="pantalla-2">
+                    <div class="leyenda" style="margin:5px;">
+                        <input type="hidden" id="inmueble" />
+                        <p style="margin-top:0px;padding:10px;">
+                            Seleccione la fecha de su interés para reservar un horario disponible.
+                        </p>
+                        <p style="margin-top:10px;padding:10px;">
+                            Una vez realizada su reservación, acuda a las oficinas de administración para confirmar.
+                        </p>
                     </div>
+                    <div id="calendario-ev-inm" style="font-size:0.9em;"></div>
                 </div>
+            </div>
 
-                <div class="lista" id="lista-ap__usuarios" style="display:none;" redim="redim-ap__usuarios">
-                    <div class="titulo"><span>Seleccione usuario</span><button class="buscar-min" onclick="MostrarBuscar('buscar-usu', 'ap__usuarios', 'redim-ap__usuarios');"><img src="img/buscar.png" /></button><button class="regresar" id="cancelar-edit-erogacion" onclick="CambioPantalla('lista-inmuebles','lista-ap__usuarios');"><img src="img/back.png" /></button><hr class="clearn" /></div>
-                    <div class="busqueda" style="display:none;" id="buscar-usu"><input placeholder="Buscar" onkeypress="if(ValidarEnter(event)){CargarCatalogo('ap__usuarios', undefined, { buscar: this.value });}" /></div>
-                    <ul class="lista seleccionable pantalla-2" id="redim-ap__usuarios" classToggle="pantalla-2,pantalla-21" hide="buscar-per"></ul>
+            <div class="lista" id="lista-ap__usuarios" style="display:none;" redim="redim-ap__usuarios">
+                <div class="titulo"><span>Seleccione usuario</span><button class="buscar-min" onclick="MostrarBuscar('buscar-usu', 'ap__usuarios', 'redim-ap__usuarios');"><img src="img/buscar.png" /></button><button class="regresar" id="cancelar-edit-erogacion" onclick="CambioPantalla('lista-inmuebles','lista-ap__usuarios');"><img src="img/back.png" /></button><hr class="clearn" /></div>
+                <div class="busqueda" style="display:none;" id="buscar-usu"><input placeholder="Buscar" onkeypress="if(ValidarEnter(event)){CargarCatalogo('ap__usuarios', undefined, { buscar: this.value });}" /></div>
+                <ul class="lista seleccionable pantalla-2" id="redim-ap__usuarios" classToggle="pantalla-2,pantalla-21" hide="buscar-per"></ul>
+            </div>
+            <div class="lista" id="lista-aportaciones_res" style="display:none;">
+                <div class="titulo">
+                    <span>Pago de Reservaciones</span>
+                    <button id="reg-res" class="regresar" onclick="var dom_sel = document.getElementById('w-datos-persona'); dom_sel.removeAttribute('domicilio_sel');CambioPantalla(this.getAttribute('intA'), this.getAttribute('intB'));" intA="lista-ap__usuarios" intB="lista-aportaciones_res"><img src="img/back.png" /></button>
                 </div>
-                <div class="lista" id="lista-aportaciones_res" style="display:none;">
-                    <div class="titulo">
-                        <span>Pago de Reservaciones</span>
-                        <button id="reg-res" class="regresar" onclick="var dom_sel = document.getElementById('w-datos-persona'); dom_sel.removeAttribute('domicilio_sel');CambioPantalla(this.getAttribute('intA'), this.getAttribute('intB'));" intA="lista-ap__usuarios" intB="lista-aportaciones_res"><img src="img/back.png" /></button>
-                    </div>
-                    <div class="listaP seleccionable pantalla-21" id="redim-aportaciones_res" style="clear:both;margin-top:20px;border-radius:7px;" classToggle="pantalla-31,pantalla-21" hide="b-f-aportaciones_res">
-                        <table class="transparente pagos"><thead><tr><th>Reservación</th><th>Fecha</th><th>Tiempo</th><th>Importe</th></tr></thead><tbody id="listado-reserv"></tbody></table>
-                        <form onsubmit="return false" id="frm-reservar">
-                            <input type="hidden" id="usuario-res" name="usuario" />
-                            <input type="hidden" id="op-aportaciones_res" name="esnuevo" />
-                            <div class="edicion"><label>Total a pagar $</label><input name="monto" id="total-res" placeholder="Ingrese monto" onkeypress="return SoloNumeros(event, '.');" /></div>
-                            <div class="edicion"><label>Observaciones</label><textarea name="observaciones" id="obs-res" maxlength="500"></textarea></div>
-                            <div class="edicion"><label>¿A nombre de quién?</label><input name="nombre" id="anombrede" placeholder="Ingrese Nombre" /></div>
-                            <div class="edicion"><label>Pago a cuenta $</label><input name="pago_a_cuenta" id="pago_a_cuenta" placeholder="Ingrese monto" onkeypress="return SoloNumeros(event, '.');" /></div>
-                            <button class='aceptar' style="margin-top:25px;" onclick="GenerarSolicitudRes();">Generar Reservación</button>
-                        </form>
-                    </div>
-                </div>
-
-                <div class="lista" id="lista-reservaciones" style="display:none;">
-                    <div class="titulo"><span>Reservaciones del día</span><button class="regresar" onclick="CalendarioR.yaConsulto = false;$('#calendario-ev-inm').datepicker('refresh');CambioPantalla( 'p-regen_inmuebles','lista-reservaciones'); "><img src="img/back.png" /></button><button class="btn-item" onclick="MostrarPagarREservacion();">Confirmar</button></div>
-                    <div id="ap-datos-dom" style="position:relative;padding:0px;" class="datos-bd">
-                        <div id="w-datos-dom" class="item"></div>
-                    </div>
-                    <input type="hidden" id="fecha-res" />
-                    <input type="hidden" id="mes-res" />
-                    <input type="hidden" id="anio-res" />
-                    <input type="hidden" id="inmueble-res" />
-                    <div class="agregar"><button onclick="AgregarReservaciones();">Agregar Reservación</button></div>
-                    <ul class="lista seleccionable pantalla-3"></ul>
-                </div>
-
-                <div class="lista" id="lista-ap_domicilios_sr" style="display:none;">
-                    <div class="titulo">Seleccionar Domicilio<button class="regresar" onclick="IntercambioVisual('lista-reservaciones','lista-ap_domicilios_sr');"><img src="img/back.png" /></button><hr class="clearn" /></div>
-                    <div class="busqueda"><input placeholder="Buscar" id="b-dom-r" onkeypress="if (ValidarEnter(event)) { CargaDomiciliosS('lista-ap_domicilios_sr','lista-reservaciones');}" /></div>
-                    <ul class="wrap-lista pantalla-5"></ul>
-                </div>
-
-                <div class="detalle" id="detalle-reservaciones" style="display:none;">
-                    <div class="titulo">Detalle de reservación<button class="regresar" onclick="CambioPantalla( 'lista-reservaciones','detalle-reservaciones'); "><img src="img/back.png" /></button></div>
-                    <div class="btns-up"><button class="edit-btn" clave_funcion="7" style="display:none;" control="edit-rese-3" id="edit-rese-3" onclick="IniciarEditar(false,'reservaciones');"><img src="img/edit.png" /></button><button style="display:none;" onclick="IniciarEliminar(this,'reservaciones');" clave_funcion="7" control="del-rese-4" id="del-rese-4" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>
-                    <div class="pantalla-21" id="wrap-detalle-reservaciones"></div>
-                </div>
-
-                <div class="edicion" style="display:none;" id="p-edicion-reservaciones">
-                    <div class="titulo">Editar reservación<button class="regresar" id="cancelar-edit-reservaciones" onclick="Mostrar('p-edicion-reservaciones','lista-reservaciones');"><img src="img/back.png" /></button><hr class="clearn" /></div>
-                    <form onsubmit="return false;" id="frm-edit-reservaciones">
-                        <fieldset>
-                            <div class="pantalla-2">
-                                <input name="esNuevo" type="hidden" id="op-reservaciones" />
-                                <input name="clave" type="hidden" id="clave-reservaciones" />
-                                <input name="inmueble" type="hidden" id="ed-res-inmueble" />
-                                <input name="domicilio" type="hidden" id="ed-res-dom" />
-                                <label>Fecha para reservada</label><input name="fecha_reservada" readonly="readonly" id="fecha_reservada" />
-                                <label>Hora de inicio</label><input name="inicio" id="res-inicio" placeholder="HH:MM" />
-                                <label>Hora que finaliza</label><input name="fin" id="res-fin" placeholder="HH:MM" />
-                                <label>Escriba una breve referencia del evento</label><textarea maxlength="300" style="height:100px;" name="descripcion" id="res-descripcion"></textarea>
-                                <button class="aceptar" style="margin-top:20px;" onclick="Guardar(this, 'reservaciones', function () { LimpiarForm('reservaciones'); CargarCatalogo(catalogo, function () {CalendarioR.yaConsulto = false;$('#calendario-ev-inm').datepicker('refresh');}, {fecha:document.getElementById('fecha-res').value,clave:document.getElementById('inmueble').value});Mostrar('p-edicion-reservaciones','lista-reservaciones');});">Guardar</button>
-                            </div>
-                        </fieldset>
+                <div class="listaP seleccionable pantalla-21" id="redim-aportaciones_res" style="clear:both;margin-top:20px;border-radius:7px;" classToggle="pantalla-31,pantalla-21" hide="b-f-aportaciones_res">
+                    <table class="transparente pagos"><thead><tr><th>Reservación</th><th>Fecha</th><th>Tiempo</th><th>Importe</th></tr></thead><tbody id="listado-reserv"></tbody></table>
+                    <form onsubmit="return false" id="frm-reservar">
+                        <input type="hidden" id="usuario-res" name="usuario" />
+                        <input type="hidden" id="op-aportaciones_res" name="esnuevo" />
+                        <div class="edicion"><label>Total a pagar $</label><input name="monto" id="total-res" placeholder="Ingrese monto" onkeypress="return SoloNumeros(event, '.');" /></div>
+                        <div class="edicion"><label>Observaciones</label><textarea name="observaciones" id="obs-res" maxlength="500"></textarea></div>
+                        <div class="edicion"><label>¿A nombre de quién?</label><input name="nombre" id="anombrede" placeholder="Ingrese Nombre" /></div>
+                        <div class="edicion"><label>Pago a cuenta $</label><input name="pago_a_cuenta" id="pago_a_cuenta" placeholder="Ingrese monto" onkeypress="return SoloNumeros(event, '.');" /></div>
+                        <button class='aceptar' style="margin-top:25px;" onclick="GenerarSolicitudRes();">Generar Reservación</button>
                     </form>
                 </div>
             </div>
+
+            <div class="lista" id="lista-reservaciones" style="display:none;">
+                <div class="titulo"><span>Reservaciones del día</span><button class="regresar" onclick="CalendarioR.yaConsulto = false;$('#calendario-ev-inm').datepicker('refresh');CambioPantalla( 'p-regen_inmuebles','lista-reservaciones'); "><img src="img/back.png" /></button></div>
+                <div id="ap-datos-dom" style="position:relative;padding:0px;" class="datos-bd">
+                    <div id="w-datos-dom" class="item"></div>
+                </div>
+                <input type="hidden" id="fecha-res" />
+                <input type="hidden" id="mes-res" />
+                <input type="hidden" id="anio-res" />
+                <input type="hidden" id="inmueble-res" />
+                <div class="agregar"><button onclick="AgregarReservaciones();">Agregar Reservación</button></div>
+                <ul class="lista seleccionable pantalla-3"></ul>
+            </div>
+
+            <div class="lista" id="lista-ap_domicilios_sr" style="display:none;">
+                <div class="titulo">Seleccionar Domicilio<button class="regresar" onclick="IntercambioVisual('lista-reservaciones','lista-ap_domicilios_sr');"><img src="img/back.png" /></button><hr class="clearn" /></div>
+                <div class="busqueda"><input placeholder="Buscar" id="b-dom-r" onkeypress="if (ValidarEnter(event)) { CargaDomiciliosS('lista-ap_domicilios_sr','lista-reservaciones');}" /></div>
+                <ul class="wrap-lista pantalla-5"></ul>
+            </div>
+
+            <div class="detalle" id="detalle-reservaciones" style="display:none;">
+                <div class="titulo">Detalle de reservación<button class="regresar" onclick="CambioPantalla( 'lista-reservaciones','detalle-reservaciones'); "><img src="img/back.png" /></button></div>
+                <div class="btns-up"><button class="edit-btn" clave_funcion="7" style="display:none;" control="edit-rese-3" id="edit-rese-3" onclick="IniciarEditar(false,'reservaciones');"><img src="img/edit.png" /></button><button style="display:none;" onclick="IniciarEliminar(this,'reservaciones');" clave_funcion="7" control="del-rese-4" id="del-rese-4" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>
+                <div class="pantalla-21" id="wrap-detalle-reservaciones"></div>
+            </div>
+
+            <div class="edicion" style="display:none;" id="p-edicion-reservaciones">
+                <div class="titulo">Editar reservación<button class="regresar" id="cancelar-edit-reservaciones" onclick="Mostrar('p-edicion-reservaciones','lista-reservaciones');"><img src="img/back.png" /></button><hr class="clearn" /></div>
+                <form onsubmit="return false;" id="frm-edit-reservaciones">
+                    <fieldset>
+                        <div class="pantalla-2">
+                            <input name="esNuevo" type="hidden" id="op-reservaciones" />
+                            <input name="clave" type="hidden" id="clave-reservaciones" />
+                            <input name="inmueble" type="hidden" id="ed-res-inmueble" />
+                            <input name="domicilio" type="hidden" id="ed-res-dom" />
+                            <label>Fecha para reservada</label><input name="fecha_reservada" readonly="readonly" id="fecha_reservada" />
+                            <label>Hora de inicio</label><input name="inicio" id="res-inicio" placeholder="HH:MM" />
+                            <label>Hora que finaliza</label><input name="fin" id="res-fin" placeholder="HH:MM" />
+                            <label>Escriba una breve referencia del evento</label><textarea maxlength="300" style="height:100px;" name="descripcion" id="res-descripcion"></textarea>
+                            <button class="aceptar" style="margin-top:20px;" onclick="Guardar(this, 'reservaciones', function () { LimpiarForm('reservaciones'); CargarCatalogo(catalogo, function () {CalendarioR.yaConsulto = false;$('#calendario-ev-inm').datepicker('refresh');}, {fecha:document.getElementById('fecha-res').value,clave:document.getElementById('inmueble').value});Mostrar('p-edicion-reservaciones','lista-reservaciones');});">Guardar</button>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+            <!--</div>
             <div id="tab-talleres">
                 <div class="lista" id="lista-talleres" redim="redim-talleres">
                     <div class="titulo"><span>Talleres</span><button class="buscar-min" onclick="MostrarBuscar('b-tall','talleres','redim-talleres');"><img src="img/buscar.png" /></button><hr class="clearn" /></div>
@@ -742,7 +742,7 @@
             <div style="height:32px;" tabs="tab-inmuebles,tab-talleres" class="tabs-down">
                 <div class="tab" id="tab-inicio-inmuebles" onclick="TabMostrar(this, this.parentNode, 'tab-inmuebles', 'inmuebles');">Inmuebles</div>
                 <div class="tab" style="float:right;" onclick="TabMostrar(this,this.parentNode,'tab-talleres','talleres');">Talleres</div>
-            </div>
+            </div>-->
         </section>
 
         <section class="pantalla directorio" id="directorio">
