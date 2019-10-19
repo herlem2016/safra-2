@@ -684,20 +684,19 @@ function PintarItem(catalogo, clave, xmlDoc0) {
         var clave_cargo = GetValor(xmlDoc, "clave_cargo");
         var usuario = GetValor(xmlDoc, "usuario");
         cont ='<div class="padd30 btnsm30" style="line-height:20px;">'+
-            '<div id="usu-' + clave + '"><span class="t-1"><b>Nombre: </b>' + usuario + '</span>' +
-            '<span class="t-3"><b>Domicilio: </b>' + GetValor(xmlDoc, "domicilio") + '</span></div>' +
+            '<div id="usu-' + clave + '"><span class="t-1"><b>Nombre: </b>' + usuario + '</span></div>' +
             (cargo?
             '<span class="t-2"><b>Cargo: </b>' + GetValor(xmlDoc, "cargo") + '</span>' +
-            '<button clave_funcion="5" id="cargo-usu" control="cargo-usu" class="btn2" style="display:none;" onclick="RemoverCargoUsuario(' + clave + ',' + clave_cargo + ');">Remover Cargo</button>' 
+            '<button class="btn2" onclick="RemoverCargoUsuario(' + clave + ',' + clave_cargo + ');">Remover Cargo</button>' 
             :
-            '<button clave_funcion="5" id="cargo-usu-a" control="cargo-usu-a" class="btn2" style="display:none;" onclick="IniciarAsociarCargo();">Asociar Cargo</button>' 
-            )+
-            '<span><button class="btn2">Suspender AV(Alerta Vecinal) 3 días</button></span>' +
+            '<button class="btn2" onclick="IniciarAsociarCargo();">Asociar Cargo</button>' 
+            )+            
             '<span><button class="btn2" onclick="AsociarDomiciliosPropietario();">Asociar domicilios del propietario</button></span>' +
             '<span><button class="btn2" onclick="IniciarEditar(false,\'usuarios\')">Editar cuenta</button></span>' +
-            '<span><button class="btn2">Bloquear cuenta</button></span>' +
-            '<span><button class="btn2" onclick="BloquearNotificaciones(' + clave + ')">Bloquear notificaciones</button></span>' +
-            '<button class="btn2">Cerrar Sesión Usuario</button></div>';
+            '<button class="btn2" onclick="CerrarSesionesRemotas(' + clave + ');">Cerrar Sesión Usuario</button>'+
+            '<div class="check-activacion" ><label class="etiqueta" style="font-weight:bolder;font-size:1.3em;margin-top:10px;width:50%;">Cuenta activa</label><label class="switch" style="float:right;"><input id="check-sav" type="checkbox" ' + (GetValor(xmlDoc, "deshabilitado") == "true" ? "" : "checked" ) + ' onchange="ActivarDesactivarUsuario(this,' + clave + ');" /><span class="slider round"></span></label><hr class="clearn" /></div>' +        
+            '<div class="check-activacion" ><label class="etiqueta" style="font-weight:bolder;font-size:1.3em;margin-top:10px;width:50%;">Alarma Vecinal Activa</label><input title="Fecha de suspensión" disabled=true style="float:left;width:30%;padding:5px;border:1px solid #999;margin-top:10px;" placeholder="Fecha suspensión" id="fecha_suspension_av" value="' + GetValor(xmlDoc, "fechasuspension") + '" /><label class="switch" style="float:right;"><input id="check-sav" type="checkbox" ' + (GetValor(xmlDoc, "activo_AV") == "true" ? "checked" : "") + ' onchange="SuspenderAlarmaVecinal(this,' + clave + ');" /><span class="slider round"></span></label><hr class="clearn" /></div>'
+            ;
         document.getElementById("wrap-detalle-" + catalogo).innerHTML = cont;
         ; break;
         case "aportaciones":
@@ -706,7 +705,7 @@ function PintarItem(catalogo, clave, xmlDoc0) {
             document.getElementById("wrap-detalle-aportaciones").innerHTML =
             '<div class="' + GetValor(xmlDoc, "leyenda") + '" style="padding:35px;font-size:13px;line-height:7px;">' +
             '<span class="t-3" style="font-size:15px;"><b>' + GetValor(xmlDoc, "leyenda") + '</b><p>' + MoneyFormat(parseFloat(GetValor(xmlDoc, "monto"))) + '</p></span><hr class="clearn"/>' +
-                '<div class="t-1"><b>Concepto:</b><p>' + GetValor(xmlDoc, "concepto") + "</p><b>Fecha:</b><p>" + GetValor(xmlDoc, "fecha_registro") + "</p><br/><b>Residente:</b><p>" + residente + "</p><br/><b>Fecha de registro:</b><p>" + GetValor(xmlDoc, "fecha") + '</p></div>' +
+             '<div class="t-1"><b>Concepto:</b><p>' + GetValor(xmlDoc, "concepto") + "</p><b>Fecha:</b><p>" + GetValor(xmlDoc, "fecha_registro") + "</p><br/><b>Residente:</b><p>" + residente + "</p><br/><b>Fecha de registro:</b><p>" + GetValor(xmlDoc, "fecha") + '</p></div>' +
             '<div class="t-2"><b>Tipo de pago: </b><p>' + GetValor(xmlDoc, "forma_pago") + '</p><br/><b>Recibió:</b><p>' + GetValor(xmlDoc, "recibio") + '</p><br/><b>Canceló:</b><p>' + GetValor(xmlDoc, "cancelo") + '</p><br/></div>' +
             '<div class="t-2"><b>Observaciones: </b><p>' + GetValor(xmlDoc, "observaciones") + '</p></div>' +                    
             '</div>';
@@ -801,6 +800,35 @@ function PintarItem(catalogo, clave, xmlDoc0) {
 
             ; break;
     }
+}
+
+function CerrarSesionesRemotas(clave) {
+    $.post(url + 'logic/controlador.aspx?op=CerrarSesiones&seccion=usuarios&clave=' + clave, function (xmlDoc) {
+        alert(GetValor(xmlDoc,"mensaje"));
+    });
+}
+
+function SuspenderAlarmaVecinal(check, usuario) {
+    $.post(url + 'logic/controlador.aspx?op=PermitirAlarmaVecinal&seccion=usuarios&usuario=' + usuario + "&activar=" + check.checked, function (xmlDoc) {
+        if (GetValor(xmlDoc, "estatus") == 1) {
+            check.checked = (GetValor(xmlDoc, "activo_AV") == "true");
+            document.getElementById("fecha_suspension_av").value=GetValor(xmlDoc,"fechasuspension")
+        } else {
+            check.checked = !check.checked;
+            alert(GetValor(xmlDoc, "mensaje"));
+        }
+    });
+}
+
+function ActivarDesactivarUsuario(check, usuario) {
+    $.post(url + 'logic/controlador.aspx?op=ActivarDesactivarUsuario&seccion=usuarios&usuario=' + usuario + "&activar=" + check.checked, function (xmlDoc) {
+        if (GetValor(xmlDoc, "estatus") == 1) {
+            check.checked = (GetValor(xmlDoc, "activo") == 1);
+        } else {
+            check.checked = !check.checked;
+            alert(GetValor(xmlDoc, "mensaje"));
+        }
+    });   
 }
 
 function MostrarEstadosCuenta() {
@@ -2696,13 +2724,13 @@ function ObtenerCuentaReservaciones(usuario, desesion, intercambio, solicitud, l
         var reservaciones = xmlDoc.getElementsByTagName("Table");
         var listado = document.getElementById("listado-reserv");
         listado.innerHTML = "";
-        var tr,item;
+        var tr, item;
         for (i = 0; i < reservaciones.length; i++) {
             item = reservaciones[i];
             tr = document.createElement("tr");
             tr.innerHTML =
-                '<td style="width:40%;"><span class="t-1" >' + GetValor(item, "descripcion").substring(0,60) + '..</span>' +
-                '<span class="t-2"> ' + GetValor(item, "inmueble") + ", Cuota por hora: " +  MoneyFormat(GetValor(item, "cuotah")) +'</span></td>' +
+                '<td style="width:40%;"><span class="t-1" >' + GetValor(item, "descripcion").substring(0, 60) + '..</span>' +
+                '<span class="t-2"> ' + GetValor(item, "inmueble") + ", Cuota por hora: " + MoneyFormat(GetValor(item, "cuotah")) + '</span></td>' +
                 '<td style="width:30%;"><span class="t-2" >' + GetValor(item, "fr") + ',  <i style="display:block;">' + GetValor(item, "inicio") + " - " + GetValor(item, "fin") + '</i></span></td>' +
                 '<td style="width:15%;"><span class="t-2" >' + GetValor(item, "horas") + ' Hrs.</span></td>' +
                 '<td style="width:15%;"><span class="t-2" >' + MoneyFormat(GetValor(item, "importe")) + '</span></td>';
@@ -2712,7 +2740,7 @@ function ObtenerCuentaReservaciones(usuario, desesion, intercambio, solicitud, l
         tr.innerHTML = "<td colspan='3' style=padding:35px;color:#333;><b>TOTAL</b></td><td>" + MoneyFormat(GetValor(xmlDoc.getElementsByTagName("Table1")[0], "total")) + "</td>";
         var resumen = xmlDoc.getElementsByTagName("Table1")[0];
         document.getElementById("total-res").value = GetValor(resumen, "total");
-        document.getElementById("usuario-res").value = GetValor(resumen,"usuario");
+        document.getElementById("usuario-res").value = GetValor(resumen, "usuario");
         listado.appendChild(tr);
         if (lectura) {
             document.getElementById("frm-reservar").style.display = "none";
@@ -2721,7 +2749,7 @@ function ObtenerCuentaReservaciones(usuario, desesion, intercambio, solicitud, l
         }
         if (intercambio) {
             var btnBack = document.getElementById("reg-res");
-            btnBack.setAttribute("intA",intercambio.b);
+            btnBack.setAttribute("intA", intercambio.b);
             btnBack.setAttribute("intB", intercambio.a);
             CambioPantalla(intercambio.a, intercambio.b);
         } else {
