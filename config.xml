@@ -23,7 +23,7 @@
   <plugin name="cordova-plugin-device"/>
   <plugin name="cordova-plugin-file"/>
   <plugin name="cordova-plugin-file-opener2"/>
-  <plugin name="cordova-plugin-android-permissions"/>
+  <plugin name="cordova-plugin-permission"/>
   <content src="index.html" />
   <allow-intent href="*" />
   <access origin="*" />

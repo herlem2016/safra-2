@@ -1,10 +1,6 @@
 ﻿var isPhonegapApp = false;
-var permissions;
 var ondeviceready = function () {
-    isPhonegapApp = true;
-    try {
-        permissions = cordova.plugins.permissions;
-    } catch (e){ }
+    isPhonegapApp = true;  
 }
 window.onresize = function () {
     //EstablecerDimensiones();
@@ -3208,25 +3204,29 @@ function QuitarEIT(obj,solotexto) {
 }
 
 function IAdjuntarImagenes(img, inBtn) {
-    alert(1);
     try {
-        permissions.hasPermission(permissions.STORAGE, function (status) {
-            if (status.hasPermission) {
-                window.imagePicker.getPictures(
-                    function (results) {
-                        for (var i = 0; i < results.length; i++) {
-                            MarcarImagenAdjunta(img, results[i], inBtn);
-                        }
-                    }, function (error) {
-                        alert('Error: ' + error);
+        var Permission = window.plugins.Permission;
+        var permission = 'android.permission.STORAGE';
+
+        Permission.has(permission, function (result) {
+            if (!result[permission]) {
+                Permission.request(permission, function (results) {
+                    if (results[permission]) {
+                        window.imagePicker.getPictures(
+                            function (results) {
+                                for (var i = 0; i < results.length; i++) {
+                                    MarcarImagenAdjunta(img, results[i], inBtn);
+                                }
+                            }, function (error) {
+                                alert('Error: ' + error);
+                            }
+                        );
                     }
-                );
-            }else{
-                permissions.requestPermission(permissions.STORAGE, function () {
-                    IAdjuntarImagenes(img, inBtn);
-                }, function () { });                
+                }, alert);
+            } else {
+                IAdjuntarImagenes(img, inBtn);
             }
-        });        
+        }, alert);        
     } catch (e) { }
 }
 
