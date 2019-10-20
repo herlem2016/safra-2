@@ -1,10 +1,5 @@
 ﻿var isPhonegapApp = false;
 var permissions = cordova.plugins.permissions;
-
-permissions.checkPermission(permission, successCallback, errorCallback);
-permissions.requestPermission(permission, successCallback, errorCallback);
-permissions.requestPermissions(permissions, successCallback, errorCallback);
-
 var ondeviceready=function(){
     isPhonegapApp = true;
 }
@@ -3209,7 +3204,8 @@ function QuitarEIT(obj,solotexto) {
     }    
 }
 
-function IAdjuntarImagenes(img,inBtn) {
+function IAdjuntarImagenes(img, inBtn) {
+    alert(1);
     try {
         permissions.hasPermission(permissions.STORAGE, function (status) {
             if (status.hasPermission) {
@@ -3222,7 +3218,7 @@ function IAdjuntarImagenes(img,inBtn) {
                         alert('Error: ' + error);
                     }
                 );
-            } else {
+            }else{
                 permissions.requestPermission(permissions.STORAGE, function () {
                     IAdjuntarImagenes(img, inBtn);
                 }, function () { });                
