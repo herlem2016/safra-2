@@ -9,8 +9,15 @@
   </author>
   <platform name="android">
     <resource-file src="google-services.json" target="google-services.json" />
-  <resource-file src="timbre.mp3" target="res/raw/timbre.mp3" />
-</platform>
+    <resource-file src="timbre.mp3" target="res/raw/timbre.mp3" />
+    (in app/res/xml/config.xml)
+    <feature name="Camera">
+      <param name="android-package" value="org.apache.cordova.camera.CameraLauncher" />
+    </feature>
+    (in app/AndroidManifest)
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+  </platform>
   <preference name='phonegap-version' value='cli-7.1.0' />
   <preference name='pgb-builder-version' value='2' />
   <plugin name="cordova-plugin-fcm-with-dependecy-updated" spec="~2.1.2" source="npm" />   
@@ -23,7 +30,7 @@
   <plugin name="cordova-plugin-device"/>
   <plugin name="cordova-plugin-file"/>
   <plugin name="cordova-plugin-file-opener2"/>
-  <plugin name="cordova-plugin-permission"/>
+  <plugin name="cordova-plugin-android-permissions"/>
   <content src="index.html" />
   <allow-intent href="*" />
   <access origin="*" />
