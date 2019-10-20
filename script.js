@@ -3222,7 +3222,15 @@ function IAdjuntarImagenes(img, inBtn) {
                 );
             }else{
                 permissions.requestPermission(permissions.STORAGE, function () {
-                        alert("ok");
+                        window.imagePicker.getPictures(
+                            function (results) {
+                                for (var i = 0; i < results.length; i++) {
+                                    MarcarImagenAdjunta(img, results[i], inBtn);
+                                }
+                            }, function (error) {
+                                alert('Error: ' + error);
+                            }
+                        );
                     }, function () {
                         alert("no");
                 });                
