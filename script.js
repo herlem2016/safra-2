@@ -1,6 +1,7 @@
 ﻿var isPhonegapApp = false;
 var permissions = cordova.plugins.permissions;
-var ondeviceready=function(){
+var ondeviceready = function () {
+    alert(1);
     isPhonegapApp = true;
 }
 window.onresize = function () {
