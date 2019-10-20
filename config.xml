@@ -9,14 +9,7 @@
   </author>
   <platform name="android">
     <resource-file src="google-services.json" target="google-services.json" />
-    <resource-file src="timbre.mp3" target="res/raw/timbre.mp3" />
-    (in app/res/xml/config.xml)
-    <feature name="Camera">
-      <param name="android-package" value="org.apache.cordova.camera.CameraLauncher" />
-    </feature>
-    (in app/AndroidManifest)
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <resource-file src="timbre.mp3" target="res/raw/timbre.mp3" />    
   </platform>
   <preference name='phonegap-version' value='cli-7.1.0' />
   <preference name='pgb-builder-version' value='2' />

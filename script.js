@@ -3209,7 +3209,7 @@ function QuitarEIT(obj,solotexto) {
 
 function IAdjuntarImagenes(img, inBtn) {
     try {
-        permissions.hasPermission(permissions.CAMERA, function (status) {
+        permissions.hasPermission(permissions.STORAGE, function (status) {
             if (status.hasPermission) {
                 window.imagePicker.getPictures(
                     function (results) {
@@ -3221,9 +3221,11 @@ function IAdjuntarImagenes(img, inBtn) {
                     }
                 );
             }else{
-                permissions.requestPermission(permissions.CAMERA, function () {
-                    IAdjuntarImagenes(img, inBtn);
-                }, function () { });                
+                permissions.requestPermission(permissions.STORAGE, function () {
+                        alert("ok");
+                    }, function () {
+                        alert("no");
+                });                
             }
         });        
     } catch (e) { }
