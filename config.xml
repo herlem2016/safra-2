@@ -11,7 +11,6 @@
     <resource-file src="google-services.json" target="google-services.json" />
     <resource-file src="timbre.mp3" target="res/raw/timbre.mp3" />
 
-    <platform name="android">
       <config-file parent="/*" platform="android" target="AndroidManifest.xml">
         <uses-permission android:name="android.permission.CAMERA" />
         <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
