@@ -1,4 +1,10 @@
 ﻿var isPhonegapApp = false;
+var permissions = cordova.plugins.permissions;
+
+permissions.checkPermission(permission, successCallback, errorCallback);
+permissions.requestPermission(permission, successCallback, errorCallback);
+permissions.requestPermissions(permissions, successCallback, errorCallback);
+
 var ondeviceready=function(){
     isPhonegapApp = true;
 }
@@ -2990,7 +2996,7 @@ function PonerEspera(elemento, catalogo) {
         $(elemento).addClass("espera");
         window.boton = elemento;
         window.catalogo = catalogo;
-    } catch (e){ }
+    } catch (e){}
 }
 
 function QuitarEspera() {
@@ -3007,171 +3013,171 @@ function QuitarEspera() {
     } catch (e){ }
 }
 
-        function GuardarUnaImagenTexto(imagenes, textosCambio, i, callback, claveItem, catalogo, es_comprobante) {
-            var imagen = imagenes[i].getElementsByTagName("img")[(es_comprobante ? 1 : 0)];  
-            if (imagen.getAttribute("sel") == 1) {
-                var ft = new FileTransferWeb();
-                var options = function(){};
-                if (isPhonegapApp) {
-                    ft = new FileTransfer();
-                    options = new FileUploadOptions();
-                    options.fileKey = "vImage";
-                    options.fileName = imagen.src.substr(imagen.src.lastIndexOf('/') + 1);
-                    options.mimeType = "image/jpeg";
-                }
-                var datos;
-                if (es_comprobante){
-                    var inputs = imagenes[i].getElementsByTagName('input');
-                    datos = { concepto: inputs[0].value, importe: inputs[1].value, claveItem:claveItem.clave, tipo_erog:claveItem.tipo_erog, catalogo:catalogo };
-                } else {
-                    datos = { descripcion: imagenes[i].getElementsByTagName('textarea')[0].value, claveItem: claveItem, catalogo: catalogo };
-                }
-                options.params = datos;
-                if (!isPhonegapApp) {
-                    options.params["base64"] = true;
-                    options.params["ext"] = imagen.ext;
-                    options.params["vImage"] = imagen.contenido;
-                }
-                options.chunkedMode = false;
-                var ruta = url + 'logic/controlador.aspx?op=GuardarArchivo&seccion=' + (es_comprobante ? catalogo : 'Generico') + '&' + (imagenes[i].getAttribute("indice") ? "&indice=" + imagenes[i].getAttribute("indice") : "");
-                ft.upload(imagen.src, ruta, function (r) {                    
-                    imagenes[i].setAttribute("indice", GetValor(r.response, "clave"));
-                    i++;
-                    if (i < imagenes.length) {
-                        try {
-                            GuardarUnaImagenTexto(imagenes, textosCambio, i++, callback, claveItem, catalogo,es_comprobante);
-                        } catch (e) {
-                            alert(e.message);
-                            QuitarEspera();
-                            alert("Verifique guardado");
-                            if (callback) callback(claveItem);
-                        }
-                    } else {
-                        if (textosCambio.length > 0) {
-                            try {
-                                GuardarUnTexto(textosCambio, 0, callback, claveItem, catalogo,es_comprobante);
-                            } catch (e){
-                                QuitarEspera();
-                                alert(e.message);
-                                if (callback) callback(claveItem);
-                            }
-                        } else {
-                            if (GetValor(r.response, "estatus") == 1) {
-                                QuitarEspera();
-                                if (callback) callback(claveItem);
-                            }                            
-                        }
-                    }
-                }, function (error) {
+function GuardarUnaImagenTexto(imagenes, textosCambio, i, callback, claveItem, catalogo, es_comprobante) {
+    var imagen = imagenes[i].getElementsByTagName("img")[(es_comprobante ? 1 : 0)];  
+    if (imagen.getAttribute("sel") == 1) {
+        var ft = new FileTransferWeb();
+        var options = function () { };       
+        if (isPhonegapApp) {
+            ft = new FileTransfer();
+            options = new FileUploadOptions();
+            options.fileKey = "vImage";
+            options.fileName = imagen.src.substr(imagen.src.lastIndexOf('/') + 1);
+            options.mimeType = "image/jpeg";
+        }
+        var datos;
+        if (es_comprobante){
+            var inputs = imagenes[i].getElementsByTagName('input');
+            datos = { concepto: inputs[0].value, importe: inputs[1].value, claveItem:claveItem.clave, tipo_erog:claveItem.tipo_erog, catalogo:catalogo };
+        } else {
+            datos = { descripcion: imagenes[i].getElementsByTagName('textarea')[0].value, claveItem: claveItem, catalogo: catalogo };
+        }
+        options.params = datos;
+        if (!isPhonegapApp) {
+            options.params["base64"] = true;
+            options.params["ext"] = imagen.ext;
+            options.params["vImage"] = imagen.contenido;
+        }
+        options.chunkedMode = false;
+        var ruta = url + 'logic/controlador.aspx?op=GuardarArchivo&seccion=' + (es_comprobante ? catalogo : 'Generico') + '&' + (imagenes[i].getAttribute("indice") ? "&indice=" + imagenes[i].getAttribute("indice") : "");
+        ft.upload(imagen.src, ruta, function (r) {                    
+            imagenes[i].setAttribute("indice", GetValor(r.response, "clave"));
+            i++;
+            if (i < imagenes.length) {
+                try {
+                    GuardarUnaImagenTexto(imagenes, textosCambio, i++, callback, claveItem, catalogo,es_comprobante);
+                } catch (e) {
+                    alert(e.message);
                     QuitarEspera();
-                    alert("Verifique guardado.");
-                }, options);
-            } else {
-                QuitarEspera();
-                if (callback) callback(claveItem);
-            }
-        }
-
-        var FileTransferWeb = function () { }
-        FileTransferWeb.prototype.upload = function (src, url, success, error,opciones) {                       
-            $.post(url, opciones.params, function (xmlDoc) {
-                if (GetValor(xmlDoc, "estatus")==1){
-                    success({ response: xmlDoc });
-                }else{
-                    error({ response: xmlDoc });
-                }
-            });
-        }
-
-        function GuardarUnTexto(textosCambio, i, callback, clave, catalogo, subitemCatalogo,es_comprobante) {
-            var datos;
-            if (es_comprobante) {
-                var inputs = textosCambio[i].getElementsByTagName('input');
-                datos={ concepto: inputs[0].value, importe:inputs[1].value, indice: textosCambio[i].getAttribute("indice"), catalogo:catalogo };
-            } else {
-                datos = { descripcion: textosCambio[i].getElementsByTagName('textarea')[0].value, indice: textosCambio[i].getAttribute("indice"),catalogo: catalogo };
-            }
-            if (typeof (clave) == "object") {
-                for(var param in clave){
-                    datos[param] = clave[param];
+                    alert("Verifique guardado");
+                    if (callback) callback(claveItem);
                 }
             } else {
-                datos["clave"] = clave;
-            }
-            $.post(url + 'logic/controlador.aspx' + '?op=ActualizarDescripcion&seccion=' + (subitemCatalogo ? catalogo : "Generico"), datos, function (xmlDoc) {
-                textosCambio[i].setAttribute("indice", GetValor(xmlDoc, "clave"));
-                textosCambio[i].setAttribute("cambioTexto","false");
-                i++;
-                if (i < textosCambio.length) {
+                if (textosCambio.length > 0) {
                     try {
-                        GuardarUnTexto(textosCambio, i++, callback, clave, catalogo, subitemCatalogo,es_comprobante);
-                    } catch (e) {
+                        GuardarUnTexto(textosCambio, 0, callback, claveItem, catalogo,es_comprobante);
+                    } catch (e){
                         QuitarEspera();
                         alert(e.message);
-                        if (callback) callback(clave);
-                   }
-                } else {
-                    QuitarEspera();
-                    if (GetValor(xmlDoc, "estatus") == "1") {
-                        if (callback) {
-                            callback(clave);
-                        } else {
-                            alert("Guardado correctamente");
-                        }
-                    } else {
-                        GetValor(xmlDoc, "mensaje")
+                        if (callback) callback(claveItem);
                     }
+                } else {
+                    if (GetValor(r.response, "estatus") == 1) {
+                        QuitarEspera();
+                        if (callback) callback(claveItem);
+                    }                            
                 }
-            });    
+            }
+        }, function (error) {
+            QuitarEspera();
+            alert("Verifique guardado.");
+        }, options);
+    } else {
+        QuitarEspera();
+        if (callback) callback(claveItem);
+    }
+}
+
+var FileTransferWeb = function () { }
+FileTransferWeb.prototype.upload = function (src, url, success, error,opciones) {                       
+    $.post(url, opciones.params, function (xmlDoc) {
+        if (GetValor(xmlDoc, "estatus")==1){
+            success({ response: xmlDoc });
+        }else{
+            error({ response: xmlDoc });
         }
+    });
+}
+
+function GuardarUnTexto(textosCambio, i, callback, clave, catalogo, subitemCatalogo,es_comprobante) {
+    var datos;
+    if (es_comprobante) {
+        var inputs = textosCambio[i].getElementsByTagName('input');
+        datos={ concepto: inputs[0].value, importe:inputs[1].value, indice: textosCambio[i].getAttribute("indice"), catalogo:catalogo };
+    } else {
+        datos = { descripcion: textosCambio[i].getElementsByTagName('textarea')[0].value, indice: textosCambio[i].getAttribute("indice"),catalogo: catalogo };
+    }
+    if (typeof (clave) == "object") {
+        for(var param in clave){
+            datos[param] = clave[param];
+        }
+    } else {
+        datos["clave"] = clave;
+    }
+    $.post(url + 'logic/controlador.aspx' + '?op=ActualizarDescripcion&seccion=' + (subitemCatalogo ? catalogo : "Generico"), datos, function (xmlDoc) {
+        textosCambio[i].setAttribute("indice", GetValor(xmlDoc, "clave"));
+        textosCambio[i].setAttribute("cambioTexto","false");
+        i++;
+        if (i < textosCambio.length) {
+            try {
+                GuardarUnTexto(textosCambio, i++, callback, clave, catalogo, subitemCatalogo,es_comprobante);
+            } catch (e) {
+                QuitarEspera();
+                alert(e.message);
+                if (callback) callback(clave);
+            }
+        } else {
+            QuitarEspera();
+            if (GetValor(xmlDoc, "estatus") == "1") {
+                if (callback) {
+                    callback(clave);
+                } else {
+                    alert("Guardado correctamente");
+                }
+            } else {
+                GetValor(xmlDoc, "mensaje")
+            }
+        }
+    });    
+}
 
 
-        function IAgregarCosto(id,sinImagen) {
-            var contenedor = (typeof id == "object" ? id : document.getElementById(id));
-            var imagenes = contenedor.getElementsByTagName("table");
-            if (imagenes.length == 0 || !sinImagen && (imagenes.length > 0 && imagenes[imagenes.length - 1].getElementsByTagName("img")[1].getAttribute("sel") == 1) || (imagenes[imagenes.length - 1].getAttribute("cambioTexto") == "true") || (imagenes[imagenes.length - 1].getAttribute("cambioTexto") == "false")) {
-                var item = document.createElement("table");
-                item.className = "lista-files";
-                item.innerHTML = '<tbody>' +
-                    '<tr><td><button onclick="QuitarEIT(this);" class="del-btn"><img src="img/del.png" /></button></td><td style="width:70%"><input maxlength="200" onchange="this.parentNode.parentNode.parentNode.parentNode.setAttribute(\'cambioTexto\',\'true\');"/></td><td style="width:30%"><input onkeypress="return SoloNumeros(window.event,\'.\');" maxlength="200" onchange="this.parentNode.parentNode.parentNode.parentNode.setAttribute(\'cambioTexto\',\'true\');"/></td>' + (sinImagen ? "" : '<td style="position:relative;"><button class="con-btn" onclick="IAdjuntarImagenes(this.getElementsByTagName(\'img\')[0],true);">' + (!isPhonegapApp ? '<input type=file name="vImage" style="position:absolute;left:0px;top:0px;width:100%;height:100%;opacity:0;" onchange="var reader = new FileReader();reader.inp=this;reader.readAsDataURL(this.files[0]);reader.in=true;reader.onload=CargarImagenNav;"/>' : '') +'<img src="img/touch.png" /></button></td>') + '</tr>' +
+function IAgregarCosto(id,sinImagen) {
+    var contenedor = (typeof id == "object" ? id : document.getElementById(id));
+    var imagenes = contenedor.getElementsByTagName("table");
+    if (imagenes.length == 0 || !sinImagen && (imagenes.length > 0 && imagenes[imagenes.length - 1].getElementsByTagName("img")[1].getAttribute("sel") == 1) || (imagenes[imagenes.length - 1].getAttribute("cambioTexto") == "true") || (imagenes[imagenes.length - 1].getAttribute("cambioTexto") == "false")) {
+        var item = document.createElement("table");
+        item.className = "lista-files";
+        item.innerHTML = '<tbody>' +
+            '<tr><td><button onclick="QuitarEIT(this);" class="del-btn"><img src="img/del.png" /></button></td><td style="width:70%"><input maxlength="200" onchange="this.parentNode.parentNode.parentNode.parentNode.setAttribute(\'cambioTexto\',\'true\');"/></td><td style="width:30%"><input onkeypress="return SoloNumeros(window.event,\'.\');" maxlength="200" onchange="this.parentNode.parentNode.parentNode.parentNode.setAttribute(\'cambioTexto\',\'true\');"/></td>' + (sinImagen ? "" : '<td style="position:relative;"><button class="con-btn" onclick="IAdjuntarImagenes(this.getElementsByTagName(\'img\')[0],true);">' + (!isPhonegapApp ? '<input type=file name="vImage" style="position:absolute;left:0px;top:0px;width:100%;height:100%;opacity:0;" onchange="var reader = new FileReader();reader.inp=this;reader.readAsDataURL(this.files[0]);reader.in=true;reader.onload=CargarImagenNav;"/>' : '') +'<img src="img/touch.png" /></button></td>') + '</tr>' +
 //                    '<tr class="resultado"><td></td><td><b>Total</b></td><td><b>$ 4,200.00</b></td><td></td><td></td></tr>' +
-                    '</tbody>';
-                item.imagen = item.getElementsByTagName("img")[1];
-                item.texto = item.getElementsByTagName("input")[0];
-                item.texto2 = item.getElementsByTagName("input")[1];                
-                contenedor.appendChild(item);
-            }
-            return item;
-        }
+            '</tbody>';
+        item.imagen = item.getElementsByTagName("img")[1];
+        item.texto = item.getElementsByTagName("input")[0];
+        item.texto2 = item.getElementsByTagName("input")[1];                
+        contenedor.appendChild(item);
+    }
+    return item;
+}
 
 
-        function SoloNumeros(e, ecepciones) {
-            var key = window.Event ? e.which : e.keyCode;
-            var resultado = ((key >= 48 && key <= 57) || key == 8 || key == 127 || key == 0);
-            if (ecepciones) {
-                for (var i = 0; i < ecepciones.length; i++) {
-                    resultado = (resultado || key === ecepciones[i].charCodeAt(0));
-                }
-            }
-            return resultado;
+function SoloNumeros(e, ecepciones) {
+    var key = window.Event ? e.which : e.keyCode;
+    var resultado = ((key >= 48 && key <= 57) || key == 8 || key == 127 || key == 0);
+    if (ecepciones) {
+        for (var i = 0; i < ecepciones.length; i++) {
+            resultado = (resultado || key === ecepciones[i].charCodeAt(0));
         }
+    }
+    return resultado;
+}
 
-        function IAgregarImagenTexto(id, solotexto, mas,ocultarBtnElim) {
-            var contenedor = (typeof id =="object"? id:document.getElementById(id));
-            var imagenes = contenedor.getElementsByTagName("table");
-            if (imagenes.length == 0 || (imagenes.length > 0 && imagenes[imagenes.length - 1].getElementsByTagName("img")[0].getAttribute("sel") == 1) || (imagenes[imagenes.length - 1].getAttribute("cambioTexto")=="true")||mas) {                
-                var item = document.createElement("table");
-                item.className = "lista-files";               
-                item.innerHTML = '<tbody>' +
-                    '<tr> <td style="position:relative;width:90%;">' + (solotexto ? '' : '<img src="img/upload.png" onclick="IAdjuntarImagenes(this);" />' + (!isPhonegapApp ? '<input type=file name="vImage" style="position:absolute;left:0px;top:0px;width:100%;height:100%;opacity:0;" onchange="var reader = new FileReader();reader.inp=this;reader.readAsDataURL(this.files[0]);reader.onload=CargarImagenNav;"/>' : '')) + '</td> ' + (ocultarBtnElim ? '' : '<td style="width: 10 % " rowspan="2" class="del"><button onclick="QuitarEIT(this' + (solotexto ? ",1" : '') + ');" class="del-btn"><img src="img/del.png" /></button>') + '</td></tr >' +
-                    '<tr><td ' + (solotexto ? 'rowspan="2"' : '') + ' ><textarea maxlength="200" onchange="this.parentNode.parentNode.parentNode.parentNode.setAttribute(\'cambioTexto\',\'true\');"></textarea></td></tr>' +
-                    '</tbody>';
-                item.imagen = item.getElementsByTagName("img")[0];                                
-                item.texto = item.getElementsByTagName("textarea")[0];               
-                contenedor.appendChild(item);                
-            }
-            return item;
-        }
+function IAgregarImagenTexto(id, solotexto, mas,ocultarBtnElim) {
+    var contenedor = (typeof id =="object"? id:document.getElementById(id));
+    var imagenes = contenedor.getElementsByTagName("table");
+    if (imagenes.length == 0 || (imagenes.length > 0 && imagenes[imagenes.length - 1].getElementsByTagName("img")[0].getAttribute("sel") == 1) || (imagenes[imagenes.length - 1].getAttribute("cambioTexto")=="true")||mas) {                
+        var item = document.createElement("table");
+        item.className = "lista-files";               
+        item.innerHTML = '<tbody>' +
+            '<tr> <td style="position:relative;width:90%;">' + (solotexto ? '' : '<img src="img/upload.png" onclick="IAdjuntarImagenes(this);" />' + (!isPhonegapApp ? '<input type=file name="vImage" style="position:absolute;left:0px;top:0px;width:100%;height:100%;opacity:0;" onchange="var reader = new FileReader();reader.inp=this;reader.readAsDataURL(this.files[0]);reader.onload=CargarImagenNav;"/>' : '')) + '</td> ' + (ocultarBtnElim ? '' : '<td style="width: 10 % " rowspan="2" class="del"><button onclick="QuitarEIT(this' + (solotexto ? ",1" : '') + ');" class="del-btn"><img src="img/del.png" /></button>') + '</td></tr >' +
+            '<tr><td ' + (solotexto ? 'rowspan="2"' : '') + ' ><textarea maxlength="200" onchange="this.parentNode.parentNode.parentNode.parentNode.setAttribute(\'cambioTexto\',\'true\');"></textarea></td></tr>' +
+            '</tbody>';
+        item.imagen = item.getElementsByTagName("img")[0];                                
+        item.texto = item.getElementsByTagName("textarea")[0];               
+        contenedor.appendChild(item);                
+    }
+    return item;
+}
 
 function CargarImagenNav(e) {
     var img = this.inp.parentNode.getElementsByTagName('img')[0];
@@ -3205,15 +3211,23 @@ function QuitarEIT(obj,solotexto) {
 
 function IAdjuntarImagenes(img,inBtn) {
     try {
-        window.imagePicker.getPictures(
-            function (results) {
-                for (var i = 0; i < results.length; i++) {
-                    MarcarImagenAdjunta(img,results[i], inBtn);
-                }
-            }, function (error) {
-                alert('Error: ' + error);
+        permissions.hasPermission(permissions.STORAGE, function (status) {
+            if (status.hasPermission) {
+                window.imagePicker.getPictures(
+                    function (results) {
+                        for (var i = 0; i < results.length; i++) {
+                            MarcarImagenAdjunta(img, results[i], inBtn);
+                        }
+                    }, function (error) {
+                        alert('Error: ' + error);
+                    }
+                );
+            } else {
+                permissions.requestPermission(permissions.STORAGE, function () {
+                    IAdjuntarImagenes(img, inBtn);
+                }, function () { });                
             }
-        );
+        });        
     } catch (e) { }
 }
 
