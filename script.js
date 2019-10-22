@@ -149,7 +149,7 @@ function EstablecerLogo() {
     }
     var imgs = $("img.logo");
     for (var i = 0; i < imgs.length; i++) {
-        imgs[i].onerror = function () { this.src = url + "img/logotime.jpg?v=1.0"; }
+        imgs[i].onerror = function () { this.src = url + "img/logotime.png?v=1.0"; }
         imgs[i].setAttribute("src", urllogo);
     }
 }
