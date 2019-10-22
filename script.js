@@ -140,9 +140,9 @@ function ObtenerDomiciliosCoincidentes(nombre) {
 }
 
 function EstablecerLogo() {
-    var urllogo = url + "img/logotime.jpg?v=1.0";
+    var urllogo = url + "img/logotime.png?v=1.0";
     if (window.localStorage.getItem("codigoActivacion")) {
-        urllogo = url + "/src-img/fraccionamientos/_" + window.localStorage.getItem("codigoActivacion") + "/logo.jpg";
+        urllogo = url + "/src-img/fraccionamientos/_" + window.localStorage.getItem("codigoActivacion") + "/logo.png";
         var portada = document.getElementById("portada");
         portada.onerror = function () { this.src = url + "img/portadatime.jpg"; }
         portada.src = url + "/src-img/fraccionamientos/_" + window.localStorage.getItem("codigoActivacion") + "/portada.png";
