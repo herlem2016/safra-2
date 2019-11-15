@@ -248,9 +248,6 @@ function RemoverNotificaciones() {
     FCMPlugin.unsubscribeFromTopic('FRA_1_' + window.localStorage.getItem("codigoActivacion") + "-fun_" + i_unsubs_r, function () {
         if (i_unsubs_r < 9) {
             RemoverNotificaciones();
-        } else {
-            FCMPlugin.unsubscribeFromTopic('FRA_1_' + window.localStorage.getItem("codigoActivacion"));
-            FCMPlugin.unsubscribeFromTopic('FRA_1_' + window.localStorage.getItem("codigoActivacion") + "-dom_" + window.localStorage.getItem("domicilio"));
         }
     });
 }

@@ -23,6 +23,7 @@
   <plugin name="cordova-plugin-device"/>
   <plugin name="cordova-plugin-file"/>
   <plugin name="cordova-plugin-file-opener2"/>
+  <preference name="orientation" value="portrait" />
   <content src="index.html" />
   <allow-intent href="*" />
   <access origin="*" />
