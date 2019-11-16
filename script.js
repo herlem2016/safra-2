@@ -356,7 +356,7 @@ function ActivarTimbre_(data) {
     document.getElementById("alarma-timbre").play();
     alarmaVoz.volume=1;
     document.getElementById("timbre").style.display = "block";
-    //document.getElementById("timbre").clavevisita = data.clavevisita;
+    document.getElementById("timbre").data = data;
 }
 
 
@@ -364,7 +364,7 @@ function PresentarVisita() {
 	document.getElementById('alarma-timbre').pause();
 	document.getElementById('timbre-v').play();
     document.getElementById("timbre").style.display = "none";
-	var permitir = window.confirm(data.contenidovoz);
+	var permitir = window.confirm(document.getElementById("timbre").data.contenidovoz);
 	$.post(url + 'logic/controlador.aspx?op=PermitirVisita&seccion=vigilancia&permitir=' + permitir + '&clave=' + document.getElementById("timbre").clavevisita, function (xmlDoc) {
 		alert(GetValor(xmlDoc, "mensaje"));
 	});
