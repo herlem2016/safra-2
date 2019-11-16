@@ -221,8 +221,7 @@ function RegistrarVariables(datos, xmlDoc) {
     window.localStorage.setItem("fracc_", GetValor(xmlDoc, "fraccionamiento"));
     window.localStorage.setItem("email_", datos[0].value);
     window.localStorage.setItem("contrasena_", datos[1].value);
-    window.localStorage.setItem("domicilios", GetValor(xmlDoc, "domicilios").split(','));
-    alert(window.localStorage.getItem("domicilios").join(','));
+    window.localStorage.setItem("domicilios", GetValor(xmlDoc, "domicilios"));
     document.getElementById("nombre-usuario").innerHTML = GetValor(xmlDoc, "nombre");
     document.getElementById("u-fraccionamiento").innerHTML = GetValor(xmlDoc, "s_nfracc");
     document.getElementById("u-domicilio").innerHTML = GetValor(xmlDoc, "s_domicilio");
@@ -293,8 +292,9 @@ function RegistrarNotificaciones() {
                 UnSuscribir();
             });
             FCMPlugin.subscribeToTopic('FRA_1_' + window.localStorage.getItem("codigoActivacion"));
-			for(var k=0;k<window.localStorage.getItem("domicilios").length;k++){
-				FCMPlugin.subscribeToTopic('FRA_1_' + window.localStorage.getItem("codigoActivacion") + "-dom_" + window.localStorage.getItem("domicilios")[k]);
+			var domicilios=window.localStorage.getItem("domicilios").split(',');
+			for(var k=0;k<domicilios.length;k++){
+				FCMPlugin.subscribeToTopic('FRA_1_' + window.localStorage.getItem("codigoActivacion") + "-dom_" + domicilios[k]);
 			}
             FCMPlugin.onNotification(function (data){
                 cordova.plugins.notification.badge.increase(1, function () { });
