@@ -363,11 +363,14 @@ function ActivarTimbre_(data) {
 function PresentarVisita() {
 	document.getElementById('alarma-timbre').pause();
 	document.getElementById('timbre-v').play();
-    document.getElementById("timbre").style.display = "none";
+    document.getElementById("timbre").style.display = "none";		
+}
+
+function PresentarConfirmacion(){
 	var permitir = window.confirm(document.getElementById("timbre").data.contenidovoz);
 	$.post(url + 'logic/controlador.aspx?op=PermitirVisita&seccion=vigilancia&permitir=' + permitir + '&clave=' + document.getElementById("timbre").clavevisita, function (xmlDoc) {
 		alert(GetValor(xmlDoc, "mensaje"));
-	});
+	});	
 }
 
 function ActivarAlarma_(contenidovoz) {
