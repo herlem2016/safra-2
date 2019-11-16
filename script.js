@@ -361,10 +361,10 @@ function ActivarTimbre_(data) {
 
 
 function PresentarVisita() {
-	var alarmaVoz = document.getElementById("timbre-v");
-    alarmaVoz.play();
+	document.getElementById('alarma-timbre').pause();
+	document.getElementById('timbre-v').play();
     document.getElementById("timbre").style.display = "none";
-	var permitir = window.confirm("¿Permite la visita?");
+	var permitir = window.confirm(data.contenidovoz);
 	$.post(url + 'logic/controlador.aspx?op=PermitirVisita&seccion=vigilancia&permitir=' + permitir + '&clave=' + document.getElementById("timbre").clavevisita, function (xmlDoc) {
 		alert(GetValor(xmlDoc, "mensaje"));
 	});
