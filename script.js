@@ -299,6 +299,7 @@ function RegistrarNotificaciones() {
                 if (data.modulo == 1) {
                     ActivarAlarma_(data.contenidovoz);
                 } else if (data.modulo == 2){
+					alert('activando timbre');
                     ActivarTimbre_();
                     var permitir = window.confirm("¿Permite la visita?");
                     $.post(url + 'logic/controlador.aspx?op=PermitirVisita&seccion=vigilancia&permitir=' + permitir + '&clave=' + data.clave, function (xmlDoc) {
