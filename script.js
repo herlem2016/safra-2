@@ -293,16 +293,17 @@ function RegistrarNotificaciones() {
             });
             FCMPlugin.subscribeToTopic('FRA_1_' + window.localStorage.getItem("codigoActivacion"));
             FCMPlugin.subscribeToTopic('FRA_1_' + window.localStorage.getItem("codigoActivacion") + "-dom_" + window.localStorage.getItem("domicilio"));
-            FCMPlugin.onNotification(function (data) {
+			alert('FRA_1_' + window.localStorage.getItem("codigoActivacion") + "-dom_" + window.localStorage.getItem("domicilio"));
+            FCMPlugin.onNotification(function (data){
                 cordova.plugins.notification.badge.increase(1, function () { });
                 if (data.modulo == 1) {
                     ActivarAlarma_(data.contenidovoz);
-                } else if (data.modulo == 2) {
+                } else if (data.modulo == 2){
                     ActivarTimbre_();
                     var permitir = window.confirm("¿Permite la visita?");
-                    /*$.post(url + 'logic/controlador.aspx?op=PermitirVisita&seccion=vigilancia&permitir=' + permitir + '&clave=' + data.clave, function (xmlDoc) {
+                    $.post(url + 'logic/controlador.aspx?op=PermitirVisita&seccion=vigilancia&permitir=' + permitir + '&clave=' + data.clave, function (xmlDoc) {
                         alert(GetValor(xmlDoc, "mensaje"));
-                    });*/
+                    });
                 } else {
                     alert(data.message);
                 }
