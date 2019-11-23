@@ -11,7 +11,7 @@
     <resource-file src="google-services.json" target="google-services.json" />
     <resource-file src="timbre.mp3" target="res/raw/timbre.mp3" />
   </platform>
-  <preference name='phonegap-version' value='cli-7.1.0' />
+  <preference name='phonegap-version' value='cli-9.0.0' />
   <preference name='pgb-builder-version' value='2' />
   <plugin name="cordova-plugin-fcm-with-dependecy-updated" spec="~2.1.2" source="npm" />   
   <plugin name="cordova-plugin-inappbrowser" source="npm" version="1.0.1" />
