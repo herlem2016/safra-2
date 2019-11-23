@@ -8,8 +8,7 @@
     Softronel Team
   </author>
   <platform name="android">
-    <resource-file src="google-services.json" target="google-services.json" />
-    <resource-file src="timbre.mp3" target="res/raw/timbre.mp3" />
+    <resource-file src="google-services.json" target="app/google-services.json" />
   </platform>
   <preference name='phonegap-version' value='cli-9.0.0' />
   <preference name='pgb-builder-version' value='2' />
