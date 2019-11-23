@@ -29,6 +29,7 @@ function InicializarApp() {
     EstablecerDimensiones();
     EstablecerLogo();
 	try{cordova.plugins.backgroundMode.setEnabled(true);}catch(e){}
+	try{cordova.plugins.autoStart.enable();}catch(e){}
 }
 
 function EstablecerDimensiones() {
