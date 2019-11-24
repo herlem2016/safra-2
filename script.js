@@ -300,8 +300,8 @@ function RegistrarNotificaciones() {
 				FCMPlugin.subscribeToTopic('FRA_1_' + window.localStorage.getItem("codigoActivacion") + "-dom_" + domicilios[k]);
 			}
             FCMPlugin.onNotification(function (data){
-				document.getElementById("alarma-timbre").play();
-				//alert(data);
+				//document.getElementById("alarma-timbre").play();
+				alert(data);
                 cordova.plugins.notification.badge.increase(1, function () { });
                 if (data.modulo == 1) {
                     ActivarAlarma_(data.contenidovoz);
