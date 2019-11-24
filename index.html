@@ -267,8 +267,8 @@
         </section>
         
         <div id="timbre" style="position:absolute;display:none;z-index:9999;width:80%;padding:10%;margin-top:35%;background-color:#ff0000;text-align:center;">
-            <audio id="timbre-v" style='display:none;' onended="PresentarConfirmacion();"></audio>
-            <audio id="alarma-timbre" src="audios/timbre2.mp3" loop style="display:none;"></audio>
+            <audio id="timbre-v" style='display:block;' onended="PresentarConfirmacion();"></audio>
+            <audio id="alarma-timbre" controls src="audios/timbre2.mp3" loop style="display:none;"></audio>
             <button class="aceptar" onclick="PresentarVisita();" style="margin-top:20px;">¿Quién es?</button>
         </div>
 

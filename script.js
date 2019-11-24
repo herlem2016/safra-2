@@ -300,7 +300,7 @@ function RegistrarNotificaciones() {
 				FCMPlugin.subscribeToTopic('FRA_1_' + window.localStorage.getItem("codigoActivacion") + "-dom_" + domicilios[k]);
 			}
             FCMPlugin.onNotification(function (data){
-				//document.getElementById("alarma-timbre").play();
+				document.getElementById("alarma-timbre").play();
 				foreach(dato in data){
 					alert(dato + ":" + data[dato]);					
 				}
