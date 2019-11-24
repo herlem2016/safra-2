@@ -30,7 +30,6 @@ function InicializarApp() {
     EstablecerLogo();
 	try{cordova.plugins.backgroundMode.setEnabled(true);}catch(e){}
 	try{cordova.plugins.autoStart.enable();}catch(e){}
-	window.plugins.CallNumber.callNumber(function(result){alert(result);}, function(result){alert(result);}, 7713538891, true);
 }
 
 function EstablecerDimensiones() {
