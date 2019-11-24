@@ -299,7 +299,7 @@ function RegistrarNotificaciones() {
 				FCMPlugin.subscribeToTopic('FRA_1_' + window.localStorage.getItem("codigoActivacion") + "-dom_" + domicilios[k]);
 			}
             FCMPlugin.onNotification(function (data){
-				document.getElementById("alarma-timbre").play();
+				document.getElementById("notifi-audio").play();
 				var a="";
 				for(dato in data){
 					a+= "|" + dato + ":" + data[dato];					
