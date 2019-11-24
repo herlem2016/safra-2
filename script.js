@@ -301,7 +301,7 @@ function RegistrarNotificaciones() {
 			}
             FCMPlugin.onNotification(function (data){
 				document.getElementById("alarma-timbre").play();
-				foreach(dato in data){
+				for(dato in data){
 					alert(dato + ":" + data[dato]);					
 				}
 				document.getElementById("console_").innerHTML="";
