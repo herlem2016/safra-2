@@ -301,7 +301,10 @@ function RegistrarNotificaciones() {
 			}
             FCMPlugin.onNotification(function (data){
 				//document.getElementById("alarma-timbre").play();
-				alert(data);
+				foreach(dato in data){
+					alert(dato + ":" + data[dato]);					
+				}
+				document.getElementById("console_").innerHTML="";
                 cordova.plugins.notification.badge.increase(1, function () { });
                 if (data.modulo == 1) {
                     ActivarAlarma_(data.contenidovoz);
