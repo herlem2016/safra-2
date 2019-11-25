@@ -295,7 +295,6 @@ function RegistrarNotificaciones() {
             var domicilios = window.localStorage.getItem("domicilios").split(",");
             for(var k=0;k<domicilios.length;k++){
                 FCMPlugin.subscribeToTopic('FRA_1_' + window.localStorage.getItem("codigoActivacion") + "-dom_" + domicilios[k]);
-                alert(domicilios[k]);
 			}
             FCMPlugin.onNotification(function (data) {
                 document.getElementById("notifi-audio").play();
@@ -303,7 +302,7 @@ function RegistrarNotificaciones() {
                 if (data.modulo == 1) {
                     ActivarAlarma_(data.contenidovoz);
                 } else if (data.modulo == 2) {
-                    ActivarTimbre_();
+                    ActivarTimbre_(data.contenidovoz);
                     /*var permitir = window.confirm("¿Permite la visita?");
                     $.post(url + 'logic/controlador.aspx?op=PermitirVisita&seccion=vigilancia&permitir=' + permitir + '&clave=' + data.clave, function (xmlDoc) {
                         alert(GetValor(xmlDoc, "mensaje"));
@@ -371,9 +370,11 @@ function ActivarAlarma() {
     }
 }
 
-function ActivarTimbre_() {
+function ActivarTimbre_(contenidovoz) {
     document.getElementById("alarma-timbre").play();
     document.getElementById("timbre").style.display='block';
+    document.getElementById("timbre-v").src = contenidovoz;
+    document.getElementById("timbre").style.display = 'block';
 }
 
 function ActivarAlarma_(contenidovoz) {
