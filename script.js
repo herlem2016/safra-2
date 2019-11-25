@@ -1,4 +1,5 @@
 ﻿var isPhonegapApp = false;
+var d_r = 0;
 var ondeviceready = function () {
     isPhonegapApp = true;
 }
@@ -23,6 +24,10 @@ function IniciarApp() {
     InicializarApp();
     document.getElementById("main").style.display = "none";
     PantallaMostrar("activacion", "section", true);
+    try { cordova.plugins.backgroundMode.setEnabled(true); } catch (e) { }
+    domicilios_reg = [];
+    d_r = 0;
+    _func_hab_ = [];
 }
 
 function InicializarApp() {
@@ -276,6 +281,7 @@ function Suscribir() {
 }
 
 var _func_hab_ = [];
+var domicilios_reg = [];
 function RegistrarNotificaciones() {
     try {
         if (window.localStorage.getItem("email_")) {
@@ -291,12 +297,11 @@ function RegistrarNotificaciones() {
                 i_unsubs = 0;
                 UnSuscribir();
             });
-            FCMPlugin.subscribeToTopic('FRA_1_' + window.localStorage.getItem("codigoActivacion"));
-            var domicilios = window.localStorage.getItem("domicilios").split(",");
-            for(var k=0;k<domicilios.length;k++){
-                FCMPlugin.subscribeToTopic('FRA_1_' + window.localStorage.getItem("codigoActivacion") + "-dom_" + domicilios[k]);
-                alert(domicilios[k]);
-			}
+            domicilios_reg = window.localStorage.getItem("domicilios").split(",");
+            FCMPlugin.subscribeToTopic('FRA_1_' + window.localStorage.getItem("codigoActivacion"), function () {
+                RegistrarDomicilio();
+            });           
+             
             FCMPlugin.onNotification(function (data) {
                 document.getElementById("notifi-audio").play();
                 cordova.plugins.notification.badge.increase(1, function () { });
@@ -314,6 +319,13 @@ function RegistrarNotificaciones() {
     } catch (e) { }
 }
 
+function RegistrarDomicilio() {
+    if (d_r < domicilios_reg.length) {
+        FCMPlugin.subscribeToTopic('FRA_1_' + window.localStorage.getItem("codigoActivacion") + "-dom_" + domicilios_reg[d_r++], function () {
+            RegistrarDomicilio();
+        });
+    }
+}
 
 function PresentarVisita() {
     document.getElementById("timbre-v").src = undefined;
