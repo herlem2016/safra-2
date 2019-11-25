@@ -371,7 +371,7 @@ function ActivarAlarma() {
 }
 
 function ActivarTimbre_() {
-    document.getElementById("alarma-timbre").play();
+    document.getElementById("timbre").style.display='block';
 }
 
 function ActivarAlarma_(contenidovoz) {
