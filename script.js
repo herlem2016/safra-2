@@ -28,8 +28,6 @@ function IniciarApp() {
 function InicializarApp() {
     EstablecerDimensiones();
     EstablecerLogo();
-	try{cordova.plugins.backgroundMode.setEnabled(true);}catch(e){}
-	try{cordova.plugins.autoStart.enable();}catch(e){}
 }
 
 function EstablecerDimensiones() {
@@ -223,7 +221,7 @@ function RegistrarVariables(datos, xmlDoc) {
     window.localStorage.setItem("fracc_", GetValor(xmlDoc, "fraccionamiento"));
     window.localStorage.setItem("email_", datos[0].value);
     window.localStorage.setItem("contrasena_", datos[1].value);
-    window.localStorage.setItem("domicilios", GetValor(xmlDoc, "domicilios"));
+    window.localStorage.setItem("domicilio", GetValor(xmlDoc, "domicilio").split(','));
     document.getElementById("nombre-usuario").innerHTML = GetValor(xmlDoc, "nombre");
     document.getElementById("u-fraccionamiento").innerHTML = GetValor(xmlDoc, "s_nfracc");
     document.getElementById("u-domicilio").innerHTML = GetValor(xmlDoc, "s_domicilio");
@@ -294,28 +292,38 @@ function RegistrarNotificaciones() {
                 UnSuscribir();
             });
             FCMPlugin.subscribeToTopic('FRA_1_' + window.localStorage.getItem("codigoActivacion"));
-			var domicilios=window.localStorage.getItem("domicilios").split(',');
-			for(var k=0;k<domicilios.length;k++){
-				FCMPlugin.subscribeToTopic('FRA_1_' + window.localStorage.getItem("codigoActivacion") + "-dom_" + domicilios[k]);
+            for(var k=0;k<window.localStorage.getItem("domicilio").length;k++){
+				FCMPlugin.subscribeToTopic('FRA_1_' + window.localStorage.getItem("codigoActivacion") + "-dom_" + window.localStorage.getItem("domicilio")[k]);
 			}
-            FCMPlugin.onNotification(function (data){
-				document.getElementById("notifi-audio").play();
-				var a="";
-				for(dato in data){
-					a+= "|" + dato + ":" + data[dato];					
-				}
-				document.getElementById("console_").innerHTML=a;
+            FCMPlugin.onNotification(function (data) {
+                document.getElementById("notifi-audio").play();
                 cordova.plugins.notification.badge.increase(1, function () { });
                 if (data.modulo == 1) {
                     ActivarAlarma_(data.contenidovoz);
-                } else if (data.modulo == 2){
-                    ActivarTimbre_(data);                    
-                } else {
-                    alert(data.message);
-                }
+                } else if (data.modulo == 2) {
+                    ActivarTimbre_();
+                    var permitir = window.confirm("¿Permite la visita?");
+                    $.post(url + 'logic/controlador.aspx?op=PermitirVisita&seccion=vigilancia&permitir=' + permitir + '&clave=' + data.clave, function (xmlDoc) {
+                        alert(GetValor(xmlDoc, "mensaje"));
+                    });
+                } 
             });
         }
     } catch (e) { }
+}
+
+
+function PresentarVisita() {
+    document.getElementById('alarma-timbre').pause();
+    document.getElementById('timbre-v').play();
+    document.getElementById("timbre").style.display = "none";
+}
+
+function PresentarConfirmacion() {
+    var permitir = window.confirm(document.getElementById("timbre").data.contenidovoz);
+    $.post(url + 'logic/controlador.aspx?op=PermitirVisita&seccion=vigilancia&permitir=' + permitir + '&clave=' + document.getElementById("timbre").clavevisita, function (xmlDoc) {
+        alert(GetValor(xmlDoc, "mensaje"));
+    });
 }
 
 function InsertarNotificacion(dato, modulo) {
@@ -358,27 +366,8 @@ function ActivarAlarma() {
     }
 }
 
-function ActivarTimbre_(data) {
-	var alarmaVoz = document.getElementById("timbre-v");
-    alarmaVoz.setAttribute("src", data.contenidovoz);
+function ActivarTimbre_() {
     document.getElementById("alarma-timbre").play();
-    alarmaVoz.volume=1;
-    document.getElementById("timbre").style.display = "block";
-    document.getElementById("timbre").data = data;
-}
-
-
-function PresentarVisita() {
-	document.getElementById('alarma-timbre').pause();
-	document.getElementById('timbre-v').play();
-    document.getElementById("timbre").style.display = "none";		
-}
-
-function PresentarConfirmacion(){
-	var permitir = window.confirm(document.getElementById("timbre").data.contenidovoz);
-	$.post(url + 'logic/controlador.aspx?op=PermitirVisita&seccion=vigilancia&permitir=' + permitir + '&clave=' + document.getElementById("timbre").clavevisita, function (xmlDoc) {
-		alert(GetValor(xmlDoc, "mensaje"));
-	});	
 }
 
 function ActivarAlarma_(contenidovoz) {
@@ -1384,6 +1373,13 @@ function ValidarEnter(ev) {
     }
 }
 
+
+function VerAgregarRecibosHistorial() {
+    CargarCatalogo("ap_domiciliosH", function () {
+        CambioPantalla('lista-ap_domiciliosH', 'p-edicion-aportaciones');
+    });
+}
+
 function SeleccionarConceptoPagar(objeto, clave_concepto) {
     if ($(objeto).hasClass("seleccionado")) {
         $(objeto).removeClass("seleccionado");
@@ -1422,8 +1418,9 @@ function CalcularAportacion() {
         if (this.conceptospagar.length > 0 || this.mesespagar.length > 0) {
             var redimAp = document.getElementById("redim-aportaciones");
             redimAp.btnAplicar = this;
-            redimAp.innerHTML = "<li class='resumen'><div style='background:transparent;padding:0px;margin:0px;'><label>Tipo de pago:</label><select id='s_tipo_p' style='width:60%;margin-bottom:5px;margin-right:10px;' name='tipopago' onchange='if(this.selectedIndex==1){var inF=this.parentNode.getElementsByTagName(\"input\")[1];inF.parentNode.style.display=\"block\";}else{this.parentNode.getElementsByTagName(\"input\")[1].parentNode.style.display=\"none\";ObtenerTicket(undefined,this.parentNode.parentNode.parentNode.btnAplicar,document.getElementById(\"ticket\"),this.options[this.selectedIndex].value);}'><option value='11'>EFECTIVO</option><option value='10'>DEPOSITO</option></select><span>Compuesto</span><input type='checkbox' name='es_compuesto' id='es_compuesto' value='true'/>" +
-                "<div style='display:none;'><br/><label>Fecha de pago:</label><input id='f_pago_d' type='text' name='fecha_pago' placeholder='dd/mm/aaaa' onkeypress='if(ValidarEnter(event)){var inF=document.getElementById(\"f_pago_d\");ObtenerTicket(inF.value,this.parentNode.parentNode.parentNode.parentNode.btnAplicar,document.getElementById(\"ticket\"),10);}return SoloNumeros(event,\"\/\");'  style='margin-right:30px;'/><br/><br/> Capture comprobante: <div id='wrap-detalle-DepositosBancoR' style=''></div></div><br/> </div>" +
+            redimAp.innerHTML = "<li class='resumen'><fieldset style='border:1px solid #999;border-radius:10px;margin-bottom:12px;text-align:center;font-weight:bold;font-size:0.9em;'><div style='background:transparent;padding:0px;margin:0px;'><label>Tipo de pago:</label><select id='s_tipo_p' style='width:60%;margin-bottom:5px;margin-right:10px;' name='tipopago' onchange='ResolverUIFormaPago(this);'><option value='11'>EFECTIVO</option><option value='10'>DEPOSITO</option></select><span>Compuesto</span><input type='checkbox' name='es_compuesto' id='es_compuesto' value='true'/>" +
+                "<div id='sel_efectivo'><span id='sel_mismodia'><input checked='checked' type='radio' value='true' name='es_mismodia' onclick='document.getElementById(\"ef_f_pago_d\").style.display=\"none\";ObtenerTicketDefault();'><label style='margin-right:50px;'><b>Mismo día</b></label><input type='radio' value='false' name='es_mismodia' onclick='document.getElementById(\"ef_f_pago_d\").style.display=\"block\";'><label><b>Diferente día</b></label></span><div style='display:none;' id='ef_f_pago_d'><br/><label>Fecha de pago:</label><input id='ef_fecha_pago' type='text' name='fecha_pago' placeholder='dd/mm/aaaa' onkeypress='if(ValidarEnter(event)){var inF=document.getElementById(\"ef_fecha_pago\");ObtenerTicket(inF.value,document.getElementById(\"redim-aportaciones\").btnAplicar,document.getElementById(\"ticket\"),10);}return SoloNumeros(event,\"\/\");'/></div></div>" +
+                "<div style='display:none;' id='sel_deposito'><br/><label>Fecha de pago:</label><input id='f_pago_d' type='text' name='fecha_pago' placeholder='dd/mm/aaaa' onkeypress='if(ValidarEnter(event)){var inF=document.getElementById(\"f_pago_d\");ObtenerTicket(inF.value,document.getElementById(\"redim-aportaciones\").btnAplicar,document.getElementById(\"ticket\"),10);}return SoloNumeros(event,\"\/\");'  style='margin-right:30px;'/><br/><br/> Capture comprobante: <div id='wrap-detalle-DepositosBancoR' style=''></div></div><br/> </div></fieldset>" +
                 "<fieldset class='gafet-p' style='border:1px solid #999;border-radius:10px;margin-bottom:12px;text-align:center;font-weight:bold;font-size:0.9em;'><legend>Gallardetes</legend><div><input id='gafetes-p' type='text' style='width: 90%;padding: 5px;border:1px solid #aaa;text-align:center;font-size:1.1em;' placeholder='#gallardete1:placas,#gallardete2:placas2,...'/></div><div id='tipo_gafete'><span style='margin-left:15px;'>Mensual</span><input checked='checked' type='radio' value='1' name='tipo_gafete' /><span style='margin-left:15px;'>Semestral</span><input type='radio' value='2' name='tipo_gafete' /><span style='margin-left:15px;'>Anual</span><input type='radio' value='3' name='tipo_gafete'/></div></fieldset>" +
                 "<div style='background:transparent;padding:0px;margin:0px;' id='ticket'></div></li>";
 
@@ -1437,12 +1434,36 @@ function CalcularAportacion() {
                 if (ValidarEnter(ev)) {
                     var s_tipo_p = document.getElementById("s_tipo_p");
                     var inF = s_tipo_p.parentNode.getElementsByTagName("input")[1];
-                    ObtenerTicket(undefined, s_tipo_p.parentNode.parentNode.parentNode.btnAplicar, document.getElementById("ticket"), s_tipo_p.options[s_tipo_p.selectedIndex].value);
+                    ObtenerTicket(undefined, document.getElementById("redim-aportaciones").btnAplicar, document.getElementById("ticket"), s_tipo_p.options[s_tipo_p.selectedIndex].value);
                 }
             }
         }
     }
     btn.innerHTML = "Calcular";
+}
+
+function AgregarPermisoCapturaRecibos() {
+    var foliospermiso = window.prompt("Capture folios de recibo(Separe por comas, p.ej. 45689,45893,etc.):");
+    $.post(url + 'logic/controlador.aspx' + '?op=AgregarPermisoRecibosCaptura&seccion=aportaciones', { folios: foliospermiso }, function (xmlDoc1) {
+        alert(GetValor(xmlDoc1, "mensaje"));
+    });
+}
+
+function ResolverUIFormaPago(obj) {
+    if (obj.selectedIndex == 1) {
+        document.getElementById("sel_deposito").style.display = 'block';
+        document.getElementById("sel_efectivo").style.display = 'none';
+    } else {
+        document.getElementById("sel_efectivo").style.display = 'block';
+        document.getElementById("sel_deposito").style.display = 'none';
+        //obj.parentNode.getElementsByTagName("input")[1].parentNode.style.display = "none";        
+    }
+    ObtenerTicketDefault();
+}
+
+function ObtenerTicketDefault() {
+    var obj = document.getElementById("s_tipo_p");
+    ObtenerTicket(undefined, document.getElementById("redim-aportaciones").btnAplicar, document.getElementById("ticket"), obj.options[obj.selectedIndex].value);
 }
 
 function ObtenerTicket(fecha, btnAplicar, dom, tipo_pago) {
@@ -1501,7 +1522,7 @@ function ObtenerTicket(fecha, btnAplicar, dom, tipo_pago) {
                 document.getElementById("recibo_n").focus();
             }
         }
-
+        btn_pagar.fecha = fecha;
         btn_pagar.onclick = function () {
             if (confirm("Confirme que desea aplicar pago:")) {
                 var num;
@@ -1511,7 +1532,7 @@ function ObtenerTicket(fecha, btnAplicar, dom, tipo_pago) {
                 var tipo_pago = sl.options[sl.selectedIndex].value;
                 var tipoGafetes = $("#tipo_gafete input[name='tipo_gafete']:checked").val();
                 if (document.getElementById("es_compuesto").checked && (num = window.prompt("Ingrese numeración[1,2,..]")).trim().length > 0 || !document.getElementById("es_compuesto").checked) {
-                    $.post(url + 'logic/controlador.aspx' + '?op=PagarTicket&seccion=aportaciones' + (this.conceptospagar.length > 0 ? '&conceptos=' + this.conceptospagar.join(",") : '') + (this.mesespagar.length > 0 ? "&meses=" + this.mesespagar.join(",") : '') + "&domicilio=" + document.getElementById("w-datos-persona").getAttribute("domicilio_sel") + (fecha ? "&fecha_pago=" + fecha : "") + "&tipopago=" + tipo_pago + "&es_compuesto=" + document.getElementById("es_compuesto").checked + "&parte=" + num + "&gafetes=" + gallardetes + "&tipo_g=" + tipoGafetes, $($(redimAp).find("form")[0]).serializeArray(), function (xmlDoc1) {
+                    $.post(url + 'logic/controlador.aspx' + '?op=PagarTicket&seccion=aportaciones' + (this.conceptospagar.length > 0 ? '&conceptos=' + this.conceptospagar.join(",") : '') + (this.mesespagar.length > 0 ? "&meses=" + this.mesespagar.join(",") : '') + "&domicilio=" + document.getElementById("w-datos-persona").getAttribute("domicilio_sel") + (this.fecha ? "&fecha_pago=" + this.fecha : "") + "&tipopago=" + tipo_pago + "&es_compuesto=" + document.getElementById("es_compuesto").checked + "&parte=" + num + "&gafetes=" + gallardetes + "&tipo_g=" + tipoGafetes, $($(redimAp).find("form")[0]).serializeArray(), function (xmlDoc1) {
                         alert(GetValor(xmlDoc1, "mensaje"));
                         if (GetValor(xmlDoc1, "estatus") == 1) {
                             ImprimirReciboCuotas(GetValor(xmlDoc1, "recibo"), GetValor(xmlDoc1, "folio"), GetValor(xmlDoc1, "domicilio"));
@@ -1532,6 +1553,33 @@ function ObtenerTicket(fecha, btnAplicar, dom, tipo_pago) {
         }
     });
 }
+
+
+function GuardarImagenesTextos(claveItem, contenedor, catalogo, callback, subitemCatalogo) {
+    try {
+        var imagenes = document.getElementById(contenedor).getElementsByTagName("table");
+        var imagenesCambio = [];
+        var textosCambio = [];
+        for (var i = 0; i < imagenes.length; i++) {
+            if (imagenes[i].getAttribute("cambioImagen") == "true") {
+                imagenesCambio.push(imagenes[i]);
+            } else if (imagenes[i].getAttribute("cambioTexto") == "true") {
+                textosCambio.push(imagenes[i]);
+            }
+        }
+        if (imagenesCambio.length > 0) {
+            GuardarUnaImagenTexto(imagenesCambio, textosCambio, 0, callback, claveItem, catalogo);
+        } else if (textosCambio.length > 0) {
+            GuardarUnTexto(textosCambio, 0, callback, claveItem, catalogo, subitemCatalogo);
+        } else {
+            if (callback) callback(claveItem);
+        }
+    } catch (e) {
+        alert(e.message);
+    }
+
+}
+
 
 function ImprimirReciboCuotas(recibo, folio, domicilio) {
     window.open(url + 'logic/controlador.aspx?op=GenerarRecibo&seccion=aportaciones&domicilio=' + domicilio + '&recibo=' + recibo + "&folio=" + folio, '_blank', 'width:800,height:600');
@@ -2157,6 +2205,18 @@ function ObtenerItem(catalogo, item) {
                 document.getElementById("clavedomicilio").value = domicilio;
                 document.getElementById("UnDomicilioEd").innerHTML = this.str;
                 VerDomiciliosAportaciones(domicilio);
+            }
+            itemli.innerHTML = str;
+            break;
+        case "ap_domiciliosH":
+            var domicilio = GetValor(item, "clave");
+            var str = '<span class="t-1" >' + GetValor(item, "domicilio") + '</span>' +
+                '<span class="t-3">' + GetValor(item, "titular") + '</span>';
+            itemli.str = str;
+            itemli.onclick = function () {
+                document.getElementById("clavedomicilioH").value = domicilio;
+                document.getElementById("UnDomicilioEdH").innerHTML = this.str;
+                CambioPantalla('lista-domiciliosH', 'lista-ap_domiciliosH');
             }
             itemli.innerHTML = str;
             break;

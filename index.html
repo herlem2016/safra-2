@@ -133,7 +133,7 @@
     <script src="chartjs/utils.js"></script>
 </head>
 <body unselectable="on" onselectstart="return false;" onload="IniciarApp();">
-	<div id='console_'></div>
+
     <section class="pantalla activacion" id="activacion" style="display:none;z-index:1000;height:auto !important;">
         <form id="frmActivacion" onsubmit="return false;" class="edicion">
             <div>
@@ -265,7 +265,9 @@
                 </ul>
             </div>
         </section>
-        
+
+
+
         <audio id="notifi-audio" src="audios/notif.mp3" style="display:none;"></audio>
         <div id="timbre" style="position:absolute;z-index:1000;display:none;z-index:9999;width:80%;padding:10%;margin-top:35%;background-color:#ff0000;text-align:center;">
             <audio id="timbre-v" style='display:none;' onended="PresentarConfirmacion();"></audio>
@@ -947,6 +949,8 @@
                 <div class="titulo" style="margin-bottom:50px;">Aportaciones<button class="regresar" onclick="CambioPantalla('lista-ap_domicilios3', 'p-edicion-aportaciones');"><img src="img/back.png" /></button><hr class="clearn" /></div>
                 <button class="aceptar" style="margin-top:20px;" onclick="VerEdicionConceptos();">Conceptos</button>
                 <button class="aceptar" style="margin-top:20px;" onclick="VerAportacionesIniciales();">Aportaciones pendientes iniciales</button>
+                <button class="aceptar" style="margin-top:20px;" onclick="VerAgregarRecibosHistorial();">Editar Recibos de Historial</button>
+                <button class="aceptar" style="margin-top:20px;" onclick="AgregarPermisoCapturaRecibos();">Dar permiso de captura de recibos<br />(Diferente fecha)</button>
             </div>
 
             <div class="lista" id="lista-ap_conceptos" style="display:none;" redim="redim-ap_conceptos">
@@ -1040,6 +1044,39 @@
                 </form>
                 <div style="position:absolute;bottom:0px;border-top:1px solid #2c5878;background:#e7e7e7;width:100%;"><button class="aceptar" style="margin-top:10px;margin-bottom:5px;width: unset;" onclick="Guardar(this, 'domiciliosconceptosini', function () { LimpiarForm('domiciliosconceptosini'); CargarCatalogo(catalogo, function(){},{clave:document.getElementById('clavedomicilio').value});});">Guardar conciliaciones</button></div>
             </div>
+
+
+            <div class="lista" id="lista-ap_domiciliosH" style="display:none;" redim="redim-ap_domiciliosH">
+                <div class="titulo">Lista de Domicilios<button class="regresar" onclick="CambioPantalla('p-edicion-aportaciones', 'lista-ap_domiciliosH');"><img src="img/back.png" /></button><button class="buscar-min" onclick="MostrarBuscar('b-ap_domH', 'ap_domiciliosH', 'redim-ap_domiciliosH', 'pantalla-2', 'pantalla-21');"><img src="img/buscar.png" /></button><hr class="clearn" /></div>
+                <div class="busqueda" id="b-ap_domH" style="display:none;"><input placeholder="Buscar" onkeypress="if(ValidarEnter(event)){CargarCatalogo('ap_domiciliosH', undefined, { buscar: this.value });}" /></div>
+                <ul class="lista seleccionable pantalla-21" id="redim-ap_domiciliosH" classToggle="pantalla-21, pantalla-21" hide="b-ap_domH"></ul>
+            </div>
+            <div class="pantalla" style="display:none;position:relative;top:0px;" id="lista-domiciliosH">
+                <div class="titulo"><span>Editar recibos de Historial</span><button class="regresar" onclick="Mostrar('lista-domiciliosH', 'lista-ap_domiciliosH'); "><img src="img/back.png" /></button></div>
+                <form onsubmit="return false" method="post" id="frm-edit-domiciliosH" class="edicion">
+                    <fieldset>
+                        <div id="UnDomicilioEdH" class="selec" style="width:75%;"></div>
+                        <input type="hidden" name="clavedomicilio" id="clavedomicilioH" />
+                        <label>Recibo número</label><input name="recibo" id="dh-recibo" onkeypress="if (ValidarEnter(event)) { ObtenerPagoHistorial();}" />
+                        <label>Fecha de pago</label><input name="fecha" id="dh-fecha" />
+                        <label>Importe</label><input name="importe" id="dh-importe" onkeypress="return SoloNumeros(event,'.');" />
+                        <label>Concepto</label><input name="concepto" id="dh-concepto" />
+                        <label>Forma de pago</label><select id='s_forma_ph' style='width:100%;margin-bottom:5px;margin-right:10px;' name='tipopago'>
+                            <option value='11'>EFECTIVO</option>
+                            <option value='10'>DEPOSITO</option>
+                        </select>
+                        <label>Nota aclaratoria</label><textarea name="nota" id="dh-nota"></textarea>
+                        <label>Operación</label><select style='width:100%;margin-bottom:5px;margin-right:10px;' name='operacion'>
+                            <option value='1'>Solo Editar</option>
+                            <option value='2'>Editar y agregar ajuste aclaratorio</option>
+                            <option value='3'>Solo agregar ajuste aclaratorio</option>
+                            <option value='4'>Eliminar ajuste aclaratorio de recibo</option>
+                        </select>
+                    </fieldset>
+                </form>
+                <div style="position:absolute;bottom:0px;border-top:1px solid #2c5878;background:#e7e7e7;width:100%;"><button class="aceptar" style="margin-top:10px;margin-bottom:5px;width: unset;" onclick="Guardar(this, 'domiciliosH', function (item,xmlDoc) { LimpiarForm('domiciliosH'); alert(GetValor(xmlDoc,'mensaje')); });">Aplicar cambio</button></div>
+            </div>
+
         </section>
 
         <section class="pantalla transparencia" id="transparencia">
