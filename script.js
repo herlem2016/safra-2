@@ -302,10 +302,10 @@ function RegistrarNotificaciones() {
                     ActivarAlarma_(data.contenidovoz);
                 } else if (data.modulo == 2) {
                     ActivarTimbre_();
-                    var permitir = window.confirm("¿Permite la visita?");
+                    /*var permitir = window.confirm("¿Permite la visita?");
                     $.post(url + 'logic/controlador.aspx?op=PermitirVisita&seccion=vigilancia&permitir=' + permitir + '&clave=' + data.clave, function (xmlDoc) {
                         alert(GetValor(xmlDoc, "mensaje"));
-                    });
+                    });*/
                 } 
             });
         }
@@ -317,13 +317,16 @@ function PresentarVisita() {
     document.getElementById('alarma-timbre').pause();
     document.getElementById('timbre-v').play();
     document.getElementById("timbre").style.display = "none";
+    $.post(url + 'logic/controlador.aspx?op=RegistrarRecepcion&seccion=vigilancia&clave=' + document.getElementById("timbre").clavevisita, function (xmlDoc) {
+        //alert(GetValor(xmlDoc, "mensaje"));
+    });
 }
 
 function PresentarConfirmacion() {
-    var permitir = window.confirm(document.getElementById("timbre").data.contenidovoz);
+    /*var permitir = window.confirm(document.getElementById("timbre").data.contenidovoz);
     $.post(url + 'logic/controlador.aspx?op=PermitirVisita&seccion=vigilancia&permitir=' + permitir + '&clave=' + document.getElementById("timbre").clavevisita, function (xmlDoc) {
         alert(GetValor(xmlDoc, "mensaje"));
-    });
+    });*/
 }
 
 function InsertarNotificacion(dato, modulo) {
