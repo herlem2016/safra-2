@@ -315,8 +315,9 @@ function RegistrarNotificaciones() {
 
 
 function PresentarVisita() {
-    document.getElementById('alarma-timbre').pause();
-    document.getElementById('timbre-v').play();
+    document.getElementById("timbre-v").src = undefined;
+    document.getElementById("timbre-v").onended = function () { };
+    document.getElementById("alarma-timbre").onended = function () { };
     document.getElementById("timbre").style.display = "none";
     $.post(url + 'logic/controlador.aspx?op=RegistrarRecepcion&seccion=vigilancia&clave=' + document.getElementById("timbre").clavevisita, function (xmlDoc) {
         //alert(GetValor(xmlDoc, "mensaje"));
@@ -371,9 +372,10 @@ function ActivarAlarma() {
 }
 
 function ActivarTimbre_(contenidovoz) {
-    document.getElementById("alarma-timbre").play();
-    document.getElementById("timbre").style.display='block';
     document.getElementById("timbre-v").src = contenidovoz;
+    document.getElementById("timbre-v").onended = function () { document.getElementById("alarma-timbre").play(); };
+    document.getElementById("alarma-timbre").onended = function () { document.getElementById("timbre-v").play(); };
+    document.getElementById("alarma-timbre").play();
     document.getElementById("timbre").style.display = 'block';
 }
 
