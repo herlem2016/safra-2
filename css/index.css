@@ -462,7 +462,9 @@ ul.lista .item .clear {
     .edicion .adjuntar-btn img {
         width: 20px;
     }
-
+img.file {
+    max-width:100%;
+}
 .edicion table td.del {
     background-color: #333;
     border-bottom: 1px solid #00556b;
