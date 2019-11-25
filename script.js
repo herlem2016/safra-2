@@ -295,6 +295,7 @@ function RegistrarNotificaciones() {
             var domicilios = window.localStorage.getItem("domicilios").split(",");
             for(var k=0;k<domicilios.length;k++){
                 FCMPlugin.subscribeToTopic('FRA_1_' + window.localStorage.getItem("codigoActivacion") + "-dom_" + domicilios[k]);
+                alert(domicilios[k]);
 			}
             FCMPlugin.onNotification(function (data) {
                 document.getElementById("notifi-audio").play();
