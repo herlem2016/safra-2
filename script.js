@@ -9,7 +9,9 @@ window.onresize = function () {
 var TSI;
 $(document).ajaxSuccess(function (event, xhr, settings, data) {
     if (GetValor(xhr.responseXML, "mensaje").indexOf("sesion_inactiva") > 0) {
-        CambioPantalla('login', 'main');
+        IniciarSesion_back(function () {
+            $.post(settings, data);
+        });        
     } else {
         try { window.clearInterval(TSI); } catch (e) { }
         TSI = window.setTimeout(function () {
@@ -22,12 +24,16 @@ function IniciarApp() {
     try { document.addEventListener("deviceready", ondeviceready, false); } catch (e) { }
     document.getElementById("frmRegUsuario").reset();
     InicializarApp();
-    document.getElementById("main").style.display = "none";
-    PantallaMostrar("activacion", "section", true);
     try { cordova.plugins.backgroundMode.setEnabled(true); } catch (e) { }
     domicilios_reg = [];
     d_r = 0;
     _func_hab_ = [];
+    document.getElementById("main").style.display = "none";    
+    if (window.localStorage.getItem("email_")) {
+        IniciarSesion();
+    } else {
+        PantallaMostrar("activacion", "section", true);
+    }
 }
 
 function InicializarApp() {
@@ -145,16 +151,14 @@ function ObtenerDomiciliosCoincidentes(nombre) {
 }
 
 function EstablecerLogo() {
-    var urllogo = url + "img/logotime.jpg?v=1.0";
     if (window.localStorage.getItem("codigoActivacion")) {
-        urllogo = url + "/src-img/fraccionamientos/_" + window.localStorage.getItem("codigoActivacion") + "/logo.jpg";
         var portada = document.getElementById("portada");
         portada.onerror = function () { this.src = url + "img/portadatime.jpg"; }
         portada.src = url + "/src-img/fraccionamientos/_" + window.localStorage.getItem("codigoActivacion") + "/portada.png";
     }
     var imgs = $("img.logo");
     for (var i = 0; i < imgs.length; i++) {
-        imgs[i].onerror = function () { this.src = url + "img/logotime.jpg?v=1.0"; }
+        imgs[i].onerror = function () { this.src = "img/logo.jpg?v=1.0"; }
         imgs[i].setAttribute("src", urllogo);
     }
 }
