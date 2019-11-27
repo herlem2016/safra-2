@@ -12,11 +12,6 @@ $(document).ajaxSuccess(function (event, xhr, settings, data) {
         IniciarSesion_back(function () {
             $.post(settings, data);
         });        
-    } else {
-        try { window.clearInterval(TSI); } catch (e) { }
-        TSI = window.setTimeout(function () {
-            PantallaMostrar("comunicados", "section");
-        }, 60 * 5 * 1000);
     }
 });
 
