@@ -24,7 +24,8 @@ function IniciarApp() {
     try { document.addEventListener("deviceready", ondeviceready, false); } catch (e) { }
     document.getElementById("frmRegUsuario").reset();
     InicializarApp();
-    try { cordova.plugins.backgroundMode.setEnabled(true); } catch (e) { }
+    try { cordova.plugins.autoStart.enable(); } catch (e) { }    
+    try { cordova.plugins.backgroundMode.setEnabled(false); } catch (e) { }
     domicilios_reg = [];
     d_r = 0;
     _func_hab_ = [];
@@ -158,8 +159,7 @@ function EstablecerLogo() {
     }
     var imgs = $("img.logo");
     for (var i = 0; i < imgs.length; i++) {
-        imgs[i].onerror = function () { this.src = "img/logo.jpg?v=1.0"; }
-        imgs[i].setAttribute("src", urllogo);
+        imgs[i].setAttribute("src", "img/logo.jpg?v=1.0");
     }
 }
 
