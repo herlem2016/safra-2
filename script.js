@@ -20,7 +20,10 @@ function IniciarApp() {
     document.getElementById("frmRegUsuario").reset();
     InicializarApp();
     try { cordova.plugins.autoStart.enable(); } catch (e) { }    
-    try { cordova.plugins.backgroundMode.setEnabled(false); } catch (e) { }
+    try {
+        cordova.plugins.backgroundMode.setEnabled(true);
+        cordova.plugins.backgroundMode.moveToBackground();
+    } catch (e) { }
     domicilios_reg = [];
     d_r = 0;
     _func_hab_ = [];
