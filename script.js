@@ -404,9 +404,7 @@ function ActivarTimbre_(contenidovoz) {
         message: "Tiene Visita"
     });
 
-    cordova.plugins.notification.local.on("click", function (notification) {
-        PresentarVisita(); 
-    });
+    cordova.plugins.notification.local.on("click", function (notification) {});
 
     document.getElementById("timbre-v").src = contenidovoz;
     document.getElementById("timbre-v").onended = function () { document.getElementById("alarma-timbre").play(); };
@@ -430,9 +428,7 @@ function ActivarAlarma_(contenidovoz) {
         message: "Alarma Vecinal"
     });
 
-    cordova.plugins.notification.local.on("click", function (notification) {
-        DesactivarAlarma();
-    });
+    cordova.plugins.notification.local.on("click", function (notification) {});
 }
 
 function DesactivarAlarma() {
