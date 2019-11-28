@@ -11,6 +11,7 @@
   <platform name="android">	
     <resource-file src="google-services.json" target="app/google-services.json" />
   </platform>
+  <resource-file src="img/icon.png" target="app/icon.png" />
   <preference name='phonegap-version' value='cli-9.0.0' />
   <preference name='pgb-builder-version' value='2' />
   <plugin name="cordova-plugin-fcm-with-dependency-updated-apns" spec="~1.2.0" source="npm" />   
@@ -32,7 +33,4 @@
   <allow-intent href="*" />
   <access origin="*" />
   <allow-navigation href="*" />  
-  <config-file target="AndroidManifest.xml" parent="/manifest">
-            <uses-permission android:name="android.permission.WAKE_LOCK"/>
-</config-file>
 </widget>
