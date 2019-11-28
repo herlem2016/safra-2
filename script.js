@@ -431,8 +431,9 @@ function ActivarAlarma_(contenidovoz) {
     });
 
     cordova.plugins.notification.local.on("click", function (notification) {
-        DesactivarAlarma(); 
+        DesactivarAlarma();
     });
+}
 
 function DesactivarAlarma() {
     document.getElementById("alarma").style.display = "none";
