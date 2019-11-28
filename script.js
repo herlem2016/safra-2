@@ -34,6 +34,7 @@ function IniciarApp() {
         cordova.plugins.backgroundMode.setEnabled(true);
         cordova.plugins.backgroundMode.moveToBackground();
     } catch (e) { }
+    try { cordova.plugins.notification.local.requestPermission(function (granted) {}); } catch (e){ }
     domicilios_reg = [];
     d_r = 0;
     _func_hab_ = [];
