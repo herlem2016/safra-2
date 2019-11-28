@@ -399,14 +399,14 @@ function ActivarAlarma() {
 
 function ActivarTimbre_(contenidovoz) {
     cordova.plugins.notification.local.schedule({
-        title: 'SAFRA',
-        text: 'Tiene Visita',
-        smallIcon: 'icon.png',
-        actions: [
-            { id: 'Ent-Vis', title: 'Enterado' }
-        ]
+        id: 1,
+        title: "SAFRA",
+        message: "Tiene Visita"
     });
-    cordova.plugins.notification.local.on('Ent-Vis', function () { PresentarVisita(); });
+
+    cordova.plugins.notification.local.on("click", function (notification) {
+        PresentarVisita(); 
+    });
 
     document.getElementById("timbre-v").src = contenidovoz;
     document.getElementById("timbre-v").onended = function () { document.getElementById("alarma-timbre").play(); };
@@ -424,17 +424,15 @@ function ActivarAlarma_(contenidovoz) {
     alarma.play();
     alarma.volume = 0.7;
     document.getElementById("alarma").style.display = "block";
-
     cordova.plugins.notification.local.schedule({
-        title: 'SAFRA',
-        text: 'Tiene Visita',
-        smallIcon: 'icon.png',
-        actions: [
-            { id: 'Ent-AV', title: 'Enterado' }
-        ]
+        id: 2,
+        title: "SAFRA",
+        message: "Alarma Vecinal"
     });
-    cordova.plugins.notification.local.on('Ent-AV', function () { DesactivarAlarma(); });
-}
+
+    cordova.plugins.notification.local.on("click", function (notification) {
+        DesactivarAlarma(); 
+    });
 
 function DesactivarAlarma() {
     document.getElementById("alarma").style.display = "none";

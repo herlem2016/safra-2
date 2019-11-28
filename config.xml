@@ -11,7 +11,6 @@
   <platform name="android">	
     <resource-file src="google-services.json" target="app/google-services.json" />
   </platform>
-  <resource-file src="img/icon.png" target="app/icon.png" />
   <preference name='phonegap-version' value='cli-9.0.0' />
   <preference name='pgb-builder-version' value='2' />
   <plugin name="cordova-plugin-fcm-with-dependency-updated-apns" spec="~1.2.0" source="npm" />   
@@ -26,7 +25,7 @@
   <plugin name="cordova-plugin-file-opener2"/>
   <plugin name="cordova-plugin-autostart@2.3.0"/> 
   <plugin name="cordova-plugin-android-permissions@1.0.2"/> 
-  <plugin name="cordova-plugin-local-notification"/> 
+  <plugin name="cordova-plugin-local-notifications-mm"/> 
   <plugin name="cordova-plugin-background-mode"/>  
   <preference name="orientation" value="portrait" />
   <content src="index.html" />
