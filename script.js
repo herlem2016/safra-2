@@ -31,10 +31,6 @@ function IniciarApp() {
     InicializarApp();
     try { cordova.plugins.autoStart.enable(); } catch (e) { }    
     try {
-        var permissions = cordova.plugins.permissions;
-        permissions.requestPermission(permissions.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS, function () { }, function () { });
-        permissions.requestPermission(permissions.REQUEST_COMPANION_RUN_IN_BACKGROUND, function () { }, function () { });
-        permissions.requestPermission(permissions.REQUEST_COMPANION_USE_DATA_IN_BACKGROUND, function () { }, function () { });
         cordova.plugins.backgroundMode.setEnabled(true);
         cordova.plugins.backgroundMode.moveToBackground();
     } catch (e) { }
@@ -134,7 +130,7 @@ function ActivarAplicacion(objeto) {
                 if (GetValor(xmlDoc, "codigoActivacion") && estatus == 0) {
                     alert("Su comite de administración tiene un proceso pendiente, consulte a su administrador.");
                 } else {
-                    alert(GetValor(xmlDoc, "mensaje"));
+                    alert(GetValor(xmlnDoc, "mensaje"));
                 }
             }
         });
@@ -401,6 +397,15 @@ function ActivarAlarma() {
 }
 
 function ActivarTimbre_(contenidovoz) {
+    cordova.plugins.notification.local.schedule({
+        title: 'Tiene Visita',
+        text: '',
+        actions: [
+            { id: 'Ent-Vis', title: 'Enterado' }
+        ]
+    });
+    cordova.plugins.notification.local.on('Ent-Vis', function () { PresentarVisita(); });
+
     document.getElementById("timbre-v").src = contenidovoz;
     document.getElementById("timbre-v").onended = function () { document.getElementById("alarma-timbre").play(); };
     document.getElementById("alarma-timbre").onended = function () { document.getElementById("timbre-v").play(); };
@@ -417,6 +422,15 @@ function ActivarAlarma_(contenidovoz) {
     alarma.play();
     alarma.volume = 0.7;
     document.getElementById("alarma").style.display = "block";
+
+    cordova.plugins.notification.local.schedule({
+        title: 'Tiene Visita',
+        text: '',
+        actions: [
+            { id: 'Ent-AV', title: 'Enterado' }
+        ]
+    });
+    cordova.plugins.notification.local.on('Ent-AV', function () { DesactivarAlarma(); });
 }
 
 function DesactivarAlarma() {

@@ -25,6 +25,7 @@
   <plugin name="cordova-plugin-file-opener2"/>
   <plugin name="cordova-plugin-autostart@2.3.0"/> 
   <plugin name="cordova-plugin-android-permissions@1.0.2"/> 
+  <plugin name="cordova-plugin-local-notifications"/> 
   <plugin name="cordova-plugin-background-mode"/>  
   <preference name="orientation" value="portrait" />
   <content src="index.html" />
