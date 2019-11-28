@@ -7,8 +7,12 @@
   <author email="info@softronel.com.mx" href="softronel.com.mx">
     Softronel Team
   </author>
-  <icon src="img/icon.png" />
+  <icon src="img/icon.png" />  
   <platform name="android">
+	<config-file target="AndroidManifest.xml" parent="/manifest">
+		<uses-permission android:name="android.permission.WAKE_LOCK" />
+		<uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+	</config-file>
     <resource-file src="google-services.json" target="app/google-services.json" />
   </platform>
   <preference name='phonegap-version' value='cli-9.0.0' />
