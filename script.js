@@ -14,13 +14,27 @@ $(document).ajaxSuccess(function (event, xhr, settings, data) {
         });        
     }
 });
+/**
+ * *Depositos Baco*/
+function VerDepositosBanco() {
+    CargarCatalogo("depositos_banco", function () {
+        CambioPantalla('lista-depositos_banco', 'p-edicion-aportaciones');
+    });
+}
 
+
+
+/*FIN*/
 function IniciarApp() {
     try { document.addEventListener("deviceready", ondeviceready, false); } catch (e) { }
     document.getElementById("frmRegUsuario").reset();
     InicializarApp();
     try { cordova.plugins.autoStart.enable(); } catch (e) { }    
     try {
+        var permissions = cordova.plugins.permissions;
+        permissions.requestPermission(permissions.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS, function () { }, function () { });
+        permissions.requestPermission(permissions.REQUEST_COMPANION_RUN_IN_BACKGROUND, function () { }, function () { });
+        permissions.requestPermission(permissions.REQUEST_COMPANION_USE_DATA_IN_BACKGROUND, function () { }, function () { });
         cordova.plugins.backgroundMode.setEnabled(true);
         cordova.plugins.backgroundMode.moveToBackground();
     } catch (e) { }
@@ -1444,7 +1458,16 @@ function CalcularAportacion() {
             redimAp.btnAplicar = this;
             redimAp.innerHTML = "<li class='resumen'><fieldset style='border:1px solid #999;border-radius:10px;margin-bottom:12px;text-align:center;font-weight:bold;font-size:0.9em;'><div style='background:transparent;padding:0px;margin:0px;'><label>Tipo de pago:</label><select id='s_tipo_p' style='width:60%;margin-bottom:5px;margin-right:10px;' name='tipopago' onchange='ResolverUIFormaPago(this);'><option value='11'>EFECTIVO</option><option value='10'>DEPOSITO</option></select><span>Compuesto</span><input type='checkbox' name='es_compuesto' id='es_compuesto' value='true'/>" +
                 "<div id='sel_efectivo'><span id='sel_mismodia'><input checked='checked' type='radio' value='true' name='es_mismodia' onclick='document.getElementById(\"ef_f_pago_d\").style.display=\"none\";ObtenerTicketDefault();'><label style='margin-right:50px;'><b>Mismo día</b></label><input type='radio' value='false' name='es_mismodia' onclick='document.getElementById(\"ef_f_pago_d\").style.display=\"block\";'><label><b>Diferente día</b></label></span><div style='display:none;' id='ef_f_pago_d'><br/><label>Fecha de pago:</label><input id='ef_fecha_pago' type='text' name='fecha_pago' placeholder='dd/mm/aaaa' onkeypress='if(ValidarEnter(event)){var inF=document.getElementById(\"ef_fecha_pago\");ObtenerTicket(inF.value,document.getElementById(\"redim-aportaciones\").btnAplicar,document.getElementById(\"ticket\"),10);}return SoloNumeros(event,\"\/\");'/></div></div>" +
-                "<div style='display:none;' id='sel_deposito'><br/><label>Fecha de pago:</label><input id='f_pago_d' type='text' name='fecha_pago' placeholder='dd/mm/aaaa' onkeypress='if(ValidarEnter(event)){var inF=document.getElementById(\"f_pago_d\");ObtenerTicket(inF.value,document.getElementById(\"redim-aportaciones\").btnAplicar,document.getElementById(\"ticket\"),10);}return SoloNumeros(event,\"\/\");'  style='margin-right:30px;'/><br/><br/> Capture comprobante: <div id='wrap-detalle-DepositosBancoR' style=''></div></div><br/> </div></fieldset>" +
+                "<div style='display:none;' id='sel_deposito'><br/>" +
+                "<span id='deposito_opc' style='padding-bottom:20px;display:block;'><b>No registrado</b><input type='radio' checked='checked' value='false' name='dep_existe' onclick='document.getElementById(\"dep_no_existe\").style.display=\"block\";document.getElementById(\"dep_existe\").style.display=\"none\";'/><b style='margin-left:100px;'>Ya registrado</b><input type='radio' value='true' name='dep_existe' onclick='document.getElementById(\"dep_no_existe\").style.display=\"none\";document.getElementById(\"dep_existe\").style.display=\"block\";ObtenerTicketDefault();'></span>"+
+                "<div id='dep_existe' style='display:none;'>" +
+                "<button class='btn-item' style='float:none;' onclick='SeleccionarDeposito();'>Seleccionar Deposito</button><br/>" +
+                "<div id='wrap-sel_dep'></div>"+
+                "</div>" +
+                "<div id='dep_no_existe' style=''><label>Fecha de pago:</label><input id='f_pago_d' type='text' name='fecha_pago' placeholder='dd/mm/aaaa' onkeypress='if(ValidarEnter(event)){var inF=document.getElementById(\"f_pago_d\");ObtenerTicket(inF.value,document.getElementById(\"redim-aportaciones\").btnAplicar,document.getElementById(\"ticket\"),10);}return SoloNumeros(event,\"\/\");'  style='margin-right:30px;'/><br/>" +
+                    "<br/><label>Origen:</label><input id='dep_origen' type='text' name='origen' style='margin-right:30px;'/><br/>"+
+                "</div>" +
+                "<br/> Capture comprobante: <div id='wrap-detalle-DepositosBancoR' style=''></div></div><br/> </div></fieldset>" +
                 "<fieldset class='gafet-p' style='border:1px solid #999;border-radius:10px;margin-bottom:12px;text-align:center;font-weight:bold;font-size:0.9em;'><legend>Gallardetes</legend><div><input id='gafetes-p' type='text' style='width: 90%;padding: 5px;border:1px solid #aaa;text-align:center;font-size:1.1em;' placeholder='#gallardete1:placas,#gallardete2:placas2,...'/></div><div id='tipo_gafete'><span style='margin-left:15px;'>Mensual</span><input checked='checked' type='radio' value='1' name='tipo_gafete' /><span style='margin-left:15px;'>Semestral</span><input type='radio' value='2' name='tipo_gafete' /><span style='margin-left:15px;'>Anual</span><input type='radio' value='3' name='tipo_gafete'/></div></fieldset>" +
                 "<div style='background:transparent;padding:0px;margin:0px;' id='ticket'></div></li>";
 
@@ -1464,6 +1487,12 @@ function CalcularAportacion() {
         }
     }
     btn.innerHTML = "Calcular";
+}
+
+function SeleccionarDeposito() {
+    CargarCatalogo("depositos_banco_sel", function () {
+        CambioPantalla("lista-depositos_banco_sel", "lista-aportaciones");
+    });
 }
 
 function AgregarPermisoCapturaRecibos() {
@@ -2255,6 +2284,29 @@ function ObtenerItem(catalogo, item) {
                 '<button class="btn-item n1"  onclick="Mostrar(\'lista-' + catalogo + '\',\'detalle-' + catalogo + '\',\'' + catalogo + '\',' + clave + ');" >Ver</button>' +
                 (GetValor(item, "de_sistema") == "true" ? '[Sistema]' : '<button onclick="AsociarConceptosD(' + clave + ');" class="btn-item n2">Asignar</button>');
             break;
+        case "depositos_banco_sel":
+            var indice = GetValor(item, "indice");
+            var sel_dep=
+                '<span style="display:block; color: #ff3000; font-size:0.8em;">' + GetValor(item, "fuente_captura") +"</span>" +
+                '<span class="t-1" style="width:55%;display:inline-block;">' + GetValor(item, "origen") + '<label style="font-weight:normal;">(' + GetValor(item, "fecha") + ')</label></span>' +
+                '<span class="t-3" style="float:right;width:30%;font-size:1em;">' + GetValor(item, "monto") + '<br/></span><hr class="clearn"/>' +
+                '<span style="width:20%;margin-left:3%;display:inline-block;font-size:0.75em;color:#666;" title="Validación en Estado de cuenta">Valida ECB:' + GetValor(item, "usuario_valida_ecb") + '</span>';
+            itemli.innerHTML = sel_dep;
+            itemli.indice = indice;
+            itemli.onclick = function () { this.parentNode.seleccionado = this.indice; document.getElementById("wrap-sel_dep").innerHTML = this.innerHTML; CambioPantalla('lista-aportaciones', 'lista-depositos_banco_sel');}
+            break;
+        case "depositos_banco":
+            var indice = GetValor(item, "indice");
+            itemli.innerHTML =
+                '<span style="display:block; color:#ff3000; font-size:0.8em;">' + GetValor(item, "fuente_captura") + "</span>" +
+                '<span class="t-1" style="width:55%;display:inline-block;">' + GetValor(item, "origen") + '<label style="font-weight:normal;">(' + GetValor(item, "fecha") + ')</label></span>' +
+                '<span class="t-3" style="float:right;width:30%;font-size:1em;">' + GetValor(item, "monto") + '<br/></span><hr class="clearn"/>' +
+                '<div class="ctrls">' +
+                '<span style="width:20%;margin-left:3%;display:inline-block;font-size:0.75em;color:#666;" title="Validación en Estado de cuenta">' + (GetValor(item, "usuario_valida_ecb").length == 0 ? '<button class="btn-item" onchange="ConfirmarExistePago(' + GetValor(item, "indice") + ');">Validación</button>' : 'Valida ECB:' + GetValor(item, "usuario_valida_ecb")) + '</span>' +
+                '<span style="width:30%;margin-left:3%;display:inline-block;font-size:0.75em;color:#666;" title="Pago aplicado">Domicilio: ' + GetValor(item, "domicilio") + '</span>' +
+                '<span style="width:30%;margin-left:3%;display:inline-block;" title="Imprimir recibo"><button class="btn-item" onchange="ImprimirRecibo(this);">Imprimir</button></span>' +
+                '</div>';
+            break;
         case "cargosacciones":
             var accion = GetValor(item, "clave_accion");
             itemli.innerHTML =
@@ -2626,6 +2678,12 @@ function ObtenerItem(catalogo, item) {
     }
     return itemli;
 }
+
+function HabilitarECB(obj) {
+    
+}
+
+function DeshabilitarPagoAplicadoB(obj) { }
 
 function EnviarReciboEmail(ev, folio, con_carga) {
     try {
