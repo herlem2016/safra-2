@@ -399,8 +399,8 @@ function ActivarAlarma() {
 
 function ActivarTimbre_(contenidovoz) {
     cordova.plugins.notification.local.schedule({
-        title: 'Tiene Visita',
-        text: '',
+        title: 'SAFRA',
+        text: 'Tiene Visita',
         smallIcon: 'icon.png',
         actions: [
             { id: 'Ent-Vis', title: 'Enterado' }
@@ -426,8 +426,8 @@ function ActivarAlarma_(contenidovoz) {
     document.getElementById("alarma").style.display = "block";
 
     cordova.plugins.notification.local.schedule({
-        title: 'Tiene Visita',
-        text: '',
+        title: 'SAFRA',
+        text: 'Tiene Visita',
         smallIcon: 'icon.png',
         actions: [
             { id: 'Ent-AV', title: 'Enterado' }
