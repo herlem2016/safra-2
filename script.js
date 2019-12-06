@@ -316,11 +316,7 @@ function RegistrarNotificaciones() {
              
             FCMPlugin.onNotification(function (data) {
                 document.getElementById("notifi-audio").play();
-                cordova.plugins.notification.badge.increase(1, function () { });
-                if (data.wasTapped) {
-                    alert("tapped");
-                    PantallaMostrar('notificaciones', 'section');
-                }
+                cordova.plugins.notification.badge.increase(1, function () { });                
                 if (data.modulo == 1) {
                     ActivarAlarma_(data.contenidovoz);
                 } else if (data.modulo == 2) {
@@ -731,7 +727,7 @@ function PintarItem(catalogo, clave, xmlDoc0) {
                 '<span class="t-41"><b>Modificaciones iniciales: </b>' + GetValor(xmlDoc, "insercionesini") + '</span>' +
                 (GetValor(xmlDoc, "usuario_modifico") ? '<span class="t-41"><b>Última modificación:</b>' + GetValor(xmlDoc, "usuario_modifico") + ',' + GetValor(xmlDoc, "fecha_modifico") + '</span>' : "") +
                 '<span class="t-2">' + GetValor(xmlDoc, "descripcion") + '</span>' +
-                '<fieldset class="notificar-form" id="env-not"><legend>Enviar notificación</legend><input placeholder="Titulo de notifocación"/><textarea height="50px;width:95%;" placeholder="Escriba su mensaje.."  ></textarea><button  style="display:none;" control="env-not" clave_funcion="2" class="btn-item" onclick="EnviarNotificacion(this);">Enviar notificación</button></fieldset>' +
+                '<fieldset style="display:none;" class="notificar-form" id="env-not"><legend>Enviar notificación</legend><input placeholder="Titulo de notifocación"/><textarea height="50px;width:95%;" placeholder="Escriba su mensaje.."  ></textarea><button control="env-not" clave_funcion="2" class="btn-item" onclick="EnviarNotificacion(this);">Enviar notificación</button></fieldset>' +
                 '<button class="aceptar" style="margin-top:20px;" onclick="VerTags(' + clave + ');">Ver TAGs</button>' +
                 '<button class="aceptar" style="margin-top:20px;margin-bottom:20px;" onclick="VerConvenios(' + clave + ');">Convenios</button>' +
                 '<hr class="clearn" />'+
