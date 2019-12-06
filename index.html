@@ -7,6 +7,7 @@
     <title>SAFRA</title>
     <link href="css/terceros.css" rel="stylesheet" />
     <style>
+
         @media only screen and (min-width: 600px) {
             html, body {
                 width: 600px;
@@ -112,6 +113,11 @@
             margin-bottom: 20px;
             border-radius: 20px;
         }
+
+        .notificar-form{border:1px solid #218ab3;padding:5px;border-radius:10px;margin-top:5px;text-align:center;}
+        .notificar-form input{width:90%;padding:7px;margin-bottom:10px;}
+        .notificar-form textarea{width:90%;padding:7px;height:50px;}
+
     </style>
     <link href="css/index.css" rel="stylesheet" />
     <style id="css-sizes"></style>
@@ -247,7 +253,7 @@
                     <li><button onclick="PantallaMostrar('directorio','section');" class="ok"><img src="img/directorio.png" />Agenda</button></li>
                     <li><button onclick="PantallaMostrar('inmuebles','section')" class="ok"><img src="img/reservation.png" />Reservaciones</button></li>
                     <li><button onclick="PantallaMostrar('notificaciones','section');" class="ok"><img src="img/notificaciones.png" />Actividad</button></li>
-                    <li><button onclick="PantallaMostrar('usuarios','section');" class="ok"><img src="img/config.png" />Configuración</button></li>
+                    <li><button onclick="PantallaMostrar('usuarios','section');" class="ok"><img src="img/config.png" />Administración</button></li>
                     <li><button onclick="PantallaMostrar('vigilancia', 'section', false, function () { var tabInicioVig = document.getElementById('tab-inicio-vig'); TabMostrar(tabInicioVig, tabInicioVig.parentNode, 'visitas', 'vigilancia', function () { }); });" class="ok"><img src="img/vigilancia.png" />Seguridad</button></li>
                     <li><button onclick="window.open(url + 'reglamento_interno.pdf','_system');" class="ok"><img src="img/docs.png" />Reglamento Interno</button></li>
                     <li><button onclick="ActivarAlarma();" class="ok"><img src="img/alertav.png" />Activar</button></li>
@@ -329,12 +335,88 @@
         <section class="pantalla usuarios" id="usuarios">
 
             <div class="edicion" id="p-edicion-config">
-                <button class="aceptar" style="margin-top:20px;" onclick="CargarCatalogo('ap_domicilios', function(){CambioPantalla('lista-ap_domicilios','p-edicion-config');});">Domicilios</button>
+                <button class="aceptar" style="margin-top:20px;" onclick="CargarCatalogo('ap_domicilios', function(){CambioPantalla('lista-ap_domicilios','p-edicion-config');});">Expediente de Domicilios</button>
                 <button class="aceptar" style="margin-top:20px;display:none;" id="conf-usu" control="conf-usu" clave_funcion="2" onclick="CargarCatalogo('usuarios', function () { CambioPantalla('lista-usuarios','p-edicion-config'); });">Usuarios</button>
                 <button class="aceptar" style="margin-top:20px;display:none;" id="conf-acciones" control="conf-acciones" clave_funcion="9" onclick="CargarCatalogo('cargos', function () { CambioPantalla('lista-cargos','p-edicion-config'); });">Editar permisos</button>
                 <button class="aceptar" style="margin-top:20px;display:none;" id="conf-f1" control="conf-f1" clave_funcion="2" onclick="CambioPantalla('config-general','p-edicion-config');">Configuraciones generales</button>
-                <button class="aceptar" style="margin-top:20px;display:none;" id="conf-f2" control="conf-f2" clave_funcion="2" onclick="EjecutarRestriccionTags(true);">Ejecutar restricción de TAG's</button>
+                <button class="aceptar" style="margin-top:20px;display:none;" id="conf-f2" control="conf-f2" clave_funcion="2" onclick="EjecutarRestriccionTags_();">Ejecutar restricción de TAG's</button>
+                <button class="aceptar" style="margin-top:20px;display:none;" id="conf-f3" control="conf-f3" clave_funcion="2" onclick="VerConfigurarPagos();">Configurarción de Pagos</button>
             </div>
+
+            <!--config_pagosuracion de pagos-->
+            <div class="lista" id="lista-config_pagos" redim="redim-config_pagos" style="display:none;">
+                <div class="titulo"><span>Configuración Pagos</span><button class="regresar" id="cancelar-lista-config_pagos" onclick="CambioPantalla('p-edicion-config', 'lista-config_pagos');"><img src="img/back.png" /></button><button class="buscar-min" onclick="MostrarBuscar('b-config_pagos','config_pagos','redim-config_pagos');"><img src="img/buscar.png" /></button><hr class="clearn" /></div>
+                <div class="busqueda" id="b-config_pagos" style="display:none;"><input placeholder="Buscar" onkeypress="if (ValidarEnter(event)) { CargarCatalogo('config_pagos', undefined, { buscar: this.value});}" /></div>
+                <div class="agregar" id="edicion-config_pagos" style="display:none;"><button clave_funcion="2" control="edicion-config_pagos" onclick="IniciarEditar(true,'config_pagos',2);">Agregar configuración</button></div>
+                <div id="redim-config_pagos" class="pantalla-31" classToggle="pantalla-31,pantalla-31" hide="b-config_pagos">
+                    <ul class="lista seleccionable"></ul>
+                </div>
+            </div>
+
+            <div class="detalle" id="detalle-config_pagos" style="display:none;">
+                <div class="titulo">Detalle de configuración<button class="regresar" onclick="CambioPantalla('lista-config_pagos','detalle-config_pagos');"><img src="img/back.png" /></button></div>
+                <div class="btns-up" id="edit-config_pagos" style="display:none;"><button class="edit-btn" clave_funcion="20" control="edit-config_pagos" onclick="IniciarEditar(false,'config_pagos',2);"><img src="img/edit.png" /></button><button onclick="IniciarEliminar(this, 'config_pagos');" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>
+                <div class="detalle-w pantalla-3" id="wrap-detalle-config_pagos"></div>
+            </div>
+
+            <div class="edicion" style="display:none;" id="p-edicion-config_pagos">
+                <div class="titulo">Edición de configuración de Pagos <button class="regresar" id="cancelar-edit-config_pagos" onclick="CambioPantalla('detalle-config_pagos', 'p-edicion-config_pagos');"><img src="img/back.png" /></button><hr class="clearn" /></div>
+                <form class="pantalla-2" id="frm-edit-config_pagos" onsubmit="return false;">
+                    <fieldset style="border:0px;">
+                        <label>Descripción</label><input name="descripcion" id="desc-config_pagos" />
+                        <label>Cuota</label><input name="cuota" id="cuota-config_pagos" />
+                        <label>Porcentaje de mora</label><input name="porcent_mora" id="porcent_mora-config_pagos" />
+
+                        <label>Cantidad de meses descuento</label><input name="ctd_mes_dcto" id="ctd_mes_dcto" />
+                        <div style="text-align:center;"><span>Paquete</span><input type="radio" value="es_paq" name="cond_pag" style="width:auto;display:inline;margin-left:15px;" />
+                        <span style="padding-left:50px;">Mayor que</span><input type="radio" value="es_mayor_que" name="cond_pag" style="width:auto;display:inline;margin-left:15px;"/></div>
+                        <label>Es configuración por default</label><div style="text-align:center;"><input type="checkbox" value="true" name="cat_default" style="width:auto;display:inline;" id="cat_default" /></div>
+
+                        <input name="esNuevo" type="hidden" id="op-config_pagos" />
+                        <input name="clave" type="hidden" id="clave-config_pagos" />
+
+                        <button class="aceptar" style="margin-top:30px;margin-bottom:50px;" onclick="Guardar(this, 'config_pagos', function () { CargarCatalogo(catalogo, function () { }, {domicilio:document.getElementById('dom-conv').value});LimpiarForm('config_pagos');Mostrar('p-edicion-config_pagos','lista-config_pagos');});">Aceptar</button>
+                    </fieldset>
+                </form>
+            </div>
+            <!---->
+
+            <!--Convenios-->
+            <div class="lista" id="lista-convenios" redim="redim-convenios" style="display:none;">
+                <div class="titulo"><span>Convenios</span><button class="regresar" id="cancelar-lista-convenios"  onclick="CambioPantalla('detalle-ap_domicilios', 'lista-convenios');"><img src="img/back.png" /></button><button class="buscar-min" onclick="MostrarBuscar('b-com','convenios','redim-convenios');"><img src="img/buscar.png" /></button><hr class="clearn" /></div>
+                <div class="busqueda" id="b-com" style="display:none;"><input placeholder="Buscar" onkeypress="if (ValidarEnter(event)) { CargarCatalogo('convenios', undefined, { buscar: this.value});}" /></div>
+                <div class="agregar" id="edicion-convenios" style="display:none;"><button clave_funcion="2" control="edicion-convenios" onclick="IniciarEditar(true,'convenios',2);">Agregar convenio</button></div>
+                <div id="redim-convenios" class="pantalla-2" classToggle="pantalla-2,pantalla-21" hide="b-com">
+                    <ul class="lista seleccionable"></ul>
+                </div>
+            </div>
+
+            <div class="detalle" id="detalle-convenios" style="display:none;">
+                <div class="titulo">convenios<button class="regresar" onclick="CambioPantalla('lista-convenios','detalle-convenios');"><img src="img/back.png" /></button></div>
+                <div class="btns-up" id="edit-conv" style="display:none;"><button class="edit-btn" clave_funcion="19" control="edit-conv" onclick="IniciarEditar(false,'convenios',2);"><img src="img/edit.png" /></button><button onclick="IniciarEliminar(this, 'convenios', undefined, undefined, undefined, {domicilio:document.getElementById('detalle-ap_domicilios').getAttribute('clave')});" class="delete-btn"><img src="img/del.png" /></button><hr class="clearn" /></div>
+                <div class="detalle-w pantalla-3" id="wrap-detalle-convenios"></div>
+            </div>
+
+            <div class="edicion " style="display:none;" id="p-edicion-convenios">
+                <div class="titulo">Edición de convenios <button class="regresar" id="cancelar-edit-convenios" onclick="CambioPantalla('detalle-convenios', 'p-edicion-convenios');"><img src="img/back.png" /></button><hr class="clearn" /></div>
+                <form class="pantalla-2" id="frm-edit-convenios" onsubmit="return false;">
+                    <fieldset style="border:0px;">
+                        <input name="domicilio" type="hidden" id="dom-conv"/>
+                        <label>Descripción</label><input name="descripcion" id="desc-conv" />
+                        <label>Porcentaje de pago</label><input name="porc_pago" id="prcp-conv" />
+                        <label>Porcentaje de descuento</label><input name="porc_dcto" id="prcd-conv" />
+
+                        <label>Cantidad de meses antiguos</label><input name="ctd_meses_ant" id="ma-conv"/>
+                        <label>Cantidad de meses actuales</label><input name="ctd_meses_recientes" id="mr-conv"/>
+
+                        <input name="esNuevo" type="hidden" id="op-convenios" />
+                        <input name="clave" type="hidden" id="clave-convenios" />
+                        
+                        <button class="aceptar" style="margin-top:30px;margin-bottom:50px;" onclick="Guardar(this, 'convenios', function () { CargarCatalogo(catalogo, function () { }, {domicilio:document.getElementById('dom-conv').value});LimpiarForm('convenios');Mostrar('p-edicion-convenios','lista-convenios');});">Aceptar</button>
+                    </fieldset>
+                </form>
+            </div>
+            <!---->
 
             <div class="lista" id="config-general" style="display:none;">
                 <div class="titulo">Configuraciónes Generales<button class="regresar" onclick="CambioPantalla('p-edicion-config', 'config-general');"><img src="img/back.png" /></button><hr class="clearn" /></div>
@@ -947,7 +1029,8 @@
             </div>
             <div class="edicion" style="display:none;" id="p-edicion-aportaciones">
                 <div class="titulo" style="margin-bottom:50px;">Aportaciones<button class="regresar" onclick="CambioPantalla('lista-ap_domicilios3', 'p-edicion-aportaciones');"><img src="img/back.png" /></button><hr class="clearn" /></div>
-                <button class="aceptar" style="margin-top:20px;" onclick="VerEdicionConceptos();">Conceptos</button>
+                <button class="aceptar" style="margin-top:20px;" onclick="VerDepositosBanco();">Depositos bancarios de cuotas</button>
+                <button class="aceptar" style="margin-top:20px;" onclick="VerEdicionConceptos();">Conceptos</button>                
                 <button class="aceptar" style="margin-top:20px;" onclick="VerAportacionesIniciales();">Aportaciones pendientes iniciales</button>
                 <button class="aceptar" style="margin-top:20px;" onclick="VerAgregarRecibosHistorial();">Editar Recibos de Historial</button>
                 <button class="aceptar" style="margin-top:20px;" onclick="AgregarPermisoCapturaRecibos();">Dar permiso de captura de recibos<br />(Diferente fecha)</button>
@@ -1077,6 +1160,37 @@
                 <div style="position:absolute;bottom:0px;border-top:1px solid #2c5878;background:#e7e7e7;width:100%;"><button class="aceptar" style="margin-top:10px;margin-bottom:5px;width: unset;" onclick="Guardar(this, 'domiciliosH', function (item,xmlDoc) { LimpiarForm('domiciliosH'); alert(GetValor(xmlDoc,'mensaje')); });">Aplicar cambio</button></div>
             </div>
 
+
+            <div class="lista" id="lista-depositos_banco" style="display:none;" redim="redim-depositos_banco">
+                <div class="titulo">Lista de Depositos<button class="regresar" onclick="CambioPantalla('p-edicion-aportaciones', 'lista-depositos_banco');"><img src="img/back.png" /></button><button class="buscar-min" onclick="MostrarBuscar('b-depb', 'depositos_banco', 'redim-depositos_banco', 'pantalla-2', 'pantalla-21');"><img src="img/buscar.png" /></button><hr class="clearn" /></div>
+                <div class="busqueda" id="b-depb" style="display:none;"><input placeholder="Buscar" onkeypress="if(ValidarEnter(event)){CargarCatalogo('depositos_banco', undefined, { buscar: this.value });}" /></div>
+                <div class="agregar" id="edicion-depositos_banco" style="display:none;"><button clave_funcion="18" control="edicion-depositos_banco" onclick="IniciarEditar(true,'depositos_banco',2);">Agregar deposito</button></div>
+                <ul class="lista seleccionable pantalla-21" id="redim-depositos_banco" classToggle="pantalla-21, pantalla-20" hide="b-depb"></ul>
+            </div>
+
+            <div class="pantalla" style="display:none;position:relative;top:0px;" id="p-edicion-depositos_banco">
+                <div class="titulo"><span>Editar Depositos</span><button class="regresar" id="cancelar-edit-depositos_banco" onclick="Mostrar('p-edicion-depositos_banco','lista-depositos_banco'); "><img src="img/back.png" /></button></div>
+                <form onsubmit="return false" method="post" id="frm-edit-depositos_banco" class="edicion">
+                    <fieldset>
+                        <p class="leyenda" id="cab_domicilio_deposito_banco"></p>
+                        <input name="esNuevo" type="hidden" id="op-depositos_banco" />
+                        <input type="hidden" name="clave" id="clave-depositos_banco" />
+                        <label>Fecha de pago(DD/MM/YYYY HH:MM:SS)</label><input name="fecha" id="db-fecha" />
+                        <label>Importe</label><input name="monto" id="db-monto" onkeypress="return SoloNumeros(event,'.');" />
+                        <label>Origen</label><input name="origen" /> 
+                        <textarea id="nota-deposito_banco" disabled="disabled"></textarea>
+                        <img id="img-depositos_banco" style="max-width:100%;" onclick="VerImagen(this);"/>
+                    </fieldset>
+                </form>
+                <div style="position:absolute;bottom:0px;border-top:1px solid #2c5878;background:#e7e7e7;width:100%;"><button class="aceptar" style="margin-top:10px;margin-bottom:5px;width: unset;" onclick="Guardar(this, 'depositos_banco', function (item,xmlDoc) { LimpiarForm('depositos_banco'); CargarCatalogo(catalogo);CambioPantalla('lista-depositos_banco','p-edicion-depositos_banco');});">Aplicar cambio</button></div>
+            </div>
+
+            <div class="lista" id="lista-depositos_banco_sel" style="display:none;" redim="redim-depositos_banco_sel">
+                <div class="titulo">Seleccione Depositos<button class="regresar" onclick="CambioPantalla('p-edicion-aportaciones', 'lista-depositos_banco_sel');"><img src="img/back.png" /></button><button class="buscar-min" onclick="MostrarBuscar('b-depb_sel', 'depositos_banco_sel', 'redim-depositos_banco_sel', 'pantalla-2', 'pantalla-21');"><img src="img/buscar.png" /></button><hr class="clearn" /></div>
+                <div class="busqueda" id="b-depb_sel" style="display:none;"><input placeholder="Buscar" onkeypress="if(ValidarEnter(event)){CargarCatalogo('depositos_banco_sel', undefined, { buscar: this.value });}" /></div>
+                <ul class="lista seleccionable pantalla-21" id="redim-depositos_banco_sel" classToggle="pantalla-21, pantalla-20" hide="b-depb_sel"></ul>
+            </div>
+
         </section>
 
         <section class="pantalla transparencia" id="transparencia">
@@ -1105,6 +1219,7 @@
                     <div id="table-resultados-tr"></div>
                 </div>
             </div>
+
         </section>
 
         <section class="pantalla erogaciones" id="erogaciones">
