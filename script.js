@@ -316,7 +316,10 @@ function RegistrarNotificaciones() {
              
             FCMPlugin.onNotification(function (data) {
                 document.getElementById("notifi-audio").play();
-                cordova.plugins.notification.badge.increase(1, function () { });                
+                cordova.plugins.notification.badge.increase(1, function () { });  
+                if (data.wasTapped) {
+                    alert("ok tapped");
+                }
                 if (data.modulo == 1) {
                     ActivarAlarma_(data.contenidovoz);
                 } else if (data.modulo == 2) {
@@ -733,17 +736,12 @@ function PintarItem(catalogo, clave, xmlDoc0) {
                 '<hr class="clearn" />'+
                 (_func_hab_.indexOf("10") > 0 ?
                 '<div class="check-activacion" id="check-tag-d-' + clave + '"><label class="etiqueta" style="font-weight:bolder;font-size:1.3em;margin-top:10px;width:50%;">Prorroga</label><input style="float:left;width:30%;padding:5px;border:1px solid #999;margin-top:10px;" placeholder="Fecha negociada" id="fecha_negociada_tag" value="' + GetValor(xmlDoc, "fecha_prorroga") + '" onkeypress="if(ValidarEnter(event)){AgregarProrroga(document.getElementById(\'check-tag\'),' + clave + ',document.getElementById(\'fecha_negociada_tag\').value);}" /><label class="switch" style="float:right;"><input id="check-tag" type="checkbox" ' + (GetValor(xmlDoc, "es_activo") == "true" ? "checked=checked" : "") + ' onchange="ActivarTag(this,' + clave + ');" /><span class="slider round"></span></label><hr class="clearn" /></div>' 
+                : "") +                
+                (_func_hab_.indexOf("23") > 0 ?                    
+                    '<div style="display:none;" class="check-activacion" id="check-pag_s_mora-d-' + clave + '"><button style="display:none;" clave_funcion="23" control="check-pag_s_mora-d-' + clave + '"></button><label class="etiqueta" style="font-weight:bolder;font-size:1.3em;margin-top:10px;width:50%;">Conceder próximo pago sin mora</label><label class="switch" style="float:right;"><input id="check-tag" type="checkbox" ' + (GetValor(xmlDoc, "es_activo") == "true" ? "checked=checked" : "") + ' onchange="PonerProxPagoSinMora(this,' + clave + ');" /><span class="slider round"></span></label><hr class="clearn" /></div>'
                 : "") +
-                '<div class="check-activacion" id="check-tag-d-' + clave + '"><label class="etiqueta" style="font-weight:bolder;font-size:1.3em;margin-top:10px;width:50%;">Día del mes negociado para corte de Tag</label><input style="float:left;width:30%;padding:5px;border:1px solid #999;margin-top:10px;" placeholder="Día del mes" id="dia_mes_neg" onkeypress="return SoloNumeros(event);" /><hr class="clearn" /></div>'+
-                (_func_hab_.indexOf("19") > 0 ? 
-                '<div class="check-activacion" id="check-tag-d-' + clave + '"><label class="etiqueta" style="font-weight:bolder;font-size:1.3em;margin-top:10px;width:50%;">Clave de configuración de pago</label><input style="float:left;width:30%;padding:5px;border:1px solid #999;margin-top:10px;" placeholder="clave Config Pago" id="clave_conf_pago" onkeypress="return SoloNumeros(event);" /><hr class="clearn" /></div>' 
-                : "") +
-                (_func_hab_.indexOf("20") > 0 ?                    
-                    '<div class="check-activacion" id="check-pag_s_mora-d-' + clave + '"><label class="etiqueta" style="font-weight:bolder;font-size:1.3em;margin-top:10px;width:50%;">Conceder próximo pago sin mora</label><label class="switch" style="float:right;"><input id="check-tag" type="checkbox" ' + (GetValor(xmlDoc, "es_activo") == "true" ? "checked=checked" : "") + ' onchange="PonerProxPagoSinMora(this,' + clave + ');" /><span class="slider round"></span></label><hr class="clearn" /></div>'
-                : "") +
-                '<label class="etiqueta">Notas y documentos</label>' +
                 '<hr class="clearn" />' +
-                '<form id="frm-edit-expediente" onsubmit="return false;"><fieldset><input type="hidden" id="dom-exp" name="domicilio"/><div id="c-e-expediente"></div><button class="aceptar" style="margin-top:30px;margin-bottom:50px;" onclick="document.getElementById(\'dom-exp\').value=document.getElementById(\'detalle-ap_domicilios\').getAttribute(\'clave\');Guardar(this,\'expediente\', function () { Mostrar(\'detalle-ap_domicilios\', \'detalle-ap_domicilios\', \'ap_domicilios\', document.getElementById(\'detalle-ap_domicilios\').getAttribute(\'clave\'));});">Aceptar</button><div id="dom-expediente">' + PintarImagenesTexto(xmlDoc0) + '</div></fieldset></form>';
+                '<form id="frm-edit-expediente" onsubmit="return false;" style="display:none;"><fieldset><label class="etiqueta">Notas y documentos</label><input type="hidden" id="dom-exp" name="domicilio"/><div id="c-e-expediente"></div><button class="aceptar" control="frm-edit-expediente" clave_funcion="22" style="margin-top:30px;margin-bottom:50px;" onclick="document.getElementById(\'dom-exp\').value=document.getElementById(\'detalle-ap_domicilios\').getAttribute(\'clave\');Guardar(this,\'expediente\', function () { Mostrar(\'detalle-ap_domicilios\', \'detalle-ap_domicilios\', \'ap_domicilios\', document.getElementById(\'detalle-ap_domicilios\').getAttribute(\'clave\'));});">Aceptar</button><div id="dom-expediente">' + PintarImagenesTexto(xmlDoc0) + '</div></fieldset></form>';
 
             document.getElementById("wrap-detalle-" + catalogo).innerHTML = cont;
             var contenedor = document.getElementById("c-e-expediente");
@@ -1171,7 +1169,7 @@ function PintarItemEditar(catalogo, clave, xmlDoc0) {
             CargarDatosFrmMap(xmlDoc, { indice: 'clave-reservaciones', descripcion: 'res-descripcion', inicio: 'res-inicio', fin: 'res-fin', fecha_reservada: 'fecha_reservada', inmueble: 'ed-res-inmueble' });
             break;
         case "ap_domicilios":
-            CargarDatosFrmMap(xmlDoc, { clave: 'clave-ap_domicilios', calle: 'dom-calle', titular: 'dom-titular', manzana: 'dom-mz', lote: 'dom-lt', numero: 'dom-numero', no_interior: 'dom-no_int', fecha_entrega: 'fecha_entrega', segmento: 'seg-dom', email: 'email-dom' });
+            CargarDatosFrmMap(xmlDoc, { clave: 'clave-ap_domicilios', calle: 'dom-calle', titular: 'dom-titular', manzana: 'dom-mz', lote: 'dom-lt', numero: 'dom-numero', no_interior: 'dom-no_int', fecha_entrega: 'fecha_entrega', segmento: 'seg-dom', email: 'email-dom', telefono: 'tel-dom', dia_corte: 'dia_corte-dom', config_pagos:'config_pag-dom' });
             break;
         case "ap_conceptos":
             CargarDatosFrmMap(xmlDoc, { clave: 'clave-ap_conceptos', nombre: 'con-nombre', descripcion: 'con-descripcion', monto: 'con-monto' });
@@ -2703,7 +2701,8 @@ function ObtenerItem(catalogo, item) {
                     '<span class="t-1" ><i style="color:#777;font-weight:normal">Placas</i>:' + GetValor(item, "placas") + '</span>' : "") +
                 (_func_hab_.indexOf("11") > 0 ?
                     '<div id="vehi-' + indice + '" style="display:none;"><button class="edit-btn" onclick="IniciarEditar(false, \'' + catalogo + '\', 2, { a: \'lista-' + catalogo + '\', b: \'p-edicion-' + catalogo + '\'},{d:document.getElementById(\'detalle-ap_domicilios\').getAttribute(\'clave\'),claveItem:' + indice + '});" ><img  src="img/edit.png" /></button>' +
-                    '<button class="edit-btn" onclick="IniciarEliminar(this,\'' + catalogo + '\',' + indice + ',{ b: \'lista-' + catalogo + '\', a: \'p-edicion-' + catalogo + '\' },true,{d:document.getElementById(\'detalle-ap_domicilios\').getAttribute(\'clave\')},function(){EjecutarRestriccionTags(false,document.getElementById(\'detalle-ap_domicilios\').getAttribute(\'clave\'));});" ><img  src="img/del.png" /></button>' +
+                    '<button class="edit-btn" onclick="IniciarEliminar(this,\'' + catalogo + '\',' + indice + ',{ b: \'lista-' + catalogo + '\', a: \'p-edicion-' + catalogo + '\' },true,{d:document.getElementById(\'detalle-ap_domicilios\').getAttribute(\'clave\')},function(){EjecutarRestriccionTags(false,document.getElementById(\'detalle-ap_domicilios\').getAttribute(\'clave\'));});" ><img title="Bloquear definitivamente" src="img/del.png" /></button>' +
+                    '<button class="edit-btn" onclick="IniciarEliminar(this,\'' + catalogo + '\',' + indice + ',{ b: \'lista-' + catalogo + '\', a: \'p-edicion-' + catalogo + '\' },true,{d:document.getElementById(\'detalle-ap_domicilios\').getAttribute(\'clave\'),reasignar:true});" ><img title="Quitar para asignar a otro" src="img/vobo.png" /></button>' +
                     '</div>' : "") + '</fieldset>';
             break;
         case "tiposgastos":
