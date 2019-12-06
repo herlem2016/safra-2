@@ -318,7 +318,7 @@ function RegistrarNotificaciones() {
                 document.getElementById("notifi-audio").play();
                 cordova.plugins.notification.badge.increase(1, function () { });  
                 if (data.wasTapped) {
-                    alert("ok tapped");
+                    PantallaMostrar("Notificaciones","section");
                 }
                 if (data.modulo == 1) {
                     ActivarAlarma_(data.contenidovoz);
