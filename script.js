@@ -319,6 +319,7 @@ function RegistrarNotificaciones() {
                 document.getElementById("notifi-audio").play();
                 cordova.plugins.notification.badge.increase(1, function () { });
                 if (data.wasTapped) {
+                    alert("tapped");
                     PantallaMostrar('notificaciones', 'section');
                 }
                 if (data.modulo == 1) {
