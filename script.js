@@ -317,7 +317,7 @@ function RegistrarNotificaciones() {
             FCMPlugin.onNotification(function (data) {
                 document.getElementById("notifi-audio").play();
                 cordova.plugins.notification.badge.increase(1, function () { });  
-                
+                PantallaMostrar("notificaciones", "section");
                 if (data.modulo == 1) {
                     ActivarAlarma_(data.contenidovoz);
                 } else if (data.modulo == 2) {
