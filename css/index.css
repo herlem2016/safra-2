@@ -1,11 +1,17 @@
-﻿.file-link {
+﻿.btn30 {
+    width:30% !important;display:inline-block;float:right !important;font-size:0.8em;margin-right:5%;margin-top:15px;text-align:center;
+}
+
+.file-link {
     padding: 20px;
-    background-color: #1fb9fe;
+    background-color: #dbf2db;
     color: #333;
     font-weight: bolder;
     display: block;
     margin-top: 20px;
     margin-bottom: 10px;
+    border-radius: 10px;
+    border: 1px solid #fff;
 }
 
 .inactivo * {
@@ -14,6 +20,10 @@
 
 button {
     cursor: pointer;
+}
+
+#btn_pagar_p {
+    margin-bottom: 50px;
 }
 
 fieldset {
@@ -26,6 +36,8 @@ fieldset {
     background-color: #dbdbdb;
     overflow-x: hidden;
     width: 100%;
+    background-image: url(../img/bg.jpg);
+    background-size: cover;
 }
 
 .pantalla {
@@ -34,6 +46,8 @@ fieldset {
     left: 0px;
     top: 34px;
     width: 100%;
+    background-image: url(../img/bg.jpg);
+    background-size: cover;
 }
 
 .login fieldset {
@@ -43,6 +57,8 @@ fieldset {
     border: 2px solid #d2d2d2;
     background-color: #fff;
     display: block;
+    background-color: rgba(255, 255, 255, 0.3);  
+    max-width:600px;
 }
 
     .login fieldset legend {
@@ -56,6 +72,32 @@ fieldset {
     .login fieldset img {
         width: 100%;
     }
+
+div.lista, div.edicion {
+    max-width: 1024px;
+    margin: auto;
+    background-color: rgba(10,10,10,0.6);
+    box-shadow: 0px 0px 16px 0px rgba(0,0,0,1);    
+}
+div.detalle, div.detalle-w {
+    max-width: 1024px;
+    margin: auto;
+    background-color: rgba(10,10,10,0.5);
+    box-shadow: 0px 0px 16px 0px rgba(0,0,0,1);
+}
+
+div.detalle div.detalle-w {
+    background-color: transparent;
+}
+
+#lista-transparencia {
+    background-color: rgba(10,10,10,0.5) !important;
+}
+
+    #lista-transparencia ul.lista li {
+        box-shadow: inset 0px 0px 0px 0px #434343;
+    }
+
 
     .login fieldset input {
         width: 60%;
@@ -80,6 +122,7 @@ fieldset {
         padding: 10px;
         margin-bottom: 25px;
         margin-top: 25px;
+        max-width: 422px;
     }
 
     .login fieldset .olvido {
@@ -134,11 +177,12 @@ fieldset {
     border-left: 0px;
     border-right: 0px;
     border-bottom: 5px solid #00556b;
-    background-color: #eee;
+    background-color: rgba(1, 9, 13, 0.9);
     margin: 0px;
     padding: 5%;
     font-size: 12px;
     list-style: none;
+    color:#fff;
 }
 
     .opciones-usuario ul li {
@@ -175,6 +219,7 @@ fieldset {
     text-align: center;
     font-weight: bold;
     font-size: 14px;
+    min-height:30px;
     font-family: arial;
 }
 
@@ -263,7 +308,7 @@ ul.listaP {
             }
 
     ul.listaP .seleccionado {
-        background-color: #F57301;
+        background-color: #FF6204;
     }
 
 ul li.resumen > div {
@@ -279,16 +324,15 @@ ul.lista .itemg {
     margin: 0px;
 }
 
-ul.lista .item {
-    width: 100%;
+ul.lista .item{
+    width: 95%;
     float: left;
-    box-shadow: inset 0px 1px 0px 0px #ffffff;
+    box-shadow: inset 0px 1px 0px 0px #847b7b;
     margin: 0px;
     margin-bottom: 7px;
-    background-color: #fff;
     padding-bottom: 10px;
     padding-top: 10px;
-    border-bottom: 1px solid #d2cbcb;
+    padding-left: 5%;
 }
 
 #p-edicion-asig_conceptos fieldset ul {
@@ -315,6 +359,8 @@ ul {
     overflow-y: auto;
 }
 
+.item{overflow-x:hidden;}
+
 .item > span {
     font-family: Verdana;
     font-size: 0.95em;
@@ -334,7 +380,7 @@ ul.lista .item ol {
         ul.lista .item ol li > span {
             display: block;
             width: 70%;
-            font-size: 12px;
+            font-size: 1.1em;
             padding: 3px;
             float: left;
             clear: left;
@@ -405,10 +451,14 @@ ul.lista .item .clear {
     padding: 5px;
     font-size: 11px;
     font-weight: bold;
-    background-color: #ddd;
     text-align: center;
     clear: both;
     margin-top: 10px;
+    font-size: 0.95em;    
+}
+
+div.edicion label {
+    color: #c6c6c6;
 }
 
 .edicion input {
@@ -478,7 +528,7 @@ img.file {
 ul.lista .item span.t-1 {
     display: block;
     padding-top: 5px;
-    color: #0058ff;
+    color: #e2e9f7;
     font-weight: bold;
     font-size: 1em;
 }
@@ -539,7 +589,7 @@ span.t-1g {
     padding: 2%;
     width: 95%;
     word-wrap: break-word;
-    color: #333;
+    color: #e3e2e2;
     font-weight: bold;
     font-size: 0.95em;
     margin: auto;
@@ -560,6 +610,16 @@ span.t-1 {
     padding: 5px;
     width: 90%;
     word-wrap: break-word;
+    color: #efe9e9;
+}
+
+.listaP span.t-1 {
+    display: block;
+    clear: both;
+    padding: 5px;
+    width: 90%;
+    word-wrap: break-word;
+    color: #444;
 }
 
 span.t-2 {
@@ -567,7 +627,7 @@ span.t-2 {
     float: left;
     font-size: small;
     font-weight: normal;
-    color: #333;
+    color: #c4c4c4;
     margin-top: 5px;
     padding: 5px;
     width: 90%;
@@ -580,7 +640,7 @@ span.t-2n {
     float: left;
     font-size: 11px;
     font-weight: normal;
-    color: #777;
+    color: #98e277;
     word-wrap: break-word;
 }
 
@@ -588,7 +648,7 @@ span.t-3 {
     display: block;
     float: left;
     font-size: 11px;
-    color: #00556b;
+    color: #2ed0fa;
     font-weight: normal;
     word-wrap: break-word;
 }
@@ -597,25 +657,29 @@ span.t-3n {
     display: block;
     float: right;
     font-size: 11px;
-    color: #00556b;
+    color: #03bded;
     font-weight: normal;
-    width: 35%;
+    width: 30%;
     word-wrap: break-word;
+    padding-right:5%;
 }
 
 span.t-4 {
     margin: auto;
     display: block;
     clear: both;
-    font-size: 0.95em;
+    font-size: 1.1em;
     color: #060a0d;
     font-weight: normal;
     padding: 20px;
     text-align: justify;
     width: 90%;
     word-wrap: break-word;
-    background-color: #fff;
     margin-bottom: 10px;
+    margin-top: 20px;
+    clear: both;
+    float: left;
+    color: #fff;
 }
 
 span.t-41 {
@@ -747,6 +811,7 @@ button.del-btn {
         float: left;
         display: block;
         margin-top: 4px;
+        color: #11b1ff;
     }
 
     .check-activacion .switch {
@@ -759,12 +824,15 @@ button.del-btn {
     width: 70% !important;
 }
 
+#listado-reserv span.t-2{color:#333;}
+
 .buscador .logo-frac {
     width: 30%;
     display: block;
     margin: auto;
     margin-top: 40px;
     margin-bottom: 30px;
+    max-width:150px;
 }
 
 .buscador p, div.leyenda p {
@@ -824,7 +892,7 @@ body .ui-datepicker {
         right: 0px;
         width: 20%;
     }
-
+    .p12, .graf-barra{color:#ddd;}
     .menu li {
         margin: 0px;
         padding: 0px;
@@ -834,7 +902,7 @@ body .ui-datepicker {
     }
 
         .menu li button {
-            background-color: transparent;
+            background: rgba(255,255,255,0.8) !important;
             color: #333;
             width: 100%;
             height: 100%;
@@ -1045,8 +1113,9 @@ table.desglose th {
 .graf-barra {
     position: relative;
     padding: 7px;
+    max-width:90%;
 }
-
+fieldset legend{color:#ddd;}
     .graf-barra b {
         position: relative;
         z-index: 99;
@@ -1061,16 +1130,17 @@ table.transparente td.votado {
 
 .graf-barra label {
     position: relative;
+    color:#eee;
 }
 
 .graf-barra .progreso {
-    background: linear-gradient(to bottom, #00c0ff 5%, #86e1ff 100%);
-    background-color: #54d5ff;
+    background-color: #139acf;
     display: block;
     height: 100%;
     position: absolute;
     left: 0px;
     top: 0px;
+    border: 3px solid #b7b5b5;
 }
 
 .graf-barra b {
@@ -1095,27 +1165,29 @@ table.transparente tr {
 
     .btns-texto label {
         padding: 15px;
+        color: #69f806;
+        font-size: 1.3em;
     }
 
-    .btns-texto table tr td {
-        border: 0px;
-    }
+.btns-texto table tr td {
+    border: 0px;
+}
 
-    .btns-texto button {
-        width: 80%;
-        font-size: 20px;
-        color: #fff;
-        margin-top: 20px;
-        margin-bottom: 12px;
-        border: 0px;
-        background-color: #0ec5f5;
-        padding: 5px;
-    }
+.btns-texto button {
+    width: 80%;
+    font-size: 20px;
+    color: #fff;
+    margin-top: 20px;
+    margin-bottom: 12px;
+    border: 0px;
+    background-color: #0ec5f5;
+    padding: 5px;
+}
 
-        .btns-texto button:active {
-            color: #0e507a;
-            background-color: #fff;
-        }
+.btns-texto button:active {
+    color: #0e507a;
+    background-color: #fff;
+}
 
 table.lista-files {
     text-align: center;
@@ -1242,17 +1314,17 @@ div.item-enc td label {
 }
 
 .nota-principal {
-    width: 100%;
+    width: 98%;
+    margin:auto;
     padding-top: 20px;
     padding-bottom: 20px;
-    background-color: #fff;
     margin-bottom: 20px;
     border-radius: 5px;
     padding-left: 2%;
 }
 
 div.firma-hist {
-    color: #0f4d5a;
+    color: #1ed8ff;
     font-size: 11px;
     text-align: center;
     font-family: calibri;
@@ -1263,7 +1335,7 @@ div.firma-hist {
     div.firma-hist span {
         display: inline-block;
     }
-
+#control-pago {background-color:#fff;}
 .aux-1 {
     color: #779b64;
     float: right;
@@ -1303,12 +1375,16 @@ button.con-btn {
         position: absolute;
         top: 0px;
         left: 0px;
+        background: #fff;
+        border-radius: 30px;
     }
 
 ul.lista li .t-1m {
     display: inline-block !important;
     width: 60% !important;
     padding-top: 15px;
+    color: #ddd;
+    font-size: 1.0em;
 }
 
 ul.lista li .t-2 {
@@ -1321,6 +1397,8 @@ ul.lista li .t-2 {
     color: #666;
 }
 
+.datos-bd span.t-3{color:#2c5878}
+
 button.cerrar-datos-p {
     float: right;
     padding: 5px;
@@ -1330,6 +1408,8 @@ button.cerrar-datos-p {
     color: #8a8a8a;
     background-color: #000;
 }
+
+.detalle .btn2,.detalle-w.btn2{display:block;}
 
 .tabs-down, div.agregar button, .menu button, .btn2, button.aceptar, button.btn-item {
     width: 98%;
@@ -1347,6 +1427,7 @@ button.cerrar-datos-p {
     padding: 6px 24px;
     text-decoration: none;
     text-shadow: 0px 1px 0px #ffffff;
+    max-width:400px;
 }
 
 div.abajo {
@@ -1360,10 +1441,16 @@ div.abajo {
     list-style: none;
     padding: 10px;
 }
-
+#graf-transparencia {
+    background-color: rgba(255,255,255,0.6);
+    padding: 20px;
+    margin: 20px auto !important;
+    max-width:1024px;
+    border-radius:15px;
+}
     .wrap-lista li {
         font-size: 1.1em;
-        color: #333;
+        color: #c6c6c6;
         font-weight: bold;
         padding: 15px;
         border-bottom: 1px solid #dadada;
@@ -1408,12 +1495,12 @@ button.aceptar:hover, div.agregar button:hover, .menu button:hover, .btn2:hover,
     position: relative;
     top: 1px;
 }
-
 .menu button {
     padding: 0px;
     font-size: small;
     font-weight: normal;
     text-align: center;
+    box-shadow: 0px 0px 2px 0px rgba(0, 0, 0,0.5);
 }
 
 .menu li {
@@ -1432,6 +1519,7 @@ button.aceptar:hover, div.agregar button:hover, .menu button:hover, .btn2:hover,
 
 div.agregar {
     padding: 10px;
+    border-bottom: solid 1px #ddd;
 }
 
     div.agregar button, button.aceptar {
@@ -1440,6 +1528,7 @@ div.agregar {
         margin: auto;
         display: block;
         cursor: pointer;
+        max-width:600px;
     }
 
 button.aceptar {
@@ -1471,9 +1560,19 @@ div.agregar button, .menu button {
     font-size: 1em;
 }
 
-    .detalle-w span.t-1 {
-        font-weight: bold;
-    }
+.resaltado {
+    color: #f8f8f8;
+    font-weight: bolder;
+    text-align: center;
+    background: #ff983d;
+    padding: 20px;
+}
+.detalle-w span.t-1 {
+    font-weight: bold;
+    color: #c4c4c4;
+    font-size:1.1em;
+}
+.datos-bd span.t-1{color:#222;}
 
     .detalle-w span.t-2 {
         font-size: 0.95em;
@@ -1483,19 +1582,21 @@ div.agregar button, .menu button {
         font-size: 1em;
     }
 
-    .detalle-w p {
-        margin: auto;
-        margin-top: 10px;
-        font-size: 0.95em;
-        clear: both;
-        background: #fff;
-        padding: 10px;
-        margin-bottom: 5px;
-    }
+.detalle-w p {
+    margin: auto;
+    margin-top: 10px;
+    font-size: 0.95em;
+    clear: both;
+    color: #efefef;
+    padding: 10px;
+    margin-bottom: 5px;
+    border: 1px solid #888;
+    border-radius: 5px;
+}
 
     .detalle-w .t-41 {
         font-size: small;
-        color: #666;
+        color: #989898;
         display: block;
         clear: both;
     }

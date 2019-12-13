@@ -9,9 +9,7 @@ window.onresize = function () {
 var TSI;
 $(document).ajaxSuccess(function (event, xhr, settings, data) {
     if (GetValor(xhr.responseXML, "mensaje").indexOf("sesion_inactiva") > 0) {
-        IniciarSesion_back(function () {
-            $.post(settings, data);
-        });        
+        CambioPantalla('login', 'main');
     }
 });
 /**
@@ -736,7 +734,7 @@ function PintarItem(catalogo, clave, xmlDoc0) {
                 '<div class="check-activacion" id="check-tag-d-' + clave + '"><label class="etiqueta" style="font-weight:bolder;font-size:1.3em;margin-top:10px;width:50%;">Prorroga</label><input style="float:left;width:30%;padding:5px;border:1px solid #999;margin-top:10px;" placeholder="Fecha negociada" id="fecha_negociada_tag" value="' + GetValor(xmlDoc, "fecha_prorroga") + '" onkeypress="if(ValidarEnter(event)){AgregarProrroga(document.getElementById(\'check-tag\'),' + clave + ',document.getElementById(\'fecha_negociada_tag\').value);}" /><label class="switch" style="float:right;"><input id="check-tag" type="checkbox" ' + (GetValor(xmlDoc, "es_activo") == "true" ? "checked=checked" : "") + ' onchange="ActivarTag(this,' + clave + ');" /><span class="slider round"></span></label><hr class="clearn" /></div>' 
                 : "") +                
                 (_func_hab_.indexOf("23") > 0 ?                    
-                    '<div style="display:none;" class="check-activacion" id="check-pag_s_mora-d-' + clave + '"><button style="display:none;" clave_funcion="23" control="check-pag_s_mora-d-' + clave + '"></button><label class="etiqueta" style="font-weight:bolder;font-size:1.3em;margin-top:10px;width:50%;">Conceder próximo pago sin mora</label><label class="switch" style="float:right;"><input id="check-tag" type="checkbox" ' + (GetValor(xmlDoc, "es_activo") == "true" ? "checked=checked" : "") + ' onchange="PonerProxPagoSinMora(this,' + clave + ');" /><span class="slider round"></span></label><hr class="clearn" /></div>'
+                    '<div style="display:none;" class="check-activacion" id="check-pag_s_mora-d-' + clave + '"><button style="display:none;" clave_funcion="23" control="check-pag_s_mora-d-' + clave + '"></button><label class="etiqueta" style="font-weight:bolder;font-size:1.3em;margin-top:10px;width:50%;">Conceder próximo pago sin mora</label><label class="switch" style="float:right;"><input id="check-tag" type="checkbox" ' + (GetValor(xmlDoc, "proxpagosinmora") == "true" ? "checked=checked" : "") + ' onchange="PonerProxPagoSinMora(this,' + clave + ');" /><span class="slider round"></span></label><hr class="clearn" /></div>'
                 : "") +
                 '<hr class="clearn" />' +
                 '<form id="frm-edit-expediente" onsubmit="return false;" style="display:none;"><fieldset><label class="etiqueta">Notas y documentos</label><input type="hidden" id="dom-exp" name="domicilio"/><div id="c-e-expediente"></div><button class="aceptar" control="frm-edit-expediente" clave_funcion="22" style="margin-top:30px;margin-bottom:50px;" onclick="document.getElementById(\'dom-exp\').value=document.getElementById(\'detalle-ap_domicilios\').getAttribute(\'clave\');Guardar(this,\'expediente\', function () { Mostrar(\'detalle-ap_domicilios\', \'detalle-ap_domicilios\', \'ap_domicilios\', document.getElementById(\'detalle-ap_domicilios\').getAttribute(\'clave\'));});">Aceptar</button><div id="dom-expediente">' + PintarImagenesTexto(xmlDoc0) + '</div></fieldset></form>';
@@ -905,6 +903,17 @@ function PintarItem(catalogo, clave, xmlDoc0) {
 
             ; break;
     }
+}
+
+function PonerProxPagoSinMora(obj, clave) {
+    $.post(url + 'logic/controlador.aspx?op=' + (obj.checked ? "ConcederPagoSinMora" :"QuitarPagoSinMora") + '&seccion=aportaciones', { domicilio: clave }, function (xmlDoc) {
+        obj.checked = (GetValor(xmlDoc, "existe") == "true");
+        if (GetValor(xmlDoc, "estatus") == "1") {
+            //
+        } else {
+            alert(GetValor(xmlDoc, "mensaje"));
+        }
+    });
 }
 
 function EnviarNotificacion(obj) {
@@ -1152,13 +1161,13 @@ function PintarItemEditar(catalogo, clave, xmlDoc0) {
     var frm = document.getElementById("frm-edit-" + catalogo);
     switch (catalogo) {
         case "config_pagos":
-            CargarDatosFrmMap(xmlDoc, { indice: 'clave-config_pagos', descripcion: 'desc-config_pagos', cuota: 'cuota-config_pagos', porcent_mora: 'porcent_mora-config_pagos', ctd_mes_dcto: 'ctd_mes_dcto', es_paq: 'es_paq', es_mayor_que: 'es_mayor_que', fecha: 'fecha_config_pagos', cat_default:'cat_default' });
+            CargarDatosFrmMap(xmlDoc, { indice: 'clave-config_pagos', descripcion: 'desc-config_pagos', cuota: 'cuota-config_pagos', porcent_mora: 'porcent_mora-config_pagos', ctd_mes_dcto: 'ctd_mes_dcto', es_paq: 'es_paq', es_mayor_que: 'es_mayor_que', fecha: 'fecha_config_pagos', cat_default:'cat_default',dia_corte:'cp_dia_corte' });
             break;
         case "convenios":
             CargarDatosFrmMap(xmlDoc, { indice: 'clave-convenios', descripcion: 'desc-conv', domicilio: 'dom-conv', porcentaje_pago: 'prcp-conv', porcentaje_dcto: 'prcd-conv', ctd_meses_ant: 'ma-conv', ctd_meses_actuales: 'mr-conv'});
             break;
         case "depositos_banco":
-            CargarDatosFrmMap(xmlDoc, { indice: 'clave-depositos_banco', fecha: 'desc-conv'});
+            CargarDatosFrmMap(xmlDoc, { indice: 'clave-depositos_banco', fecha_comprobante: 'db-fecha', monto: 'db-monto', origen:'db-origen'});
             break;
         case "tags":
             CargarDatosFrmMap(xmlDoc, { indice: 'clave-tags', descripcion: 'desc-vehi', domicilio: 'd-vehi', placas: 'placas-vehi', no_tag: 'tag-vehi', marbete: 'marb-vehi', nombre_usuario: 'usuario-vehi', id_usuario_disp: 'id_usuario_disp' });
@@ -1538,19 +1547,19 @@ function CalcularAportacion() {
     btn.conceptospagar = conceptospagar;
     btn.mesespagar = mesespagar;
     btn.onclick = function () {
+        var redimAp = document.getElementById("redim-aportaciones");
+        redimAp.btnAplicar = this;
         if (_es_admin_) {
             if (this.conceptospagar.length > 0 || this.mesespagar.length > 0) {
-                var redimAp = document.getElementById("redim-aportaciones");
-                redimAp.btnAplicar = this;
                 redimAp.innerHTML = "<li class='resumen'><fieldset style='border:1px solid #999;border-radius:10px;margin-bottom:12px;text-align:center;font-weight:bold;font-size:0.9em;'><div style='background:transparent;padding:0px;margin:0px;'><label>Tipo de pago:</label><select id='s_tipo_p' style='width:60%;margin-bottom:5px;margin-right:10px;' name='tipopago' onchange='ResolverUIFormaPago(this);'><option value='11'>EFECTIVO</option><option value='10'>DEPOSITO</option></select><span>Compuesto</span><input type='checkbox' name='es_compuesto' id='es_compuesto' value='true'/>" +
-                    "<div id='sel_efectivo'><span id='sel_mismodia'><input checked='checked' type='radio' value='true' name='es_mismodia' onclick='document.getElementById(\"ef_f_pago_d\").style.display=\"none\";ObtenerTicketDefault();'><label style='margin-right:50px;'><b>Mismo día</b></label><input type='radio' value='false' name='es_mismodia' onclick='document.getElementById(\"ef_f_pago_d\").style.display=\"block\";'><label><b>Diferente día</b></label></span><div style='display:none;' id='ef_f_pago_d'><br/><label>Fecha de pago:</label><input id='ef_fecha_pago' type='text' name='fecha_pago' placeholder='dd/mm/aaaa' onkeypress='if(ValidarEnter(event)){var inF=document.getElementById(\"ef_fecha_pago\");ObtenerTicket(inF.value,document.getElementById(\"redim-aportaciones\").btnAplicar,document.getElementById(\"ticket\"),10);}return SoloNumeros(event,\"\/\");'/></div></div>" +
+                    "<div id='sel_efectivo'><span id='sel_mismodia'><input checked='checked' type='radio' value='true' name='es_mismodia' onclick='document.getElementById(\"ef_f_pago_d\").style.display=\"none\";ObtenerTicketDefault();'><label style='margin-right:50px;'><b>Mismo día</b></label><input type='radio' value='false' name='es_mismodia' onclick='document.getElementById(\"ef_f_pago_d\").style.display=\"block\";'><label><b>Diferente día</b></label></span><div style='display:none;' id='ef_f_pago_d'><br/><label>Fecha de pago:</label><input id='ef_fecha_pago' type='text' name='fecha_pago' placeholder='dd/mm/aaaa' onblur='CambiarFecha(this);' onkeypress='if(ValidarEnter(event)){CambiarFecha(this);}return SoloNumeros(event,\"\/\");'/></div></div>" +
                     "<div style='display:none;' id='sel_deposito'><br/>" +
                     "<span id='deposito_opc' style='padding-bottom:20px;display:block;'><b>No registrado</b><input type='radio' checked='checked' value='false' name='dep_existe' onclick='document.getElementById(\"dep_no_existe\").style.display=\"block\";document.getElementById(\"dep_existe\").style.display=\"none\";'/><b style='margin-left:100px;'>Ya registrado</b><input type='radio' value='true' name='dep_existe' onclick='document.getElementById(\"dep_no_existe\").style.display=\"none\";document.getElementById(\"dep_existe\").style.display=\"block\";ObtenerTicketDefault();'></span>" +
                     "<div id='dep_existe' style='display:none;'>" +
                     "<button class='btn-item' style='float:none;' onclick='SeleccionarDeposito();'>Seleccionar Deposito</button><br/>" +
                     "<div id='wrap-sel_dep'></div>" +
                     "</div>" +
-                    "<div id='dep_no_existe' style=''><label>Fecha de pago:</label><input id='f_pago_d' type='text' name='fecha_pago' placeholder='dd/mm/aaaa' onkeypress='if(ValidarEnter(event)){var inF=document.getElementById(\"f_pago_d\");ObtenerTicket(inF.value,document.getElementById(\"redim-aportaciones\").btnAplicar,document.getElementById(\"ticket\"),10);}return SoloNumeros(event,\"\/\");'  style='margin-right:30px;'/><br/>" +
+                    "<div id='dep_no_existe' style=''><label>Fecha de pago:</label><input id='f_pago_d' type='text' name='fecha_pago' placeholder='dd/mm/aaaa' onblur='CambiarFecha(this);' onkeypress='if(ValidarEnter(event)){CambiarFecha(this);}return SoloNumeros(event,\"\/\");'  style='margin-right:30px;'/><br/>" +
                     "<br/><label>Origen:</label><input id='dep_origen' type='text' name='origen' style='margin-right:30px;'/><br/>" +
                     "</div>" +
                     "<br/> Capture comprobante: <div id='wrap-detalle-DepositosBancoR' style=''></div></div><br/> </div></fieldset>" +
@@ -1567,7 +1576,7 @@ function CalcularAportacion() {
                     if (ValidarEnter(ev)) {
                         var s_tipo_p = document.getElementById("s_tipo_p");
                         var inF = s_tipo_p.parentNode.getElementsByTagName("input")[1];
-                        ObtenerTicket(undefined, document.getElementById("redim-aportaciones").btnAplicar, document.getElementById("ticket"), s_tipo_p.options[s_tipo_p.selectedIndex].value);
+                        ObtenerTicket(undefined, document.getElementById("redim-aportaciones").btnAplicar, document.getElementById("ticket"), s_tipo_p.options[s_tipo_p.selectedIndex].value,true);
                     }
                 }
             }
@@ -1583,6 +1592,10 @@ function CalcularAportacion() {
     }
 }
 
+function CambiarFecha(obj) {
+    var inF = obj;
+    ObtenerTicket(inF.value, document.getElementById("redim-aportaciones").btnAplicar, document.getElementById("ticket"), 10);
+}
 
 function ObtenerTicketResidente(dom) {
     var redimAp = document.getElementById("redim-aportaciones");
@@ -1608,7 +1621,7 @@ function ObtenerTicketResidente(dom) {
                 "<tr><td colspan=2 style='text-align:right;'>Tiene a cuenta:</td><td style='text-align:right;'>" + MoneyFormat(GetValor(xmlDoc, "a_cuenta")) + "</td></tr>" +
             (parseFloat(GetValor(xmlDoc, "descuento")) > 0 ? "<tr><td colspan=2 style='text-align:right;'>Descuento(" + GetValor(xmlDoc, "p_desc") + "%):</td><td style='text-align:right;'>" + MoneyFormat(GetValor(xmlDoc, "descuento")) + "</td></tr>" : "") +
                 "<tr><td colspan=2 style='text-align:right;'>Total:</td><td style='text-align:right;'>" + MoneyFormat(GetValor(xmlDoc, "total")) + "</td></tr>" +
-                "</table><form onsubmit='return false;' id='frm-edit-depositos_banco_res'><fieldset><input type='hidden' value='true' name='esNuevo' id='op-depositos_banco' /><input type='hidden' name='clave' id='clave-depositos_banco' /><input type='hidden' name='domicilio' value='" + document.getElementById("w-datos-persona").getAttribute("domicilio_sel") + "'/><input type='hidden' name='registro_inicial' value='3' /><div id='c-e-depositos_banco'></div>" +
+                "</table><form onsubmit='return false;' id='frm-edit-depositos_banco_res'><fieldset><input type='hidden' value='true' name='esNuevo' id='op-depositos_banco' /><input type='hidden' name='clave' id='clave-depositos_banco' /><input type='hidden' name='domicilio' value='" + document.getElementById("w-datos-persona").getAttribute("domicilio_sel") + "'/><input type='hidden' name='validacion' value='3' /><div id='c-e-depositos_banco'></div>" +
                 "<button style='display:none;'></button><button class='aceptar' style='margin-top:0px;' name='pagar' id='btn_pagar_p'>Enviar Comprobante</button></fieldset></form></li>";
 
             var contenedor = document.getElementById("c-e-depositos_banco");
@@ -1618,10 +1631,10 @@ function ObtenerTicketResidente(dom) {
             btn_pagar.btnAplicar = redimAp.btnAplicar;
             btn_pagar.onclick = function () {
                 var btn = this;
-                Guardar(btn, "depositos_banco", function () { alert("Guardado correctamente.");}, undefined, document.getElementById("frm-edit-depositos_banco_res"));  
+                Guardar(btn, "depositos_banco", function () { alert("Guardado correctamente."); CargarAportaciones();}, undefined, document.getElementById("frm-edit-depositos_banco_res"));  
             }
-            this.btnAplicar.innerHTML = "Reiniciar";
-            this.btnAplicar.onclick = function () {
+            redimAp.btnAplicar.innerHTML = "Reiniciar";
+            redimAp.btnAplicar.onclick = function () {
                 CargarAportaciones();
             }
         }
@@ -1631,7 +1644,7 @@ function ObtenerTicketResidente(dom) {
 function SeleccionarDeposito() {
     CargarCatalogo("depositos_banco_sel", function () {
         CambioPantalla("lista-depositos_banco_sel", "lista-aportaciones");
-    });
+    }, {buscar:"",domicilio:document.getElementById("w-datos-persona").getAttribute("domicilio_sel")});
 }
 
 function AgregarPermisoCapturaRecibos() {
@@ -1658,7 +1671,7 @@ function ObtenerTicketDefault() {
     ObtenerTicket(undefined, document.getElementById("redim-aportaciones").btnAplicar, document.getElementById("ticket"), obj.options[obj.selectedIndex].value);
 }
 
-function ObtenerTicket(fecha, btnAplicar, dom, tipo_pago) {
+function ObtenerTicket(fecha, btnAplicar, dom, tipo_pago,mantenerFecha) {
     var redimAp = document.getElementById("redim-aportaciones");
     btnAplicar.conceptos = this.conceptospagar;
     btnAplicar.mesespagar = this.mesespagar;
@@ -1691,6 +1704,7 @@ function ObtenerTicket(fecha, btnAplicar, dom, tipo_pago) {
                 "</table>" +
                 "<form class='edicion compact' style='overflow-x:hidden;' onsubmit='return false;' ><div style='float:left;width:49%;overflow:hidden;'><label>Cantidad que recibe:</label><input type='text' name='recibe' id='recibe_p' placeholder='Cantidad que recibe' />" +
                 "<input type='hidden' name='total' value='" + GetValor(xmlDoc, "total") + "' />" +
+                "<input type='hidden' name='deposito_asociado' id='deposito_asociado' />" +
                 "<label>Deja a cuenta:</label><input type='text' name='deja_a_cuenta' id='deja_a_cuenta' placeholder='Ingrese monto' />" +
                 "</div><div style='float:right;width:49%;overflow:hidden;'><label>Cambio:</label><input type='text' readonly=readonly name='cambio' id='cambio_p' placeholder='Cambio' /><hr class='clearn'/>" +
                 "<label>Recibo No.:</label><input type='text' name='recibo' id='recibo_n' maxlength=5 placeholder='Ingrese no. recibo' /></div>" +
@@ -1720,7 +1734,7 @@ function ObtenerTicket(fecha, btnAplicar, dom, tipo_pago) {
                     document.getElementById("recibo_n").focus();
                 }
             }
-            btn_pagar.fecha = fecha;
+            if (!mantenerFecha) { btn_pagar.fecha = fecha };
             btn_pagar.onclick = function () {
                 if (confirm("Confirme que desea aplicar pago:")) {
                     var num;
@@ -1730,12 +1744,12 @@ function ObtenerTicket(fecha, btnAplicar, dom, tipo_pago) {
                     var tipo_pago = sl.options[sl.selectedIndex].value;
                     var tipoGafetes = $("#tipo_gafete input[name='tipo_gafete']:checked").val();
                     if (document.getElementById("es_compuesto").checked && (num = window.prompt("Ingrese numeración[1,2,..]")).trim().length > 0 || !document.getElementById("es_compuesto").checked) {
-                        $.post(url + 'logic/controlador.aspx' + '?op=PagarTicket&seccion=aportaciones' + (this.conceptospagar.length > 0 ? '&conceptos=' + this.conceptospagar.join(",") : '') + (this.mesespagar.length > 0 ? "&meses=" + this.mesespagar.join(",") : '') + "&domicilio=" + document.getElementById("w-datos-persona").getAttribute("domicilio_sel") + (this.fecha ? "&fecha_pago=" + this.fecha : "") + "&tipopago=" + tipo_pago + "&es_compuesto=" + document.getElementById("es_compuesto").checked + "&parte=" + num + "&gafetes=" + gallardetes + "&tipo_g=" + tipoGafetes, $($(redimAp).find("form")[0]).serializeArray(), function (xmlDoc1) {
+                        $.post(url + 'logic/controlador.aspx' + '?op=PagarTicket&seccion=aportaciones' + (this.conceptospagar.length > 0 ? '&conceptos=' + this.conceptospagar.join(",") : '') + (this.mesespagar.length > 0 ? "&meses=" + this.mesespagar.join(",") : '') + "&domicilio=" + document.getElementById("w-datos-persona").getAttribute("domicilio_sel") + (this.fecha ? "&fecha_pago=" + this.fecha : "") + "&tipopago=" + tipo_pago + "&es_compuesto=" + document.getElementById("es_compuesto").checked + "&parte=" + num + "&gafetes=" + gallardetes + "&tipo_g=" + tipoGafetes + "&origen=" + document.getElementById("dep_origen").value, $($(redimAp).find("form")[0]).serializeArray(), function (xmlDoc1) {
                             alert(GetValor(xmlDoc1, "mensaje"));
                             if (GetValor(xmlDoc1, "estatus") == 1) {
                                 ImprimirReciboCuotas(GetValor(xmlDoc1, "recibo"), GetValor(xmlDoc1, "folio"), GetValor(xmlDoc1, "domicilio"));
                                 CargarAportaciones();
-                                try { GuardarImagenesTextos(GetValor(xmlDoc1, "domicilio") + "00" + GetValor(xmlDoc1, "folio"), "wrap-detalle-DepositosBancoR", "DepositosBancoR"); } catch (e) { }
+                                try { GuardarImagenesTextos(GetValor(xmlDoc1, "deposito_asociado"), "wrap-detalle-DepositosBancoR", "depositos_banco"); } catch (e) { }
                                 try { EnviarReciboEmail(null, GetValor(xmlDoc1, "folio"), false); } catch (e) { }
                                 try { EjecutarRestriccionTags(false, document.getElementById("w-datos-persona").getAttribute("domicilio_sel")); } catch (e) { }
                             }
@@ -1781,7 +1795,7 @@ function GuardarImagenesTextos(claveItem, contenedor, catalogo, callback, subite
 
 
 function ImprimirReciboCuotas(recibo, folio, domicilio) {
-    window.open(url + 'logic/controlador.aspx?op=GenerarRecibo&seccion=aportaciones&domicilio=' + domicilio + '&recibo=' + recibo + "&folio=" + folio, '_blank', 'width:800,height:600');
+    window.open(url + 'logic/controlador.aspx?op=GenerarReciboCaida&seccion=aportaciones&domicilio=' + domicilio + '&recibo=' + recibo + "&folio=" + folio, '_blank', 'width:800,height:600');
 }
 
 
@@ -2407,7 +2421,7 @@ function ObtenerItem(catalogo, item) {
             break;
         case "ap_domicilios2":
             var domicilio = GetValor(item, "clave");
-            var str = '<span class="t-1" >' + GetValor(item, "domicilio") + '</span>' +
+            var str = '<span class="t-1" >' + GetValor(item, "domicilio") + (GetValor(item, "coincide") == 'T' ? "<i style='color:#0058ff'> : TAG</i>" : "") + (GetValor(item, "coincide") == 'G' ? "<i style='color:#0058ff'> : MARBETE</i>" : "") +'</span>' +
                 '<span class="t-3">' + GetValor(item, "titular") + '</span>';
             itemli.str = str;
             itemli.onclick = function () {
@@ -2419,7 +2433,7 @@ function ObtenerItem(catalogo, item) {
             break;
         case "ap_domiciliosH":
             var domicilio = GetValor(item, "clave");
-            var str = '<span class="t-1" >' + GetValor(item, "domicilio") + '</span>' +
+            var str = '<span class="t-1" >' + GetValor(item, "domicilio") + (GetValor(item, "coincide") == 'T' ? "<i style='color:#0058ff'> : TAG</i>" : "") + (GetValor(item, "coincide") == 'G' ? "<i style='color:#0058ff'> : MARBETE</i>" : "") + '</span>' +
                 '<span class="t-3">' + GetValor(item, "titular") + '</span>';
             itemli.str = str;
             itemli.onclick = function () {
@@ -2431,7 +2445,7 @@ function ObtenerItem(catalogo, item) {
             break;
         case "ap_domicilios":
             itemli.onclick = function () { Mostrar('lista-' + catalogo, 'detalle-' + catalogo, catalogo, GetValor(item, "clave")); }
-            itemli.innerHTML = '<span class="t-1" >' + GetValor(item, "domicilio") + '</span>' +
+            itemli.innerHTML = '<span class="t-1" >' + GetValor(item, "domicilio") + (GetValor(item, "coincide") == 'T' ? "<i style='color:#0058ff'> : TAG</i>" : "") + (GetValor(item, "coincide") == 'G' ? "<i style='color:#0058ff'> : MARBETE</i>" : "" ) + '</span>' +
                 '<span class="t-3">' + GetValor(item, "titular") + '</span>';
             break;
         case "ap_conceptos":
@@ -2449,20 +2463,25 @@ function ObtenerItem(catalogo, item) {
                 '<span style="width:20%;margin-left:3%;display:inline-block;font-size:0.75em;color:#666;" title="Validación en Estado de cuenta">Valida ECB:' + GetValor(item, "usuario_valida_ecb") + '</span>';
             itemli.innerHTML = sel_dep;
             itemli.indice = indice;
-            itemli.onclick = function () { this.parentNode.seleccionado = this.indice; document.getElementById("wrap-sel_dep").innerHTML = this.innerHTML; CambioPantalla('lista-aportaciones', 'lista-depositos_banco_sel');}
+            itemli.onclick = function () {
+                this.parentNode.seleccionado = this.indice;
+                document.getElementById("wrap-sel_dep").innerHTML = this.innerHTML;
+                document.getElementById("deposito_asociado").value = this.indice;
+                CambioPantalla('lista-aportaciones', 'lista-depositos_banco_sel');
+            }
             break;
         case "depositos_banco":
-            var indice = GetValor(item, "indice");
-            itemli.onclick = function () { Mostrar('lista-' + catalogo, 'detalle-' + catalogo, catalogo, indice); }
+            var indice = GetValor(item, "indice");            
             itemli.innerHTML =
-                '<span style="display:block; color:#ff3000;font-size:0.8em;">' + GetValor(item, "fuente_captura") + "</span>" +
+                '<span style="display:block; color:#ff3000;font-size:0.8em;" onclick="document.getElementById(\'dep-del-' + indice + '\').style.display=\'inline-block\';">' + GetValor(item, "fuente_captura") + "<b style='color:#888;'> " + GetValor(item, "domicilio") + "</b></span>" +
                 '<span class="t-1" style="width:55%;display:inline-block;">' + GetValor(item, "origen") + '<label style="font-weight:normal;">(' + GetValor(item, "fecha") + ')</label></span>' +
                 '<span class="t-3" style="float:right;width:30%;font-size:1em;">' + GetValor(item, "monto") + '<br/></span><hr class="clearn"/>' +
                 '<div class="ctrls">' +
-                '<span style="width:20%;margin-left:2%;display:inline-block;color:#666;" title="Validación en Estado de cuenta">' + (GetValor(item, "u_ecb").length == 0 ? '<button class="btn-item" onchange="ConfirmarExistePago(' + GetValor(item, "indice") + ');">Validar en EC</button>' : 'Valida ECB:' + GetValor(item, "usuario_valida_ecb")) + '</span>'+
-                '<span style="width:20%;margin-left:2%;display:inline-block;color:#666;" title="Validación en Estado de cuenta">' + (GetValor(item, "u_comprobante").length == 0 ? ' <button class="btn-item" onchange= "ValidarComprobante(' + GetValor(item, "indice") + ');" title="Validar comprobante">Comprobante</button> ' : 'Comprobante validado') + '</span>'+
-                '<span style="width:30%;margin-left:2%;display:inline-block;font-size:0.75em;color:#666;" title="Pago aplicado">Domicilio: ' + GetValor(item, "domicilio") + '</span>' +
-                '<span style="width:20%;margin-left:2%;display:inline-block;" title="Imprimir recibo"><button class="btn-item" onchange="ImprimirRecibo(this);">Imprimir</button></span>' +
+                '<span style="width:20%;margin-left:2%;display:inline-block;color:#666;" title="Validación en Estado de cuenta">' + (GetValor(item, "u_ecb").length == 0 ? '<button class="btn-item" onclick="ValidarDeposito(' + GetValor(item, "indice") + ',1);">Validar en EC</button>' : 'Valida ECB:' + GetValor(item, "usuario_valida_ecb")) + '</span>'+
+                '<span style="width:20%;margin-left:2%;display:inline-block;color:#666;" title="Validación en Estado de cuenta">' + (GetValor(item, "u_comprobante").length == 0 ? ' <button class="btn-item" onclick= "ValidarDeposito(' + GetValor(item, "indice") + ',2);" title="Validar comprobante">Comprobante</button> ' : '<a href="' + url+ "/logic/controlador.aspx?op=ObtenerComprobante&seccion=aportaciones&deposito=" + indice + '" target="_system">Comprobante validado</a>') + '</span>'+
+                '<span style="width:30%;margin-left:2%;display:inline-block;font-size:0.75em;color:#666;" title="Pago aplicado">' + GetValor(item, "sfolio") + '</span>' +
+                '<span style="width:20%;margin-left:2%;display:inline-block;" title="Imprimir recibo"><button class="btn-item" onclick="ImprimirReciboCuotas(0,' + GetValor(item, "folio") + ',' + GetValor(item, "domicilio1") + ');">Imprimir</button></span>' +
+                '<span id="dep-del-' + indice + '" style="width:20%;margin-left:2%;display:none;" title="Eliminar recibo"><button class="btn-item" onclick="EliminarDeposito('+ indice + ');">Eliminar</button></span>' +
                 '</div>';
             break;
         case "cargosacciones":
@@ -2525,7 +2544,7 @@ function ObtenerItem(catalogo, item) {
         case "ap_domicilios3":
             var clave = GetValor(item, "clave");
             itemli.innerHTML =
-                '<span class="t-1" style="display:inline-block;width:60% !important;">' + GetValor(item, "domicilio") + '</span><i style="float:right;font-size:0.8em;color:#888;margin-right:15px;">[' + clave + ']</i>' +
+                '<span class="t-1" style="display:inline-block;width:60% !important;">' + GetValor(item, "domicilio") + (GetValor(item, "coincide") == 'T' ? "<i style='color:#0058ff'> : TAG</i>" : "") + (GetValor(item, "coincide") == 'G' ? "<i style='color:#0058ff'> : MARBETE</i>" : "") +'</span><i style="float:right;font-size:0.8em;color:#888;margin-right:15px;">[' + clave + ']</i>' +
                 '<span class="t-3" style="float:left;width:90% !important;"> ' + GetValor(item, "titular") + '</span><hr class="clearn"/>';
             itemli.onclick = function () {
                 var str = this.innerHTML;
@@ -2572,80 +2591,117 @@ function ObtenerItem(catalogo, item) {
                     '</div>';                
             } else {
                 var folio = GetValor(item, "folio");
-                var recibo = GetValor(item, "recibo");
-                itemli.recibo = recibo;
+                var clave_hist = GetValor(item, "clave_hist");
 
                 var residente = GetValor(item, "residente");
                 itemli.folio = folio;
+                itemli.clave_hist = clave_hist;
+                itemli.tipo_pago = GetValor(item, "tipo_pago");
+                itemli.domicilio = GetValor(item, "domicilio");
                 itemli.onclick = function () {
+                    this.onclick = function () { }
                     if (folio.length > 0) {
-                        this.onclick = function () { }
-                        var cancelar = document.createElement("button");
-                        cancelar.innerHTML = "Cancelar Pago";
-                        cancelar.className = "aceptar";
-                        cancelar.style = "width:30%;float:left;font-size:0.8em;margin-left:5%;margin-top:15px;";
-                        cancelar.folio = this.folio;
-                        cancelar.onclick = function (ev) {
-                            ev.stopPropagation();
-                            var observaciones = window.prompt("Ingrese el motivo de cancelación");
-                            if (window.confirm("Confirme que desea eliminar:")) {
-                                $.post(url + 'logic/controlador.aspx?op=EliminarPago&seccion=aportaciones&folio=' + this.folio, { observaciones: observaciones }, function (xmlDoc) {
-                                    CargarAportaciones();
-                                });
+
+                        if (_es_admin_) {
+
+                            if (_func_hab_.indexOf("14") > 0) {
+                                var cancelar = document.createElement("button");
+                                cancelar.innerHTML = "Cancelar Pago";
+                                cancelar.className = "btn-item btn30";
+                                cancelar.folio = this.folio;
+                                cancelar.onclick = function (ev) {
+                                    ev.stopPropagation();
+                                    var observaciones = window.prompt("Ingrese el motivo de cancelación");
+                                    if (window.confirm("Confirme que desea eliminar:")) {
+                                        $.post(url + 'logic/controlador.aspx?op=EliminarPago&seccion=aportaciones&folio=' + this.folio, { observaciones: observaciones }, function (xmlDoc) {
+                                            CargarAportaciones();
+                                        });
+                                    }
+                                }
+                                this.getElementsByTagName("div")[0].appendChild(cancelar);
                             }
-                        }
-                        this.getElementsByTagName("div")[0].appendChild(cancelar);
 
+                            var btnCR = document.createElement("button");
+                            btnCR.innerHTML = "Reemplazar recibo";
+                            btnCR.className = "btn-item btn30";
+                            btnCR.title = "Cancelar recibo por error de impresión, requiere recibo nuevo.";
+                            btnCR.folio = this.folio;
+                            btnCR.onclick = function (ev) {
+                                ev.stopPropagation();
+                                var recibo_nuevo = window.prompt("Ingrese el nuevo número de recibo:");
+                                if (window.confirm("Confirme que desea reemplazar/cancelar el folio:")) {
+                                    $.post(url + 'logic/controlador.aspx?op=ReemplazarCancelarFolio&seccion=aportaciones&folio=' + this.folio, { recibo_nuevo: recibo_nuevo }, function (xmlDoc) {
+                                        alert(GetValor(xmlDoc, "mensaje"));
+                                        CargarAportaciones();
+                                    });
+                                }
+                            }
+                            this.getElementsByTagName("div")[0].appendChild(btnCR);
 
-                        if (this.tipo_pago == "10") {
+                            var hr = document.createElement("hr");
+                            hr.className = "clearn";
+                            this.getElementsByTagName("div")[0].appendChild(hr);
+
                             btnCR = document.createElement("button");
-                            btnCR.innerHTML = "Comprobante";
-                            btnCR.className = "aceptar";
-                            btnCR.style = "width:auto;display:inline-block;float:left;font-size:0.8em;margin-left:2%;margin-top:15px;";
-                            btnCR.title = "Ver recibo";
+                            btnCR.innerHTML = "E-mail recibo";
+                            btnCR.className = "btn-item btn30";
+                            btnCR.title = "Reenviar recibo por e-mail.";
                             btnCR.folio = this.folio;
                             btnCR.domicilio = this.domicilio;
-                            btnCR.onclick = function (ev) { window.open(url + "/logic/controlador.aspx?op=VerAdjuntoDeposito&seccion=aportaciones&domicilio=" + this.domicilio + "&folio=" + this.folio); }
+                            btnCR.onclick = function (ev) { EnviarReciboEmail(ev, this.folio, true); }
+                            this.getElementsByTagName("div")[0].appendChild(btnCR);
+
+                            btnCR = document.createElement("button");
+                            btnCR.innerHTML = "Reimprimir recibo";
+                            btnCR.className = "btn-item btn30";
+                            btnCR.title = "Reimprimir recibo.";
+                            btnCR.folio = this.folio;
+                            btnCR.domicilio = this.domicilio;
+                            btnCR.onclick = function (ev) { AbrirDocumento(url + "/logic/recibo.pdf?op=GenerarReciboCaida&seccion=aportaciones&recibo=0&folio=" + this.folio + "&domicilio=" + this.domicilio, "_system"); }
                             this.getElementsByTagName("div")[0].appendChild(btnCR);
                         }
 
                         var btnCR = document.createElement("button");
-                        btnCR.innerHTML = "Reemplazar recibo";
-                        btnCR.className = "aceptar";
-                        btnCR.style = "width:30%;float:right;font-size:0.8em;margin-right:5%;margin-top:15px;";
-                        btnCR.title = "Cancelar recibo por error de impresión, requiere recibo nuevo.";
+                        btnCR.innerHTML = "Recibo";
+                        btnCR.className = "btn-item btn30";
+                        btnCR.title = "Ver el recibo";
                         btnCR.folio = this.folio;
-                        btnCR.onclick = function (ev) {
-                            ev.stopPropagation();
-                            var recibo_nuevo = window.prompt("Ingrese el nuevo número de recibo:");
-                            if (window.confirm("Confirme que desea reemplazar/cancelar el folio:")) {
-                                $.post(url + 'logic/controlador.aspx?op=ReemplazarCancelarFolio&seccion=aportaciones&folio=' + this.folio, { recibo_nuevo: recibo_nuevo }, function (xmlDoc) {
-                                    alert(GetValor(xmlDoc, "mensaje"));
-                                    CargarAportaciones();
-                                });
-                            }
-                        }
+                        btnCR.domicilio = this.domicilio;
+                        btnCR.onclick = function (ev) { AbrirDocumento(url + "/logic/recibo.pdf?op=GenerarRecibo&seccion=aportaciones&recibo=0&folio=" + this.folio + "&domicilio=" + this.domicilio, "_system"); }
                         this.getElementsByTagName("div")[0].appendChild(btnCR);
 
                         var hr = document.createElement("hr");
                         hr.className = "clearn";
                         this.getElementsByTagName("div")[0].appendChild(hr);
+                        
+                        if (this.tipo_pago == "10") {
+                            btnCR = document.createElement("button");
+                            btnCR.innerHTML = "Comprobante";
+                            btnCR.className = "btn-item btn30";
+                            btnCR.title = "Ver recibo";
+                            btnCR.folio = this.folio;
+                            btnCR.domicilio = this.domicilio;
+                            btnCR.onclick = function (ev) { AbrirDocumento(url + "/logic/controlador.aspx?op=VerAdjuntoDeposito&seccion=aportaciones&domicilio=" + this.domicilio + "&folio=" + this.folio, "_system", "img"); }
+                            this.getElementsByTagName("div")[0].appendChild(btnCR);
+                        }
 
-                    } else {
+                        var hr = document.createElement("hr");
+                        hr.className = "clearn";
+                        this.getElementsByTagName("div")[0].appendChild(hr);
+
+                    } /*else {
                         var clave_hist = GetValor(item, "clave_hist");
                         if (_func_hab_.indexOf("12") > 0) {
                             var editar_hist = document.createElement("button");
                             editar_hist.innerHTML = "Editar pago";
                             editar_hist.className = "aceptar";
-                            editar_hist.recibo = this.recibo;
                             editar_hist.style = "width:auto;display:inline-block;float:right;font-size:0.8em;margin-right:5%;margin-top:15px;";
                             editar_hist.onclick = function (ev) {
                                 ev.stopPropagation();
-                                var dom_sel = document.getElementById("w-datos-persona").getAttribute("domicilio_sel");
-                                $.post(url + 'logic/controlador.aspx?op=ObtenerPagoHist&seccion=aportaciones&recibo=' + this.recibo + '&domicilio=' + dom_sel, function (xmlDoc) {
-                                    var datohist = prompt("Capture dato correcto:", GetValor(xmlDoc, "detalle"));
+                                $.post(url + 'logic/controlador.aspx?op=ObtenerPagoHist&seccion=aportaciones&clave_hist=' + this.clave_hist, function (xmlDoc) {
+                                    var datohist = prompt("Capture dato correcto:", GetValor(xmlDoc, "dato_hist"));
                                     if (datohist) {
-                                        $.post(url + 'logic/controlador.aspx?op=RegistrarPagoHist&seccion=aportaciones&recibo=' + GetValor(xmlDoc, "recibo") + '&domicilio=' + GetValor(xmlDoc, "domicilio"), { detalle_desc: datohist }, function (xmlDoc1) {
+                                        $.post(url + 'logic/controlador.aspx?op=RegistrarPagoHist&seccion=aportaciones&clave_hist=' + GetValor(xmlDoc, "clave_hist"), function (xmlDoc1) {
                                             if (GetValor(xmlDoc1, "estatus") == 1) {
                                                 CargarAportaciones();
                                             } else {
@@ -2662,7 +2718,7 @@ function ObtenerItem(catalogo, item) {
                         } else {
                             alert("No puede editarse, corresponde a historial o conciliación.");
                         }
-                    } 
+                    }*/
                 }
                 itemli.innerHTML =
                     '<div class="' + GetValor(item, "leyenda") + '">' +
@@ -2775,17 +2831,17 @@ function ObtenerItem(catalogo, item) {
             itemli.innerHTML =
                 '<span class="t-1" >' + GetValor(item, "titulo") + '</span>' +
                 '<span class="aux-1" style="float:left;clear:left;width:40%;">' + GetValor(item, "alias") + '</span>' +
-                '<span class="t-3n" style="float:right;text-align:right;clear:right;width:40%;">' + GetValor(item, "estado") + '</span>' +
+                '<span class="t-3n" style="text-align:right">' + GetValor(item, "estado") + '</span>' +
                 '<span class="t-3n"  style="float:left;clear:left;width:40%;">' + GetValor(item, "fecha1") + '</span>';
             break;
         case "directorio":
             itemli.setAttribute("nombre", GetValor(item, "nombre"));
-            html = '<span>' + GetValor(item, "nombre") + '</span>' +
+            html = '<span class="t-1" >' + GetValor(item, "nombre") + '</span>' +
                 '<ol>';
             for (var k = 1; k < 4; k++) {
                 if (GetValor(item, "telefono" + k)) {
-                    html += '<li>' +
-                        '<span>' + GetValor(item, "telefono" + k) + '</span>' +
+                    html += '<li class="item">' +
+                        '<span class="t-2" >' + GetValor(item, "telefono" + k)  + '</span>' +
                         '<a class="call-btn" href="tel://' + GetValor(item, "telefono" + k) + '"><img src="img/call.png" /></a>' +
                         '<hr class="clear" />' +
                         '</li>';
@@ -2840,6 +2896,35 @@ function ObtenerItem(catalogo, item) {
             ; break;
     }
     return itemli;
+}
+
+function EliminarDeposito(indice) {
+    $.post(url + 'logic/controlador.aspx?op=Eliminar&seccion=depositos_banco&claveItem=' + indice, function (xmlDoc) {
+        if (GetValor(xmlDoc, "estatus") == "1") {
+            CargarCatalogo("depositos_banco");
+        } else {
+            alert(GetValor(xmlDoc, "mensaje"));
+        }
+    });
+}
+
+function ValidarDeposito(indice,validacion) {
+    $.post(url + 'logic/controlador.aspx?op=ObtenerItem&seccion=depositos_banco&claveItem=' + indice, function (xmlDoc) {
+        var leyenda = "";
+        switch (validacion) {
+            case 1: leyenda="Validación con Estado de cuenta"; break;
+            case 2: leyenda="Validación de comprobante"; break;
+        }
+        document.getElementById("op-depositos_banco").value = false;
+        document.getElementById("cab_domicilio_deposito_banco").innerHTML = leyenda;
+        PintarItemEditar('depositos_banco', indice, xmlDoc);
+        document.getElementById("validar_deposito").value = validacion;
+        CambioPantalla("p-edicion-depositos_banco", "lista-depositos_banco");
+        $.post(url + 'logic/controlador.aspx?op=ObtenerAdjuntoDeposito&seccion=aportaciones&clave=' + indice, function (xmlDoc1) {
+            document.getElementById("img-depositos_banco").src = url + "src-img/depositos_banco/_" + indice + "/" + GetValor(xmlDoc1,"nombre_archivo");
+            document.getElementById("img-depositos_banco").onclick = function () { window.open(url + "src-img/depositos_banco/_" + indice + "/" + GetValor(xmlDoc1, "nombre_archivo"), "_system") };
+        });
+    });
 }
 
 function HabilitarECB(obj) {
@@ -3231,19 +3316,20 @@ function LimpiarForm(catalogo) {
 }
 
 function Guardar(boton, catalogo, callback, subitemCatalogo, frm) {
-    var formulario = frm ? $(frm) : $("#frm-edit-" + catalogo);
-    var datos = formulario.serializeArray();
-    PonerEspera(boton, catalogo);
+    var formulario = frm ? frm : document.getElementById("frm-edit-" + catalogo);
+    var datos = $(formulario).serializeArray();
+    PonerEspera(boton, catalogo,formulario);
     $.post(url + 'logic/controlador.aspx' + '?op=Guardar&seccion=' + catalogo, datos, function (xmlDoc) {
         if (GetValor(xmlDoc, "estatus") == 1) {
             var claveItem = GetValor(xmlDoc, "clave");
             try {
-                formulario.find("#op-" + catalogo)[0].value = false;
-                formulario.find("#clave-" + catalogo)[0].value = claveItem;
+                $(formulario).find("name[esNuevo]").value = false;
+                $(formulario).find("name[clave]").value = claveItem;
             } catch (e) { }
-            if (formulario.find("#c-e-" + catalogo)) {
+            var wrap = document.getElementById("c-e-" + catalogo);
+            if (wrap) {
                 try {
-                    var imagenes = formulario.find("#c-e-" + catalogo)[0].getElementsByTagName("table");
+                    var imagenes = wrap.getElementsByTagName("table");
                     var imagenesCambio = [];
                     var textosCambio = [];
                     for (var i = 0; i < imagenes.length; i++) {
@@ -3303,15 +3389,16 @@ function GuardarImagenesTextos(claveItem, contenedor, catalogo, callback, subite
 }
 
 
-function PonerEspera(elemento, catalogo) {
+function PonerEspera(elemento, catalogo,formulario) {
     try {
-        var fs = document.getElementById('frm-edit-' + catalogo);
+        var fs = (formulario?formulario:document.getElementById('frm-edit-' + catalogo));
         var img = document.createElement("img");
         img.src = "img/espera.gif";
         elemento.appendChild(img);
         fs.getElementsByTagName("fieldset")[0].setAttribute("disabled", "disabled");
         $(elemento).addClass("espera");
         window.boton = elemento;
+        window.formActivo = fs;
         window.catalogo = catalogo;
     } catch (e) { }
 }
@@ -3324,7 +3411,7 @@ function QuitarEspera() {
                 window.boton.removeChild(imgs[j]);
             }
         }
-        var fs = document.getElementById('frm-edit-' + window.catalogo);
+        var fs = window.formActivo;
         fs.getElementsByTagName("fieldset")[0].removeAttribute("disabled");
         $(window.boton).removeClass("espera");
     } catch (e) { }
@@ -3506,6 +3593,7 @@ function CargarImagenNav(e) {
         img.src = e.target.result;
         MarcarImagenAdjunta(img, e.target.result, this.in);
     }
+    img.onclick = function () { window.open(img.src,"_system");}
 }
 
 function QuitarEIT(obj, solotexto) {
