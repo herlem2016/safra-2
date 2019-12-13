@@ -168,7 +168,7 @@
 <body unselectable="on" onselectstart="return false;" onload="IniciarApp();">
 
     <section class="pantalla activacion" id="activacion" style="display:none;z-index:1000;height:auto !important;">
-        <form id="frmActivacion" onsubmit="return false;" class="edicion">
+        <form id="frmActivacion" onsubmit="return false;" class="">
             <div>
                 <h2><i style="color:#fff">Real Toledo Unido AC</i><br /> ¡BIENVENIDO!</h2>
                 <img src="" id="smallImage" class="logo" style="width:30%;margin-top: 12%;display: block;margin-left: auto;margin-right: auto;border-radius: 10px;max-width: 180px;" />
@@ -495,7 +495,7 @@
                 <form onsubmit="return false;" id="frm-edit-ap_domicilios">
                     <fieldset>
                         <div class="titulo">Editar Domicilio<button class="regresar" id="cancelar-edit-ap_domicilios" onclick="Mostrar('p-edicion-ap_domicilios','lista-ap_domicilios');"><img src="img/back.png" /></button><hr class="clearn" /></div>
-                        <div class="pantalla-3">
+                        <div class="pantalla-2">
                             <input name="esNuevo" type="hidden" id="op-ap_domicilios" />
                             <input name="clave" type="hidden" id="clave-ap_domicilios" />
                             <label>Titular</label><input name="titular" id="dom-titular" />
@@ -586,14 +586,14 @@
                 </form>
             </div>
 
-            <div class="lista" id="lista-cargos lista" style="display:none;">
+            <div class="lista" id="lista-cargos" style="display:none;">
                 <div class="titulo">Cargos <button class="regresar" onclick="CambioPantalla('p-edicion-config', 'lista-cargos'); "><img src="img/back.png" /></button></div>
                 <div id="UnUsuario"></div>
                 <div class="agregar" id="edicion-cargos" style="display:none;"><button clave_funcion="2" control="edicion-cargos" onclick="IniciarEditar(true,'cargos',2);">Agregar cargo</button></div>
                 <ul class="lista seleccionable pantalla-2"></ul>
             </div>
 
-            <div id="lista-cargosacciones" style="display:none;">
+            <div class="lista" id="lista-cargosacciones" style="display:none;">
                 <form onsubmit="return false" method="post" id="frm-edit-cargosacciones">
                     <fieldset>
                         <div class="titulo">Cargos y acciones<button class="regresar" onclick="Mostrar('lista-cargosacciones', 'lista-cargos'); "><img src="img/back.png" /></button></div>
@@ -1071,7 +1071,7 @@
                 <div class="titulo" style="margin-bottom:50px;">Aportaciones<button class="regresar" onclick="CambioPantalla('lista-ap_domicilios3', 'p-edicion-aportaciones');"><img src="img/back.png" /></button><hr class="clearn" /></div>
                 <button class="aceptar" style="margin-top:20px;" onclick="VerDepositosBanco();">Depositos bancarios de cuotas</button>
                 <button class="aceptar" style="margin-top:20px;" onclick="VerEdicionConceptos();">Conceptos</button>
-                <button class="aceptar" style="margin-top:20px;" onclick="VerAportacionesIniciales();">Aportaciones pendientes iniciales</button>
+                <button class="aceptar" style="margin-top:20px;" onclick="VerAportacionesIniciales();">Conciliaciones</button>
                 <button class="aceptar" style="margin-top:20px;" onclick="VerAgregarRecibosHistorial();">Editar Recibos de Historial</button>
                 <button class="aceptar" style="margin-top:20px;" onclick="AgregarPermisoCapturaRecibos();">Dar permiso de captura de recibos<br />(Diferente fecha)</button>
             </div>
@@ -1156,9 +1156,9 @@
                 <div class="busqueda" id="b-ap_dom2"><input placeholder="Buscar" id="b-ap_dom2" onkeypress="if(ValidarEnter(event)){CargarCatalogo('ap_domicilios2', undefined, { buscar: this.value });}" /></div>
                 <ul class="lista seleccionable pantalla-21" id="redim-ap_domicilios2" classToggle="pantalla-2, pantalla-21" hide="b-ap_dom2"></ul>
             </div>
-            <div class="pantalla-2 edicion" style="display:none;position:relative;top:0px;" id="lista-domiciliosconceptosini">
+            <div class="edicion" style="display:none;position:relative;top:0px;" id="lista-domiciliosconceptosini">
                 <div class="titulo"><span>Conciliaciones iniciales</span><button class="regresar" onclick="Mostrar('lista-domiciliosconceptosini', 'lista-ap_domicilios2'); "><img src="img/back.png" /></button></div>
-                <form onsubmit="return false" method="post" id="frm-edit-domiciliosconceptosini">
+                <form onsubmit="return false" method="post" id="frm-edit-domiciliosconceptosini" class="pantalla-2">
                     <fieldset>
                         <div id="UnDomicilioEd" class="selec" style="width:75%;"></div>
                         <div><input style="float:right;margin-top:-20px;margin-right:30px;" type="checkbox" onchange="ToggleChecks(this,'lista-domiciliosconceptosini');" /></div>
@@ -1177,7 +1177,7 @@
             </div>
             <div class="edicion" style="display:none;position:relative;top:0px;" id="lista-domiciliosH">
                 <div class="titulo"><span>Editar recibos de Historial</span><button class="regresar" onclick="Mostrar('lista-domiciliosH', 'lista-ap_domiciliosH'); "><img src="img/back.png" /></button></div>
-                <form onsubmit="return false" method="post" id="frm-edit-domiciliosH" class="edicion">
+                <form onsubmit="return false" method="post" id="frm-edit-domiciliosH" class="edicion pantalla-2">
                     <fieldset>
                         <div id="UnDomicilioEdH" class="selec" style="width:75%;"></div>
                         <input type="hidden" name="clavedomicilio" id="clavedomicilioH" />
@@ -1209,7 +1209,7 @@
                 <ul class="lista seleccionable pantalla-2" id="redim-depositos_banco" classToggle="pantalla-2, pantalla-31" hide="b-depb"></ul>
             </div>
 
-            <div class="pantalla" style="display:none;position:relative;top:0px;" id="p-edicion-depositos_banco">
+            <div class="edicion" style="display:none;position:relative;top:0px;" id="p-edicion-depositos_banco">
                 <div class="titulo"><span>Editar Depositos</span><button class="regresar" id="cancelar-edit-depositos_banco" onclick="Mostrar('p-edicion-depositos_banco','lista-depositos_banco'); "><img src="img/back.png" /></button></div>
                 <form onsubmit="return false" method="post" id="frm-edit-depositos_banco" class="edicion pantalla-31">
                     <fieldset>
@@ -1221,10 +1221,10 @@
                         <label>Importe</label><input name="monto" id="db-monto" onkeypress="return SoloNumeros(event,'.');" />
                         <label>Origen</label><input name="origen" id="db-origen" />
                         <textarea id="nota-deposito_banco" disabled="disabled"></textarea>
-                        <div style="text-align:center;"><img id="img-depositos_banco" style="max-width:100%;" onclick="VerImagen(this);" onerror="this.src = 'img/no_file.png';" /></div>
+                        <div style="text-align:center;"><img id="img-depositos_banco" style="max-width:100%;padding-bottom:50px;" onclick="VerImagen(this);" onerror="this.src = 'img/no_file.png';" /></div>
                     </fieldset>
                 </form>
-                <div style="position:absolute;bottom:0px;border-top:1px solid #2c5878;background:#e7e7e7;width:100%;"><button class="aceptar" style="margin-top:10px;margin-bottom:5px;width: unset;" onclick="Guardar(this, 'depositos_banco', function (item,xmlDoc) { LimpiarForm('depositos_banco'); CargarCatalogo(catalogo);CambioPantalla('lista-depositos_banco','p-edicion-depositos_banco');});">Aplicar cambio</button></div>
+                <div style="position:absolute;bottom:0px;border-top:1px solid #2c5878;width:100%;"><button class="aceptar" style="margin-top:10px;margin-bottom:5px;width: unset;" onclick="Guardar(this, 'depositos_banco', function (item,xmlDoc) { LimpiarForm('depositos_banco'); CargarCatalogo(catalogo);CambioPantalla('lista-depositos_banco','p-edicion-depositos_banco');});">Aplicar cambio</button></div>
             </div>
 
             <div class="lista" id="lista-depositos_banco_sel" style="display:none;" redim="redim-depositos_banco_sel">
