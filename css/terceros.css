@@ -73,31 +73,26 @@ input:checked + .slider:before {
 table td {
     padding: 3px;
 }
-    table.resultados td {
-        border-bottom: 1px solid #6a6a6a !important;
-        color: #ddd;
-    }
-/* provide some minimal visual accomodation for IE8 and below*/ 
-table.lista-files tr {
+/* provide some minimal visual accomodation for IE8 and below */
+table tr {
     background: #b8d1f3;
 }
 ul.lista.color{width:100%;}
-/*  Define the background color for all the ODD background rows  
+/*  Define the background color for all the ODD background rows  */
 ul.color li:nth-child(even), table tr:nth-child(odd) {
     background: #b8d1f3;
-}*/
-/*  Define the background color for all the EVEN background rows 
+}
+/*  Define the background color for all the EVEN background rows  */
 ul.color li:nth-child(odd),table tr:nth-child(even) {
     background: #dae5f4;
-} */
-/*
+}
+
 ul.color2 li:nth-child(even) {
     background: #e6e5de;
     box-shadow: inset 0px 1px 0px 0px #ffffff;
 }
-      Define the background color for all the EVEN background rows  
+    /*  Define the background color for all the EVEN background rows  */
 ul.color2 li:nth-child(odd) {
     background: #f3f3f3;
     box-shadow: inset 0px 1px 0px 0px #ffffff;
 }
-*/
