@@ -260,7 +260,7 @@ function CerrarSesion() {
 var i_unsubs_r = 0;
 function RemoverNotificaciones() {
     i_unsubs_r++;
-    FCMPlugin.unsubscribeFromTopic('FRA_1_' + top.localStorage.getItem("codigoActivacion") + "-fun_" + i_unsubs_r, function () {
+    top.FCMPlugin.unsubscribeFromTopic('FRA_1_' + top.localStorage.getItem("codigoActivacion") + "-fun_" + i_unsubs_r, function () {
         if (i_unsubs_r < 9) {
             RemoverNotificaciones();
         }
@@ -272,7 +272,7 @@ function RemoverNotificaciones() {
 var i_unsubs = 0;
 function UnSuscribir() {
     i_unsubs++;
-    FCMPlugin.unsubscribeFromTopic('FRA_1_' + top.localStorage.getItem("codigoActivacion") + "-fun_" + i_unsubs, function () {
+    top.FCMPlugin.unsubscribeFromTopic('FRA_1_' + top.localStorage.getItem("codigoActivacion") + "-fun_" + i_unsubs, function () {
         if (i_unsubs < 9) {
             UnSuscribir();
         } else {
@@ -284,7 +284,9 @@ function UnSuscribir() {
 var i_subs = 0, l_s = 0, fs;
 function Suscribir() {
     if (i_subs < l_s) {
-        FCMPlugin.subscribeToTopic('FRA_1_' + top.localStorage.getItem("codigoActivacion") + "-fun_" + GetValor(fs[i_subs], "clave_funcion"), function () {
+		alert("intentando suscribir");
+        top.FCMPlugin.subscribeToTopic('FRA_1_' + top.localStorage.getItem("codigoActivacion") + "-fun_" + GetValor(fs[i_subs], "clave_funcion"), function () {
+			alert("suscrito");
             if (i_subs < l_s) { Suscribir(GetValor(fs[i_subs++], "clave_funcion")); }
         });
     }
@@ -308,11 +310,11 @@ function RegistrarNotificaciones() {
                 UnSuscribir();
             });
             domicilios_reg = top.localStorage.getItem("domicilios").split(",");
-            FCMPlugin.subscribeToTopic('FRA_1_' + top.localStorage.getItem("codigoActivacion"), function () {
+            top.FCMPlugin.subscribeToTopic('FRA_1_' + top.localStorage.getItem("codigoActivacion"), function () {
                 RegistrarDomicilio();
             });           
              
-            FCMPlugin.onNotification(function (data) {
+            top.FCMPlugin.onNotification(function (data) {
                 document.getElementById("notifi-audio").play();
                 top.cordova.plugins.notification.badge.increase(1, function () { });  
                 PantallaMostrar("notificaciones", "section");
@@ -332,7 +334,7 @@ function RegistrarNotificaciones() {
 
 function RegistrarDomicilio() {
     if (d_r < domicilios_reg.length) {		
-        FCMPlugin.subscribeToTopic('FRA_1_' + top.localStorage.getItem("codigoActivacion") + "-dom_" + domicilios_reg[d_r++], function () {
+        top.FCMPlugin.subscribeToTopic('FRA_1_' + top.localStorage.getItem("codigoActivacion") + "-dom_" + domicilios_reg[d_r++], function () {
 			alert("Domicilio registrado");
             RegistrarDomicilio();
         });
