@@ -36,7 +36,7 @@ function IniciarApp() {
     d_r = 0;
     _func_hab_ = [];
     document.getElementById("main").style.display = "none";    
-    if (window.localStorage.getItem("email_")) {
+    if (top.localStorage.getItem("email_")) {
         IniciarSesion();
     } else {
         PantallaMostrar("activacion", "section", true);
@@ -119,8 +119,8 @@ function ActivarAplicacion(objeto) {
         $.post(url + 'logic/controlador.aspx' + '?op=ActivarAplicacion&seccion=seguridad', datos, function (xmlDoc) {
             var estatus = GetValor(xmlDoc, "estatus");
             if (estatus == 1) {
-                window.localStorage.setItem("codigoActivacion", GetValor(xmlDoc, "codigoActivacion"));
-                window.localStorage.setItem("srclogo ", GetValor(xmlDoc, "srclogo"));
+                top.localStorage.setItem("codigoActivacion", GetValor(xmlDoc, "codigoActivacion"));
+                top.localStorage.setItem("srclogo ", GetValor(xmlDoc, "srclogo"));
                 InicializarApp();
                 document.getElementById("main").style.display = "block";
                 PantallaMostrar("reg-usuario", "section", true);
@@ -158,10 +158,10 @@ function ObtenerDomiciliosCoincidentes(nombre) {
 }
 
 function EstablecerLogo() {
-    if (window.localStorage.getItem("codigoActivacion")) {
+    if (top.localStorage.getItem("codigoActivacion")) {
         var portada = document.getElementById("portada");
         portada.onerror = function () { this.src = url + "img/portadatime.jpg"; }
-        portada.src = url + "/src-img/fraccionamientos/_" + window.localStorage.getItem("codigoActivacion") + "/portada.png";
+        portada.src = url + "/src-img/fraccionamientos/_" + top.localStorage.getItem("codigoActivacion") + "/portada.png";
     }
     var imgs = $("img.logo");
     for (var i = 0; i < imgs.length; i++) {
@@ -171,7 +171,7 @@ function EstablecerLogo() {
 
 
 function RegistrarUsuario() {
-    var codigoActivacion = window.localStorage.getItem("codigoActivacion");
+    var codigoActivacion = top.localStorage.getItem("codigoActivacion");
     if (codigoActivacion) {
         var datos = $("#frmRegUsuario").serializeArray();
         datos.push({ name: 'fraccionamiento', value: codigoActivacion });
@@ -192,7 +192,7 @@ function IniciarSesion(frm) {
     if (frm) {
         datos = $("#" + frm).serializeArray();
     } else {
-        datos = [{ name: "email", value: window.localStorage.getItem("email_") }, { name: "contrasena", value: window.localStorage.getItem("contrasena_") }];
+        datos = [{ name: "email", value: top.localStorage.getItem("email_") }, { name: "contrasena", value: top.localStorage.getItem("contrasena_") }];
     }
     IniciarSesion_back(function (xmlDoc) {
         if (GetValor(xmlDoc, "BloquearNotificaciones")) {
@@ -219,9 +219,9 @@ function IniciarSesion(frm) {
 
 function IniciarSesion_back(callback, datos) {
     if (!datos) {
-        datos = [{ name: "email", value: window.localStorage.getItem("email_") }, { name: "contrasena", value: window.localStorage.getItem("contrasena_") }];
+        datos = [{ name: "email", value: top.localStorage.getItem("email_") }, { name: "contrasena", value: top.localStorage.getItem("contrasena_") }];
     }
-    $.post(url + 'logic/controlador.aspx?op=IniciarSesion&seccion=seguridad&fraccionamiento=' + window.localStorage.getItem("codigoActivacion"), datos, function (xmlDoc) {
+    $.post(url + 'logic/controlador.aspx?op=IniciarSesion&seccion=seguridad&fraccionamiento=' + top.localStorage.getItem("codigoActivacion"), datos, function (xmlDoc) {
         if (GetValor(xmlDoc, "estatus") == 1) {
             RegistrarVariables(datos, xmlDoc);
             if (callback) callback(xmlDoc);
@@ -232,11 +232,11 @@ function IniciarSesion_back(callback, datos) {
 }
 
 function RegistrarVariables(datos, xmlDoc) {
-    window.localStorage.setItem("usuario_", GetValor(xmlDoc, "clave"));
-    window.localStorage.setItem("fracc_", GetValor(xmlDoc, "fraccionamiento"));
-    window.localStorage.setItem("email_", datos[0].value);
-    window.localStorage.setItem("contrasena_", datos[1].value);
-    window.localStorage.setItem("domicilios", GetValor(xmlDoc, "domicilios"));
+    top.localStorage.setItem("usuario_", GetValor(xmlDoc, "clave"));
+    top.localStorage.setItem("fracc_", GetValor(xmlDoc, "fraccionamiento"));
+    top.localStorage.setItem("email_", datos[0].value);
+    top.localStorage.setItem("contrasena_", datos[1].value);
+    top.localStorage.setItem("domicilios", GetValor(xmlDoc, "domicilios"));
     document.getElementById("nombre-usuario").innerHTML = GetValor(xmlDoc, "nombre");
     document.getElementById("u-fraccionamiento").innerHTML = GetValor(xmlDoc, "s_nfracc");
     document.getElementById("u-domicilio").innerHTML = GetValor(xmlDoc, "s_domicilio");
@@ -247,8 +247,8 @@ function RegistrarVariables(datos, xmlDoc) {
 function CerrarSesion() {
     $.post(url + 'logic/controlador.aspx?op=CerrarSesion&seccion=seguridad', function (xmlDoc) {
         if (GetValor(xmlDoc, "estatus") == 1) {
-            window.localStorage.setItem("email_", "");
-            window.localStorage.setItem("contrasena_", "");
+            top.localStorage.setItem("email_", "");
+            top.localStorage.setItem("contrasena_", "");
             CambioPantalla('login', 'main');
         } else {
             alert(GetValor(xmlDoc, "mensaje"));
@@ -260,7 +260,7 @@ function CerrarSesion() {
 var i_unsubs_r = 0;
 function RemoverNotificaciones() {
     i_unsubs_r++;
-    FCMPlugin.unsubscribeFromTopic('FRA_1_' + window.localStorage.getItem("codigoActivacion") + "-fun_" + i_unsubs_r, function () {
+    FCMPlugin.unsubscribeFromTopic('FRA_1_' + top.localStorage.getItem("codigoActivacion") + "-fun_" + i_unsubs_r, function () {
         if (i_unsubs_r < 9) {
             RemoverNotificaciones();
         }
@@ -272,7 +272,7 @@ function RemoverNotificaciones() {
 var i_unsubs = 0;
 function UnSuscribir() {
     i_unsubs++;
-    FCMPlugin.unsubscribeFromTopic('FRA_1_' + window.localStorage.getItem("codigoActivacion") + "-fun_" + i_unsubs, function () {
+    FCMPlugin.unsubscribeFromTopic('FRA_1_' + top.localStorage.getItem("codigoActivacion") + "-fun_" + i_unsubs, function () {
         if (i_unsubs < 9) {
             UnSuscribir();
         } else {
@@ -284,7 +284,7 @@ function UnSuscribir() {
 var i_subs = 0, l_s = 0, fs;
 function Suscribir() {
     if (i_subs < l_s) {
-        FCMPlugin.subscribeToTopic('FRA_1_' + window.localStorage.getItem("codigoActivacion") + "-fun_" + GetValor(fs[i_subs], "clave_funcion"), function () {
+        FCMPlugin.subscribeToTopic('FRA_1_' + top.localStorage.getItem("codigoActivacion") + "-fun_" + GetValor(fs[i_subs], "clave_funcion"), function () {
             if (i_subs < l_s) { Suscribir(GetValor(fs[i_subs++], "clave_funcion")); }
         });
     }
@@ -294,7 +294,7 @@ var _func_hab_ = [];
 var domicilios_reg = [];
 function RegistrarNotificaciones() {
     try {
-        if (window.localStorage.getItem("email_")) {
+        if (top.localStorage.getItem("email_")) {
             $.post(url + 'logic/controlador.aspx' + '?op=ObtenerFuncionesHabilitadas&seccion=seguridad&funciones=6', function (xmlDoc) {
                 _func_hab_ = [];
                 var funcionesRecibidas = xmlDoc.getElementsByTagName("Table");
@@ -307,8 +307,8 @@ function RegistrarNotificaciones() {
                 i_unsubs = 0;
                 UnSuscribir();
             });
-            domicilios_reg = window.localStorage.getItem("domicilios").split(",");
-            FCMPlugin.subscribeToTopic('FRA_1_' + window.localStorage.getItem("codigoActivacion"), function () {
+            domicilios_reg = top.localStorage.getItem("domicilios").split(",");
+            FCMPlugin.subscribeToTopic('FRA_1_' + top.localStorage.getItem("codigoActivacion"), function () {
                 RegistrarDomicilio();
             });           
              
@@ -331,8 +331,9 @@ function RegistrarNotificaciones() {
 }
 
 function RegistrarDomicilio() {
-    if (d_r < domicilios_reg.length) {
-        FCMPlugin.subscribeToTopic('FRA_1_' + window.localStorage.getItem("codigoActivacion") + "-dom_" + domicilios_reg[d_r++], function () {
+    if (d_r < domicilios_reg.length) {		
+        FCMPlugin.subscribeToTopic('FRA_1_' + top.localStorage.getItem("codigoActivacion") + "-dom_" + domicilios_reg[d_r++], function () {
+			alert("Domicilio registrado");
             RegistrarDomicilio();
         });
     }
@@ -556,7 +557,7 @@ function ContinuarPagando() {
         }
         if (tipopago == 1) {
             /*if (win) win.close();
-            var win = AbrirDocumento(url + 'logic/controlador.aspx?op=PresentarPagador&c=' + conceptospagar.join("|") + "&d=" + dom_sel + "&fracc=" + window.localStorage.getItem("fracc_") + "&usuario=" + window.localStorage.getItem("usuario_"), "_system");
+            var win = AbrirDocumento(url + 'logic/controlador.aspx?op=PresentarPagador&c=' + conceptospagar.join("|") + "&d=" + dom_sel + "&fracc=" + top.localStorage.getItem("fracc_") + "&usuario=" + top.localStorage.getItem("usuario_"), "_system");
             consultasPago = 0;
             window.setInterval(function () {
                 consultasPago++;
