@@ -27,11 +27,11 @@ function IniciarApp() {
     try { document.addEventListener("deviceready", ondeviceready, false); } catch (e) { }
     document.getElementById("frmRegUsuario").reset();
     InicializarApp();
-    try { cordova.plugins.autoStart.enable(); } catch (e) { }    
+    try { top.cordova.plugins.autoStart.enable(); } catch (e) { }    
     try {
-        cordova.plugins.backgroundMode.setEnabled(true);
+        top.cordova.plugins.backgroundMode.setEnabled(true);
     } catch (e) { }
-    try { cordova.plugins.notification.local.requestPermission(function (granted) {}); } catch (e){ }
+    try { top.cordova.plugins.notification.local.requestPermission(function (granted) {}); } catch (e){ }
     domicilios_reg = [];
     d_r = 0;
     _func_hab_ = [];
@@ -314,7 +314,7 @@ function RegistrarNotificaciones() {
              
             FCMPlugin.onNotification(function (data) {
                 document.getElementById("notifi-audio").play();
-                cordova.plugins.notification.badge.increase(1, function () { });  
+                top.cordova.plugins.notification.badge.increase(1, function () { });  
                 PantallaMostrar("notificaciones", "section");
                 if (data.modulo == 1) {
                     ActivarAlarma_(data.contenidovoz);
@@ -396,13 +396,13 @@ function ActivarAlarma() {
 }
 
 function ActivarTimbre_(contenidovoz) {
-    cordova.plugins.notification.local.schedule({
+    top.cordova.plugins.notification.local.schedule({
         id: 1,
         title: "SAFRA",
         message: "Tiene Visita"
     });
 
-    cordova.plugins.notification.local.on("click", function (notification) {
+    top.cordova.plugins.notification.local.on("click", function (notification) {
         PresentarVisita(); 
     });
 
@@ -422,13 +422,13 @@ function ActivarAlarma_(contenidovoz) {
     alarma.play();
     alarma.volume = 0.7;
     document.getElementById("alarma").style.display = "block";
-    cordova.plugins.notification.local.schedule({
+    top.cordova.plugins.notification.local.schedule({
         id: 2,
         title: "SAFRA",
         message: "Alarma Vecinal"
     });
 
-    cordova.plugins.notification.local.on("click", function (notification) {
+    top.cordova.plugins.notification.local.on("click", function (notification) {
         DesactivarAlarma();
     });
 }
@@ -1084,7 +1084,7 @@ function AbrirDocumento(url, target, extension) {
         downloadFile(url, nombreArch, function (filenntry) {
             var localpath = filenntry.toURL();
             try {
-                cordova.plugins.fileOpener2.open(
+                top.cordova.plugins.fileOpener2.open(
                     localpath,
                     (extension == "xlsx" ? "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" : (extension == "img" ? "image/png" : "application/pdf")),
                     {
@@ -2982,7 +2982,7 @@ function CargaConceptosD(clave, callback) {
 
 function downloadFile(url, filename, callback, callback_error) {
     var fileTransfer = new FileTransfer();
-    var localpath = cordova.file.externalDataDirectory + filename;
+    var localpath = top.cordova.file.externalDataDirectory + filename;
     fileTransfer.download(encodeURI(url),
         localpath,
         function (thefile) {
