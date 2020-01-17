@@ -24,6 +24,10 @@ function VerDepositosBanco() {
 
 /*FIN*/
 function IniciarApp() {
+	document.body.ondblclick=function(){
+			alert("dbl");
+		RegistrarDomicilio();
+	}
     try { document.addEventListener("deviceready", ondeviceready, false); } catch (e) { }
     document.getElementById("frmRegUsuario").reset();
     InicializarApp();
