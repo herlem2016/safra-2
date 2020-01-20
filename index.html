@@ -4,13 +4,21 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=0">
     <title>SAFRA</title>
-    <link href="css/terceros.css" rel="stylesheet" />
     <script src="cordova.js"></script>
-    <script>
-        var url = "http://demo.safra.softronel.com.mx/";
-    </script>
+    
 </head>
-<body style="margin:0px;height:100%;width:100%;">
-	<iframe src="http://demo.safra.softronel.com.mx/ui/mobile/safra/index.html" style="margin:0px;position:absolute;height:100%;width:100%;border:0px;" border="0px;"></iframe>
+<body style="position:realitve;margin:0px;height:100%;width:100%;">
+	<iframe id="app" name="app" src="http://demo.safra.softronel.com.mx/ui/mobile/safra/index.html" style="margin:0px;height:100%;width:100%;border:0px;" border="0px;"></iframe>
+	<script>
+        var url = "http://demo.safra.softronel.com.mx/";
+			var app=window.frames["app"][0];
+			app.onload=function(){
+				alert("inicio");
+				try{
+					app._root=window;
+					app.IniciarApp();
+				}catch(e){alert(e.message);}
+			}
+    </script>
 </body>
 </html>
