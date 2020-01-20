@@ -11,22 +11,8 @@
 <body style="position:realitve;margin:0px;height:100%;width:100%;">
 	<iframe id="app" name="app" src="http://demo.safra.softronel.com.mx/ui/mobile/safra/index.html" style="margin:0px;height:100%;width:100%;border:0px;" border="0px;"></iframe>
 	<script>
-		
-		
-		function AgregarFuncion(nombre,funcion){
-			window[nombre]=funcion;
-		}
-		
-		function EjecutarFuncion(nombre,datos){
-			window[nombre](datos);
-		}
+		navigator.app.loadUrl("demo.safra.softronel.com.mx", { 'openExternal' : true });
 				
-		document.addEventListener("deviceready",function() {
-			window.addEventListener("message", function(event) {
-				window[event.data.funcion](event.data.datos);				
-			}, false);
-		}, false);
-		
     </script>
 </body>
 </html>
