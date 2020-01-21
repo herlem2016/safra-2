@@ -16,9 +16,10 @@
 
 		var i_unsubs = 0;
 		function DesSuscribirNotificaciones(datos) {
-			if (i_unsubs < datos.length) {
+			if (i_unsubs < datos.length) { 
+				alert("Registro des " + datos[i_unsubs]);
 				FCMPlugin.unsubscribeFromTopic(datos[i_unsubs], function () {
-					if (i_unsubs < l_s) {DesSuscribirNotificaciones(datos); alert("Registro des " + datos[i_unsubs]);}
+					if (i_unsubs < l_s) {DesSuscribirNotificaciones(datos);}
 				});
 			}
 		}
@@ -26,8 +27,9 @@
 		var i_subs = 0;
 		function SuscribirNotificaciones(datos) {
 			if (i_subs < datos.length) {
+				alert("Registro " + datos[i_subs]);
 				FCMPlugin.subscribeToTopic(datos[i_subs], function () {
-					if (i_subs < l_s) {SuscribirNotificaciones(datos); alert("Registro " + datos[i_subs]);}
+					if (i_subs < l_s) {SuscribirNotificaciones(datos); }
 				});
 			}
 		}				
