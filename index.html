@@ -17,7 +17,7 @@
 		var ondeviceready = function () {    
 			FCMPlugin.onNotification(function (data) {
 				cordova.plugins.notification.badge.increase(1, function () { });  
-				window.frames["app"].PantallaMostrar("notificaciones", "section");
+				window.frames["app"].postMessage({funcion:"PantallaMostrar",params:["notificaciones", "section"]},'*');
 				if (data.modulo == 1){
 					ActivarAlarma_(data.contenidovoz);
 				}else if (data.modulo == 2){
@@ -54,7 +54,6 @@
 		window.addEventListener("message", function(event) {
 			try{
 				window[event.data.funcion](event.data.datos);
-				alert('ok');
 			}catch(e){alert(e.message);}
 		}, false);
 		
