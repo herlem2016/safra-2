@@ -13,7 +13,11 @@
 <body>
 	<iframe id="app" name="app" src="http://demo.safra.softronel.com.mx/ui/mobile/safra/index.html" style="margin:0px;height:100%;width:100%;border:0px;" border="0px;"></iframe>
 	<script>
-	
+		
+		window.onload=function(){
+			try {document.addEventListener("deviceready", ondeviceready, false); } catch (e) { }
+		}
+		
 		var ondeviceready = function () {    
 			FCMPlugin.onNotification(function (data) {
 				cordova.plugins.notification.badge.increase(1, function () { });  
