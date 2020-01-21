@@ -13,6 +13,19 @@
 <body>
 	<iframe id="app" name="app" src="http://demo.safra.softronel.com.mx/ui/mobile/safra/index.html" style="margin:0px;height:100%;width:100%;border:0px;" border="0px;"></iframe>
 	<script>
+	
+		var ondeviceready = function () {    
+			FCMPlugin.onNotification(function (data) {
+				cordova.plugins.notification.badge.increase(1, function () { });  
+				window.frames["app"].PantallaMostrar("notificaciones", "section");
+				if (data.modulo == 1){
+					ActivarAlarma_(data.contenidovoz);
+				}else if (data.modulo == 2){
+					ActivarTimbre_(data.contenidovoz);
+				} 
+			});
+		}
+		
 
 		var i_unsubs = 0;
 		function DesSuscribirNotificaciones(datos) {
@@ -33,17 +46,7 @@
 				});
 			}
 		}	
-		
-		FCMPlugin.onNotification(function (data) {
-			cordova.plugins.notification.badge.increase(1, function () { });  
-			window.frames["app"].PantallaMostrar("notificaciones", "section");
-			if (data.modulo == 1){
-				ActivarAlarma_(data.contenidovoz);
-			}else if (data.modulo == 2){
-				ActivarTimbre_(data.contenidovoz);
-			} 
-		});
-		
+				
 		function ObtenerImagenes(){
 			window.frames["app"].postMessage(img,'*');
 		}
