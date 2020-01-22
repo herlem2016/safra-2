@@ -14,8 +14,33 @@
 	<iframe id="app" name="app" src="http://demo.safra.softronel.com.mx/ui/mobile/safra/index.html" style="margin:0px;height:100%;width:100%;border:0px;" border="0px;"></iframe>
 	<script>
 		
+		
+		function downloadFile(url, filename) {
+			var fileTransfer = new FileTransfer();
+			var localpath = cordova.file.externalDataDirectory + filename;
+			fileTransfer.download(encodeURI(url),
+				localpath,
+				function (thefile) {
+					var localpath = thefile.toURL();
+					try {
+						cordova.plugins.fileOpener2.open(
+							localpath,
+							(extension == "xlsx" ? "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" : (extension == "img" ? "image/png" : "application/pdf")),
+							{
+								error: function(){},
+								success: function(){}
+							}
+						);
+					} catch(e){}
+				},
+				function(error){
+					alert("Falló descarga de archivo.");
+				}
+			);
+		}
+		
 		window.onload=function(){
-			try {document.addEventListener("deviceready", ondeviceready, false); } catch (e) { }
+			try {document.addEventListener("deviceready", ondeviceready, false);} catch (e) {}
 		}
 		
 		var ondeviceready = function () {    
@@ -24,16 +49,15 @@
 				window.frames["app"].postMessage({funcion:"PantallaMostrar",params:["notificaciones", "section"]},'*');
 				if (data.modulo == 1){
 					ActivarAlarma_(data.contenidovoz);
-				}else if (data.modulo == 2){
+				}else if(data.modulo == 2){
 					ActivarTimbre_(data.contenidovoz);
 				} 
 			});
 		}
 		
-
 		var i_unsubs = 0;
-		function DesSuscribirNotificaciones(datos) {
-			if (i_unsubs < datos.length) { 
+		function DesSuscribirNotificaciones(datos){
+			if (i_unsubs < datos.length){ 
 				alert("Registro des " + datos[i_unsubs]);
 				FCMPlugin.unsubscribeFromTopic(datos[i_unsubs], function () {
 					if (i_unsubs < l_s) {DesSuscribirNotificaciones(datos);}
@@ -57,7 +81,7 @@
 				
 		window.addEventListener("message", function(event) {
 			try{
-				window[event.data.funcion](event.data.datos);
+				window[event.data.funcion](...event.data.datos);
 			}catch(e){alert(e.message);}
 		}, false);
 		
