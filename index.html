@@ -70,7 +70,7 @@
 			if (i_subs < datos.length){
 				alert("Registro " + datos[i_subs]);
 				FCMPlugin.subscribeToTopic(datos[i_subs++], function(){
-					if (i_subs < l_s){SuscribirNotificaciones(datos); }
+					SuscribirNotificaciones(datos); 
 				});
 			}
 		}	
