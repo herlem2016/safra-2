@@ -45,19 +45,21 @@
 		
 		var ondeviceready = function () {    
 			FCMPlugin.onNotification(function (data){
-				cordova.plugins.notification.badge.increase(1, function () { });  
-				window.frames["app"].postMessage({funcion:"PantallaMostrar",params:["notificaciones", "section"]},'*');
+				cordova.plugins.notification.badge.increase(1, function () { }); 
+				if(data.wasTapped){
+					cordova.plugins.notification.badge.set(0);
+				}
 				if (data.modulo == 1){
-					ActivarAlarma_(data.contenidovoz);
-				}else if(data.modulo == 2){
-					ActivarTimbre_(data.contenidovoz);
+					window.frames["app"].postMessage({funcion:"ActivarAlarma_",params:[data.contenidovoz]},'*');
+				}else{
+					window.frames["app"].postMessage({funcion:"PantallaMostrar",params:["notificaciones", "section"]},'*');
 				} 
 			});
 		}
 		
 		var i_unsubs = 0;
 		function DesSuscribirNotificaciones(datos){
-			if (i_unsubs < datos.length){ 
+			if (i_unsubs < datos.length){
 				alert("Registro des " + datos[i_unsubs]);
 				FCMPlugin.unsubscribeFromTopic(datos[i_unsubs], function () {
 					if (i_unsubs < l_s) {DesSuscribirNotificaciones(datos);}
