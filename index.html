@@ -3,9 +3,12 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=0">
-    <title>SAFRA</title>
-    <script src="cordova.js"></script>
-    <script src="script.js"></script>
+	<meta http-equiv="Content-Security-Policy" content="">
+    <title>SAFRA</title>	
+    <script src="jquery-1.11.3.min.js"></script>
+	<script>
+        $.support.cors = true;
+    </script>
     <style>
 		html,body{position:relative;width:100%;height:100%;margin:0px;}
 	</style>
@@ -13,31 +16,33 @@
 <body>
 	<iframe id="app" name="app" src="http://demo.safra.softronel.com.mx/ui/mobile/safra/index.html" style="margin:0px;height:100%;width:100%;border:0px;" border="0px;"></iframe>
 	<script>
-		
-		
-		function downloadFile(url, filename) {
+			
+		function downloadFile(url,filename,email,pass,ca){
 			alert("intento de abrir:" + url + "; " + filename);
-			var fileTransfer = new FileTransfer();
-			var localpath = cordova.file.externalDataDirectory + filename;
-			fileTransfer.download(encodeURI(url),
-				localpath,
-				function (thefile) {
-					var localpath = thefile.toURL();
-					try {
-						cordova.plugins.fileOpener2.open(
-							localpath,
-							(extension == "xlsx" ? "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" : (extension == "img" ? "image/png" : "application/pdf")),
-							{
-								error: function(){},
-								success: function(){}
-							}
-						);
-					} catch(e){}
-				},
-				function(error){
-					alert("Falló descarga de archivo.");
-				}
-			);
+			$.post('http://demo.safra.softronel.com.mx/logic/controlador.aspx?op=IniciarSesion&seccion=seguridad&fraccionamiento=' + ca, [{ name: "email", value: email }, { name: "contrasena", value: pass }]
+			, function (xmlDoc) {
+				var fileTransfer = new FileTransfer();
+				var localpath = cordova.file.externalDataDirectory + filename;
+				fileTransfer.download(encodeURI(url),
+					localpath,
+					function (thefile) {
+						var localpath = thefile.toURL();
+						try {
+							cordova.plugins.fileOpener2.open(
+								localpath,
+								(extension == "xlsx" ? "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" : (extension == "img" ? "image/png" : "application/pdf")),
+								{
+									error: function(){},
+									success: function(){}
+								}
+							);
+						} catch(e){}
+					},
+					function(error){
+						alert("Falló descarga de archivo.");
+					}
+				);
+			});			
 		}
 		
 		window.onload=function(){
