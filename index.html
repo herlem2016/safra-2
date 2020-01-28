@@ -27,7 +27,6 @@
 					localpath,
 					function (thefile) {
 						var localpath = thefile.toURL();
-						alert(localpath);
 						try {
 							cordova.plugins.fileOpener2.open(
 								localpath,
@@ -39,7 +38,9 @@
 									}
 								}
 							);
-						} catch(e){}
+						} catch(e){
+							alert(e.message);
+						}
 					},
 					function(error){
 						alert("Falló descarga de archivo.");
