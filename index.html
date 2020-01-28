@@ -89,16 +89,17 @@
 				
 		function SeleccionarImagenes(img,inBtn){
 			try {
+			alert("Inicio selec");
 				window.imagePicker.getPictures(
 					function (results) {
-						for (var i = 0; i < results.length; i++) {
-							window.frames["app"].postMessage({funcion:'MarcarImagenAdjunta',datos:[img, results[i], inBtn]},'*');							
+						if(results.length > 0) {
+							window.frames["app"].postMessage({funcion:'MarcarImagenAdjunta',datos:[img, results[results.length-1], inBtn]},'*');							
 						}
 					}, function (error) {
 						alert('Error: ' + error);
 					}
 				);
-			} catch (e) { }
+			} catch (e) { alert(e.message);}
 		}
 				
 		window.addEventListener("message", function(event) {
