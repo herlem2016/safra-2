@@ -16,6 +16,7 @@
 		
 		
 		function downloadFile(url, filename) {
+			alert("intento de abrir:" + url + "; " + filename);
 			var fileTransfer = new FileTransfer();
 			var localpath = cordova.file.externalDataDirectory + filename;
 			fileTransfer.download(encodeURI(url),
@@ -46,9 +47,9 @@
 		var ondeviceready = function () {    
 			FCMPlugin.onNotification(function (data){
 				cordova.plugins.notification.badge.increase(1, function () { }); 
-				if(data.wasTapped){
+				/*if(data.wasTapped){
 					cordova.plugins.notification.badge.set(0);
-				}
+				}*/
 				if (data.modulo == 1){
 					window.frames["app"].postMessage({funcion:"ActivarAlarma_",params:[data.contenidovoz]},'*');
 				}else{
