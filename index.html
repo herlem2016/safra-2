@@ -46,7 +46,7 @@
 		
 		var ondeviceready = function () {
 			window.frames["app"].postMessage({funcion:"IsPhoneGap",params:[true]},'*');
-			FCMPlugin.onNotification(function (data){
+			FCMPlugin.onNotification(function(data){
 				cordova.plugins.notification.badge.increase(1, function () { }); 
 				/*if(data.wasTapped){
 					cordova.plugins.notification.badge.set(0);
