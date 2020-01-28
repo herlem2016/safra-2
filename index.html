@@ -87,8 +87,18 @@
 			}
 		}	
 				
-		function ObtenerImagenes(){
-			window.frames["app"].postMessage(img,'*');
+		function SeleccionarImagenes(img,inBtn){
+			try {
+				window.imagePicker.getPictures(
+					function (results) {
+						for (var i = 0; i < results.length; i++) {
+							window.frames["app"].postMessage({funcion:'MarcarImagenAdjunta',datos:[img, results[i], inBtn]},'*');							
+						}
+					}, function (error) {
+						alert('Error: ' + error);
+					}
+				);
+			} catch (e) { }
 		}
 				
 		window.addEventListener("message", function(event) {
