@@ -27,13 +27,16 @@
 					localpath,
 					function (thefile) {
 						var localpath = thefile.toURL();
+						alert(localpath);
 						try {
 							cordova.plugins.fileOpener2.open(
 								localpath,
 								(extension == "xlsx" ? "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" : (extension == "img" ? "image/png" : "application/pdf")),
 								{
 									error: function(){},
-									success: function(){}
+									success: function(){
+									
+									}
 								}
 							);
 						} catch(e){}
