@@ -92,7 +92,7 @@
 				window.imagePicker.getPictures(
 					function (results) {
 						if(results.length > 0) {
-							window.frames["app"].postMessage({funcion:'MarcarImagenAdjunta',datos:[null, results[results.length-1], null]},'*');							
+							window.frames["app"].postMessage({funcion:'MarcarImagenAdjunta',params:[null, results[results.length-1], null]},'*');							
 						}
 					}, function (error) {
 						alert('Error: ' + error);
