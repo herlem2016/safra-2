@@ -100,9 +100,12 @@
 								canvas.height = this.naturalHeight;
 								canvas.width = this.naturalWidth;
 								ctx.drawImage(this, 0, 0);
-								dataURL = canvas.toDataURL();								
-								window.frames["app"].postMessage({funcion:'MarcarImagenAdjunta',params:[null, dataURL, null]},'*');
-							  };							
+								dataURL = canvas.toDataURL();		
+								alert("ok");
+								try{
+									window.frames["app"].postMessage({funcion:'MarcarImagenAdjunta',params:[null, dataURL, null]},'*');
+								}catch(e){alert(e.message);}
+							};							
 						}
 					}, function (error) {
 						alert('Error: ' + error);
