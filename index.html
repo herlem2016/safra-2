@@ -93,14 +93,18 @@
 					function (results) {
 						alert("ok read");
 						if(results.length > 0) {
+							alert("si");
 							var img = new Image();
 							  img.onload = function() {
+								alert("load");
 								var canvas = document.createElement('CANVAS');
 								var ctx = canvas.getContext('2d');
 								var dataURL;
 								canvas.height = this.naturalHeight;
 								canvas.width = this.naturalWidth;
+								alert("draw");
 								ctx.drawImage(this, 0, 0);
+								alert("convert");
 								dataURL = canvas.toDataURL();		
 								alert("ok");
 								try{
