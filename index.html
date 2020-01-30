@@ -88,7 +88,8 @@
 		}	
 				
 		function SeleccionarImagenes(){
-			try {				
+			try {	
+				window.imagePicker.requestReadPermission();			
 				window.imagePicker.getPictures(
 					function (results) {
 						if(results.length > 0) {
