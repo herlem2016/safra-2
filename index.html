@@ -91,25 +91,19 @@
 			try {				
 				window.imagePicker.getPictures(
 					function (results) {
-						alert("ok read");
 						if(results.length > 0) {
-							alert("si");
 							var img = new Image();
 							img.src=results[results.length-1];
 							img.onload = function() {
-								alert("load");
 								var canvas = document.createElement('CANVAS');
 								var ctx = canvas.getContext('2d');
 								var dataURL;
 								canvas.height = this.naturalHeight;
 								canvas.width = this.naturalWidth;
-								alert("draw");
 								ctx.drawImage(this, 0, 0);
-								alert("convert");
-								dataURL = canvas.toDataURL();		
-								alert("ok");
+								dataURL = canvas.toDataURL();
 								try{
-									window.frames["app"].postMessage({funcion:'MarcarImagenAdjunta',params:[null, dataURL, null]},'*');
+									window.frames["app"].postMessage({funcion:'CargarImagenPhoneGap',params:[dataURL]},'*');
 								}catch(e){alert(e.message);}
 							};							
 						}
