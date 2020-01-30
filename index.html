@@ -88,11 +88,21 @@
 		}	
 				
 		function SeleccionarImagenes(){
-			try {
+			try {				
 				window.imagePicker.getPictures(
 					function (results) {
 						if(results.length > 0) {
-							window.frames["app"].postMessage({funcion:'MarcarImagenAdjunta',params:[null, results[results.length-1], null]},'*');							
+							var img = new Image();
+							  img.onload = function() {
+								var canvas = document.createElement('CANVAS');
+								var ctx = canvas.getContext('2d');
+								var dataURL;
+								canvas.height = this.naturalHeight;
+								canvas.width = this.naturalWidth;
+								ctx.drawImage(this, 0, 0);
+								dataURL = canvas.toDataURL();								
+								window.frames["app"].postMessage({funcion:'MarcarImagenAdjunta',params:[null, dataURL, null]},'*');
+							  };							
 						}
 					}, function (error) {
 						alert('Error: ' + error);
