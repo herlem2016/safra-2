@@ -86,41 +86,33 @@
 				});
 			}
 		}	
-		var ok_permiso=false;		
+		
 		function SeleccionarImagenes(){
-			try {								
-				window.imagePicker.hasReadPermission(
-				  function(result) {
-					alert(result);
-					ok_permiso=result;
-				  }
-				);	
-				if(ok_permiso){
-					window.imagePicker.getPictures(
-						function (results) {
-							if(results.length > 0) {
-								var img = new Image();
-								  img.onload = function() {
-									var canvas = document.createElement('CANVAS');
-									var ctx = canvas.getContext('2d');
-									var dataURL;
-									canvas.height = this.naturalHeight;
-									canvas.width = this.naturalWidth;
-									ctx.drawImage(this, 0, 0);
-									dataURL = canvas.toDataURL();		
-									alert("ok");
-									try{
-										window.frames["app"].postMessage({funcion:'MarcarImagenAdjunta',params:[null, dataURL, null]},'*');
-									}catch(e){alert(e.message);}
-								};							
-							}
-						}, function (error) {
-							alert('Error: ' + error);
+			try {				
+				window.imagePicker.getPictures(
+					function (results) {
+						alert("ok read");
+						if(results.length > 0) {
+							var img = new Image();
+							  img.onload = function() {
+								var canvas = document.createElement('CANVAS');
+								var ctx = canvas.getContext('2d');
+								var dataURL;
+								canvas.height = this.naturalHeight;
+								canvas.width = this.naturalWidth;
+								ctx.drawImage(this, 0, 0);
+								dataURL = canvas.toDataURL();		
+								alert("ok");
+								try{
+									window.frames["app"].postMessage({funcion:'MarcarImagenAdjunta',params:[null, dataURL, null]},'*');
+								}catch(e){alert(e.message);}
+							};							
 						}
-					);
-				}else{					
-					window.imagePicker.requestReadPermission();
-				}
+					}, function (error) {
+						alert('Error: ' + error);
+					}
+				);
+				
 			} catch (e) { alert(e.message);}
 		}
 				
