@@ -88,12 +88,10 @@
 		function SeleccionarImagenes(){
 			try {				
 				window.imagePicker.getPictures(
-					function(results){
-						if(results.length > 0) {							
-							try{
-								window.frames["app"].postMessage({funcion:'CargarImagenPhoneGap',params:[results[results.length-1]]},'*');
-							}catch(e){alert(e.message);}
-						};	
+					function(result){						
+						try{
+							window.frames["app"].postMessage({funcion:'CargarImagenPhoneGap',params:[result]},'*');
+						}catch(e){alert(e.message);}
 					}, function (error) {
 						alert('Error: ' + error);
 					},{maximumImagesCount: 1,width: 500,height: 500,quality: 40, outputType: 1};
