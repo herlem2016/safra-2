@@ -70,7 +70,6 @@
 		var i_unsubs = 0;
 		function DesSuscribirNotificaciones(datos){
 			if (i_unsubs < datos.length){
-				alert("Registro des " + datos[i_unsubs]);
 				FCMPlugin.unsubscribeFromTopic(datos[i_unsubs], function () {
 					if (i_unsubs < l_s) {DesSuscribirNotificaciones(datos);}
 				});
@@ -80,7 +79,6 @@
 		var i_subs = 0;
 		function SuscribirNotificaciones(datos) {
 			if (i_subs < datos.length){
-				alert("Registro " + datos[i_subs]);
 				FCMPlugin.subscribeToTopic(datos[i_subs++], function(){
 					SuscribirNotificaciones(datos); 
 				});
@@ -90,26 +88,15 @@
 		function SeleccionarImagenes(){
 			try {				
 				window.imagePicker.getPictures(
-					function (results) {
-						if(results.length > 0) {
-							var img = new Image();
-							img.src=results[results.length-1];
-							img.onload = function() {
-								var canvas = document.createElement('CANVAS');
-								var ctx = canvas.getContext('2d');
-								var dataURL;
-								canvas.height = this.naturalHeight;
-								canvas.width = this.naturalWidth;
-								ctx.drawImage(this, 0, 0);
-								dataURL = canvas.toDataURL();
-								try{
-									window.frames["app"].postMessage({funcion:'CargarImagenPhoneGap',params:[dataURL]},'*');
-								}catch(e){alert(e.message);}
-							};							
-						}
+					function(results){
+						if(results.length > 0) {							
+							try{
+								window.frames["app"].postMessage({funcion:'CargarImagenPhoneGap',params:[results[results.length-1]]},'*');
+							}catch(e){alert(e.message);}
+						};	
 					}, function (error) {
 						alert('Error: ' + error);
-					}
+					},{maximumImagesCount: 1,width: 500,height: 500,quality: 40, outputType: 1};
 				);
 				
 			} catch (e) { alert(e.message);}
