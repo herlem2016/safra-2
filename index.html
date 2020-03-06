@@ -14,11 +14,26 @@
 	</style>
 </head>
 <body>
-	<iframe id="app" name="app" src="http://demo.safra.softronel.com.mx/ui/mobile/safra/index.aspx" style="margin:0px;height:100%;width:100%;border:0px;" border="0px;"></iframe>
+	<iframe id="app" name="app" src="" style="margin:0px;height:100%;width:100%;border:0px;" border="0px;"></iframe>
 	<script>
-			
+		var _url="http://frt.hopto.org:88";
+		if(!window.navigator.onLine){
+			document.getElementById("app").src="no-internet.html";
+		}else{
+			document.getElementById("app").src=_url+"/ui/mobile/safra/index.html";
+		}
+		
+		function Conectar(){
+			if(!window.navigator.onLine){
+				document.getElementById("app").src="no-internet.html";
+			}else{
+				window.frames["app"].location.href=_url+"/ui/mobile/safra/index.html";
+				window.location.reload();
+			}
+		}
+		
 		function downloadFile(url,filename,extension,email,pass,ca){
-			$.post('http://demo.safra.softronel.com.mx/logic/controlador.aspx?op=IniciarSesion&seccion=seguridad&fraccionamiento=' + ca, [{ name: "email", value: email }, { name: "contrasena", value: pass }]
+			$.post(url+'/logic/controlador.aspx?op=IniciarSesion&seccion=seguridad&fraccionamiento=' + ca, [{ name: "email", value: email }, { name: "contrasena", value: pass }]
 			, function (xmlDoc) {
 				var fileTransfer = new FileTransfer();
 				var localpath = cordova.file.externalDataDirectory + filename;
@@ -96,7 +111,7 @@
 						};	
 					}, function (error) {
 						alert('Error: ' + error);
-					},{maximumImagesCount: 2,width: 500,height: 500,quality: 40, outputType: 1};
+					},{maximumImagesCount: 2,width: 500,height: 500,quality: 40, outputType: 1}
 				);
 				
 			} catch (e) { alert(e.message);}
@@ -107,6 +122,7 @@
 				window[event.data.funcion](...event.data.datos);
 			}catch(e){alert(e.message);}
 		}, false);
+		
 		
     </script>
 </body>
