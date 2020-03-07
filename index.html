@@ -18,18 +18,13 @@
 	<script>
 		var _url="http://frt.hopto.org:88";
 		if(!window.navigator.onLine){
-			document.getElementById("app").src="no-internet.html";
+			window.frames["app"].location.href="no-internet.html";
 		}else{
-			document.getElementById("app").src=_url+"/ui/mobile/safra/index.aspx";
+			window.frames["app"].location.href=_url+"/ui/mobile/safra/index.aspx";
 		}
 		
-		function Conectar(){
-			if(!window.navigator.onLine){
-				document.getElementById("app").src="no-internet.html";
-			}else{
-				window.frames["app"].location.href=_url+"/ui/mobile/safra/index.aspx";
-				window.location.reload();
-			}
+		function Conectar(){	
+			window.location.reload();
 		}
 		
 		function downloadFile(url,filename,extension,email,pass,ca){
