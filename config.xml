@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<widget id="com.softronel.safra" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
+<widget id="com.softronel.safra" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0" xmlns:android="http://schemas.android.com/apk/res/android" xmlns:cdv="http://cordova.apache.org/ns/1.0">
   <name>Real Toledo Unido AC</name>
   <description>
     Sistema de Administración para Condominios y Fraccionamientos
@@ -11,8 +11,10 @@
   <platform name="android">	
     <resource-file src="google-services.json" target="app/google-services.json" />
   </platform>
+  
   <preference name='phonegap-version' value='cli-9.0.0' />
-  <preference name='pgb-builder-version' value='2' />
+  <preference name="android-targetSdkVersion" value="28" />
+  
   <plugin name="cordova-plugin-fcm-with-dependency-updated-apns" spec="~1.2.0" source="npm" />   
   <plugin name="cordova-plugin-inappbrowser" source="npm" version="1.0.1" />
   <gap:plugin name="cordova-plugin-whitelist" source="npm" />
@@ -32,4 +34,11 @@
   <allow-intent href="*" />
   <access origin="*" />
   <allow-navigation href="*" />  
+  
+  <platform name="android">
+        <edit-config file="app/src/main/AndroidManifest.xml" mode="merge" target="/manifest/application">
+            <application android:usesCleartextTraffic="true" />
+        </edit-config>
+    </platform>
+	
 </widget>
